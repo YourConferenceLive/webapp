@@ -1,0 +1,26 @@
+{
+  "name": "your_conference_live/web_app",
+  "description": "Web App of Your Conference Livecom",
+  "type": "project",
+  "homepage": "https://yourconference.live/",
+  "license": "All Rights Reserved",
+  "authors":
+  [
+	{
+	  "name": "Athul AK",
+	  "email": "athullive@gmail.com"
+	}
+  ],
+  "support": {
+	"Tiket System": "https://yourconference.live/support/"
+  },
+  "require": {
+	"php": ">=5.6.40"
+  },
+  "suggest": {
+	"paragonie/random_compat": "Provides better randomness in PHP 5.x"
+  },
+  "require-dev": {
+	"phpunit/phpunit": "4.* || 5.*"
+  }
+}
