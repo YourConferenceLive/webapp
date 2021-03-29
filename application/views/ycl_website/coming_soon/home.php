@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<title>Your Conference Live</title>
-	<link rel="shortcut icon" href="<?=ycl_root?>/ycl_assets/YCL_Icon.png" type="image/x-icon">
+	<link rel="shortcut icon" href="<?=ycl_root?>/ycl_assets/ycl_Icon.png" type="image/x-icon">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="Your Conference Live" />
