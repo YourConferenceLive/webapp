@@ -6,7 +6,7 @@ $logo_svg = '<svg style="width: 200px;height: auto;" id="svg" version="1.1" xmln
 <head>
 	<meta charset="utf-8">
 	<link rel="icon" href="<?=ycl_root?>/ycl_assets/ycl_icon.png">
-	<title>404 Page Not Found</title>
+	<title>PHP Error</title>
 	<style type="text/css">
 		* {
 			-webkit-box-sizing: border-box;
