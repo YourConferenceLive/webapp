@@ -1,6 +1,13 @@
-# Your Conference Live
+___
 
-Your Conference Live is a conference/webinar management application produced by One World Presentation Management Ltd.
+<img src="https://dev.yourconference.live/ycl_assets/ycl_logo.png" alt="YCL Logo" width="150">
+
+# Your Conference Live (Web App) 
+[www.yourconference.live](www.yourconference.live)
+
+Your Conference Live is a conference/webinar management application produced by One World Presentation Management Ltd.  
+
+GitHub: [https://github.com/YourConferenceLive/webapp](https://github.com/YourConferenceLive/webapp)
 
 ---
 
@@ -14,11 +21,11 @@ This project requires the following:
 
 ## Installation
 
-This is a standalone web application built using [CodeIgniter 3](https://codeigniter.com).  
-[CodeIgniter](https://codeigniter.com) is an open-source software rapid development web framework, for use in building dynamic web sites with PHP.
+This is a standalone web application built using [CodeIgniter 3](https://codeigniter.com/userguide3).  
+[CodeIgniter](https://codeigniter.com) is a powerful PHP framework with a very small footprint, built for developers who need a simple and elegant toolkit to create full-featured web applications.
 
 
-###Your Conference Live can be installed by following 4 steps;
+### Your Conference Live can be installed by following 4 steps;
 
 #### 1. Clone the GitHub repository or download the zipped project files from the GitHub
 
@@ -34,22 +41,22 @@ This is a standalone web application built using [CodeIgniter 3](https://codeign
 
 ---
 
-## Custom Built-in methods
+## Custom Built-in methods and definitions
 >These are reserved variables/constants. You should not use them for anything else anywhere in the application.
 
-### 1. 
+### 1. project
 ```php 
 $this->project 
 ```
 Returns the project data (every data from the `project` table) of the project user currently accessing.
 
-### 2.
+### 2. project_url
 ```php 
 $this->project_url
 ```
 Returns the base url of the project user currently accessing. eg; `https://yourconference.live/COS/`
 
-### 3. 
+### 3. themes_dir
 ```php 
 $this->themes_dir
 ```
@@ -66,7 +73,7 @@ $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby");
 ```
 Will load the **Lobby** page of user-type `attendee`.
 
-###4.
+### 4. ycl_root
 ```php 
 ycl_root
 ```
@@ -98,7 +105,10 @@ If the user is logged-in, this is what a typical array returned by `$_SESSION['p
 
 ---
 
-## Production Address
+## Development URL
+[dev.yourconference.live](dev.yourconference.live)
+
+## Production URL
 [www.yourconference.live](www.yourconference.live)
 
 ---
@@ -110,6 +120,9 @@ Authorized developers can create pull requests.
 For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to test the changes before committing to the repository.
+
+## Automated Deployment
+Every push to the `dev` branch will automatically deploy the `dev` branch to [dev.yourconference.live](dev.yourconference.live)
 
 ##Contact
 
