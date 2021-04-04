@@ -119,6 +119,10 @@ Any unauthorized modification is strictly prohibited.
 Authorized developers can create pull requests.  
 For major changes, please open an issue first to discuss what you would like to change.
 
+### :x: DO NOT PUSH/PULL CHANGES TO/FROM THE `master` BRANCH
+### :white_check_mark: ALWAYS PUSH/PULL CHANGES TO/FROM THE `dev` BRANCH
+
+
 Please make sure to test the changes before committing to the repository.
 
 ## Automated Deployment
