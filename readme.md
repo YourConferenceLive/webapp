@@ -21,7 +21,7 @@ This project requires the following:
 
 ## Installation
 
-This is a standalone web application built using [CodeIgniter 3](https://codeigniter.com/userguide3).  
+This is a standalone web application built using [CodeIgniter 3](https://codeigniter.com/userguide3/index.html).  
 [CodeIgniter](https://codeigniter.com) is a powerful PHP framework with a very small footprint, built for developers who need a simple and elegant toolkit to create full-featured web applications.
 
 
