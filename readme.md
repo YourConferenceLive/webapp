@@ -105,10 +105,10 @@ If the user is logged-in, this is what a typical array returned by `$_SESSION['p
 ---  
 
 ## :computer: Development URL
-[dev.yourconference.live](dev.yourconference.live)
+[dev.yourconference.live](https://dev.yourconference.live)
 
 ## :desktop_computer: Production URL
-[www.yourconference.live](www.yourconference.live)
+[www.yourconference.live](https://www.yourconference.live)
   
 ---  
 
