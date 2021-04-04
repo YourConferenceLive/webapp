@@ -66,6 +66,12 @@ $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby");
 ```
 Will load the **Lobby** page of user-type `attendee`.
 
+###4.
+```php 
+ycl_root
+```
+Returns the root URI of the application without trailing slash(/) eg; `https://yourconference.live`
+(Equivalent of `base_url()` except the trailing slash)
 
 ---
 
