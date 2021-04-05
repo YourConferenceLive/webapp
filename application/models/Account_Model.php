@@ -49,9 +49,6 @@ class Account_Model extends CI_Model
 			'surname' => $surname,
 			'email' => $email,
 			'password' => $password,
-			'is_attendee' => 0,
-			'is_presenter' => 0,
-			'is_admin' => 0,
 			'created_on' => date('Y-m-d H:i:s')
 		);
 
