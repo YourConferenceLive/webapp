@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => ycl_db_hostname,
-	'username' => ycl_db_username,
-	'password' => ycl_db_password,
-	'database' => ycl_db_database,
+	'hostname' => ycl_db_hostname, // DO NOT MODIFY
+	'username' => ycl_db_username, // DO NOT MODIFY
+	'password' => ycl_db_password, // DO NOT MODIFY
+	'database' => ycl_db_database, // DO NOT MODIFY
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
