@@ -83,13 +83,13 @@ This is a standalone web application built using [<img src="https://dev.yourconf
 
 #### 2. Add `ycl_config.php` file at the project root and configure your settings
 
-#### 2. Create an empty `project_routes.php` file at the project root
+#### 3. Create an empty `project_routes.php` file at the project root
 
-#### 3. Create an empty directory `cms_uploads` at the project root
+#### 4. Create an empty directory `cms_uploads` at the project root
 
-#### 3. Run `composer install`
+#### 5. Run `composer install`
 
-#### 4. Import the latest database schema
+#### 6. Import the latest database schema
   
 ---  
 
