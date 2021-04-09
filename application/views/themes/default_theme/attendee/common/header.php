@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta name="author" content="Athul AK">
 	<link rel="icon" href="<?=ycl_root?>/ycl_assets/ycl_icon.png">
 
-	<title>Your Conference Live</title>
+	<title><?=$this->project->name?> | Your Conference Live</title>
 
 	<!-- JQuery -->
 	<script src="<?=ycl_root?>/vendor_frontend/jquery/jquery-3.5.1.min.js"></script>
