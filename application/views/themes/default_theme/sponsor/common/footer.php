@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-echo global_js();
 ?>
 <link href="<?=ycl_root?>/theme_assets/<?=$project->theme?>/css/sticky-footer.css" rel="stylesheet">
 <footer class="footer">

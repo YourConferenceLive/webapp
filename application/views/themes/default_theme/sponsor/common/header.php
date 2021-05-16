@@ -16,18 +16,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?=ycl_root?>/vendor_frontend/jquery/jquery-3.5.1.min.js"></script>
 
 	<!-- Bootstrap 4 -->
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 	<link href="<?=ycl_root?>/vendor_frontend/bootstrap-4.6.0/css/bootstrap.css" rel="stylesheet">
 	<script src="<?=ycl_root?>/vendor_frontend/bootstrap-4.6.0/js/bootstrap.js"></script>
 
+
 	<!-- SweetAlert2 -->
 	<link href="<?=ycl_root?>/vendor_frontend/sweetalert2/sweetalert2.css" rel="stylesheet">
-	<script src="<?=ycl_root?>/vendor_frontend/sweetalert2/sweetalert2.js" ></script>
+	<script src="<?=ycl_root?>/vendor_frontend/sweetalert2/sweetalert2.js"></script>
 
-	<!-- Font Awesome-->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<!-- Theme style and js -->
-	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/app.css" rel="stylesheet">
+	<link href="<?=ycl_root?>/theme_assets/<?=$project->theme?>/css/app.css" rel="stylesheet">
+
+
 </head>
