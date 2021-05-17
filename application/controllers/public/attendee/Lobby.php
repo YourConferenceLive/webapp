@@ -18,6 +18,7 @@ class Lobby extends CI_Controller
 		$this->logger->log_visit("Lobby");
 
 		$data['project'] = $this->project;
+		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
