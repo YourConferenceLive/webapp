@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Lobby extends CI_Controller
+class Sessions extends CI_Controller
 {
 	public function __construct()
 	{
@@ -15,17 +15,16 @@ class Lobby extends CI_Controller
 
 	public function index()
 	{
-		$this->logger->log_visit("Lobby");
+		$this->logger->log_visit("Sessions Listing");
 
 		$data['project'] = $this->project;
 		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
-
-		$data['lobby_menu'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby_menu", NULL, TRUE);
+		$data['sessions'] = array("1", "2", "3", "4", "5", "6");
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
-			//->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/listing", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
 	}

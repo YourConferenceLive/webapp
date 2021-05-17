@@ -1,1 +1,66 @@
+.lobby-container
+{
+	padding-bottom: 50px;
+}
 
+.banner
+{
+	border: 5px solid #f0f0f0;
+}
+
+.main-banner
+{
+
+}
+
+.side-banner-1
+{
+
+}
+
+.side-banner-2
+{
+
+}
+
+/* Not for mobiles */
+@media screen and (max-width: 768px)
+{
+	.not-for-mobile
+	{
+		display: none;
+	}
+}
+
+/* Only for mobiles */
+@media screen and (min-width: 769px)
+{
+	.only-for-mobile
+	{
+		display: none;
+	}
+}
+
+/* sm screen */
+@media (min-width: 576px)
+{
+
+}
+
+/* md screen */
+@media (min-width: 768px)
+{
+
+}
+
+/* lg screen */
+@media (min-width: 992px)
+{
+
+}
+
+/* xl screen */
+@media (min-width: 1200px)
+{
+
+}

@@ -1,0 +1,19 @@
+.sessions-container
+{
+	padding-bottom: 50px;
+}
+
+.sessions-listing-item
+{
+	background-color: #e9ecef8c;
+	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
+}
+
+.session-img
+{
+	/*max-width: 100%;*/
+}
+.presenters-list
+{
+	list-style: none;
+}
