@@ -33,5 +33,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 	<!-- Theme style and js -->
-	<link href="<?=ycl_root?>/theme_assets/<?=$project->theme?>/css/app.css" rel="stylesheet">
+	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/app.css" rel="stylesheet">
 </head>

@@ -1,3 +1,4 @@
+/************* Listing Page **************/
 .sessions-container
 {
 	padding-bottom: 50px;
@@ -9,11 +10,40 @@
 	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
 }
 
-.session-img
+
+/************** Join Page *************/
+#full-screen-background.sessions-join
 {
-	/*max-width: 100%;*/
+	background-color: #e3e3e3;
 }
-.presenters-list
+
+.session-join-info
 {
-	list-style: none;
+	background-color: #e9ecef8c;
+	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
+}
+
+.session-join-title
+{
+	background-color: #cecece;
+	color: #555;
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+
+/************** View Page *************/
+#full-screen-background.sessions-view
+{
+	background-color: #e3e3e3;
+}
+
+.sessions-view-container
+{
+	height: 100vh;
+}
+
+.live-stream-container
+{
+	height: 100%;
+	background-color: black;
 }
