@@ -3,9 +3,18 @@ if(!function_exists('global_js'))
 {
 	function global_js()
 	{
+		$CI =& get_instance();
+
 		$js_methods = '';
+		$js_variables = '';
 		$js_start_tag = '<script>';
 		$js_end_tag = '</script>';
+
+		$js_variables .= "
+			let project_url = '{$CI->project_url}';
+			let ycl_root = '".ycl_root."';
+		";
+
 
 		/**
 		 * Global JS Methods
@@ -27,7 +36,7 @@ if(!function_exists('global_js'))
 
 
 
-		$global_js = "$js_start_tag \n $js_methods \n $js_end_tag";
+		$global_js = "$js_start_tag \n $js_variables \n $js_methods \n $js_end_tag";
 
 		return $global_js;
 	}

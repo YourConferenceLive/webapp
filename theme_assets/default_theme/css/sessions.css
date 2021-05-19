@@ -1,0 +1,49 @@
+/************* Listing Page **************/
+.sessions-container
+{
+	padding-bottom: 50px;
+}
+
+.sessions-listing-item
+{
+	background-color: #e9ecef8c;
+	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
+}
+
+
+/************** Join Page *************/
+#full-screen-background.sessions-join
+{
+	background-color: #e3e3e3;
+}
+
+.session-join-info
+{
+	background-color: #e9ecef8c;
+	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
+}
+
+.session-join-title
+{
+	background-color: #cecece;
+	color: #555;
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+
+/************** View Page *************/
+#full-screen-background.sessions-view
+{
+	background-color: #e3e3e3;
+}
+
+.sessions-view-container
+{
+	height: 100vh;
+}
+
+.live-stream-container
+{
+	height: 100%;
+	background-color: black;
+}

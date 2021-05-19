@@ -112,7 +112,7 @@ class CI_Controller {
 		if ($result->num_rows() > 0)
 		{
 			$this->project = $result->row();
-			$this->themes_dir = 'themes/';
+			$this->themes_dir = 'themes';
 			$this->project_url = base_url($this->project->main_route);
 
 			if ($this->project->active == 0) // If project is suspended, show error
