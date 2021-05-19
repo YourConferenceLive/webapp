@@ -1,7 +1,7 @@
 
 ___  
 
-<img src="https://dev.yourconference.live/ycl_assets/ycl_logo.png" alt="YCL Logo" width="150">  
+<img src="ycl_assets/ycl_logo.png" alt="YCL Logo" width="150">   
 
 # Your Conference Live (Web App) [www.yourconference.live](www.yourconference.live)
 
