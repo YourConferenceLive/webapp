@@ -260,7 +260,7 @@ $(document).ready(function(){
 				'chat_to_id':chat_to_id
 			},function(success){
 			if(success=='success'){
-				$('.sponsor-chat-body').append('<div class="card sponsor-outgoing-message w-90 float-right  my-1 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img src="'+logo_url+'" class="my-2" src="" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><b>Nmae</b></span><span class="float-left "><small>'+date_now+'<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">'+chat_text+'</div></div></div></div></div><br>');
+				$('.sponsor-chat-body').append('<div class="card sponsor-outgoing-message w-90 float-right  my-1 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img src="'+logo_url+'" class="my-2" src="" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><b>'+sponsor_name+'</b></span><span class="float-left "><small>'+date_now+'<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">'+chat_text+'</div></div></div></div></div><br>');
 				$('#sponsor-chat-text').val("");
 				toastr['success']('message sent');
 			}else{
@@ -289,7 +289,7 @@ $(document).ready(function(){
 		if(chat_text.trim()==""){
 			return false;
 		}
-		$('.group-chat-body').append('<div class="card sponsor-outgoing-message w-90 float-right  my-1 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img src="'+logo_url+'" class="my-2" src="" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><b>Name</b></span><span class="float-left "><small>'+date_now+'<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">'+chat_text+'</div></div></div></div></div><br>');
+		$('.group-chat-body').append('<div class="card sponsor-outgoing-message w-90 float-right  my-1 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img src="'+logo_url+'" class="my-2" src="" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><b>'+sponsor_name+'</b></span><span class="float-left "><small>'+date_now+'<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">'+chat_text+'</div></div></div></div></div><br>');
 		$('#group-chat-text').val("");
 
 		$.post(project_url+"/sponsor/admin/home/save_sponsor_group_chat/",{'chat_text':chat_text},function(success){
@@ -313,14 +313,11 @@ $(document).ready(function(){
 				$.each(datas.result, function (index, data) {
 					if (data.chat_from == current_id) {
 
-						$('.group-chat-body').append('<div class="card group-outgoing-message w-90 float-right  my-1 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><b>'+data.name+' '+data.surname+'</b></span><span class="float-left "><small>' + data.date_time + '<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col  text-right">' + data.chat_text + '</div></div></div></div></div><br>');
+						$('.group-chat-body').append('<div class="card group-outgoing-message w-90 float-right  my-1 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><b>'+data.name+' '+data.surname+'</b></span><span class="float-left text-white-50"><small>' + data.date_time + '<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col  text-right">' + data.chat_text + '</div></div></div></div></div><br>');
 					} else {
-						$('.group-chat-body').append('<div class="card group-incoming-message w-90  float-left  my-1 pl-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left"><b>'+data.name+' '+data.surname+'</b></span><span class="float-right "><small>' + data.date_time + '<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">' + data.chat_text + '</div></div></div></div></div>')
+						$('.group-chat-body').append('<div class="card group-incoming-message w-90  float-left  my-1 pl-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left "><b>'+data.name+' '+data.surname+'</b></span><span class="float-right text-white-50"><small>' + data.date_time + '<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">' + data.chat_text + '</div></div></div></div></div>')
 					}
 				});
-			}else{
-				toastr['error']('unable to fetch group chats');
-				return false;
 			}
 		});
 	}
@@ -337,37 +334,33 @@ $(document).ready(function(){
 
 				$.each(datas.result, function (index, data) {
 
-					$('.attendee-list-body').append('<div class="card ml-3 my-1 btn pl-1 list " data-list_id = "'+data.user_id+'" data-chatting_to ="'+data.name+' '+data.surname+'" data-to_id="'+data.id+'"><div class="card-header p-0 bg-white border-0 btn btn-xs text-right mr-3 user-info" data-user_id="'+data.user_id+'"><span class=" fa fa-user text-primary position-absolute " data-user_id="'+data.user_id+'"></span></div><div class="card-body p-0"><a class="float-left"><img class=" btn p-0 " src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></a><div class="attendee-name mt-2 text-left ">'+data.name+' '+data.surname+'</div></div></div>')
+					$('.attendee-list-body').append('<div class="card ml-3 my-1 btn pl-1 list " data-list_id = "'+data.user_id+'" data-chatting_to ="'+data.name+' '+data.surname+'" data-to_id="'+data.id+'"><div class="card-header p-0 bg-white border-0 btn btn-xs text-right mr-3 user-info" data-user_id="'+data.user_id+'"><span class=" fas fa-id-card text-info position-absolute " data-user_id="'+data.user_id+'" style="font-size: 20px"></span></div><div class="card-body p-0"><a class="float-left"><img class=" btn p-0 " src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></a><div class="attendee-name mt-2 text-left ">'+data.name+' '+data.surname+'</div></div></div>')
 				});
-			}else{
-				toastr['error']('unable to fetch attendee list');
-				return false;
 			}
 		});
 	}
 
+
 	$('#search-attendee-chat').keyup(function(){
 		var filter = $(this).val();
+		search_attendee(filter);
+
+	});
+
+	$('#clear-search').on('click', function () {
+		var filter = $('#search-attendee-chat').val('');
+		search_attendee(filter);
+	});
+
+	function search_attendee(filter){
 		$(".attendee-list-body .list").each(function () {
 			if ($(this).text().search(new RegExp(filter, "i")) < 0) {
 				$(this).hide();
 			} else {
 				$(this).show();
 			}
-			if($(".attendee-list-body .list")!==''){
-				$(this).show();
-				$('#clear-search').on('click', function () {
-					$('#search-attendee-chat').val('');
-				});
-			}
 		});
-	});
-
-	// if($('#search-attendee-chat').val()!=='') {
-	// 	$('#clear-search').on('click', function () {
-	// 		$('#search-attendee-chat').val('');
-	// 	});
-	// }
+	}
 
 	$('.attendee-list-body').on('click','.list',function(){
 		var chat_from_id = $(this).attr('data-list_id');
@@ -412,11 +405,9 @@ $(document).ready(function(){
 							'<span class="float-left "><small>'+data.date_time+' <i class="far fa-clock"></i></small> </span>' +
 							'</div></div><div class="row"><div class="col text-right">'+data.chat_text+'</div></div></div></div></div><br>');
 					}else{
-						$('.sponsor-chat-body').append('<div class="card sponsor-incoming-message w-90 float-left  my-1 pl-2 text-white shadow-lg " data-to_id="'+data.to_id+'"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left"><b>'+data.name+' '+data.surname+'</b></span><span class="float-right "><small>'+data.date_time+'<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">'+data.chat_text+'</div></div></div></div></div>');
+						$('.sponsor-chat-body').append('<div class="card sponsor-incoming-message w-90 float-left  my-1 pl-2 text-white shadow-lg " data-to_id="'+data.to_id+'"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left "><small>'+data.name+' '+data.surname+'</small></span><span class="float-right text-white-50"><small>'+data.date_time+'<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">'+data.chat_text+'</div></div></div></div></div>');
 					}
 				});
-			}else{
-
 			}
 
 		});
@@ -431,9 +422,13 @@ $(document).ready(function(){
 	function user_info_modal(attendee_id){
 
 		swal.showLoading();
-		$.post(project_url+"/sponsor/admin/home/get_attendee_info/",{'attendee_id':attendee_id},function(success){
-
-		}).done(function(datas){
+		$.post(project_url+"/sponsor/admin/home/get_attendee_info/",
+			{
+				'attendee_id':attendee_id
+			},
+			function(success)
+			{
+			}).done(function(datas){
 
 			datas = JSON.parse(datas);
 			if(datas.status !=="error") {
@@ -513,7 +508,7 @@ $(document).ready(function(){
 					if(extension == "docx") {
 						icon = "fa-file-word";
 					}
-					else if(extension == "jpg") {
+					else if(extension == "jpg" || extension == "png" || extension == "jpeg" ) {
 						icon = "fa-image";
 					}
 					else if(extension == "pdf") {
@@ -529,7 +524,7 @@ $(document).ready(function(){
 						icon = "fa-file-powerpoint";
 					}
 					else {
-						icon = "fa-question-circle";
+						icon = "";
 					}
 					// $('.resources-body').append('<div class="resource-item col-md-6 col-sm-12 my-3"><div class="resource-title col-md-12 border rounded my-2 bg-light py-2 text-brown"><h4 class="font-1">'+data.resource_name+'</h4><a class="btn btn-danger float-right ml-2 delete_resource_file " data-resource_id="'+data.id+'" data-screen_name="'+data.screen_name+'" data-resource_name="'+data.resource_name+'"><i class="fa fa-trash"><small> Remove </small></i></a><a target="_blank" href="'+ycl_root+'/cms_uploads/projects/'+project_id+'/sponsor_assets/uploads/resource_management_files/'+data.file_name+'" download="'+data.screen_name+'" class="btn btn-success float-right" ><i class="fa fa-external-link-square"><small> Open </small></i></a></div></div>')
 					$('.resources-body').append('<div class="resource-item col-md-6 col-sm-12 my-1"><div class="card"><div class="card-header resource-title col-md-12 bg-white py-1 text-brown border-bottom-0" style="cursor: pointer" title="'+hover+'"><h4 class="font-1"><span class="far '+icon+' text-info"></span> '+data.resource_name+'</h4></div><div class="card-footer bg-white p-1 border-top-0"><a class="btn btn-danger btn-sm float-right ml-2 delete_resource_file " data-resource_id="'+data.id+'" data-screen_name="'+data.screen_name+'" data-resource_name="'+data.resource_name+'"><i class="fas fa-trash-alt"><small> Remove </small></i></a><a target="_blank" href="'+ycl_root+'/cms_uploads/projects/'+project_id+'/sponsor_assets/uploads/resource_management_files/'+data.file_name+'" download="'+data.screen_name+'" class="btn btn-success btn-sm float-right"><i class="fas fa-external-link-alt"><small> Open </small></i></a></div></div></div>')
@@ -606,20 +601,28 @@ $(document).ready(function(){
 			$.post(project_url+"/sponsor/admin/home/add_availability_date_time/",{
 				'available_from':availability_start,
 				'available_to':availability_end,
-			},function(success){
-				if(success=="success"){
+			},function(result){
+				if(result=="success"){
 					Swal.fire(
 						'Success',
 						'Availability Added',
 						'success'
 					)
 					get_availability_list();
+				}else if(result=="error"){
+					Swal.fire(
+						'Error',
+						'Availability overlaps another availability',
+						'error'
+					)
+
 				}else{
 					Swal.fire(
-						'Success',
+						'Error',
 						'Problem adding availability',
-						'success'
+						'error'
 					)
+
 				}
 
 			});
@@ -628,19 +631,19 @@ $(document).ready(function(){
 
 	function get_availability_list(){
 
-
 		$.post(project_url+"/sponsor/admin/home/get_availability_list/",{},function(){
 
 		}).done(function(datas){
 			datas=JSON.parse(datas);
+
 				if(datas.status == "success"){
 					$('.availability-list-body').html('');
 					$.each(datas.result, function(index, data){
 
 							$('.availability-list-body').append('<div class="row mb-1"><div class="col-md-5 text-center text-blue"><i class="far fa-calendar-check text-blue"></i> '+data.available_from+'</div><div class="col-md-2 text-center"> TO </div><div class="col-md-5 text-center text-blue"><i class="far fa-calendar-check text-blue"></i> '+data.available_to+'<span class="btn fas fa-times text-danger" id="delete-availability" data-availability_id ="'+data.id+'"></span></div><hr class="w-100"></div>')
-						// $('.availability-list-body').append('<div class="fa fa-calendar-check-o">'+data.available_from+' '+data.available_to+'</div>');
 					});
 				}else{
+					$('.availability-list-body').html('');
 					return false;
 				}
 		});
@@ -681,6 +684,7 @@ $(document).ready(function(){
 							'Problem deleting this file',
 							'error'
 						)
+						get_availability_list();
 					}
 				});
 			}
@@ -732,6 +736,41 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$("#btn-clear-group-chat").on( "click", function() {
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, clear chat!'
+		}).then((result) => {
+			if (result.value) {
+
+				$.post(project_url+"/sponsor/admin/home	/clear_group_chat",
+					{
+					},
+					function(data){
+					console.log(data);
+						if(data == 'success')
+						{
+							Swal.fire(
+								'Cleared!',
+								'Group chat has been cleared.',
+								'success'
+							)
+						}else{
+							toastr["error"](data)
+						}
+					},'text');
+			}
+		})
+	});
+
+
 
 });
 

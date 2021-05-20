@@ -23,9 +23,11 @@ class Sponsor_Model extends CI_Model
 	function get_sponsor_data()
 	{
 
-		$this->db->select('*');
+		$this->db->select('sba.*,sb.*,CONCAT(u.name," ",u.surname) as sponsor_name');
 		$this->db->from('sponsor_booth_admin sba');
 		$this->db->join('sponsor_booth sb', 'sba.booth_id=sb.id');
+		$this->db->join('user u','sba.user_id = u.id');
+		$this->db->where('u.id',$this->sponsor_id);
 		$this->db->where(array('sba.user_id' => $this->sponsor_id, 'sba.booth_id' => $this->booth_id,'sba.project_id'=>$this->project->id));
 		$result = $this->db->get();
 
@@ -374,6 +376,13 @@ class Sponsor_Model extends CI_Model
 	}
 
 	function add_availability_date_time(){
+
+		$overLapCheck = $this->check_availability_overlap();
+		if ($overLapCheck == false){
+			return 'error';
+			die;
+		}
+
 		$post = $this->input->post();
 		$field_set = array(
 			'project_id'=>$this->project->id,
@@ -387,6 +396,24 @@ class Sponsor_Model extends CI_Model
 			return 'success';
 		} else {
 			return 'error';
+		}
+	}
+
+	function check_availability_overlap(){
+		$post = $this->input->post();
+		$from = $post['available_from'];
+		$to = $post['available_to'];
+
+		$this->db->select('*')
+			->from('sponsor_meeting_availability')
+			->where(array('project_id'=>$this->project->id, 'booth_id'=>$this->booth_id, 'sponsor_admin_id'=>$this->sponsor_id, ))
+			->where("('".$from."' between available_from AND available_to) OR ('".$to."' between available_from AND available_to)")
+			;
+		$qstr = $this->db->get();
+		if($qstr->num_rows() > 0 ){
+			return false;
+		}else{
+			return true;
 		}
 	}
 
@@ -415,7 +442,7 @@ class Sponsor_Model extends CI_Model
 			->from('sponsor_meeting_booking smb')
 			->join('user u','smb.user_id = u.id')
 
-			->where('sponsor_id', $this->sponsor_id)
+			->where('sponsor_admin_id', $this->sponsor_id)
 			->where('booth_id',$this->booth_id)
 			->where('project_id', $this->project->id)
 ;
@@ -427,5 +454,21 @@ class Sponsor_Model extends CI_Model
 			$json_array = array('status'=>'error' );
 		}
 		return json_encode($json_array);
+	}
+
+	function clear_group_chat(){
+			$data = array(
+				'booth_id'=>$this->booth_id,
+				'project_id'=>$this->project->id
+			);
+			$this->db->where($data);
+			$this->db->delete('sponsor_group_chat');
+
+		if (!$this->db->affected_rows()) {
+			$result = 'Error!  [ Group Chat on booth ID: '.$this->booth_id.' on Project ID: '.$this->project->id.' ] is empty';
+		} else {
+			$result = 'success';
+		}
+		return $result;
 	}
 }

@@ -11,13 +11,17 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 if(isset($sponsor_data) && !empty($sponsor_data)){
 $data=$sponsor_data[0];
 }
+//print_r($data->sponsor_name);exit;
 ?>
+<body>
 	<main role="main">
 			<div class="jumbotron rounded-0" id="cover_photo" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo))? ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo:''?>')">
 				<div class="">
@@ -26,6 +30,7 @@ $data=$sponsor_data[0];
 				</div>
 					<div class="col">
 						<?php if (isset($data->main_video_url) && !empty($data->main_video_url)) {?>
+
 							<div id="tv-container">
 								<div id="monitor">
 									<div id="monitorscreen">
@@ -33,6 +38,7 @@ $data=$sponsor_data[0];
 									</div>
 								</div>
 							</div>
+
 							<?php } ?>
 						<div class="row justify-content-center">
 							<h4 class="text-white"><?= $data->main_video_description ?></h4>
@@ -143,7 +149,7 @@ $data=$sponsor_data[0];
 							<div class="group-chat-header card-header text-white bg-blue ">
 								Group Chat <span class="fa fa-users ml-2"></span>
 								<i class="btn badge badge-light float-right ml-2"><span class="far fa-save "> save </span></i>
-								<i class="btn badge badge-light float-right"><span class="far fa-trash-alt"> clear </span></i>
+								<i class="btn badge badge-light float-right" id="btn-clear-group-chat"><span class="far fa-trash-alt"> clear </span></i>
 							</div>
 							<div class="group-chat-body card-body overflow-auto">
 
@@ -318,7 +324,7 @@ $data=$sponsor_data[0];
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modal-add-resource-label"></h5>
+				<h5 class="modal-title" id="modal-add-resource-label">Upload New Resource File</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -334,14 +340,14 @@ $data=$sponsor_data[0];
 		</div>
 	</div>
 </div>
-
+</body>
 <script>
- var project_id ="<?= $this->project->id?>";
+ var project_id = "<?= $this->project->id?>";
  var logo = "<?=$data->logo?>";
  var date_now = "<?=date('Y-m-d H:i:s')?>";
-
- var current_id ="<?=$this->session->userdata('sponsor_id')?>";
- var current_booth_id="<?=$this->session->userdata('booth_id')?>";
+ var current_id = "<?=$this->session->userdata('sponsor_id')?>";
+ var current_booth_id = "<?=$this->session->userdata('booth_id')?>";
+ var sponsor_name = "<?=$data->sponsor_name?>";
 
 </script>
 <script>

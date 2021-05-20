@@ -32,7 +32,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?=ycl_root?>/vendor_frontend/toastr/toastr.config.js"></script>
 
 	<!-- Theme style and js -->
-	<link href="<?=ycl_root?>/theme_assets/<?=$project->theme?>/css/app.css" rel="stylesheet">
+	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/app.css" rel="stylesheet">
 
 
 </head>

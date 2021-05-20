@@ -18,7 +18,7 @@
 
 				<li class="nav-item ">
 					<div class="dropdown dropdown-user">
-						<button class="btn btn-secondary btn-sm dropdown-toggle " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<img src="" alt="" class=" fa fa-user nav-user-photo">
 							<span> User </span>
 						</button>

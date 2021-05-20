@@ -24,7 +24,7 @@ class Home extends CI_Controller
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sponsor/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/sponsor_admin", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data);
 
@@ -152,4 +152,11 @@ class Home extends CI_Controller
 		$result= $this->m_sponsor->get_calendar_events();
 		echo $result;
 	}
+
+	public function clear_group_chat(){
+		$result = $this->m_sponsor->clear_group_chat();
+		echo $result;
+	}
+
+
 }

@@ -5,35 +5,33 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if(isset($sponsor_data) && !empty($sponsor_data)){
 	$data=$sponsor_data[0];
 }
-
-//?>
+//print_r($data->name);exit;
+?>
 <link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css" rel="stylesheet">
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js"></script>
-
 <!-- Date Time Picker-->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.css">
 
 <main role="main">
 		<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/' . $data->cover_photo:'' ?> ')">
-			<div class="">
-				<div class="col">
-					<?php if (isset($data->main_video_url) && !empty($data->main_video_url)) {
-						?>
-						<div id="tv-container">
-							<div id="monitor">
-								<div id="monitorscreen">
-									<?=($data->main_video_url)?>
-								</div>
-							</div>
-						</div>
-						<?php
-					} ?>
-					<div class="row justify-content-center">
-						<h4 class="text-white"><?= $data->main_video_description ?></h4>
-					</div>
-				</div>
-			</div>
+            <span href="javascript:void(0)" class="btn fish-bowl mt-0 position-absolute" style="z-index: 3;right:10px"><img src="<?=ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/fishbowl.png'?>" style="width: 150px;height: 130px"><br><span class="text-white">Click to leave your card</span></span>
+            <div class="col" >
+                <?php if (isset($data->main_video_url) && !empty($data->main_video_url)) {
+                    ?>
+                    <div id="tv-container">
+                        <div id="monitor">
+                            <div id="monitorscreen">
+                                <?=($data->main_video_url)?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                } ?>
+                <div class="row justify-content-center">
+                    <h4 class="text-white"><?= $data->main_video_description ?></h4>
+                </div>
+            </div>
 		</div>
 	<div class="container-fluid px-lg-5">
 		<div class="row mx-xl-4 mx-md-1">
@@ -81,7 +79,7 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 								<div class="group-chat-header card-header" style="background-color: #337AB7">
 									<div class="row">
 										<div class="col text-white">
-											Group Chat
+											Group Chat <span class="fas fa-users"></span>
 										</div>
 									</div>
 								</div>
@@ -110,7 +108,7 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 									<div class="card">
 										<div class="sponsor-chat-header card-header text-white"
 											 style="background-color: #337AB7">
-											Sponsor Chat
+											Sponsor Chat <span class="far fa-comments"></span>
 											<i class="btn badge badge-light float-right ml-2" id="sponsor-call"><span class="fas fa-phone-alt"> call </span></i>
 											<i class="btn badge badge-light float-right" id="schedule-a-meet"><span class="far fa-calendar-check"> schedule a meet </span></i>
 										</div>
@@ -169,12 +167,12 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 	</div>
 </main>
 
-<!-- Modal -->
+<!-- Modal SCHEDULE-->
 <div class="modal fade" id="modal-schedule-meet" tabindex="-1" role="dialog" aria-labelledby="modal-schedule-meet" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modal-schedule-meet">Modal title</h5>
+				<h5 class="modal-title" id="modal-schedule-meet">Book Sponsor Meet</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -183,23 +181,67 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 				<select name="sponsor_list" class="form-control shadow-none" id="sponsor-list">
 				</select><br>
 				<div class=" input-group">
-					<input type="text" id="date-time-picker" class="form-control p-4 shadow-none" style="cursor: pointer" readonly><span class="btn btn-success" ><i class="far fa-calendar-plus fa-2x"></i> BOOK</span>
+					<input type="text" id="date-time-picker" class="form-control p-4 shadow-none"  style="cursor: pointer" readonly><a class="btn btn-success book-meet-btn " style="border-radius: 0px 5px 5px 0px"><i class="far fa-calendar-plus fa-2x"></i> Book</a>
 				</div>
 				</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal CALL-->
+<div class="modal fade" id="modal-call-sponsor" tabindex="-1" role="dialog" aria-labelledby="modal-schedule-meet" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h5 class="modal-title" id="modal-schedule-meet">CALL</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-inline">
+                            <select class="form-control" id="sponsor-list">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="btn btn-success fas fa-phone text-white form-control pt-2"> Call</span>
+                    </div>
+                </div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="card">
+					<div class="card-header">
+
+					</div>
+					<div class="card-body">
+
+					</div>
+					<div class="card-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="end-call"></span></button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
 			</div>
 		</div>
 	</div>
 </div>
 <script>
-	var project_id ="<?= $this->project->id?>";
-	var logo = "<?=$data->logo?>";
-	var date_now = "<?=date('Y-m-d H:i:s')?>";
+	var project_id = "<?= $this->project->id ?>";
+	var logo = "<?= $data->logo ?>";
+	var date_now = "<?= date('Y-m-d H:i:s') ?>";
 
-	var current_user_id ="<?= ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id'])?>";
-	var current_booth_id="<?=$data->id?>";
-
+	var current_user_id = "<?= ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']) ?>";
+	var current_booth_id= "<?= $data->id ?>";
+	var current_user_name = "<?= (isset($this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']))?$this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']:'' ?>";
+	var current_user_surname = "<?= (isset($this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']))?$this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']:'' ?>";
+	var current_user_fullname = current_user_name+' '+current_user_surname;
+	var company_name = "<?=$data->name?>";
 </script>
 
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js"></script>
