@@ -212,6 +212,7 @@ class Sponsor_Model extends CI_Model
 		$this->db->select('*')
 				->from('sponsor_group_chat sc')
 				->join('user u', 'sc.chat_from = u.id', 'left')
+				->where('cleared', 0)
 				->where('project_id', $this->project->id)
 				->where('booth_id', $this->booth_id)
 				->order_by('sc.date_time', 'asc');
@@ -462,13 +463,82 @@ class Sponsor_Model extends CI_Model
 				'project_id'=>$this->project->id
 			);
 			$this->db->where($data);
-			$this->db->delete('sponsor_group_chat');
+			$this->db->update('sponsor_group_chat',array('cleared'=>1));
 
 		if (!$this->db->affected_rows()) {
-			$result = 'Error!  [ Group Chat on booth ID: '.$this->booth_id.' on Project ID: '.$this->project->id.' ] is empty';
+			$result = 'Group chat already empty';
 		} else {
 			$result = 'success';
 		}
 		return $result;
+	}
+
+	function copy_from_group_chat(){
+		$post = $this->input->post();
+			$this->db->select('*')
+				->from('sponsor_group_chat')
+				->where('cleared',0)
+				;
+			$result = $this->db->get();
+//			return $result->result();
+			if($result->num_rows() > 0 ){
+				$data_array = array();
+				foreach ($result->result() as $data){
+					$this->db->select('*')
+						->from('saved_group_chat')
+						->where('sponsor_group_chat_id ', $data->id);
+					$duplicate = $this->db->get();
+
+					if($duplicate->num_rows() < 1){
+
+						$insert = $this->db->insert('saved_group_chat',
+							array(
+								'sponsor_group_chat_id'=>$data->id,
+								'project_id'=>$data->project_id,
+								'booth_id'=>$data->booth_id,
+								'sponsor_admin_id'=>$this->sponsor_id,
+								'name'=>$post['backup_name'],
+								'chat_from'=>$data->chat_from,
+								'chat_text'=>$data->chat_text,
+								'date_time'=>$data->date_time,
+								'save_date_time'=>date('Y-m-d H:i:s')
+							));
+					}else{
+						return array('status'=> 'no_update', 'message'=>'Chats already saved');
+					}
+				}
+				if($insert){
+					return array('status'=> 'success', 'message'=>'Chat saved successfully');
+				}else{
+					return array('status'=> 'error', 'message'=> 'Chat is empty');
+				}
+
+			}else{
+				return array('status'=> 'error', 'message'=> 'Chat is empty');
+			}
+	}
+
+	function get_saved_group_chats()
+	{
+		$post = $this->input->post();
+		$this->db->select('*')
+			->from('saved_group_chat sgc')
+			->join('user u', 'sgc.chat_from = u.id', 'left')
+			->where('sgc.project_id', $this->project->id)
+			->where('sgc.booth_id', $this->booth_id)
+			->where('sgc.sponsor_admin_id', $this->sponsor_id)
+			->order_by('sgc.id', 'asc');
+
+		$result = $this->db->get();
+		if ($result->num_rows() > 0) {
+			$json_array = array('status' => 'success', 'result' => $result->result());
+		} else {
+			$json_array = array('status' => 'empty');
+		}
+		return json_encode($json_array);
+	}
+
+	function delete_saved_chats(){
+		return $this->db->delete('saved_group_chat',array('sponsor_admin_id'=>$this->sponsor_id, 'booth_id'=>$this->booth_id, 'project_id'=>$this->project->id));
 	}
 }

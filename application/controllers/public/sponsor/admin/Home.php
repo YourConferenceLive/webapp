@@ -158,5 +158,18 @@ class Home extends CI_Controller
 		echo $result;
 	}
 
+	public function copy_from_group_chat(){
+		$result = $this->m_sponsor->copy_from_group_chat();
+		echo json_encode($result);
+	}
 
+	public function get_saved_group_chats(){
+		$result = $this->m_sponsor->get_saved_group_chats();
+		echo $result;
+	}
+
+	public function delete_saved_chats(){
+		$result = $this->m_sponsor->delete_saved_chats();
+		echo $result;
+	}
 }

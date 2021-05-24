@@ -1,6 +1,11 @@
-.body{
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
+
+body{
+	font-size: 15px;
+	font-family: 'Open Sans', sans-serif;
 }
+
 .group-chat-body,
 .sponsor-chat-body{
 	height: 550px;
@@ -117,7 +122,8 @@
 	height: 300px;
 }
 .about-us-video>iframe{
-
+	width: 100%;
+	height: 100%;
 	border-radius: 10px;
 }
 .sponsor-main-logo{

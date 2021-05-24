@@ -36,8 +36,9 @@ class Sponsor extends CI_Controller
 	}
 
 	public function logout(){
+
 		$this->session->sess_destroy();
-		redirect('booth');
+		redirect(base_url().$this->project->main_route."/login"); // Not logged-in
 	}
 	public function save_sponsor_group_chat(){
 		$result = $this->m_sponsor->save_sponsor_group_chat();

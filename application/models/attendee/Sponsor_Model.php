@@ -62,6 +62,7 @@ class Sponsor_Model extends CI_Model
 			->join('user u', 'sc.chat_from = u.id', 'left')
 			->where('project_id',$this->project->id)
 			->where('booth_id',$post['booth_id'])
+			->where('cleared', 0)
 			->order_by('sc.id', 'asc');
 
 		$result = $this->db->get();

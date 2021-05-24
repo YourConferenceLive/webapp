@@ -4,6 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <?php
 if(isset($sponsor_data) && !empty($sponsor_data)){
 	$data=$sponsor_data[0];
+
 }
 //print_r($data->name);exit;
 ?>
@@ -15,12 +16,12 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 
 <main role="main">
 		<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/' . $data->cover_photo:'' ?> ')">
-            <span href="javascript:void(0)" class="btn fish-bowl mt-0 position-absolute" style="z-index: 3;right:10px"><img src="<?=ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/fishbowl.png'?>" style="width: 150px;height: 130px"><br><span class="text-white">Click to leave your card</span></span>
-            <div class="col" >
-                <?php if (isset($data->main_video_url) && !empty($data->main_video_url)) {
+            <span href="javascript:void(0)" class="btn fish-bowl mt-0 position-absolute" style="right:10px"><img src="<?=ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/fishbowl.png'?>" style="width: 150px;height: 130px"><br><span class="text-white">Click to leave your card</span></span>
+
+                <?php if (isset($data->main_video_url) && !empty($data->main_video_url) && $data->video_position == '1') {
                     ?>
-                    <div id="tv-container">
-                        <div id="monitor">
+                    <div id="tv-container" >
+                        <div id="monitor" style="z-index: 2 !important;">
                             <div id="monitorscreen">
                                 <?=($data->main_video_url)?>
                             </div>
@@ -31,7 +32,7 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
                 <div class="row justify-content-center">
                     <h4 class="text-white"><?= $data->main_video_description ?></h4>
                 </div>
-            </div>
+
 		</div>
 	<div class="container-fluid px-lg-5">
 		<div class="row mx-xl-4 mx-md-1">
@@ -51,21 +52,19 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 						<h4> About Us </h4>
 						<p class="text-left mr-5"><?= $data->about_us ?></p>
 					</div>
+					<?php if (isset($data->main_video_url) && !empty($data->main_video_url) && $data->video_position == '0') { ?>
 					<div class="row mb-2 about-us-video align-content-center ">
 						<div class="col p-0 m-0 h-100 w-100">
-							<iframe src="https://player.vimeo.com/video/448010668?title=0&amp;byline=0&amp;portrait=0"
-									style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
-									allow="autoplay; fullscreen" allowfullscreen=""></iframe>
-							<script src="https://player.vimeo.com/api/player.js"></script>
-
+							<?=($data->main_video_url)?>
 						</div>
 					</div>
+					<?php } ?>
 					<div class="row justify-content-center mb-2">
 						<div class="col website-icons text-center">
-							<a href="<?=(isset($data->website_link) && !empty($data->website_link)?$data->website_link : '')?>" target="_blank" class="btn p-0" title="<?=(isset($data->website_link) && !empty($data->website_link)?$data->website_link : '')?>"><i class="fa fa-globe fa-2x"></i></a>
-							<a href="https://www.facebook.com/<?=(isset($data->facebook_link) && !empty($data->facebook_link)?$data->facebook_link : '')?>" target="_blank" class="btn p-0" title="<?=(isset($data->facebook_link) && !empty($data->facebook_link)?$data->facebook_link : '')?>"><i class="fab fa-facebook fa-2x" aria-hidden="true"></i></a>
-							<a href="https://www.twitter.com/<?=(isset($data->twitter_link) && !empty($data->twitter_link)?$data->twitter_link : '')?>" target="_blank" class="btn p-0" title="twitter.com/<?=(isset($data->twitter_link) && !empty($data->twitter_link)?$data->twitter_link : '')?>"><i class="fab fa-twitter fa-2x" aria-hidden="true"></i></a>
-							<a class="btn p-0" title="<?=(isset($data->linkedin_link) && !empty($data->linkedin_link)?$data->linkedin_link : '')?>"><i class="fab fa-linkedin fa-2x" aria-hidden="true"></i></a>
+							<?=(isset($data->website_link) && !empty($data->website_link)?'<a href="https://www." target="_blank" class="btn p-0" title="'.$data->website_link.'"><i class="fa fa-globe fa-2x"></i></a>' : '')?>
+							<?=(isset($data->facebook_link) && !empty($data->facebook_link)?'<a href="https://www.facebook.com/'.$data->facebook_link .'" target="_blank" class="btn p-0" title="'.(isset($data->facebook_link) && !empty($data->facebook_link)?$data->facebook_link : '').'"><i class="fab fa-facebook fa-2x" aria-hidden="true"></i></a>': '')?>
+							<?=(isset($data->twitter_link) && !empty($data->twitter_link)?'<a href="https://www.twitter.com/'.$data->twitter_link.'" target="_blank" class="btn p-0" title="twitter.com/'.(isset($data->twitter_link) && !empty($data->twitter_link)?$data->twitter_link : '').'"><i class="fab fa-twitter fa-2x" aria-hidden="true"></i></a>' : '')?>
+							<?=(isset($data->linkedin_link) && !empty($data->linkedin_link)?'<a class="btn p-0" title="'.$data->linkedin_link.'" target="_blank" class="btn p-0" title="linkedin.com/'.(isset($data->linkedin_link) && !empty($data->linkedin_link)?$data->linkedin_link : '').'"><i class="fab fa-linkedin fa-2x" aria-hidden="true"></i></a>' : '')?>
 						</div>
 					</div>
 				</div>

@@ -1,4 +1,15 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
+
+body{
+	font-size: 15px;
+	font-family: 'Open Sans', sans-serif;
+	background-color: rgb(69,77,85);
+
+}
+/** {*/
+/*	outline: 1px solid #f00 !important;*/
+/*}*/
 ::-webkit-scrollbar {
 	width: 13px;
 }
@@ -14,6 +25,11 @@
 	-webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
 	cursor: pointer;
 }
+
+.about-us-section{
+	min-height: 300px;
+}
+
 .group-chat-body
 {
 	height: 550px;
@@ -22,13 +38,17 @@
 	background-color: rgba(133,191,255,0.3);
 }
 .sponsor-chat-body{
-	height: 520px;
+	height: 500px;
 	overflow-y: scroll;
 
 }
 .attendee-list-body{
 	overflow-y: scroll;
 	height: 545px;
+}
+
+.sponsor-chat-header{
+	height: 50px;
 }
 
 .attendee-name{
@@ -319,6 +339,9 @@
 	margin-top: -6.5px;
 	margin-right: -13px;
 }
+
+
+
 .btn-group-send,.btn-sponsor-send{
 
 	transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -373,8 +396,5 @@
 .font-1{
 	font-size: 24px;
 	font-weight: normal
-}
-.current-bookings > .current-bookings-body{
-
 }
 

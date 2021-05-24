@@ -17,9 +17,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<main role="main">
 		<div class="container-fluid mt-5">
 			<div class="row">
-				<div class="col">
+				<div class="col m-lg-5 m-sm-0">
 					<div class="data-tables">
-						<table class="table table-striped text-center border-0" id="fish-bowl-table">
+						<table class="table table-striped text-center table-bordered" id="fish-bowl-table">
 							<thead>
 								<tr >
 									<th class="p-4"> Name </th>
@@ -34,9 +34,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								{
 									?>
 								<tr>
-									<td><?=$data->full_name?></td>
-									<td><?=$data->email?></td>
-									<td><?=$data->date_time?></td>
+									<td class="p-3"><?=$data->full_name?></td>
+									<td class="p-3"><?=$data->email?></td>
+									<td class="p-3"><?=$data->date_time?></td>
 								</tr>
 							<?php
 								}

@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<!-- Bootstrap 4 -->
 	<link href="<?=ycl_root?>/vendor_frontend/bootstrap-4.6.0/css/bootstrap.css" rel="stylesheet">
-	<script src="<?=ycl_root?>/vendor_frontend/bootstrap-4.6.0/js/bootstrap.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/bootstrap-4.6.0/js/bootstrap.bundle.js"></script>
 
 	<!-- Font Awesome -->
 	<link href="<?=ycl_root?>/vendor_frontend/fontawesome/css/all.css" rel="stylesheet">

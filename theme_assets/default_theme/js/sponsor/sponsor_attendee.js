@@ -47,9 +47,9 @@ $(document).ready(function () {
 				$.each(datas.result, function (index, data) {
 					if (data.chat_from == current_user_id) {
 
-						$('.group-chat-body').append('<div class="card group-outgoing-message w-90 float-right  mb-3 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><b>'+data.name+' '+data.surname+'</b></span><span class="float-left text-white-50"><small>' + data.date_time + ' <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col  text-right">' + data.chat_text + '</div></div></div></div></div><br>');
+						$('.group-chat-body').append('<div class="card group-outgoing-message w-90 float-right  mb-3 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right">'+data.name+' '+data.surname+'</span><span class="float-left text-white-50"><small>' + data.date_time + ' <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col  text-right">' + data.chat_text + '</div></div></div></div></div><br>');
 					} else {
-						$('.group-chat-body').append('<div class="card group-incoming-message w-90  float-left  mb-3 pl-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left text-white"><b>'+data.name+' '+data.surname+'</b></span><span class="float-right text-white-50"><small>' + data.date_time + ' <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">' + data.chat_text + '</div></div></div></div></div>')
+						$('.group-chat-body').append('<div class="card group-incoming-message w-90  float-left  mb-3 pl-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left text-white">'+data.name+' '+data.surname+'</span><span class="float-right text-white-50"><small>' + data.date_time + ' <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">' + data.chat_text + '</div></div></div></div></div>')
 					}
 				});
 			}else{
@@ -108,9 +108,9 @@ $(document).ready(function () {
 						$.each(datas.result, function(index,data){
 							// console.log(data);
 							if(data.chat_from == "attendee"){
-								$('.sponsor-chat-body').append('<div class="card sponsor-outgoing-message w-90 float-right  mb-3 pr-2 text-white shadow-lg" ><div class="row"><div class="col"><span class="float-right"><img src="https://via.placeholder.com/150" class="my-2" src="" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><b>'+data.full_name+'</b></span><span class="float-left text-white-50"><small>'+data.date_time+' <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col text-right">'+data.chat_text+'</div></div></div></div></div><br>');
+								$('.sponsor-chat-body').append('<div class="card sponsor-outgoing-message w-90 float-right  mb-3 pr-2 text-white shadow-lg" ><div class="row"><div class="col"><span class="float-right"><img src="https://via.placeholder.com/150" class="my-2" src="" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right">'+data.full_name+'</span><span class="float-left text-white-50"><small>'+data.date_time+' <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col text-right">'+data.chat_text+'</div></div></div></div></div><br>');
 							}else{
-								$('.sponsor-chat-body').append('<div class="card sponsor-incoming-message w-90 float-left  mb-3 pl-2 text-white shadow-lg " data-to_id="'+data.to_id+'"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left text-white"><b>'+data.full_name +'</b></span><span class="float-right text-white-50"><small>'+data.date_time+' <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">'+data.chat_text+'</div></div></div></div></div>');
+								$('.sponsor-chat-body').append('<div class="card sponsor-incoming-message w-90 float-left  mb-3 pl-2 text-white shadow-lg " data-to_id="'+data.to_id+'"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left text-white">'+data.full_name +'</span><span class="float-right text-white-50"><small>'+data.date_time+' <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">'+data.chat_text+'</div></div></div></div></div>');
 							}
 						});
 					}else{
@@ -359,15 +359,15 @@ $(document).ready(function () {
 		var resource_id = $(this).attr('data-sponsor_resource_id');
 
 		Swal.fire({
-			title: 'Do you want to attach a note?',
+			title: '<small>You can insert a note</small>',
 			input: 'text',
-			inputPlaceholder: "Insert notes here",
+			inputPlaceholder: "Insert a note",
 			icon: 'question',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
 			confirmButtonText: 'Save',
-			cancelButtonText: 'No, go back!',
+			cancelButtonText: 'Cancel!',
 			showLoaderOnConfirm: true
 		}).then((result) => {
 			if(result.isConfirmed)
@@ -422,4 +422,6 @@ $(document).ready(function () {
 				}
 		},'json');
 	});
+
+
 });
