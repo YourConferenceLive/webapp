@@ -115,6 +115,8 @@ class CI_Controller {
 			$this->themes_dir = 'themes';
 			$this->project_url = base_url($this->project->main_route);
 
+			date_default_timezone_set($this->project->timezone);
+
 			if ($this->project->active == 0) // If project is suspended, show error
 			{
 				echo $this->load->view('errors/project/suspended', array('project_name'=>$this->project->name))
