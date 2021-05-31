@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<!-- Brand Logo -->
-	<a href="index3.html" class="brand-link">
+	<a href="<?=$this->project_url.'/admin/dashboard'?>" class="brand-link">
 		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="Logo" class="brand-image img-circle" style="opacity: .8">
 		<span class="brand-text font-weight-light">COS Admin</span>
 	</a>

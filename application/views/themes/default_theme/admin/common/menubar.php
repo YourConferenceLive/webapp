@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
-			<a href="index3.html" class="nav-link">Home</a>
+			<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link">Home</a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
 			<a href="#" class="nav-link">Easy access link 1</a>

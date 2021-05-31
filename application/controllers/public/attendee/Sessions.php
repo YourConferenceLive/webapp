@@ -18,6 +18,7 @@ class Sessions extends CI_Controller
 		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$this->load->model('Logger_Model', 'logger');
+		$this->load->model('attendee/Sessions_Model', 'sessions');
 	}
 
 	public function index()
@@ -25,7 +26,7 @@ class Sessions extends CI_Controller
 		$this->logger->log_visit("Sessions Listing");
 
 		$data['user'] = $this->user;
-		$data['sessions'] = array("1", "2", "3", "4", "5", "6");
+		$data['sessions'] = $this->sessions->getAll();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
@@ -40,6 +41,8 @@ class Sessions extends CI_Controller
 		$this->logger->log_visit("Session Join", $session_id);
 
 		$data['user'] = $this->user;
+		$data['session'] = $this->sessions->getById($session_id);
+		$data['countdownSeconds'] = $this->countdownInSeconds($data['session']->start_date_time);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
@@ -62,5 +65,15 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/view", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
+	}
+
+	private function countdownInSeconds($countdown_to, $offset=900)
+	{
+		$now = new DateTime();
+		$countdown_to = new DateTime(date("Y-m-d H:i:s", strtotime($countdown_to)));
+		$difference = $countdown_to->getTimestamp() - $now->getTimestamp();
+		if ($difference >= $offset)
+			return $difference - $offset;
+		return 0;
 	}
 }

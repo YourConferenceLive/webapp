@@ -16,19 +16,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="col-md-3 col-sm-12 p-0">
 							<div class="session-img-div pl-2 pt-2 pb-2 pr-2 text-center">
 								<img class="session-img img-fluid"
-									 src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session?>"
+									 src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->id?>"
 									 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/default'">
 							</div>
 						</div>
 						<div class="col-md-9 col-sm-12 pl-0 pt-2">
 							<div class="col-12 text-md-left text-sm-center">
-								<small>Thursday 24 June, 2021  10PM</small>
-								<h4>This is a long session title, This is a long session title and This is a long session title</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. An eiusdem modi? Nunc vides, quid faciat. Utilitatis causa amicitia est quaesita. Duo Reges: constructio interrete. Sint ista Graecorum.</p>
+								<small><?=date("l jS M, Y g:iA", strtotime($session->start_date_time))?></small>
+								<h4><?=$session->name?></h4>
+								<p><?=$session->description?></p>
 							</div>
 							<div class="col-12 text-md-right text-sm-center">
 								<a class="btn btn-sm btn-info m-1 rounded-0"><i class="fas fa-calendar-check"></i> Export To Calender</a>
-								<a href="<?=$this->project_url?>/sessions/join/<?=$session?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> JOIN</a>
+								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> JOIN</a>
 							</div>
 						</div>
 					</div>

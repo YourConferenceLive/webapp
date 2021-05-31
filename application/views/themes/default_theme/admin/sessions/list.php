@@ -88,11 +88,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(function () {
 		$('#sessionsTable').DataTable({
 			"paging": true,
-			"lengthChange": false,
+			"lengthChange": true,
 			"searching": true,
 			"ordering": true,
 			"info": true,
-			"autoWidth": true,
+			"autoWidth": false,
 			"responsive": true,
 		});
 	});
