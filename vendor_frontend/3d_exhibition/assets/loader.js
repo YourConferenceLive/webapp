@@ -21,7 +21,7 @@ var toggleBandW=document.getElementById("toggleBandW");
 var toggleSepia=document.getElementById("toggleSepia");
 */
 var sceneChecked;
-var sceneLocation="scene/";    
+var sceneLocation= ycl_root+"/vendor_frontend/3d_exhibition/scene/";
 var zoomed=true;
 
 var engine = new BABYLON.Engine(canvas, null, null, true);
@@ -357,7 +357,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
 
             var matpant = new BABYLON.StandardMaterial("matpant", scene);
-            var videoTexturepant = new BABYLON.VideoTexture("videoclip", "assets/CLIP.mp4", scene, true, true);
+            var videoTexturepant = new BABYLON.VideoTexture("videoclip", ycl_root+"/vendor_frontend/3d_exhibition/assets/CLIP.mp4", scene, true, true);
 
             matpant.diffuseTexture = videoTexturepant;
 
