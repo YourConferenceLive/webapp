@@ -5,6 +5,11 @@ class Sponsor extends CI_Controller
 {
 
 	private $user_id;
+	/**
+	 * @var mixed
+	 */
+	private $user;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -13,19 +18,29 @@ class Sponsor extends CI_Controller
 			redirect(base_url().$this->project->main_route."/login"); // Not logged-in
 
 		$this->user_id = ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']);
+		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('attendee/Sponsor_Model', 'm_sponsor');
 	}
 
-	public function index(){
+	public function index()
+	{
 
+		$data['user'] = $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sponsor/exhibition_hall", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
+		;
 	}
 
 	public function booth($booth_id){
 
 		$this->logger->log_visit("Booth", $booth_id);
-		$data['project']=$this->project;
-		$data['sponsor_data']= $this->m_sponsor->get_booth_data($booth_id);
+		$data['project'] = $this->project;
+		$data['sponsor_data'] = $this->m_sponsor->get_booth_data($booth_id);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)

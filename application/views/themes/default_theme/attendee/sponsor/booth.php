@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 <?php
+//print_r($sponsor_data);exit;
 if(isset($sponsor_data) && !empty($sponsor_data)){
 	$data=$sponsor_data[0];
 
