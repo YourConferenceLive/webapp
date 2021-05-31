@@ -39,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<!-- Add icons to the links using the .nav-icon class
 					 with font-awesome or any other icon font library -->
 				<li class="nav-item menu-open">
-					<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link">
+					<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link <?=($this->router->fetch_class()=='dashboard')?'active':''?>">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>
 							Dashboard
@@ -49,10 +49,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</li>
 
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link active">
+					<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link <?=($this->router->fetch_class()=='sessions')?'active':''?>">
 						<i class="fas fa-chalkboard-teacher"></i>
 						<p>
 							Sessions
+						</p>
+					</a>
+				</li>
+
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/sponsors'?>" class="nav-link <?=($this->router->fetch_class()=='sponsors')?'active':''?>">
+						<i class="fas fa-border-all"></i>
+						<p>
+							Sponsors
 						</p>
 					</a>
 				</li>

@@ -61,7 +61,7 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 					</div>
 					<?php } ?>
 					<div class="row justify-content-center mb-2">
-						<div class="col website-icons text-center">
+						<div class="col website-icons">
 							<?=(isset($data->website_link) && !empty($data->website_link)?'<a href="https://www." target="_blank" class="btn p-0" title="'.$data->website_link.'"><i class="fa fa-globe fa-2x"></i></a>' : '')?>
 							<?=(isset($data->facebook_link) && !empty($data->facebook_link)?'<a href="https://www.facebook.com/'.$data->facebook_link .'" target="_blank" class="btn p-0" title="'.(isset($data->facebook_link) && !empty($data->facebook_link)?$data->facebook_link : '').'"><i class="fab fa-facebook fa-2x" aria-hidden="true"></i></a>': '')?>
 							<?=(isset($data->twitter_link) && !empty($data->twitter_link)?'<a href="https://www.twitter.com/'.$data->twitter_link.'" target="_blank" class="btn p-0" title="twitter.com/'.(isset($data->twitter_link) && !empty($data->twitter_link)?$data->twitter_link : '').'"><i class="fab fa-twitter fa-2x" aria-hidden="true"></i></a>' : '')?>

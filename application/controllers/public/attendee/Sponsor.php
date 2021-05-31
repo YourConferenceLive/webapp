@@ -41,10 +41,11 @@ class Sponsor extends CI_Controller
 		$this->logger->log_visit("Booth", $booth_id);
 		$data['project'] = $this->project;
 		$data['sponsor_data'] = $this->m_sponsor->get_booth_data($booth_id);
+		$data['user'] = $this->user;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sponsor/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sponsor/booth", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
