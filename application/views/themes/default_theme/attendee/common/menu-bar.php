@@ -12,6 +12,9 @@
 				<li class="nav-item">
 					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sessions">Sessions</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sponsor">Exhibition</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav">
 				<li class="nav-item">
@@ -21,3 +24,6 @@
 		</div>
 	</nav>
 </header>
+<div>
+
+</div>
