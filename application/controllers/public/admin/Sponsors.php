@@ -26,7 +26,16 @@ class Sponsors extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sponsors/list", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sponsors/create-sponsor-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
+	}
+
+	public function create()
+	{
+		if ($this->sponsors->create())
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
 	}
 }

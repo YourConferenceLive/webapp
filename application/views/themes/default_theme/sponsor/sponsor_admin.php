@@ -20,7 +20,6 @@ $data=$sponsor_data[0];
 }
 //print_r($data->sponsor_name);exit;
 ?>
-<body>
 	<main role="main">
 			<div class="jumbotron rounded-0" id="cover_photo" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo))? ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo:''?>')">
 				<div class="">
@@ -361,7 +360,6 @@ $data=$sponsor_data[0];
 		</div>
 	</div>
 </div>
-</body>
 <script>
  var project_id = "<?= $this->project->id?>";
  var logo = "<?=$data->logo?>";

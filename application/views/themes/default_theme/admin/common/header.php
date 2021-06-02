@@ -30,8 +30,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- AdminLTE App -->
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/dist/js/adminlte.js"></script>
 
+	<?php echo global_js() ?>
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
 <div class="wrapper">
 
 	<!-- Preloader -->

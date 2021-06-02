@@ -38,6 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="card">
 						<div class="card-header">
 							<h3 class="card-title">All sponsors</h3>
+							<button class="create-sponsor-btn btn btn-success float-right"><i class="fas fa-plus"></i> Create</button>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -55,9 +56,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<tr>
 										<td><?=$sponsor->id?></td>
 										<td><?=$sponsor->name?></td>
-										<td><img src="<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/logo/<?=$sponsor->logo?>" width="10%"></td>
+										<td><img src="<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/logo/<?=$sponsor->logo?>" width="150px"></td>
 										<td>
-											<button class="btn btn-sm btn-info">Manage</button>
+											<button class="btn btn-sm btn-info m-2"><i class="fas fa-edit"></i> Manage</button>
+											<button class="btn btn-sm btn-danger m-2"><i class="fas fa-trash"></i> Delete</button>
 										</td>
 									</tr>
 								<?php endforeach; ?>
@@ -98,8 +100,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			"searching": true,
 			"ordering": true,
 			"info": true,
-			"autoWidth": false,
-			"responsive": true,
+			"autoWidth": true,
+			"responsive": false,
 		});
+
+
+		$('.create-sponsor-btn').on('click', function () {
+			$('#createSponsorModal').modal({
+				backdrop: 'static',
+				keyboard: false
+			});
+		});
+
 	});
 </script>

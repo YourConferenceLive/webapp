@@ -12,6 +12,7 @@ if(!function_exists('global_js'))
 
 		$js_variables .= "
 			let project_url = '{$CI->project_url}';
+			let project_admin_url = '{$CI->project_url}/admin';
 			let ycl_root = '".ycl_root."';
 		";
 
