@@ -13,19 +13,19 @@
 				<form id="createSponsorForm">
 					<div class="form-group">
 						<label>Sponsor name</label>
-						<input name="sponsor_name" class="form-control form-control-lg" type="text" placeholder="Sponsor name">
+						<input name="sponsor_name" id="sponsor_name" class="form-control form-control-lg" type="text" placeholder="Sponsor name">
 					</div>
 
 					<div class="form-group">
 						<label>About us</label>
-						<textarea name="about_us" class="form-control" rows="5" placeholder="About the sponsor" ></textarea>
+						<textarea name="about_us" id="about_us" class="form-control" rows="5" placeholder="About the sponsor" ></textarea>
 					</div>
 
 					<div class="form-group">
 						<label>Logo</label>
 						<div class="custom-file">
 							<input name="logo" id="logo" type="file" class="custom-file-input">
-							<label class="custom-file-label" for="logo"></label>
+							<label id="logo_label" class="custom-file-label" for="logo"></label>
 						</div>
 					</div>
 
@@ -33,9 +33,11 @@
 						<label>Banner</label>
 						<div class="custom-file">
 							<input name="banner" id="banner" type="file" class="custom-file-input">
-							<label class="custom-file-label" for="banner"></label>
+							<label id="banner_label" class="custom-file-label" for="banner"></label>
 						</div>
 					</div>
+
+					<input type="hidden" id="sponsorId" name="sponsorId" value="0">
 				</form>
 
 			</div>
@@ -55,6 +57,14 @@
 	});
 
 	$('#save-sponsor').on('click', function () {
+		if ($('#sponsorId').val() == 0)
+			createSponsor();
+		else
+			updateSponsor();
+	});
+
+	function createSponsor()
+	{
 		let formData = new FormData(document.getElementById('createSponsorForm'));
 
 		$.ajax({
@@ -65,13 +75,56 @@
 			contentType: false,
 			error: function(jqXHR, textStatus, errorMessage)
 			{
-				console.log(errorMessage); // Optional
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
 			},
 			success: function(data)
 			{
-				console.log(data)
+				data = JSON.parse(data);
+
+				if (data.status == 'success')
+				{
+					listSponsors();
+					toastr.success('Sponsor created');
+					$('#createSponsorModal').modal('hide');
+
+				}else{
+					toastr.error("Error");
+				}
 			}
 		});
-	});
+	}
+
+	function updateSponsor()
+	{
+		let formData = new FormData(document.getElementById('createSponsorForm'));
+
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/sponsors/update",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				data = JSON.parse(data);
+
+				if (data.status == 'success')
+				{
+					listSponsors();
+					toastr.success('Sponsor updated');
+					$('#createSponsorModal').modal('hide');
+
+				}else{
+					toastr.error("Error");
+				}
+			}
+		});
+	}
 
 </script>

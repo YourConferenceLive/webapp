@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //echo"<pre>";print_r($sponsors);exit("</pre>");
 ?>
 
+
 <style>
 	#sponsorsTable_filter, #sponsorsTable_paginate{
 		float: right;
@@ -51,18 +52,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Actions</th>
 								</tr>
 								</thead>
-								<tbody>
-								<?php foreach ($sponsors as $sponsor): ?>
-									<tr>
-										<td><?=$sponsor->id?></td>
-										<td><?=$sponsor->name?></td>
-										<td><img src="<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/logo/<?=$sponsor->logo?>" width="150px"></td>
-										<td>
-											<button class="btn btn-sm btn-info m-2"><i class="fas fa-edit"></i> Manage</button>
-											<button class="btn btn-sm btn-danger m-2"><i class="fas fa-trash"></i> Delete</button>
-										</td>
-									</tr>
-								<?php endforeach; ?>
+								<tbody id="sponsorsTableBody">
+									<!-- Will be filled by the JQuery -->
 								</tbody>
 							</table>
 						</div>
@@ -79,6 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- /.content-wrapper -->
 
 <!-- DataTables  & Plugins -->
+<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -93,24 +85,90 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <script>
-	$(function () {
-		$('#sponsorsTable').DataTable({
-			"paging": true,
-			"lengthChange": true,
-			"searching": true,
-			"ordering": true,
-			"info": true,
-			"autoWidth": true,
-			"responsive": false,
-		});
-
+	$(function ()
+	{
+		listSponsors();
 
 		$('.create-sponsor-btn').on('click', function () {
+
+			$('#createSponsorForm')[0].reset();
+			$('#sponsorId').val(0);
+			$('#save-sponsor').html('<i class="fas fa-plus"></i> Create');
+
 			$('#createSponsorModal').modal({
 				backdrop: 'static',
 				keyboard: false
 			});
 		});
 
+		$('#sponsorsTable').on('click', '.manage-sponsor', function () {
+
+			let sponsorId = $(this).attr('sponsor-id');
+
+			$.get(project_admin_url+"/sponsors/getByIdJson/"+sponsorId, function (sponsor)
+			{
+				sponsor = JSON.parse(sponsor);
+
+				$('#sponsor_name').val(sponsor.name);
+				$('#about_us').val(sponsor.about_us);
+				$('#sponsorId').val(sponsor.id);
+
+				$('#save-sponsor').html('<i class="fas fa-save"></i> Save');
+
+				$('#createSponsorModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				});
+			});
+		});
+
 	});
+
+	function listSponsors()
+	{
+
+		$.get(project_admin_url+"/sponsors/getAllJson", function (sponsors) {
+			sponsors = JSON.parse(sponsors);
+
+			$('#sponsorsTableBody').html('');
+			if ($.fn.DataTable.isDataTable('#sponsorsTable'))
+			{
+				$('#sponsorsTable').dataTable().fnClearTable();
+				$('#sponsorsTable').dataTable().fnDestroy();
+			}
+
+			$.each(sponsors, function(key, sponsor)
+			{
+				$('#sponsorsTableBody').append(
+						'<tr>' +
+						'	<td>' +
+						'		'+sponsor.id+
+						'	</td>' +
+						'	<td>' +
+						'		'+sponsor.name+
+						'	</td>' +
+						'	<td>' +
+						'		<img src="<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/logo/'+sponsor.logo+'" width="75px">'+
+						'	</td>' +
+						'	<td>' +
+						'		<button class="manage-sponsor btn btn-sm btn-info m-2" sponsor-id="'+sponsor.id+'"><i class="fas fa-edit"></i> Manage</button>' +
+						'		<button class="btn btn-sm btn-danger m-2"><i class="fas fa-trash" sponsor-id="'+sponsor.id+'"></i> Delete</button>'+
+						'	</td>' +
+						'</tr>'
+				);
+			});
+
+			$('#sponsorsTable').DataTable({
+				"paging": true,
+				"lengthChange": true,
+				"searching": true,
+				"ordering": true,
+				"info": true,
+				"autoWidth": true,
+				"responsive": false,
+				"order": [[ 0, "desc" ]],
+				"destroy": true
+			});
+		});
+	}
 </script>

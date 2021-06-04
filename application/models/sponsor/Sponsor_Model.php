@@ -34,7 +34,7 @@ class Sponsor_Model extends CI_Model
 		if ($result) {
 			return $result->result();
 		} else {
-			return '';
+			return false;
 		}
 	}
 

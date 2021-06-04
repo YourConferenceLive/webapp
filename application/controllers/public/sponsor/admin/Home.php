@@ -13,14 +13,17 @@ class Home extends CI_Controller
 		$this->load->helper('string');
 		$this->load->model('sponsor/Sponsor_Model', 'm_sponsor');
 //		$this->session->set_userdata(array('sponsor_id'=>17,'booth_id'=>19));
-		$this->session->set_userdata(array('sponsor_id'=>14,'booth_id'=>14));
+		$this->session->set_userdata(array('sponsor_id'=>22,'booth_id'=>22));
 	}
 
 	public function index()
 	{
 
 		$data['project'] = $this->project;
-		$data['sponsor_data']= $this->m_sponsor->get_sponsor_data();
+		$data['sponsor_data'] = $this->m_sponsor->get_sponsor_data();
+
+		if (!$data['sponsor_data'])
+			die('Unauthorized!');
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header", $data)

@@ -27,6 +27,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<!-- overlayScrollbars -->
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+	<!-- Toastr -->
+	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/toastr/toastr.min.css">
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/toastr/toastr.min.js"></script>
 	<!-- AdminLTE App -->
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/dist/js/adminlte.js"></script>
 

@@ -31,9 +31,21 @@ class Sponsors extends CI_Controller
 		;
 	}
 
+	public function getAllJson(){echo json_encode($this->sponsors->getAll());}
+
+	public function getByIdJson($id){echo json_encode($this->sponsors->getById($id));}
+
 	public function create()
 	{
 		if ($this->sponsors->create())
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
+	}
+
+	public function update()
+	{
+		if ($this->sponsors->update())
 			echo json_encode(array('status'=>'success'));
 		else
 			echo json_encode(array('status'=>'failed'));
