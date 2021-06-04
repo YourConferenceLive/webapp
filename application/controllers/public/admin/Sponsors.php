@@ -19,13 +19,11 @@ class Sponsors extends CI_Controller
 	{
 		$sidebar_data['user'] = $this->user;
 
-		$data["sponsors"] = $this->sponsors->getAll();
-
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/sponsors/list", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sponsors/list")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sponsors/create-sponsor-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
