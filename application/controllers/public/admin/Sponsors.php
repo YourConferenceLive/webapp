@@ -50,4 +50,12 @@ class Sponsors extends CI_Controller
 		else
 			echo json_encode(array('status'=>'failed'));
 	}
+
+	public function delete($id)
+	{
+		if ($this->sponsors->delete($id))
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
+	}
 }

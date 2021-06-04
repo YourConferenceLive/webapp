@@ -128,4 +128,20 @@ class Sponsors_Model extends CI_Model
 
 		return ($this->db->affected_rows() == 0) ? false : true;
 	}
+
+	public function delete($id)
+	{
+		$this->db->delete('sponsor_group_chat', array('booth_id' => $id));
+		$this->db->delete('sponsor_attendee_chat', array('booth_id' => $id));
+		$this->db->delete('sponsor_resource_management', array('booth_id' => $id));
+		$this->db->delete('sponsor_bag', array('booth_id' => $id));
+		$this->db->delete('sponsor_fishbowl', array('booth_id' => $id));
+		$this->db->delete('sponsor_meeting_availability', array('booth_id' => $id));
+		$this->db->delete('sponsor_meeting_booking', array('booth_id' => $id));
+		$this->db->delete('sponsor_booth_admin', array('booth_id' => $id));
+
+		$this->db->delete('sponsor_booth', array('id' => $id));
+
+		return true;
+	}
 }

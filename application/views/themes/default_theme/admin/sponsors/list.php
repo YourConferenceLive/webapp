@@ -8,6 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	#sponsorsTable_filter, #sponsorsTable_paginate{
 		float: right;
 	}
+	.swal2-html-container{
+		color: #fdfdfd;
+	}
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -122,6 +125,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 		});
 
+		$('#sponsorsTable').on('click', '.delete-sponsor', function () {
+			let sponsorId = $(this).attr('sponsor-id');
+			let sponsorName = $(this).attr('sponsor-name');
+
+			Swal.fire({
+				title: 'Are you sure?',
+				html: `This will delete all the assets, admins, chats etc of this sponsor (`+sponsorName+`). <br> You won't be able to revert this!`,
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.get(project_admin_url+"/sponsors/delete/"+sponsorId, function (response)
+					{
+						response = JSON.parse(response);
+
+						if (response.status == 'success')
+							toastr.success('Sponsor ('+sponsorName+') deleted');
+						else
+							toastr.error('Error');
+
+						listSponsors();
+					});
+				}
+			})
+		});
+
 	});
 
 	function listSponsors()
@@ -152,7 +184,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'	</td>' +
 						'	<td>' +
 						'		<button class="manage-sponsor btn btn-sm btn-info m-2" sponsor-id="'+sponsor.id+'"><i class="fas fa-edit"></i> Manage</button>' +
-						'		<button class="btn btn-sm btn-danger m-2"><i class="fas fa-trash" sponsor-id="'+sponsor.id+'"></i> Delete</button>'+
+						'		<button class="delete-sponsor btn btn-sm btn-danger m-2" sponsor-id="'+sponsor.id+'" sponsor-name="'+sponsor.name+'"><i class="fas fa-trash"></i> Delete</button>'+
 						'	</td>' +
 						'</tr>'
 				);
