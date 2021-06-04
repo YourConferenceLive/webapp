@@ -166,8 +166,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				confirmButtonText: 'Yes, delete it!'
 			}).then((result) => {
 				if (result.isConfirmed) {
+
+					Swal.fire({
+						title: 'Please Wait',
+						text: 'Deleting the sponsor...',
+						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+						imageAlt: 'Loading...',
+						showCancelButton: false,
+						showConfirmButton: false,
+						allowOutsideClick: false
+					});
+
 					$.get(project_admin_url+"/sponsors/delete/"+sponsorId, function (response)
 					{
+						Swal.close();
+
 						response = JSON.parse(response);
 
 						if (response.status == 'success')
