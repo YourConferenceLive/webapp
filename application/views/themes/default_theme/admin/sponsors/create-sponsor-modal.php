@@ -28,6 +28,7 @@
 							<label id="logo_label" class="custom-file-label" for="logo"></label>
 						</div>
 					</div>
+					<img class="image-preview mb-5" id="logo_preview" src="" style="display: none;" width="75px">
 
 					<div class="form-group">
 						<label>Banner</label>
@@ -36,6 +37,7 @@
 							<label id="banner_label" class="custom-file-label" for="banner"></label>
 						</div>
 					</div>
+					<img class="image-preview" id="banner_preview" src="" style="display: none;" width="75px">
 
 					<input type="hidden" id="sponsorId" name="sponsorId" value="0">
 				</form>
@@ -51,7 +53,13 @@
 
 <script>
 	$('#logo, #banner').on('change',function(){
+		let item = $(this);
 		let fileName = $(this).val();
+		let reader = new FileReader();
+
+		reader.onload = function (e) { item.parent().parent().next('.image-preview').attr('src', e.target.result); }
+		reader.readAsDataURL(this.files[0]);
+		item.parent().parent().next('.image-preview').show();
 		fileName = fileName.replace("C:\\fakepath\\", "");
 		$(this).next('.custom-file-label').html(fileName);
 	});
@@ -125,6 +133,21 @@
 				}
 			}
 		});
+	}
+
+	function imagePreview(input)
+	{
+		if (input.files && input.files[0])
+		{
+			let reader = new FileReader();
+
+			reader.onload = function (e)
+			{
+				element.next('.image-preview').attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
 	}
 
 </script>

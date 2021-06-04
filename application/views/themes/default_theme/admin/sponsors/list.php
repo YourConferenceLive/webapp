@@ -96,6 +96,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#createSponsorForm')[0].reset();
 			$('#sponsorId').val(0);
+			$('#logo_preview').hide();
+			$('#logo_label').text('');
+			$('#banner_preview').hide();
+			$('#banner_label').text('');
 			$('#save-sponsor').html('<i class="fas fa-plus"></i> Create');
 
 			$('#createSponsorModal').modal({
@@ -115,6 +119,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#sponsor_name').val(sponsor.name);
 				$('#about_us').val(sponsor.about_us);
 				$('#sponsorId').val(sponsor.id);
+				$('#logo_preview').attr('src', '<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/logo/'+sponsor.logo);
+				$('#banner_preview').attr('src', '<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/cover_photo/'+sponsor.cover_photo);
+
+				$('#logo_label').text((sponsor.logo).substring((sponsor.logo).indexOf('_') + 1));
+				$('#logo_preview').show();
+				$('#banner_label').text((sponsor.cover_photo).substring((sponsor.cover_photo).indexOf('_') + 1));
+				$('#banner_preview').show();
 
 				$('#save-sponsor').html('<i class="fas fa-save"></i> Save');
 
@@ -131,7 +142,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			Swal.fire({
 				title: 'Are you sure?',
-				html: `This will delete all the assets, admins, chats etc of this sponsor (`+sponsorName+`). <br> You won't be able to revert this!`,
+				html:
+						`This will delete all the assets, admins attached, chats etc of this sponsor (`+sponsorName+`)
+						 <br><small>(This won't delete the accounts of admins attached to this booth though)</small>
+						 <br><br> You won't be able to revert this!`,
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
