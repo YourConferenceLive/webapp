@@ -49,6 +49,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</li>
 
 				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/users'?>" class="nav-link <?=($this->router->fetch_class()=='users')?'active':''?>">
+						<i class="fas fa-users"></i>
+						<p>
+							Users
+						</p>
+					</a>
+				</li>
+
+				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link <?=($this->router->fetch_class()=='sessions')?'active':''?>">
 						<i class="fas fa-chalkboard-teacher"></i>
 						<p>

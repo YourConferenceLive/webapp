@@ -14,6 +14,9 @@ if(!function_exists('global_js'))
 			let project_url = '{$CI->project_url}';
 			let project_admin_url = '{$CI->project_url}/admin';
 			let ycl_root = '".ycl_root."';
+			
+			let access_color_codes = {'admin':'#e60b2a', 'presenter':'#228893', 'moderator':'#b37f04', 'attendee':'#007bff'};
+			let access_icons = {'admin':'fas fa-user-shield', 'presenter':'fas fa-id-card', 'moderator':'fas fa-user-tie', 'attendee':'fas fa-user'};
 		";
 
 
