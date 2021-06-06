@@ -43,7 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php if ($session->presenter_embed_code != ''): ?>
 				<?=$session->presenter_embed_code?>
 			<?php else: ?>
-				<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
+				<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
 					<div class="middleText">
 						<h3>No Presentation Found</h3>
 					</div>
