@@ -43,5 +43,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- Preloader -->
 	<div class="preloader flex-column justify-content-center align-items-center">
 		<img class="animation__wobble" src="<?=ycl_root?>/ycl_assets/ycl_icon.png" alt="YCL Logo">
+		<span class="animation__wobble">Loading...</span>
 	</div>
 

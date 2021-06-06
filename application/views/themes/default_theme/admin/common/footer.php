@@ -1,5 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$ci_controller = $this->router->fetch_class();
+$ci_method = $this->router->fetch_method();
 ?>
 
 <!-- Control Sidebar -->
@@ -9,7 +11,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- /.control-sidebar -->
 
 <!-- Main Footer -->
-<footer class="main-footer">
+<footer
+		class="main-footer"
+		<?=($ci_controller == 'sessions' && $ci_method == 'view')?'style="margin-left: unset !important;"':''?>
+>
 	<strong>Copyright &copy; 2021 <a href="https://yourconference.live">Your Conference Live</a>. </strong>
 	All rights reserved.
 <!--	<div class="float-right d-none d-sm-inline-block">-->

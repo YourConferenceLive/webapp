@@ -45,16 +45,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<thead>
 								<tr>
 									<th>Session ID</th>
+									<th>Day</th>
+									<th>Start Time</th>
+									<th>End Time</th>
 									<th>Name</th>
+									<th>Actions</th>
+									<th>Manage</th>
 								</tr>
 								</thead>
 								<tbody>
-								<?php foreach ($sessions as $session): ?>
-									<tr>
-										<td><?=$session->id?></td>
-										<td><?=$session->name?></td>
-									</tr>
-								<?php endforeach; ?>
+								<?php if (isset($sessions)) {
+									foreach ($sessions as $session): ?>
+										<tr>
+											<td><?=$session->id?></td>
+											<td><?=date("l - jS M", strtotime($session->start_date_time))?></td>
+											<td><?=date("g:iA", strtotime($session->start_date_time))?></td>
+											<td><?=date("g:iA", strtotime($session->end_date_time))?></td>
+											<td><?=$session->name?></td>
+											<td>
+												<a href="<?=$this->project_url.'/admin/sessions/view/'.$session->id?>">
+													<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>
+												</a>
+											</td>
+											<td>
+												<a href="#">
+													<button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Manage</button>
+												</a>
+											</td>
+										</tr>
+									<?php endforeach;
+								} ?>
 								</tbody>
 							</table>
 						</div>

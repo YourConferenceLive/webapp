@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- overlayScrollbars -->
 	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 	<!-- Theme style -->
-	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/dist/css/adminlte.min.css">
+	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/dist/css/adminlte.css">
 
 	<!-- REQUIRED SCRIPTS -->
 	<!-- jQuery -->
@@ -43,5 +43,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- Preloader -->
 	<div class="preloader flex-column justify-content-center align-items-center">
 		<img class="animation__wobble" src="<?=ycl_root?>/ycl_assets/ycl_icon.png" alt="YCL Logo">
+		<span class="animation__wobble">Loading...</span>
 	</div>
 

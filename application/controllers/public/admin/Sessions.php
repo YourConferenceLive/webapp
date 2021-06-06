@@ -29,4 +29,19 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
+
+	public function view($id)
+	{
+		$sidebar_data['user'] = $this->user;
+
+		$data["session"] = $this->sessions->getById($id);
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			//->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/view", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
 }
