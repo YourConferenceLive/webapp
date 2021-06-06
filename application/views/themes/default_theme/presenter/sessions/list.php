@@ -20,8 +20,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
-						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
-						<li class="breadcrumb-item active">Sessions</li>
+						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/presenter/dashboard'?>">Dashboard</a></li>
+						<li class="breadcrumb-item active">My Sessions</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">All sessions</h3>
+							<h3 class="card-title">My Sessions</h3>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -45,14 +45,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<thead>
 								<tr>
 									<th>Session ID</th>
+									<th>Day</th>
+									<th>Start Time</th>
+									<th>End Time</th>
+									<th>Duration</th>
 									<th>Name</th>
+									<th>Actions</th>
 								</tr>
 								</thead>
 								<tbody>
 								<?php foreach ($sessions as $session): ?>
 									<tr>
 										<td><?=$session->id?></td>
+										<td><?=date("l - jS M", strtotime($session->start_date_time))?></td>
+										<td><?=date("g:iA", strtotime($session->start_date_time))?></td>
+										<td><?=date("g:iA", strtotime($session->end_date_time))?></td>
+										<td><?=round(abs(strtotime($session->end_date_time) - strtotime($session->start_date_time)) / 60,2). " Minutes"?></td>
 										<td><?=$session->name?></td>
+										<td>
+											<a href="<?=$this->project_url.'/presenter/sessions/view/'.$session->id?>">
+												<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>
+											</a>
+										</td>
 									</tr>
 								<?php endforeach; ?>
 								</tbody>

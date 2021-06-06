@@ -7,22 +7,18 @@ class Login extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+
+		if (isset($_SESSION['project_sessions']["project_{$this->project->id}"]) && $_SESSION['project_sessions']["project_{$this->project->id}"]['is_presenter'] == 1)
+			redirect(base_url().$this->project->main_route."/presenter/dashboard"); // Already logged-in
 	}
 
 	public function index()
 	{
-		print_r($this->project); exit;
-		$data['project'] = $this->project;
-
-		if (isset($_SESSION['project_sessions']["project_$project"]) && $_SESSION['project_sessions']["project_$project"]['is_attendee'] == 1)
-		{
-			redirect(base_url().$this->project->main_route."/lobby");
-			return;
-		}
-
-		$this->load->view("$this->themes_dir/$theme/attendee/common/header", $data);
-		$this->load->view("$this->themes_dir/$theme/attendee/login", $data);
-		$this->load->view("$this->themes_dir/$theme/attendee/common/footer", $data);
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/login")
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer")
+		;
 	}
 
 	public function test()
