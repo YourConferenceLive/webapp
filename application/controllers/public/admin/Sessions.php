@@ -34,7 +34,14 @@ class Sessions extends CI_Controller
 	{
 		$sidebar_data['user'] = $this->user;
 
-		$data["session"] = $this->sessions->getById($id);
+		$session = $this->sessions->getById($id);
+
+		$data["error_text"] = "No Slide Found";
+		if (!isset($session->id))
+			$data["error_text"] = "Session Not Found";
+
+
+		$data["session"] = $session;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")

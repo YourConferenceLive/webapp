@@ -640,25 +640,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<p>Level 1</p>-->
 <!--					</a>-->
 <!--				</li>-->
-<!--				<li class="nav-header">LABELS</li>-->
-<!--				<li class="nav-item">-->
-<!--					<a href="#" class="nav-link">-->
-<!--						<i class="nav-icon far fa-circle text-danger"></i>-->
-<!--						<p class="text">Important</p>-->
-<!--					</a>-->
-<!--				</li>-->
-<!--				<li class="nav-item">-->
-<!--					<a href="#" class="nav-link">-->
-<!--						<i class="nav-icon far fa-circle text-warning"></i>-->
-<!--						<p>Warning</p>-->
-<!--					</a>-->
-<!--				</li>-->
-<!--				<li class="nav-item">-->
-<!--					<a href="#" class="nav-link">-->
-<!--						<i class="nav-icon far fa-circle text-info"></i>-->
-<!--						<p>Informational</p>-->
-<!--					</a>-->
-<!--				</li>-->
+				<li class="nav-header">ACCOUNT</li>
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/authentication/logout/presenter'?>" class="nav-link">
+						<i class="nav-icon fas fa-sign-out-alt text-danger"></i>
+						<p class="text">Logout</p>
+					</a>
+				</li>
 			</ul>
 		</nav>
 		<!-- /.sidebar-menu -->

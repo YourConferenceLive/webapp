@@ -15,7 +15,7 @@ $ci_method = $this->router->fetch_method();
 			<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
-			<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link">Home</a>
+			<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link">Dashboard</a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
 			<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link">Sessions</a>

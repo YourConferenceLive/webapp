@@ -62,13 +62,13 @@ class Authentication extends CI_Controller {
 		echo json_encode($response);
 	}
 
-	public function logout()
+	public function logout($where='')
 	{
 		$project_id = $this->project->id;
 		$user_id = $_SESSION['project_sessions']["project_{$project_id}"]['user_id'];
 
 		unset($_SESSION['project_sessions']["project_{$project_id}"]);
 		$this->logger->add($project_id, $user_id, 'Logged-out');
-		redirect(base_url().$this->project->main_route);
+		redirect(base_url().$this->project->main_route.'/'.$where);
 	}
 }
