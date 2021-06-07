@@ -47,12 +47,12 @@
 
 		#loadingScreen {
 			position: absolute;
-			width: 100%;
-			height: 50%;
+			left: 45%;
+			width: 10%;
+			height: 5%;
 			font-size: 50px;
 			text-align: center;
 			color: #aaa;
-			background-color: #fff;
 			z-index: 9999;
 		}
 
@@ -83,6 +83,14 @@
 			animation: spin 5s cubic-bezier(0.17, 0.49, 0.96, 0.76) infinite;
 		}
 
+		.xy-center
+		{
+			position: absolute;
+			z-index: 1001;
+			left: 48.5%;
+			top: 75%;
+		}
+
 		@-webkit-keyframes spin {
 			from {
 				-webkit-transform: rotate(0deg);
@@ -107,6 +115,9 @@
 	</style>
 
 
+<button id="enterButton" class="btn btn-primary xy-center">ENTER</button>
+<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/exhibition_landing.jpeg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">
+
 <div class="vertical-center" id="loadingScreen">Loading<br>
 	<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/loading.gif">
 </div>
@@ -128,3 +139,9 @@
 <div id="notSupported" class="hidden">We are sorry but your browser does not support WebGL...</div>
 
 <script src="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/loader.js"></script>
+<script>
+	$('#enterButton').on('click', function () {
+		$(this).hide();
+		$('#full-screen-background').hide();
+	});
+</script>

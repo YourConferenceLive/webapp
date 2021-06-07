@@ -5,8 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- Questions Dropdown Menu -->
 <li class="nav-item dropdown">
 	<a class="nav-link" data-toggle="dropdown" href="#">
-		<i class="far fa-question-circle"></i>
-		<span class="badge badge-warning navbar-badge">15</span>
+		<i class="far fa-question-circle fa-2x"></i>
+		<span class="badge badge-warning navbar-badge" style="font-size: 0.8rem;">15</span>
 	</a>
 	<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 		<span class="dropdown-item dropdown-header"><strong>Questions</strong></span>

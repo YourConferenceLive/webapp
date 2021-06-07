@@ -32,7 +32,7 @@ class Sponsor extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sponsor/exhibition_hall", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
+			//->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
 	}
 

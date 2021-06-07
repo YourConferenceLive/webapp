@@ -3,45 +3,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/lobby.css?v=<?=rand()?>" rel="stylesheet">
 
-<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/lobby/lobby_background.jpg">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/maphilight/1.4.0/jquery.maphilight.min.js" integrity="sha512-AXsnvY/qS75ZpZGBz0CkJHMY55DNWyTeXmjZU2W8IZNHcnxSP31UuAaiCWfdajWk+a3kAeSX8VpYLsP635IGuA==" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	$(function()
+	{
+	// $('#full-screen-background').maphilight({
+	// fill: true,
+	// fillColor: '000000',
+	// fillOpacity: 0.2,
+	// stroke: true,
+	// strokeColor: 'd22929',
+	// strokeOpacity: 1,
+	// strokeWidth: 1,
+	// fade: true,
+	// alwaysOn: true, // Turn on for debug
+	// neverOn: false,
+	// groupBy: false,
+	// wrapClass: true,
+	// shadow: false,
+	// shadowX: 0,
+	// shadowY: 0,
+	// shadowRadius: 6,
+	// shadowColor: '000000',
+	// shadowOpacity: 0.8,
+	// shadowPosition: 'outside',
+	// shadowFrom: false
+	// 		});
+	// });
+	}
+</script>
 
-<div class="lobby-container container-fluid">
+<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/lobby.jpeg" usemap="#workmap">
 
-	<div class="clearfix mt-5"></div>
+<!--<map name="workmap">-->
+<!--	<area shape="circle" coords="665,647,70" alt="Sessions" href="sessions">-->
+<!--	<area shape="circle" coords="865,647,70" alt="Lounge" href="lounge">-->
+<!--	<area shape="circle" coords="1067,647,70" alt="Exhibits" href="exhibits">-->
+<!--	<area shape="circle" coords="1269,647,70" alt="Support" href="support">-->
+<!--</map>-->
 
-	<div class="row ml-md-1 mr-md-1">
-
-		<div class="col-12 col-md-8 order-md-2 text-center">
-			<div class="card mx-auto banner main-banner">
-				<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/lobby/main_banner.jpg" alt="Main Banner">
-			</div>
-
-			<!-- Menu Items Exclusively For Bigger Screens Than Mobile -->
-			<div class="col-12 not-for-mobile">
-				<div class="row">
-					<?=$lobby_menu?>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-6 col-md-2 order-md-1 text-center">
-			<div class="card mx-auto mt-2 mt-md-4 banner side-banner-1">
-				<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/lobby/banner_1.jpg" alt="Banner 1">
-			</div>
-		</div>
-
-		<div class="col-6 col-md-2 order-md-3 text-center">
-			<div class="card mx-auto mt-2 mt-md-4 banner side-banner-2">
-				<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/lobby/banner_2.jpg" alt="Banner 2">
-			</div>
-		</div>
-
-		<!-- Menu Items Exclusively For Mobile Screens -->
-		<div class="col-12 only-for-mobile">
-			<div class="row">
-				<?=$lobby_menu?>
-			</div>
-		</div>
-	</div>
-
-</div>
+<script src="<?=ycl_root?>/vendor_frontend/imageResizer/imageMapResizer.min.js"></script>
+<script>
+	//$('map').imageMapResize();
+</script>

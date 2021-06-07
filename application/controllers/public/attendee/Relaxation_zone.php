@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Lobby extends CI_Controller
+class Relaxation_zone extends CI_Controller
 {
 	public function __construct()
 	{
@@ -25,7 +25,7 @@ class Lobby extends CI_Controller
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby/index", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/relaxation_zone", $data)
 			//->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
 	}
