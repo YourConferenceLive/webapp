@@ -32,8 +32,12 @@ if(!function_exists('global_js'))
 		do {
 		currentDate = Date.now();
 		} while (currentDate - date < milliseconds);
-		}
+		} 
 		';
+
+		$js_methods .= 'function pad(n) {
+		return (n < 10 ? "0" + n : n);
+		} ';
 
 
 

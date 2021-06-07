@@ -16,6 +16,7 @@ class Sessions_Model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('sessions');
 		$this->db->where('project_id', $this->project->id);
+		$this->db->order_by('start_date_time');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();

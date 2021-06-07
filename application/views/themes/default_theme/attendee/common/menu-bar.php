@@ -27,6 +27,9 @@ $ci_method = $this->router->fetch_method();
 		</button>
 		<div class="navbar-collapse collapse" id="navbarCollapse" style="">
 			<ul class="navbar-nav mr-auto">
+			</ul>
+			<ul class="navbar-nav">
+
 				<li class="nav-item">
 					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/lobby">Lobby</a>
 				</li>
@@ -48,8 +51,7 @@ $ci_method = $this->router->fetch_method();
 				<li class="nav-item">
 					<a class="nav-link" href="#">Evaluation</a>
 				</li>
-			</ul>
-			<ul class="navbar-nav">
+
 				<li class="nav-item dropdown">
 					<a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">2</span>

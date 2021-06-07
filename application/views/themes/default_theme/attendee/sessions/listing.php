@@ -26,9 +26,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<h4><?=$session->name?></h4>
 								<p><?=$session->description?></p>
 							</div>
-							<div class="col-12 text-md-right text-sm-center">
-								<a class="btn btn-sm btn-info m-1 rounded-0"><i class="fas fa-calendar-check"></i> Export To Calender</a>
-								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> JOIN</a>
+							<div class="col-12 text-md-right text-sm-center" style="position: absolute;bottom: 0;">
+								<a class="btn btn-sm btn-primary m-1 rounded-0"><i class="fas fa-clipboard-list"></i> Agenda</a>
+								<a class="btn btn-sm btn-info m-1 rounded-0"><i class="fas fa-calendar-check"></i> Add to itinerary</a>
+								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Attend</a>
 							</div>
 						</div>
 					</div>
