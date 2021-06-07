@@ -47,3 +47,15 @@
 	height: 100%;
 	background-color: black;
 }
+
+.middleText
+{
+	position: absolute;
+	width: auto;
+	height: 50px;
+	top: 30%;
+	left: 45%;
+	margin-left: -50px; /* margin is -0.5 * dimension */
+	margin-top: -25px;
+	color: #c6c6c6;
+}

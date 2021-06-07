@@ -1,5 +1,10 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+$ci_controller = $this->router->fetch_class();
+$ci_method = $this->router->fetch_method();
+?>
 <header>
-	<nav class="navbar navbar-expand-md navbar-light fixed-top bg-white">
+	<nav id="mainMenu" class="navbar navbar-expand-md navbar-light <?=($ci_controller == 'sessions' && $ci_method == 'view')?'':'fixed-top'?> bg-white">
 		<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="max-width: 80px;"></a>
 		<button class="navbar-toggler collapsed navbar-light" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>

@@ -59,11 +59,13 @@ class Sessions extends CI_Controller
 
 		$data['user'] = $this->user;
 
+		$data['session'] = $this->sessions->getById($session_id);
+
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/view", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
+			//->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
 	}
 
