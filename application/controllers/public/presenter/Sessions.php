@@ -34,14 +34,21 @@ class Sessions extends CI_Controller
 	{
 		$sidebar_data['user'] = $this->user;
 
-		$data["session"] = $this->sessions->getById($id);
+		$session = $this->sessions->getById($id);
 
-		$menu_data['host_chat_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_host_chat", '', true);
-		$menu_data['questions_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_questions.php", '', true);
+		$data["error_text"] = "No Slide Found";
+		if (!isset($session->id))
+			$data["error_text"] = "Session Not Found";
+
+
+		$data["session"] = $session;
+
+		//$menu_data['host_chat_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_host_chat", '', true);
+		//$menu_data['questions_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_questions.php", '', true);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
-			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar", $menu_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
 			//->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")

@@ -27,7 +27,7 @@ $ci_method = $this->router->fetch_method();
 	<ul class="navbar-nav ml-auto">
 
 		<li class="nav-item">
-			<a id="presenter_timer" class="nav-link disabled" style="display: none;">
+			<a id="presenter_timer" class="nav-link disabled" style="display: none;color: rgb(255, 255, 255);">
 				Starts In: __ __
 			</a>
 		</li>
