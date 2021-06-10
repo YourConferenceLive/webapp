@@ -15,12 +15,10 @@ class Relaxation_zone extends CI_Controller
 
 	public function index()
 	{
-		$this->logger->log_visit("Lobby");
+		$this->logger->log_visit("Relaxation zone");
 
 		$data['project'] = $this->project;
 		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
-
-		$data['lobby_menu'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby/menu", NULL, TRUE);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
