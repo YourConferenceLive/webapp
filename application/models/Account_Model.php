@@ -72,4 +72,69 @@ class Account_Model extends CI_Model
 			return array('status'=>'error', 'msg'=>'Unable to register', 'error'=>$this->db->error());
 		}
 	}
+
+	/**
+	 * @param $rows
+	 * @return array|string[]
+	 *
+	 * Column A = Name
+	 * Column B = Surname
+	 * Column C = Email
+	 * Column D = Credentials
+	 * Column E = Disclosures
+	 */
+	public function importUsers($rows)
+	{
+		$this->db->trans_begin();
+
+		foreach ($rows as $row_num => $row)
+		{
+			if (!isset($row['A']) || $row['A'] == '')
+				return array('status'=>'error', 'msg'=>'Unable to import', 'error'=>"No name found in row: {$row_num} column: A");
+
+			if (!isset($row['B']) || $row['B'] == '')
+				return array('status'=>'error', 'msg'=>'Unable to import', 'error'=>"No surname found in row: {$row_num} column: B");
+
+			if (!isset($row['C']) || $row['C'] == '')
+				return array('status'=>'error', 'msg'=>'Unable to import', 'error'=>"No email found in row: {$row_num} column: C");
+
+			$data = array(
+				'name' => $row['A'],
+				'surname' => $row['B'],
+				'email' => $row['C'],
+				'password' => password_hash('COS2021', PASSWORD_DEFAULT),
+				'created_on' => date('Y-m-d H:i:s'),
+				'created_by' => 17
+			);
+
+			if (isset($row['D']) && $row['D'] != '')
+				$data['credentials'] = $row['D'];
+			if (isset($row['E']) && $row['E'] != '')
+				$data['disclosures'] = $row['E'];
+
+			$this->db->insert('user', $data);
+
+			if ($this->db->affected_rows() > 0) {
+
+				$user_id = $this->db->insert_id();
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'presenter'));
+				$this->logger->add($this->project->id, $user_id, 'Registered', 'As an attendee');
+
+			} else {
+				return array('status'=>'error', 'msg'=>'Unable to register', 'error'=>$this->db->error());
+			}
+		}
+
+		if ($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+
+			return array('status'=>'error', 'msg'=>'Unable to register', 'error'=>$this->db->error());
+		}
+		else
+		{
+			$this->db->trans_commit();
+			return array('status'=>'success', 'msg'=>'Import successful');
+		}
+	}
 }
