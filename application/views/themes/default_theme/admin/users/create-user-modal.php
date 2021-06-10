@@ -1,4 +1,4 @@
-<!--Create Sponsor Modal-->
+<!--Add User Modal-->
 <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
