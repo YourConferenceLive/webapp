@@ -21,11 +21,14 @@ class Sessions extends CI_Controller
 
 		$data["sessions"] = $this->sessions->getAll();
 
+		$create_modal['tracks'] = $this->sessions->getAllTracks();
+
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/list", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/add-session-modal", $create_modal)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -50,5 +53,15 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/view", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
+	}
+
+	public function getAllJson()
+	{
+		echo json_encode($this->sessions->getAll());
+	}
+
+	public function add()
+	{
+		echo json_encode($this->sessions->add());
 	}
 }

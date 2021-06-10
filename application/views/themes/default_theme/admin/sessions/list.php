@@ -38,6 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="card">
 						<div class="card-header">
 							<h3 class="card-title">All sessions</h3>
+							<button class="add-session-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -53,7 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Manage</th>
 								</tr>
 								</thead>
-								<tbody>
+								<tbody id="sessionsTableBody">
 								<?php if (isset($sessions)) {
 									foreach ($sessions as $session): ?>
 										<tr>
@@ -112,6 +113,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 	$(function () {
+
+		listSessions();
+
 		$('#sessionsTable').DataTable({
 			"paging": true,
 			"lengthChange": true,
@@ -120,6 +124,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			"info": true,
 			"autoWidth": false,
 			"responsive": true,
+		});
+
+
+		$('.add-session-btn').on('click', function () {
+
+			$('#addSessionForm')[0].reset();
+			$('#sessionDescription').summernote('reset');
+			// $('#sponsorId').val(0);
+			// $('#logo_preview').hide();
+			// $('#logo_label').text('');
+			// $('#banner_preview').hide();
+			// $('#banner_label').text('');
+			$('#save-session').html('<i class="fas fa-plus"></i> Add');
+
+			$('#addSessionModal').modal({
+				backdrop: 'static',
+				keyboard: false
+			});
 		});
 
 		$('#sessionsTable').on('click', '#openPoll', function () {
@@ -138,4 +160,76 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			socket.emit('closeResult');
 		});
 	});
+
+	function listSessions()
+	{
+
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Loading sessions data...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+
+		$.get(project_admin_url+"/sessions/getAllJson", function (sessions) {
+			sessions = JSON.parse(sessions);
+
+			$('#sessionsTableBody').html('');
+			if ($.fn.DataTable.isDataTable('#sessionsTable'))
+			{
+				$('#sessionsTable').dataTable().fnClearTable();
+				$('#sessionsTable').dataTable().fnDestroy();
+			}
+
+			$.each(sessions, function(key, session)
+			{
+				$('#sessionsTableBody').append(
+					'<tr>' +
+					'	<td>' +
+					'		'+session.id+
+					'	</td>' +
+					'	<td>' +
+					'		'+moment(session.start_date_time).format("dddd - Mo of MMM")+
+					'	</td>' +
+					'	<td>' +
+					'		'+moment(session.start_date_time).format("h:mmA")+
+					'	</td>' +
+					'	<td>' +
+					'		'+moment(session.end_date_time).format("h:mmA")+
+					'	</td>' +
+					'	<td>' +
+					'		'+session.name+
+					'	</td>' +
+					'	<td>' +
+					'		<a href="'+project_admin_url+'/admin/sessions/view/'+session.id+'">' +
+					'			<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>' +
+					'		</a>' +
+					'	</td>' +
+					'	<td>' +
+					'		<button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Manage</button>' +
+					'		<button id="openPoll" class="btn btn-sm btn-primary">Open Poll</button>' +
+					'	</td>' +
+					'</tr>'
+				);
+			});
+
+			$('#sessionsTable').DataTable({
+				"paging": true,
+				"lengthChange": true,
+				"searching": true,
+				"ordering": true,
+				"info": true,
+				"autoWidth": true,
+				"responsive": false,
+				"order": [[ 0, "desc" ]],
+				"destroy": true
+			});
+
+			Swal.close();
+		});
+	}
 </script>

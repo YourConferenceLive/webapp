@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="col-md-3 col-sm-12 p-0">
 							<div class="session-img-div pl-2 pt-2 pb-2 pr-2 text-center">
 								<img class="session-img img-fluid"
-									 src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->id?>"
+									 src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->thumbnail?>"
 									 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/default'">
 							</div>
 						</div>

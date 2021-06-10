@@ -35,6 +35,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- AdminLTE App -->
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/dist/js/adminlte.js"></script>
 
+	<!-- Moment JS -->
+	<!-- https://momentjs.com/docs/#/displaying/ -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<!-- SummerNotes -->
+	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/summernote/summernote.min.css">
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/summernote/summernote.min.js"></script>
+
+	<!-- DateTime Picker -->
+	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+
 	<!-- Socket IO -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.js" integrity="sha512-Y8KodDCDqst1e8z0EGKiqEQq3T8NszmgW2HvsC6+tlNw7kxYxHTLl5Iw/gqZj/6qhZdBt+jYyOsybgSAiB9OOA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
