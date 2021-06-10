@@ -66,10 +66,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<a href="<?=$this->project_url.'/admin/sessions/view/'.$session->id?>">
 													<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>
 												</a>
+
 											</td>
 											<td>
 												<a href="#">
 													<button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Manage</button>
+													<button id="openPoll" class="btn btn-sm btn-primary">Open Poll</button>
+													<button id="closePoll" class="btn btn-sm btn-primary">Close Poll</button>
+													<button id="openResult" class="btn btn-sm btn-primary">Open Result</button>
+													<button id="openResult" class="btn btn-sm btn-primary">Close Result</button>
 												</a>
 											</td>
 										</tr>
@@ -115,6 +120,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			"info": true,
 			"autoWidth": false,
 			"responsive": true,
+		});
+
+		$('#sessionsTable').on('click', '#openPoll', function () {
+			socket.emit('openPoll');
+		});
+
+		$('#sessionsTable').on('click', '#closePoll', function () {
+			socket.emit('closePoll');
+		});
+
+		$('#sessionsTable').on('click', '#openResult', function () {
+			socket.emit('openResult');
+		});
+
+		$('#sessionsTable').on('click', '#closeResult', function () {
+			socket.emit('closeResult');
 		});
 	});
 </script>

@@ -51,6 +51,8 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
 			//->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_modal", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_result_modal", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")
 		;
 	}

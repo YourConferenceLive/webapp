@@ -54,7 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="col-2 m-0 p-0">
 
 				<!-- Host Chat -->
-				<div class="card card-primary card-outline direct-chat direct-chat-primary" style="height: 43%;">
+				<div class="card card-primary card-outline direct-chat direct-chat-primary" style="height: 35%;">
 					<div class="card-header">
 						<h3 class="card-title">Host Chat</h3>
 
@@ -66,9 +66,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 					</div>
 					<!-- /.card-header -->
-					<div class="card-body">
+					<div class="card-body" style="height: 100%;overflow: scroll;">
 						<!-- Conversations are loaded here -->
 						<div class="direct-chat-messages" style="height: 100% !important;">
+
+
 							<!-- Message. Default to the left -->
 							<div class="direct-chat-msg">
 								<div class="direct-chat-infos clearfix">
@@ -76,7 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
 								</div>
 								<!-- /.direct-chat-infos -->
-								<img class="direct-chat-img" src="https://localhost/adminLTE/dist/img/user1-128x128.jpg" alt="Message User Image">
+								<img class="direct-chat-img" src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user1-128x128.jpg" alt="Message User Image">
 								<!-- /.direct-chat-img -->
 								<div class="direct-chat-text">
 									This is a sample chat text!
@@ -92,7 +94,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
 								</div>
 								<!-- /.direct-chat-infos -->
-								<img class="direct-chat-img" src="https://localhost/adminLTE/dist/img/user3-128x128.jpg" alt="Message User Image">
+								<img class="direct-chat-img" src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user3-128x128.jpg" alt="Message User Image">
 								<!-- /.direct-chat-img -->
 								<div class="direct-chat-text">
 									This is another sample chat text!
@@ -100,47 +102,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<!-- /.direct-chat-text -->
 							</div>
 							<!-- /.direct-chat-msg -->
+
+
 						</div>
 						<!--/.direct-chat-messages-->
 
-						<!-- Contacts are loaded here -->
-						<div class="direct-chat-contacts">
-							<ul class="contacts-list">
-								<li>
-									<a href="#">
-										<img class="contacts-list-img" src="https://localhost/adminLTE/dist/img/user1-128x128.jpg" alt="User Avatar">
-
-										<div class="contacts-list-info">
-                          <span class="contacts-list-name">
-                            Count Dracula
-                            <small class="contacts-list-date float-right">2/28/2015</small>
-                          </span>
-											<span class="contacts-list-msg">How have you been? I was...</span>
-										</div>
-										<!-- /.contacts-list-info -->
-									</a>
-								</li>
-								<!-- End Contact Item -->
-							</ul>
-							<!-- /.contatcts-list -->
-						</div>
 						<!-- /.direct-chat-pane -->
 					</div>
 					<!-- /.card-body -->
 					<div class="card-footer">
-						<form action="#" method="post">
-							<div class="input-group">
-								<input type="text" name="message" placeholder="Type Message ..." class="form-control">
-								<span class="input-group-append">
-                      <button type="submit" class="btn btn-primary">Send</button>
-                    </span>
-							</div>
-						</form>
+						<div class="input-group">
+							<input type="text" name="message" placeholder="Type Message ..." class="form-control">
+							<span class="input-group-append">
+								<button type="button" class="btn btn-primary">Send</button>
+							</span>
+						</div>
 					</div>
 					<!-- /.card-footer-->
 				</div>
 
-				<div class="card card-primary card-outline card-tabs" style="height: 43%;">
+				<!-- Questions and Starred Questions -->
+				<div class="card card-primary card-outline card-tabs" style="height: 45%;">
 					<div class="card-header p-0 pt-1 border-bottom-0">
 						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
 							<li class="nav-item">
@@ -170,7 +152,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>
 										</div>
 										<div class="col-1">
-											<small class="text-secondary"><i class="far fa-star" style="color: white;cursor: pointer;"></i></small>
+											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>
 										</div>
 									</div>
 									<div class="row">
@@ -185,7 +167,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="container-fluid mr-2">
 									<div class="row" style="padding-right: 15px">
 										<div class="col-7">
-											<strong>Maria Gonzales</strong>
+											<strong>John Doe</strong>
 										</div>
 										<div class="col-3">
 											<small class="text-secondary">10:00 AM</small>
@@ -199,7 +181,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<div class="row">
 										<div class="col-12">
-											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+											What is the best way to treat this patient?
 										</div>
 									</div>
 								</div>
@@ -209,7 +191,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="container-fluid mr-2">
 									<div class="row" style="padding-right: 15px">
 										<div class="col-7">
-											<strong>Maria Gonzales</strong>
+											<strong>Richard Lu</strong>
 										</div>
 										<div class="col-3">
 											<small class="text-secondary">10:00 AM</small>
@@ -218,72 +200,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>
 										</div>
 										<div class="col-1">
-											<small class="text-secondary"><i class="far fa-star" style="color: white;cursor: pointer;"></i></small>
+											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-12">
-											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+											Can you elaborate on this information?
 										</div>
 									</div>
 								</div>
 								<div class="col"><hr></div>
 
-								<!-- Question -->
-								<div class="container-fluid mr-2">
-									<div class="row" style="padding-right: 15px">
-										<div class="col-7">
-											<strong>Maria Gonzales</strong>
-										</div>
-										<div class="col-3">
-											<small class="text-secondary">10:00 AM</small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="far fa-star" style="color: white;cursor: pointer;"></i></small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-										</div>
-									</div>
-								</div>
-								<div class="col"><hr></div>
-
-								<!-- Question -->
-								<div class="container-fluid mr-2">
-									<div class="row" style="padding-right: 15px">
-										<div class="col-7">
-											<strong>Maria Gonzales</strong>
-										</div>
-										<div class="col-3">
-											<small class="text-secondary">10:00 AM</small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="far fa-star" style="color: white;cursor: pointer;"></i></small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-										</div>
-									</div>
-								</div>
-								<div class="col"><hr></div>
 
 							</div>
 
 							<!-- Starred questions tab -->
 							<div class="tab-pane fade" id="starred-questions-tab-content" role="tabpanel" aria-labelledby="starred-questions-tab-content">
-								<!-- Question -->
+
+								<!-- Starred Question -->
 								<div class="container-fluid mr-2">
-									<div class="row" style="padding-right: 15px">
+									<div class="row">
 										<div class="col-8">
 											<strong>Maria Gonzales</strong>
 										</div>
@@ -299,11 +235,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 								<div class="col"><hr></div>
 
-								<!-- Question -->
+								<!-- Starred Question -->
 								<div class="container-fluid mr-2">
-									<div class="row" style="padding-right: 15px">
+									<div class="row">
 										<div class="col-8">
-											<strong>Maria Gonzales</strong>
+											<strong>Richard Lu</strong>
 										</div>
 										<div class="col-4">
 											<small class="text-secondary">10:00 AM</small>
@@ -311,7 +247,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<div class="row">
 										<div class="col-12">
-											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+											Can you elaborate on this informatiion?
 										</div>
 									</div>
 								</div>
@@ -322,92 +258,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 					<!-- /.card -->
 				</div>
-				<?php if (1==2): ?>
-				<!-- Questions -->
-				<div class="card card-widget" style="height: 43%;">
-					<div class="card-header">
-						<h3 class="card-title">Questions</h3>
-
-						<div class="card-tools">
-							<!--						<span title="3 New Messages" class="badge bg-primary">3</span>-->
-							<!--						<button type="button" class="btn btn-tool" data-card-widget="collapse">-->
-							<!--							<i class="fas fa-minus"></i>-->
-							<!--						</button>-->
-						</div>
-					</div>
-					<!-- /.card-header -->
-					<div class="card-body card-comments" style="height: 100% !important;overflow: scroll;">
-
-						<div class="card-comment">
-							<!-- User image -->
-							<img class="img-circle img-sm" src="https://localhost/adminLTE/dist/img/user3-128x128.jpg" alt="User Image">
-
-							<div class="comment-text">
-								<span class="username">
-									Maria Gonzales
-									<span class="text-muted float-right">8:03 PM Today</span>
-								</span><!-- /.username -->
-								It is a long established fact that a reader will be distracted
-								by the readable content of a page when looking at its layout.
-							</div>
-							<!-- /.comment-text -->
-						</div>
-						<!-- /.card-comment -->
-
-						<div class="card-comment">
-							<!-- User image -->
-							<img class="img-circle img-sm" src="https://localhost/adminLTE/dist/img/user4-128x128.jpg" alt="User Image">
-
-							<div class="comment-text">
-								<span class="username">
-									Luna Stark
-									<span class="text-muted float-right">8:03 PM Today</span>
-								</span><!-- /.username -->
-								It is a long established fact that a reader will be distracted
-								by the readable content of a page when looking at its layout.
-							</div>
-							<!-- /.comment-text -->
-						</div>
-						<!-- /.card-comment -->
-
-						<div class="card-comment">
-							<!-- User image -->
-							<img class="img-circle img-sm" src="https://localhost/adminLTE/dist/img/user4-128x128.jpg" alt="User Image">
-
-							<div class="comment-text">
-								<span class="username">
-									Luna Stark
-									<span class="text-muted float-right">8:03 PM Today</span>
-								</span><!-- /.username -->
-								It is a long established fact that a reader will be distracted
-								by the readable content of a page when looking at its layout.
-							</div>
-							<!-- /.comment-text -->
-						</div>
-						<!-- /.card-comment -->
-
-						<div class="card-comment">
-							<!-- User image -->
-							<img class="img-circle img-sm" src="https://localhost/adminLTE/dist/img/user4-128x128.jpg" alt="User Image">
-
-							<div class="comment-text">
-								<span class="username">
-									Luna Stark
-									<span class="text-muted float-right">8:03 PM Today</span>
-								</span><!-- /.username -->
-								It is a long established fact that a reader will be distracted
-								by the readable content of a page when looking at its layout.
-							</div>
-							<!-- /.comment-text -->
-						</div>
-						<!-- /.card-comment -->
-
-
-					</div>
-					<!-- /.card-body -->
-
-				</div>
-				<?php endif; ?>
 
 			</div>
 		<?php else: ?>
@@ -430,6 +280,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		startsIn();
 		$('#presenter_timer').show();
+
+
 	});
 
 	function startsIn() {

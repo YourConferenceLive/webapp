@@ -38,3 +38,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#millicastIframe').css('height', iFrameHeight+'px');
 	}
 </script>
+
+<script>
+	$(function () {
+		socket.on('openPollNotification', ()=>{
+			$('#pollModal').modal('show');
+			$('#pollResultModal').modal('hide');
+		});
+
+		socket.on('closePollNotification', ()=>{
+			$('#pollModal').modal('hide');
+		});
+
+		socket.on('openResultNotification', ()=>{
+			$('#pollModal').modal('hide');
+			$('#pollResultModal').modal('show');
+		});
+
+		socket.on('closeResultNotification', ()=>{
+			$('#pollResultModal').modal('hide');
+		});
+	});
+</script>

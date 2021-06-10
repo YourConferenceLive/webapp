@@ -35,6 +35,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- AdminLTE App -->
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/dist/js/adminlte.js"></script>
 
+	<!-- Socket IO -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.js" integrity="sha512-Y8KodDCDqst1e8z0EGKiqEQq3T8NszmgW2HvsC6+tlNw7kxYxHTLl5Iw/gqZj/6qhZdBt+jYyOsybgSAiB9OOA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>
+		let socketServer = "https://socket.yourconference.live:443";
+		let socket = io(socketServer);
+	</script>
+
 	<?php echo global_js() ?>
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
