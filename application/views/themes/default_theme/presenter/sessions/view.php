@@ -38,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div id="presentationEmbed">
 	<div id="presentationRow" class="row m-0 p-0">
-
+		<span style="position: absolute;color: white;z-index: 2;left: 15px;"><a class="btn btn-sm btn-info mt-2" href="https://google.com" target="_blank"><i class="fas fa-video"></i> Zoom</a></span>
 		<?php if (isset($session->id)): ?>
 			<div id="presentationColumn" class="col-10 m-0 p-0">
 				<?php if (isset($session->presenter_embed_code) && $session->presenter_embed_code != ''): ?>
