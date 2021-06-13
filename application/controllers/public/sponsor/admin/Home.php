@@ -3,42 +3,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller
 {
+	/**
+	 * @var mixed
+	 */
+	private $booth_id;
+
 	public function __construct()
 	{
 		parent::__construct();
-//		if (!isset($_SESSION['project_sessions']["project_{$this->project->id}"]) || $_SESSION['project_sessions']["project_{$this->project->id}"]['is_sponsor_admin'] != 1)
-//			redirect(base_url() . $this->project->main_route . "/login"); // Not logged-in
+		if (!isset($_SESSION['project_sessions']["project_{$this->project->id}"]) || $_SESSION['project_sessions']["project_{$this->project->id}"]['is_exhibitor'] != 1)
+			redirect(base_url($this->project->main_route)."/sponsor/admin/login"); // Not logged-in
 
-//		$this->load->model('Logger_Model', 'logger');
+		$this->booth_id = $_SESSION['project_sessions']["project_{$this->project->id}"]['exhibitor_booth_id'];
+
+		if ($this->booth_id == null) // No booth has been assigned to this account
+			redirect(base_url($this->project->main_route)."/sponsor/admin/login");
+
+		$this->load->model('Logger_Model', 'logger');
 		$this->load->helper('string');
-		$this->load->model('sponsor/Sponsor_Model', 'm_sponsor');
-//		$this->session->set_userdata(array('sponsor_id'=>17,'booth_id'=>19));
-		$this->session->set_userdata(array('sponsor_id'=>22,'booth_id'=>22));
+		$this->load->model('sponsor/Sponsor_Model', 'sponsor');
 	}
 
 	public function index()
 	{
-
-		$data['project'] = $this->project;
-		$data['sponsor_data'] = $this->m_sponsor->get_sponsor_data();
-
-		if (!$data['sponsor_data'])
-			die('Unauthorized!');
+		$data['booth'] = $this->sponsor->getBoothData($this->booth_id);
+		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/sponsor_admin", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data);
+			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/footer", $data)
+		;
 
-	}
-
-	public function logout()
-	{
-		$this->session->unset_userdata('sponsors_id');
-		$this->session->unset_userdata('booth_id');
-		$this->session->unset_userdata(array('email', 'userType'));
-		redirect('sponsor-admin/login');
 	}
 
 

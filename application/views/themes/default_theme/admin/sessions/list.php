@@ -131,12 +131,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#addSessionForm')[0].reset();
 			$('#sessionDescription').summernote('reset');
+			$('.removeall').click();
 			// $('#sponsorId').val(0);
 			// $('#logo_preview').hide();
 			// $('#logo_label').text('');
 			// $('#banner_preview').hide();
 			// $('#banner_label').text('');
-			$('#save-session').html('<i class="fas fa-plus"></i> Add');
+			$('#save-session').html('<i class="fas fa-plus"></i> Create');
 
 			$('#addSessionModal').modal({
 				backdrop: 'static',
@@ -144,19 +145,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 		});
 
-		$('#sessionsTable').on('click', '#openPoll', function () {
+		$('#sessionsTable').on('click', '.manageSession', function () {
+			$('#addSessionModal').modal({
+				backdrop: 'static',
+				keyboard: false
+			});
+		});
+
+		$('#sessionsTable').on('click', '.openPoll', function () {
 			socket.emit('openPoll');
 		});
 
-		$('#sessionsTable').on('click', '#closePoll', function () {
+		$('#sessionsTable').on('click', '.closePoll', function () {
 			socket.emit('closePoll');
 		});
 
-		$('#sessionsTable').on('click', '#openResult', function () {
+		$('#sessionsTable').on('click', '.openResult', function () {
 			socket.emit('openResult');
 		});
 
-		$('#sessionsTable').on('click', '#closeResult', function () {
+		$('#sessionsTable').on('click', '.closeResult', function () {
 			socket.emit('closeResult');
 		});
 	});
@@ -193,25 +201,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+session.id+
 					'	</td>' +
 					'	<td>' +
-					'		'+moment(session.start_date_time).format("dddd - Mo of MMM")+
+					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("dddd - Do of MMM")+
 					'	</td>' +
 					'	<td>' +
-					'		'+moment(session.start_date_time).format("h:mmA")+
+					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
-					'		'+moment(session.end_date_time).format("h:mmA")+
+					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
 					'		'+session.name+
 					'	</td>' +
 					'	<td>' +
-					'		<a href="'+project_admin_url+'/admin/sessions/view/'+session.id+'">' +
+					'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +
 					'			<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>' +
 					'		</a>' +
 					'	</td>' +
 					'	<td>' +
-					'		<button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Manage</button>' +
-					'		<button id="openPoll" class="btn btn-sm btn-primary">Open Poll</button>' +
+					'		<button class="manageSession btn btn-sm btn-primary"><i class="fas fa-edit"></i> Manage</button>' +
+					'		<button class="openPoll btn btn-sm btn-primary">Open Poll</button>' +
+					'		<button class="closePoll btn btn-sm btn-primary">Close Poll</button>' +
+					'		<button class="openResult btn btn-sm btn-primary">Open Result</button>' +
+					'		<button class="closeResult btn btn-sm btn-primary">Close Result</button>' +
 					'	</td>' +
 					'</tr>'
 				);

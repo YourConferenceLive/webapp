@@ -38,6 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- Moment JS -->
 	<!-- https://momentjs.com/docs/#/displaying/ -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.33/moment-timezone-with-data.min.js" integrity="sha512-rjmacQUGnwQ4OAAt3MoAmWDQIuswESNZwYcKC8nmdCIxAVkRC/Lk2ta2CWGgCZyS+FfBWPgaO01LvgwU/BX50Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<!-- SummerNotes -->
 	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/summernote/summernote.min.css">
@@ -46,6 +47,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- DateTime Picker -->
 	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+
+	<!-- Select2 -->
+	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/select2/css/select2.min.css">
+	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/select2/js/select2.full.min.js"></script>
+
+	<!-- Bootstrap4 Duallistbox -->
+	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.js"></script>
 
 	<!-- Socket IO -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.js" integrity="sha512-Y8KodDCDqst1e8z0EGKiqEQq3T8NszmgW2HvsC6+tlNw7kxYxHTLl5Iw/gqZj/6qhZdBt+jYyOsybgSAiB9OOA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

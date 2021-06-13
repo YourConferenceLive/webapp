@@ -8,6 +8,7 @@ class Sessions_Model extends CI_Model
 	{
 		parent::__construct();
 
+		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$this->load->model('Logger_Model', 'logger');
 	}
 
@@ -103,9 +104,40 @@ class Sessions_Model extends CI_Model
 		$this->db->insert('sessions', $data);
 
 		if ($this->db->affected_rows() > 0)
+		{
+			$session_id = $this->db->insert_id();
+
+			foreach ($session_data['sessionPresenters'] as $presenter_id)
+			{
+				$data = array(
+					'presenter_id' => $presenter_id,
+					'session_id' => $session_id,
+					'added_on' => date('Y-m-d H:i:s'),
+					'added_by' => $this->user['user_id'],
+				);
+
+				$this->db->insert('session_presenters', $data);
+			}
+
 			return array('status' => 'success', 'session_id' => $this->db->insert_id());
+		}
 
 		return array('status' => 'failed', 'msg' => 'Error occurred', 'technical_data'=> $this->db->error());
 
 	}
+
+	public function getAllPresenters()
+	{
+		$this->db->select('user.*');
+		$this->db->from('user');
+		$this->db->join('user_project_access', 'user_project_access.user_id = user.id');
+		$this->db->where('user_project_access.project_id', $this->project->id);
+		$this->db->group_by('user.id');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
 }

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @property  project
  */
-class Sponsor_Model extends CI_Model
+class Sponsor_model extends CI_Model
 {
 
 	private $booth_id;
@@ -16,26 +16,17 @@ class Sponsor_Model extends CI_Model
 		parent::__construct();
 
 		$this->load->model('Logger_Model', 'logger');
-		$this->sponsor_id = $this->session->userdata('sponsor_id');
-		$this->booth_id = $this->session->userdata('booth_id');
 	}
 
-	function get_sponsor_data()
+	function getBoothData($booth_id)
 	{
 
-		$this->db->select('sba.*,sb.*,CONCAT(u.name," ",u.surname) as sponsor_name');
-		$this->db->from('sponsor_booth_admin sba');
-		$this->db->join('sponsor_booth sb', 'sba.booth_id=sb.id');
-		$this->db->join('user u','sba.user_id = u.id');
-		$this->db->where('u.id',$this->sponsor_id);
-		$this->db->where(array('sba.user_id' => $this->sponsor_id, 'sba.booth_id' => $this->booth_id,'sba.project_id'=>$this->project->id));
-		$result = $this->db->get();
-
-		if ($result) {
-			return $result->result();
-		} else {
-			return false;
-		}
+		$this->db->select('*');
+		$this->db->from('sponsor_booth');
+		$this->db->where('id', $booth_id);
+		$booth = $this->db->get();
+		if ($booth->num_rows() > 0)
+			return $booth->result()[0];
 	}
 
 	function save_booth_details()

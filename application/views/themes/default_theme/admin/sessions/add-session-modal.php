@@ -1,6 +1,6 @@
 <?php
 //echo "<pre>";
-//print_r($tracks);
+//print_r($presenters);
 //exit("</pre>");
 ?>
 <!--Add Session Modal-->
@@ -10,6 +10,20 @@
 		background-color: white;
 		color: black;
 	}
+
+	.select2-container--default
+	.select2-selection--multiple
+	{
+		background-color: #343a40 !important;
+	}
+
+	.select2-container--default
+	.select2-selection--multiple
+	.select2-selection__choice
+	{
+		background-color: #006cac !important;
+	}
+
 </style>
 
 <div class="modal fade" id="addSessionModal" tabindex="-1" role="dialog" aria-labelledby="addSessionModalLabel" aria-hidden="true">
@@ -138,10 +152,16 @@
 								</div>
 
 								<div class="tab-pane fade" id="presentersTabContents" role="tabpanel" aria-labelledby="presentersTab">
-
-
-
-								</div>
+									<div class="form-group">
+										<label>Select presenters from the box on the left</label>
+										<select multiple="multiple" size="10" name="sessionPresenters[]" title="sessionPresenters[]">
+											<?php if (isset($presenters)): ?>
+												<?php foreach ($presenters as $presenter): ?>
+													<option value="<?=$presenter->id?>"><?=$presenter->name?> <?=$presenter->surname?> (<?=$presenter->email?>)</option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
+									</div>
 
 							</div>
 						</div>
@@ -162,49 +182,53 @@
 
 <script>
 
-	$('#sessionDescription, #sessionAgenda')
-			.summernote
-			({
-				placeholder: $('#sessionDescription').attr('placeholder'),
-				height: 200,
-				toolbar:
-						[
-							["history", ["undo", "redo"]],
-							["style", ["style"]],
-							["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
-							['fontsize', ['fontsize']],
-							["color", ["color"]],
-							["paragraph", ["ul", "ol", "paragraph", "height"]],
-							["table", ["table"]],
-							["insert", ["link", "resizedDataImage", "picture", "video"]],
-							["view", ["codeview"] ]
-						],
-				fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
-			});
+	$(function () {
+		$('#sessionDescription, #sessionAgenda')
+				.summernote
+				({
+					placeholder: $('#sessionDescription').attr('placeholder'),
+					height: 200,
+					toolbar:
+							[
+								["history", ["undo", "redo"]],
+								["style", ["style"]],
+								["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+								['fontsize', ['fontsize']],
+								["color", ["color"]],
+								["paragraph", ["ul", "ol", "paragraph", "height"]],
+								["table", ["table"]],
+								["insert", ["link", "resizedDataImage", "picture", "video"]],
+								["view", ["codeview"] ]
+							],
+					fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
+				});
 
-	$('#sessionAgenda')
-			.summernote
-			({
-				placeholder: $('#sessionAgenda').attr('placeholder'),
-				height: 400,
-				toolbar:
-						[
-							["history", ["undo", "redo"]],
-							["style", ["style"]],
-							["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
-							['fontsize', ['fontsize']],
-							["color", ["color"]],
-							["paragraph", ["ul", "ol", "paragraph", "height"]],
-							["table", ["table"]],
-							["insert", ["link", "resizedDataImage", "picture", "video"]],
-							["view", ["codeview"] ]
-						],
-				fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
-			});
+		$('#sessionAgenda')
+				.summernote
+				({
+					placeholder: $('#sessionAgenda').attr('placeholder'),
+					height: 400,
+					toolbar:
+							[
+								["history", ["undo", "redo"]],
+								["style", ["style"]],
+								["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+								['fontsize', ['fontsize']],
+								["color", ["color"]],
+								["paragraph", ["ul", "ol", "paragraph", "height"]],
+								["table", ["table"]],
+								["insert", ["link", "resizedDataImage", "picture", "video"]],
+								["view", ["codeview"] ]
+							],
+					fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
+				});
 
-	$('#startDateTime, #endDateTime').datetimepicker({ icons: { time: 'far fa-clock' } });
+		$('#startDateTime, #endDateTime').datetimepicker({ icons: { time: 'far fa-clock' } });
 
-
+		$('select[name="sessionPresenters[]"]').bootstrapDualListbox({
+			selectorMinimalHeight : 300
+		});
+	});
 
 	$('#logo, #banner').on('change',function(){
 		let item = $(this);
@@ -237,6 +261,8 @@
 		else
 			updateSession();
 	});
+
+
 
 	function addSession()
 	{

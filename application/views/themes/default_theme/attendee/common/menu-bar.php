@@ -31,25 +31,25 @@ $ci_method = $this->router->fetch_method();
 			<ul class="navbar-nav">
 
 				<li class="nav-item">
-					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/lobby">Lobby</a>
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/lobby"><strong>Lobby</strong></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sessions">Agenda</a>
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sessions"><strong>Agenda</strong></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">ePosters</a>
+					<a class="nav-link" href="#"><strong>ePosters</strong></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sponsor">Exhibition Hall</a>
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sponsor"><strong>Exhibition Hall</strong></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">Scavenger Hunt</a>
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/scavenger_hunt"><strong>Scavenger Hunt</strong></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/relaxation_zone">Relaxation Zone</a>
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/relaxation_zone"><strong>Relaxation Zone</strong></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">Evaluation</a>
+					<a class="nav-link" href="#"><strong>Evaluation</strong></a>
 				</li>
 
 				<li class="nav-item dropdown">

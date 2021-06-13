@@ -47,4 +47,15 @@ class Authentication_Model extends CI_Model
 
 		return array('status'=>false, 'msg'=>"{$username} is not registered with us");
 	}
+
+	public function getBoothByUser($user_id)
+	{
+		$this->db->select('booth_id');
+		$this->db->from('sponsor_booth_admin');
+		$this->db->where('sponsor_booth_admin.user_id', $user_id);
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return $result->result()[0]->booth_id;
+		return null;
+	}
 }

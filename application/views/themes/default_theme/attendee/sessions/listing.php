@@ -22,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<div class="col-md-9 col-sm-12 pl-0 pt-2">
 							<div class="col-12 text-md-left text-sm-center">
-								<small><?=date("l jS M, Y g:iA", strtotime($session->start_date_time))?></small>
+								<small><?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?></small>
 								<h4><?=$session->name?></h4>
 								<p><?=$session->description?></p>
 							</div>

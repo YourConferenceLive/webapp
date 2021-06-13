@@ -76,7 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						});
 
 						setTimeout(() => {
-							window.location = '<?=$this->project_url.'/presenter/dashboard'?>'
+							window.location = '<?=$this->project_url.'/presenter/sessions'?>'
 						}, 1000);
 
 					}else{

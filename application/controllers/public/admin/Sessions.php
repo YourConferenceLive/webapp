@@ -22,6 +22,7 @@ class Sessions extends CI_Controller
 		$data["sessions"] = $this->sessions->getAll();
 
 		$create_modal['tracks'] = $this->sessions->getAllTracks();
+		$create_modal['presenters'] = $this->sessions->getAllPresenters();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")

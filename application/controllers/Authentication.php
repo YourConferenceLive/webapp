@@ -37,8 +37,25 @@ class Authentication extends CI_Controller {
 						'is_attendee' => (in_array('attendee', $verification['user']->access_levels))?1:0,
 						'is_moderator' => (in_array('moderator', $verification['user']->access_levels))?1:0,
 						'is_presenter' => (in_array('presenter', $verification['user']->access_levels))?1:0,
-						'is_admin' => (in_array('admin', $verification['user']->access_levels))?1:0
+						'is_admin' => (in_array('admin', $verification['user']->access_levels))?1:0,
+						'is_exhibitor' => (in_array('exhibitor', $verification['user']->access_levels))?1:0
 					);
+
+					if (in_array('exhibitor', $verification['user']->access_levels))
+						$current_project_sessions["project_$project_id"]['exhibitor_booth_id'] = $this->auth->getBoothByUser($verification['user']->id);
+
+					if
+					(
+						$access_level == 'exhibitor' &&
+						in_array('exhibitor', $verification['user']->access_levels) &&
+						$current_project_sessions["project_$project_id"]['exhibitor_booth_id'] == null
+					)
+					{
+						$this->logger->add($project_id, $verification['user']->id, 'Booth management access denied', "Not assigned to any booths");
+						$response = array('status'=>'error', 'msg'=>"You are registered as an exhibitor but no booth is assigned to you yet.");
+						echo json_encode($response);
+						return;
+					}
 
 					$this->session->set_userdata(array('project_sessions' => $current_project_sessions));
 
