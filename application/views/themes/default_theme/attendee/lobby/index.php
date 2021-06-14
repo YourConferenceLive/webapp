@@ -37,23 +37,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="lobby-content">
 	<div class="custom-container">
-		<div class="menu">
-			<?php
+		<div class="left">
+			<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_left.png">
+		</div>
+		<div class="middle">
+			<div class="top-banner">
+				<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_top.png">
+			</div>
+			<div class="menu">
+				<?php
 				$menu=[["Program","Programme","sessions"],["Networking Lounge","Résautage","lounge"],["Exhibition","Exposition","sponsor"],["Relaxation Zone","Espace bien-étre","relaxation_zone"],["ePosters","","#"],["Evaluation","Evaluation","#"]];
 
-			for($i=0; $i < count($menu); $i++){
+				for($i=0; $i < count($menu); $i++){
+					?>
+					<a href="<?=base_url().$this->project->main_route?>/<?=$menu[$i][2]?>" class="circle">
+						<div class="icon"></div>
+						<h3><?=$menu[$i][0]?></h3>
+						<h3><?=$menu[$i][1]?></h3>
+					</a>
+					<?php
+				}
 				?>
-				<a href="<?=base_url().$this->project->main_route?>/<?=$menu[$i][2]?>" class="circle">
-					<div class="icon"></div>
-					<h3><?=$menu[$i][0]?></h3>
-					<h3><?=$menu[$i][1]?></h3>
-				</a>
-				<?php
-			}
-			?>
+			</div>
+			<div class="bottom-peoples">
+				<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/peoples.png">
+			</div>
+		</div>
+		<div class="right">
+			<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_right.png">
+			<a href="#" class="support-button"></a>
 		</div>
 	</div>
-	<a href="#" class="support-button"></a>
 </div>
 
 <map name="workmap">

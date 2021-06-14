@@ -24,7 +24,7 @@
 }
 
 .lobby-content{
-	background-image: url("/theme_assets/default_theme/images/background-images/lobby_bg.png");
+	background-image: url("/theme_assets/default_theme/images/lobby/lobby_bg.png");
 	height: 100%;
 	background-size: cover;
 	background-position: center;
@@ -35,18 +35,18 @@
 }
 
 .lobby-content .custom-container{
-	width: 970px;
+	width: 1580px;
 	max-width: 100%;
 	height: max-content;
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 50px;
-	margin: auto;
 	text-align: center;
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 105px;
 }
 
-.lobby-content .custom-container .menu .circle{
+.lobby-content .custom-container .middle .menu .circle{
 	width: 320px;
 	max-width: 100%;
 	color: white;
@@ -57,64 +57,64 @@
 	vertical-align: middle;
 }
 
-.lobby-content .custom-container .menu .circle .icon{
+.lobby-content .custom-container .middle .menu .circle .icon{
 	width: 100%;
 	height: 160px;
-	background-size: 151px;
+	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 	cursor: pointer;
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(1) .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(1) .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/1.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(1):hover .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(1):hover .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/1.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(2) .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(2) .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/2.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(2):hover .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(2):hover .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/2.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(3) .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(3) .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/3.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(3):hover .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(3):hover .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/3.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(4) .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(4) .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/4.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(4):hover .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(4):hover .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/4.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(5) .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(5) .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/5.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(5):hover .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(5):hover .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/5.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(6) .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(6) .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/6.png");
 }
 
-.lobby-content .custom-container .menu .circle:nth-of-type(6):hover .icon{
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(6):hover .icon{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/6.png");
 }
 
-.lobby-content .custom-container .menu .circle h3{
+.lobby-content .custom-container .middle .menu .circle h3{
 	font-size: 16px;
 	margin-bottom: 0;
 	margin-top: 2px;
@@ -123,15 +123,31 @@
 	text-shadow: 0 0 6px white;
 }
 
+.lobby-content .custom-container .middle .bottom-peoples{
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: auto;
+	bottom: 0;
+	z-index: -1;
+	margin-bottom: -150px;
+}
+
+.lobby-content .custom-container .right{
+	position: relative;
+}
+
 .lobby-content .support-button{
 	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/support.png");
-	position: absolute;
-	right: 170px;
-	bottom: 30px;
-	width: 180px;
-	height: 54px;
 	background-repeat: no-repeat;
 	background-size: 180px;
+	width: 180px;
+	height: 54px;
+	position: absolute;
+	bottom: -70px;
+	left: 0;
+	right: 0;
+	margin: auto;
 }
 
 .lobby-content .support-button:hover{
@@ -139,18 +155,18 @@
 }
 
 @media screen and (max-width: 992px) {
-	.lobby-content .custom-container .menu .circle{
+	.lobby-content .custom-container .middle .menu .circle{
 		width: 240px;
 	}
 }
 
 @media screen and (max-width: 745px) {
-	.lobby-content .custom-container .menu .circle{
+	.lobby-content .custom-container .middle .menu .circle{
 		width: 180px;
 		height: max-content;
 	}
 
-	.lobby-content .custom-container .menu .circle .icon{
+	.lobby-content .custom-container .middle .menu .circle .icon{
 		background-size: 100px;
 		height: 105px;
 	}
