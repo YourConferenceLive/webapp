@@ -154,6 +154,11 @@
 										<textarea id="slidesHtml" name="slidesHtml" class="form-control" rows="5" placeholder="Copy paste presenter slides iframe html"></textarea>
 									</div>
 
+									<div class="form-group">
+										<label for="zoomLink">Presenter Zoom Link</label>
+										<input type="text" class="form-control" id="zoomLink" name="zoomLink" placeholder="Enter Zoom URL with password if any">
+									</div>
+
 								</div>
 
 								<div class="tab-pane fade" id="presentersTabContents" role="tabpanel" aria-labelledby="presentersTab">

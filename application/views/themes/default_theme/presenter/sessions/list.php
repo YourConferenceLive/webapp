@@ -64,7 +64,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<td><?=round(abs(strtotime($session->end_date_time) - strtotime($session->start_date_time)) / 60,2). " Minutes"?></td>
 										<td><?=$session->name?></td>
 										<td>
-											<a href="<?=$session->zoom_link?>" target="_blank" <?=($session->zoom_link == null)?'onclick="toastr.warning(`Zoom is not configured yet.`); return false;"':''?>>
+											<a href="<?=$session->zoom_link?>" target="_blank" <?=($session->zoom_link == null || $session->zoom_link = '')?'onclick="toastr.warning(`Zoom is not configured yet.`); return false;"':''?>>
 												<button class="btn btn-sm btn-info"><i class="fas fa-video"></i> Join Zoom</button>
 											</a>
 										</td>

@@ -181,8 +181,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				$("#sessionAgenda").summernote("code", session.agenda);
 				$('#millicastStream').val(session.millicast_stream);
+				$('#zoomLink').val(session.zoom_link);
 				$('#slidesHtml').html(session.presenter_embed_code);
 
+				$('select[name="sessionPresenters[]"] option').prop('selected', false);
+				$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
 				$.each(session.presenters, function(key, presenter){
 					$('select[name="sessionPresenters[]"] option[value="'+presenter.id+'"]').prop('selected', true);
 					$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);

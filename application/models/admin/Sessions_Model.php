@@ -100,6 +100,7 @@ class Sessions_Model extends CI_Model
 			'track' => $session_data['sessionTrack'],
 			'millicast_stream' => $session_data['millicastStream'],
 			'presenter_embed_code' => $session_data['slidesHtml'],
+			'zoom_link' => $session_data['zoomLink'],
 			'start_date_time' => $start_time_mysql,
 			'end_date_time' => $end_time_mysql
 		);
@@ -166,6 +167,7 @@ class Sessions_Model extends CI_Model
 			'track' => $session_data['sessionTrack'],
 			'millicast_stream' => $session_data['millicastStream'],
 			'presenter_embed_code' => $session_data['slidesHtml'],
+			'zoom_link' => $session_data['zoomLink'],
 			'start_date_time' => $start_time_mysql,
 			'end_date_time' => $end_time_mysql
 		);
