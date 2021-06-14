@@ -99,7 +99,7 @@
 									<div class="form-group">
 										<label>Start date and time</label>
 										<div class="input-group date" id="startDateTime" data-target-input="nearest">
-											<input type="text" name="startDateTime" class="form-control datetimepicker-input" data-target="#startDateTime">
+											<input type="text" id="startDateTimeInput" name="startDateTime" class="form-control datetimepicker-input" data-target="#startDateTime">
 											<div class="input-group-append" data-target="#startDateTime" data-toggle="datetimepicker">
 												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 											</div>
@@ -109,7 +109,7 @@
 									<div class="form-group">
 										<label>End date and time</label>
 										<div class="input-group date" id="endDateTime" data-target-input="nearest">
-											<input type="text" name="endDateTime" class="form-control datetimepicker-input" data-target="#endDateTime">
+											<input type="text" id="endDateTimeInput" name="endDateTime" class="form-control datetimepicker-input" data-target="#endDateTime">
 											<div class="input-group-append" data-target="#endDateTime" data-toggle="datetimepicker">
 												<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 											</div>
@@ -126,6 +126,11 @@
 											<input type="file" class="custom-file-input" id="sessionPhoto" name="sessionPhoto">
 											<label class="custom-file-label" for="customFile">Choose file</label>
 										</div>
+									</div>
+									<div class="form-group" id="currentPhotoDiv" style="display: none;">
+										<label for="customFile"><small>Current photo</small></label>
+										<br>
+										<img id="currentPhotoImg" src="" width="200px">
 									</div>
 
 								</div>
@@ -154,7 +159,7 @@
 								<div class="tab-pane fade" id="presentersTabContents" role="tabpanel" aria-labelledby="presentersTab">
 									<div class="form-group">
 										<label>Select presenters from the box on the left</label>
-										<select multiple="multiple" size="10" name="sessionPresenters[]" title="sessionPresenters[]">
+										<select box-id="sessionPresenters" multiple="multiple" size="10" name="sessionPresenters[]" title="sessionPresenters[]">
 											<?php if (isset($presenters)): ?>
 												<?php foreach ($presenters as $presenter): ?>
 													<option value="<?=$presenter->id?>"><?=$presenter->name?> <?=$presenter->surname?> (<?=$presenter->email?>)</option>
@@ -223,7 +228,12 @@
 					fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
 				});
 
-		$('#startDateTime, #endDateTime').datetimepicker({ icons: { time: 'far fa-clock' } });
+		$('#startDateTime, #endDateTime').datetimepicker(
+				{
+					icons: { time: 'far fa-clock' },
+					//format: 'MMMM Mo (dddd) - h:mmA'
+				}
+		);
 
 		$('select[name="sessionPresenters[]"]').bootstrapDualListbox({
 			selectorMinimalHeight : 300
@@ -310,11 +320,11 @@
 		});
 	}
 
-	function updateSponsor()
+	function updateSession()
 	{
 		Swal.fire({
 			title: 'Please Wait',
-			text: 'Updating the sponsor...',
+			text: 'Updating the session...',
 			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 			imageAlt: 'Loading...',
@@ -323,11 +333,11 @@
 			allowOutsideClick: false
 		});
 
-		let formData = new FormData(document.getElementById('createSponsorForm'));
+		let formData = new FormData(document.getElementById('addSessionForm'));
 
 		$.ajax({
 			type: "POST",
-			url: project_admin_url+"/sponsors/update",
+			url: project_admin_url+"/sessions/update",
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -345,10 +355,13 @@
 
 				if (data.status == 'success')
 				{
-					listSponsors();
-					toastr.success('Sponsor updated');
-					$('#createSponsorModal').modal('hide');
+					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+data.session.thumbnail);
+					$('#currentPhotoDiv').show();
 
+					listSessions();
+					toastr.success('Session updated');
+				}else if(data.status == 'warning'){
+					toastr.warning(data.msg);
 				}else{
 					toastr.error("Error");
 				}

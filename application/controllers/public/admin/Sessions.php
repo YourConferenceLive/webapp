@@ -61,8 +61,18 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->getAll());
 	}
 
+	public function getByIdJson($session_id)
+	{
+		echo json_encode($this->sessions->getById($session_id));
+	}
+
 	public function add()
 	{
 		echo json_encode($this->sessions->add());
+	}
+
+	public function update()
+	{
+		echo json_encode($this->sessions->update());
 	}
 }

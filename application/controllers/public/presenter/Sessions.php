@@ -19,7 +19,7 @@ class Sessions extends CI_Controller
 	{
 		$sidebar_data['user'] = $this->user;
 
-		$data["sessions"] = $this->sessions->getAllByPresenter($this->user['user_id']);
+		$data["sessions"] = $this->sessions->getAllSessionsByPresenter($this->user['user_id']);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")

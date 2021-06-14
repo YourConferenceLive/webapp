@@ -130,6 +130,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('.add-session-btn').on('click', function () {
 
 			$('#addSessionForm')[0].reset();
+			$('#currentPhotoDiv').hide();
 			$('#sessionDescription').summernote('reset');
 			$('.removeall').click();
 			// $('#sponsorId').val(0);
@@ -146,9 +147,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		$('#sessionsTable').on('click', '.manageSession', function () {
-			$('#addSessionModal').modal({
-				backdrop: 'static',
-				keyboard: false
+
+			let session_id = $(this).attr('session-id');
+
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Loading session data...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
+				session = JSON.parse(session);
+				console.log(session);
+
+				$('#sessionId').val(session.id);
+				$('#sessionName').val(session.name);
+				$('#sessionNameOther').val(session.other_language_name);
+				$('#sessionTrack option[value="'+session.track+'"]').prop('selected', true);
+				$("#sessionDescription").summernote("code", session.description);
+				$('#startDateTimeInput').datetimepicker('date', moment(session.start_date_time, 'YYYY-MM-DD HH:mm:ss'));
+				$('#endDateTimeInput').datetimepicker('date', moment(session.end_date_time, 'YYYY-MM-DD HH:mm:ss'));
+
+				if (session.thumbnail != '')
+				{
+					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.thumbnail);
+					$('#currentPhotoDiv').show();
+				}
+
+				$("#sessionAgenda").summernote("code", session.agenda);
+				$('#millicastStream').val(session.millicast_stream);
+				$('#slidesHtml').html(session.presenter_embed_code);
+
+				$.each(session.presenters, function(key, presenter){
+					$('select[name="sessionPresenters[]"] option[value="'+presenter.id+'"]').prop('selected', true);
+					$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
+					//$('#bootstrap-duallistbox-selected-list_sessionPresenters').append('<option value="'+presenter.id+'">'+presenter.name+' '+presenter.surname+' ('+presenter.email+')</option>');
+				});
+
+				$('#save-session').html('<i class="fas fa-save"></i> Save');
+
+				Swal.close();
+
+				$('#addSessionModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				});
 			});
 		});
 
@@ -218,7 +266,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		</a>' +
 					'	</td>' +
 					'	<td>' +
-					'		<button class="manageSession btn btn-sm btn-primary"><i class="fas fa-edit"></i> Manage</button>' +
+					'		<button class="manageSession btn btn-sm btn-primary" session-id="'+session.id+'"><i class="fas fa-edit"></i> Manage</button>' +
 					'		<button class="openPoll btn btn-sm btn-primary">Open Poll</button>' +
 					'		<button class="closePoll btn btn-sm btn-primary">Close Poll</button>' +
 					'		<button class="openResult btn btn-sm btn-primary">Open Result</button>' +

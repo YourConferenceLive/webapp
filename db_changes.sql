@@ -7,3 +7,5 @@ ALTER TABLE `user_project_access` CHANGE `level` `level` ENUM('attendee','modera
 ALTER TABLE `sponsor_booth_admin` DROP `project_id`;
 ALTER TABLE `your_conference_live`.`sponsor_booth_admin` ADD UNIQUE `admin_per_booth` (`user_id`, `booth_id`);
 
+ALTER TABLE `sessions` ADD `zoom_link` TEXT NULL DEFAULT NULL AFTER `presenter_embed_code`;
+
