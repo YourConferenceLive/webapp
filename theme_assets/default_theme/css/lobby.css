@@ -124,7 +124,7 @@
 }
 
 .lobby-content .support-button{
-	background-image: url(/theme_assets/default_theme/images/lobby/Buttons_normal/support.png);
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/support.png");
 	position: absolute;
 	right: 170px;
 	bottom: 30px;
@@ -132,6 +132,10 @@
 	height: 54px;
 	background-repeat: no-repeat;
 	background-size: 180px;
+}
+
+.lobby-content .support-button:hover{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/support.png");
 }
 
 @media screen and (max-width: 992px) {
