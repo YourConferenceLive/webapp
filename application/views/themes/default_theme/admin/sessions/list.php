@@ -244,6 +244,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$.each(sessions, function(key, session)
 			{
+				let presentersList = '';
+				let presentersNumber = Object.keys(session.presenters).length;
+				let badgeType = 'badge-danger';
+
+				if (presentersNumber > 0)
+					presentersList += '<strong>Presenters List</strong><br><br>';
+
+				$.each(session.presenters, function(key, presenter)
+				{
+					presentersList += presenter.name+' '+presenter.surname+' <br>('+presenter.email+')<br><br>';
+					console.log(presenter);
+				});
+
+				if (presentersNumber > 0)
+					badgeType = 'badge-success';
+
+				let presentersBadge = '<badge class="badge badge-pill '+badgeType+'" data-html="true" data-toggle="tooltip" title="'+presentersList+'"><i class="fas fa-user-tag"></i> ('+presentersNumber+')</badge>';
+
 				$('#sessionsTableBody').append(
 					'<tr>' +
 					'	<td>' +
@@ -259,7 +277,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
-					'		'+session.name+
+					'		'+presentersBadge+' '+session.name+
 					'	</td>' +
 					'	<td>' +
 					'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +
@@ -276,6 +294,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'</tr>'
 				);
 			});
+
+			$('[data-toggle="tooltip"]').tooltip();
 
 			$('#sessionsTable').DataTable({
 				"paging": true,

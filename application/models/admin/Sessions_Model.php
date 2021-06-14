@@ -19,7 +19,12 @@ class Sessions_Model extends CI_Model
 		$this->db->where('project_id', $this->project->id);
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
+		{
+			foreach ($sessions->result() as $session)
+				$session->presenters = $this->getPresentersPerSession($session->id);
+
 			return $sessions->result();
+		}
 
 		return new stdClass();
 	}
