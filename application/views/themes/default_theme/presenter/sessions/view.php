@@ -38,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div id="presentationEmbed">
 	<div id="presentationRow" class="row m-0 p-0">
-		<span style="position: absolute;color: white;z-index: 2;left: 15px;"><a class="btn btn-sm btn-info mt-2" href="https://google.com" target="_blank"><i class="fas fa-video"></i> Zoom</a></span>
+		<span style="position: absolute;color: white;z-index: 2;left: 15px;"><a class="btn btn-sm btn-info mt-2" href="https://google.com" target="_blank"><i class="fas fa-video"></i> Join Zoom</a></span>
 		<?php if (isset($session->id)): ?>
 			<div id="presentationColumn" class="col-10 m-0 p-0">
 				<?php if (isset($session->presenter_embed_code) && $session->presenter_embed_code != ''): ?>
@@ -54,75 +54,99 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="col-2 m-0 p-0">
 
 				<!-- Host Chat -->
-				<div class="card card-primary card-outline direct-chat direct-chat-primary" style="height: 35%;">
-					<div class="card-header">
-						<h3 class="card-title">Host Chat</h3>
-
-						<div class="card-tools">
-							<!--						<span title="3 New Messages" class="badge bg-primary">3</span>-->
-							<!--						<button type="button" class="btn btn-tool" data-card-widget="collapse">-->
-							<!--							<i class="fas fa-minus"></i>-->
-							<!--						</button>-->
-						</div>
+				<div class="card card-primary card-outline card-tabs" style="height: 45vh;">
+					<div class="card-header p-0 pt-1 border-bottom-0">
+						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true"><i class="fas fa-user-tie"></i> Host Chat</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false"><i class="fas fa-users"></i> Attendee Chat</a>
+							</li>
+						</ul>
 					</div>
-					<!-- /.card-header -->
-					<div class="card-body" style="height: 100%;overflow: scroll;">
-						<!-- Conversations are loaded here -->
-						<div class="direct-chat-messages" style="height: 100% !important;">
+					<div class="card-body p-0">
+						<div class="tab-content" id="custom-tabs-three-tabContent" style="height: 88%;">
+
+							<!-- Host Chat Tab -->
+							<div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab" style="height: 100%;overflow: scroll;">
+
+								<!-- Conversations are loaded here -->
+								<div class="direct-chat-messages" style="height: 100% !important;">
+
+									<!-- Message. Default to the left -->
+									<div class="direct-chat-msg">
+										<div class="direct-chat-infos clearfix">
+											<span class="direct-chat-name float-left">Alexander Pierce</span>
+											<span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
+										</div>
+										<!-- /.direct-chat-infos -->
+										<img class="direct-chat-img" src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user1-128x128.jpg" alt="Message User Image">
+										<!-- /.direct-chat-img -->
+										<div class="direct-chat-text">
+											This is a sample chat text!
+										</div>
+										<!-- /.direct-chat-text -->
+									</div>
+									<!-- /.direct-chat-msg -->
+
+									<!-- Message to the right -->
+									<div class="direct-chat-msg right">
+										<div class="direct-chat-infos clearfix">
+											<span class="direct-chat-name float-right">Sarah Bullock</span>
+											<span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
+										</div>
+										<!-- /.direct-chat-infos -->
+										<img class="direct-chat-img" src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user3-128x128.jpg" alt="Message User Image">
+										<!-- /.direct-chat-img -->
+										<div class="direct-chat-text">
+											This is another sample chat text!
+										</div>
+										<!-- /.direct-chat-text -->
+									</div>
+									<!-- /.direct-chat-msg -->
+
+								</div>
 
 
-							<!-- Message. Default to the left -->
-							<div class="direct-chat-msg">
-								<div class="direct-chat-infos clearfix">
-									<span class="direct-chat-name float-left">Alexander Pierce</span>
-									<span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
+								<!--/.direct-chat-messages-->
+
+								<!-- /.direct-chat-pane -->
+
+								<div class="input-group" style="position: absolute;bottom: 5px">
+									<input type="text" name="message" placeholder="Type Message ..." class="form-control">
+									<span class="input-group-append">
+											<button type="button" class="btn btn-primary">Send</button>
+										</span>
 								</div>
-								<!-- /.direct-chat-infos -->
-								<img class="direct-chat-img" src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user1-128x128.jpg" alt="Message User Image">
-								<!-- /.direct-chat-img -->
-								<div class="direct-chat-text">
-									This is a sample chat text!
-								</div>
-								<!-- /.direct-chat-text -->
+
 							</div>
-							<!-- /.direct-chat-msg -->
 
-							<!-- Message to the right -->
-							<div class="direct-chat-msg right">
-								<div class="direct-chat-infos clearfix">
-									<span class="direct-chat-name float-right">Sarah Bullock</span>
-									<span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
+							<!-- Attendee Chat Tab -->
+							<div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab" style="height: 100%;overflow: scroll;">
+								<!-- Conversations are loaded here -->
+								<div class="direct-chat-messages" style="height: 100% !important;">
+
+
+
 								</div>
-								<!-- /.direct-chat-infos -->
-								<img class="direct-chat-img" src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user3-128x128.jpg" alt="Message User Image">
-								<!-- /.direct-chat-img -->
-								<div class="direct-chat-text">
-									This is another sample chat text!
+								<!--/.direct-chat-messages-->
+
+								<!-- /.direct-chat-pane -->
+								<div class="input-group" style="position: absolute;bottom: 5px">
+									<input type="text" name="message" placeholder="Type Message ..." class="form-control">
+									<span class="input-group-append">
+											<button type="button" class="btn btn-primary">Send</button>
+										</span>
 								</div>
-								<!-- /.direct-chat-text -->
 							</div>
-							<!-- /.direct-chat-msg -->
-
-
-						</div>
-						<!--/.direct-chat-messages-->
-
-						<!-- /.direct-chat-pane -->
-					</div>
-					<!-- /.card-body -->
-					<div class="card-footer">
-						<div class="input-group">
-							<input type="text" name="message" placeholder="Type Message ..." class="form-control">
-							<span class="input-group-append">
-								<button type="button" class="btn btn-primary">Send</button>
-							</span>
 						</div>
 					</div>
-					<!-- /.card-footer-->
+					<!-- /.card -->
 				</div>
 
 				<!-- Questions and Starred Questions -->
-				<div class="card card-primary card-outline card-tabs" style="height: 45%;">
+				<div class="card card-primary card-outline card-tabs" style="height: 45vh;">
 					<div class="card-header p-0 pt-1 border-bottom-0">
 						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
 							<li class="nav-item">
@@ -137,7 +161,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="tab-content" id="custom-tabs-three-tabContent">
 
 							<!-- Questions tab -->
-							<div class="tab-pane fade active show" id="questions-tab-content" role="tabpanel" aria-labelledby="questions-tab">
+							<div class="tab-pane fade active show pb-5" id="questions-tab-content" role="tabpanel" aria-labelledby="questions-tab">
 
 								<!-- Question -->
 								<div class="container-fluid mr-2">
@@ -211,11 +235,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 								<div class="col"><hr></div>
 
-
 							</div>
 
 							<!-- Starred questions tab -->
-							<div class="tab-pane fade" id="starred-questions-tab-content" role="tabpanel" aria-labelledby="starred-questions-tab-content">
+							<div class="tab-pane fade pb-5" id="starred-questions-tab-content" role="tabpanel" aria-labelledby="starred-questions-tab-content">
 
 								<!-- Starred Question -->
 								<div class="container-fluid mr-2">
