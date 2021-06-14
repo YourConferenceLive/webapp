@@ -33,6 +33,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </script>
 
 <img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/lobby.jpeg" usemap="#workmap">
+<!--<img id="full-screen-background" src="--><?//=ycl_root?><!--/theme_assets/default_theme/images/background-images/lobby_bg.png" usemap="#workmap">-->
+
+<div class="lobby-content">
+	<div class="custom-container">
+		<div class="menu">
+			<?php
+				$menu=[["Program","Programme","#"],["Networking Lounge","Résautage","lounge"],["Exhibition","Exposition","#"],["Relaxation Zone","Espace bien-étre","relaxation_zone"],["ePosters","","#"],["Evaluation","Evaluation","#"]];
+
+			for($i=0; $i < count($menu); $i++){
+				?>
+				<a href="<?=base_url().$this->project->main_route?>/<?=$menu[$i][2]?>" class="circle">
+					<div class="icon"></div>
+					<h3><?=$menu[$i][0]?></h3>
+					<h3><?=$menu[$i][1]?></h3>
+				</a>
+				<?php
+			}
+			?>
+		</div>
+	</div>
+	<a href="#" class="support-button"></a>
+</div>
 
 <map name="workmap">
 <!--	<area shape="circle" coords="665,647,70" alt="Sessions" href="sessions">-->
