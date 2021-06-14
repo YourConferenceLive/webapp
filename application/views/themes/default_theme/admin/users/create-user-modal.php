@@ -160,7 +160,7 @@
 		if ($('#userId').val() == 0)
 			addUser();
 		else
-			updateSponsor();
+			updateUser();
 	});
 
 	function addUser()
@@ -209,7 +209,7 @@
 		});
 	}
 
-	function updateSponsor()
+	function updateUser()
 	{
 		Swal.fire({
 			title: 'Please Wait',
@@ -222,11 +222,11 @@
 			allowOutsideClick: false
 		});
 
-		let formData = new FormData(document.getElementById('createSponsorForm'));
+		let formData = new FormData(document.getElementById('addUserForm'));
 
 		$.ajax({
 			type: "POST",
-			url: project_admin_url+"/sponsors/update",
+			url: project_admin_url+"/users/update",
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -244,10 +244,11 @@
 
 				if (data.status == 'success')
 				{
-					listSponsors();
-					toastr.success('Sponsor updated');
-					$('#createSponsorModal').modal('hide');
+					listUsers();
+					toastr.success('User updated');
 
+				}else if(data.status == 'failed'){
+					toastr.success('No changes made');
 				}else{
 					toastr.error("Error");
 				}

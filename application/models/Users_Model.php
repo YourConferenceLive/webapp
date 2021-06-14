@@ -89,47 +89,44 @@ class Users_Model extends CI_Model
 	public function update()
 	{
 		$post = $this->input->post();
-		$data = array();
 
-		// Upload files if set
-		if (isset($_FILES['logo']) && $_FILES['logo']['name'] != '')
-		{
-			$logo_config['allowed_types'] = 'gif|jpg|png|jpeg';
-			$logo_config['file_name'] = $logo_name = rand().'_'.str_replace(' ', '_', $_FILES['logo']['name']);
-			$logo_config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/logo/';
+		if (!isset($post['userId']) || $post['userId'] == 0)
+			return array('status' => 'failed', 'msg'=>'No User(ID) selected', 'technical_data'=>'');
 
-			$this->load->library('upload', $logo_config);
-			if ( ! $this->upload->do_upload('logo'))
-				return false;
-			//print_r($this->upload->display_errors());
+		$data = array(
+			'name' => $post['first_name'],
+			'surname' => $post['surname'],
+			'updated_on' => date('Y-m-d H:i:s'),
+			'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
 
-			$data['logo'] = $logo_name;
-		}
-
-		if (isset($_FILES['banner']) && $_FILES['banner']['name'] != '')
-		{
-			$banner_config['allowed_types'] = 'gif|jpg|png|jpeg';
-			$banner_config['file_name'] = $banner_name = rand().'_'.str_replace(' ', '_', $_FILES['banner']['name']);
-			$banner_config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/';
-
-			$this->upload->initialize($banner_config);
-			if ( ! $this->upload->do_upload('banner'))
-				return false;
-
-			//print_r($this->upload->display_errors());
-
-			$data['cover_photo'] = $banner_name;
-		}
-
-		$data['project_id'] = $this->project->id;
-		$data['name'] = $post['sponsor_name'];
-		$data['about_us'] = $post['about_us'];
-
+		);
 		$this->db->set($data);
-		$this->db->where('id', $post['sponsorId']);
-		$this->db->update('sponsor_booth');
+		$this->db->where('id', $post['userId']);
+		$this->db->update('user');
 
-		return ($this->db->affected_rows() == 0) ? false : true;
+		if ($this->db->affected_rows() > 0)
+		{
+			$user_id = $post['userId'];
+
+			$this->db->where('project_id', $this->project->id);
+			$this->db->where('user_id', $user_id);
+			$this->db->delete('user_project_access');
+
+			if (isset($post['attendee_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'attendee'));
+			if (isset($post['presenter_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'presenter'));
+			if (isset($post['moderator_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'moderator'));
+			if (isset($post['admin_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'admin'));
+			if (isset($post['exhibitor_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'exhibitor'));
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public function delete($id)

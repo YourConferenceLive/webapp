@@ -163,7 +163,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
 				session = JSON.parse(session);
-				console.log(session);
 
 				$('#sessionId').val(session.id);
 				$('#sessionName').val(session.name);
@@ -189,7 +188,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$.each(session.presenters, function(key, presenter){
 					$('select[name="sessionPresenters[]"] option[value="'+presenter.id+'"]').prop('selected', true);
 					$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
-					//$('#bootstrap-duallistbox-selected-list_sessionPresenters').append('<option value="'+presenter.id+'">'+presenter.name+' '+presenter.surname+' ('+presenter.email+')</option>');
 				});
 
 				$('#save-session').html('<i class="fas fa-save"></i> Save');

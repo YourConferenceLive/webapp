@@ -136,8 +136,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#password').val('********');
 				$('#password').prop('disabled', true);
 
-				//$('#about_us').val(sponsor.about_us);
-				//$('#sponsorId').val(sponsor.id);
+				$('#first_name').val(user.name);
+				$('#surname').val(user.surname);
+
+				$('#attendee_access, #presenter_access, #moderator_access, #admin_access, #exhibitor_access').prop('checked', false);
+				$.each(user.accesses, function(key, access){
+					$('#'+access.level+'_access').prop('checked', true);
+				});
 
 				$('#save-user').html('<i class="fas fa-save"></i> Save');
 
