@@ -67,7 +67,7 @@
 								<div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
 
 									<div class="form-group">
-										<label>Select booth admins from the box on the left</label>
+										<label>Select booth admins from the box on the left</label><br>
 										<label><small>(You must add booth admins with <badge id="exhibitorBadge" class="badge badge-primary mr-1" style="background-color:#9409d2;"><i class="fas fa-child"></i> Exhibitor</badge> privilege in <a class="btn btn-xs btn-secondary ml-1 mr-1" href="<?=$this->project_url?>/admin/users"><i class="fas fa-users"></i> Users</a> list in order to list them here)</small></label>
 										<select multiple="multiple" size="10" name="boothAdmins[]" title="boothAdmins[]">
 											<?php foreach ($exhibitors as $exhibitor): ?>

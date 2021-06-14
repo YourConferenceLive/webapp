@@ -210,7 +210,7 @@ class Users_Model extends CI_Model
 		$this->db->select('id, name, surname, email, active');
 		$this->db->from('user');
 		$this->db->where('id IN ('.$user_ids.')');
-		$this->db->order_by("id", "desc");
+		$this->db->order_by('name', 'asc');
 		$users = $this->db->get();
 		if ($users->num_rows() > 0)
 			return $users->result();

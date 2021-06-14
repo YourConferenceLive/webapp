@@ -268,7 +268,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+session.id+
 					'	</td>' +
 					'	<td>' +
-					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("dddd - Do of MMM")+
+					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("MMMM Do (dddd)")+
 					'	</td>' +
 					'	<td>' +
 					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+

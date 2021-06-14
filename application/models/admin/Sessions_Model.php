@@ -217,8 +217,10 @@ class Sessions_Model extends CI_Model
 		$this->db->select('user.*');
 		$this->db->from('user');
 		$this->db->join('user_project_access', 'user_project_access.user_id = user.id');
+		$this->db->where('user_project_access.level', 'presenter');
 		$this->db->where('user_project_access.project_id', $this->project->id);
 		$this->db->group_by('user.id');
+		$this->db->order_by('user.name', 'asc');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();

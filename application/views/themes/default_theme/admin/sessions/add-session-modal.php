@@ -163,7 +163,8 @@
 
 								<div class="tab-pane fade" id="presentersTabContents" role="tabpanel" aria-labelledby="presentersTab">
 									<div class="form-group">
-										<label>Select presenters from the box on the left</label>
+										<label>Select presenters from the box on the left</label><br>
+										<label><small>(You must add presenters with <badge id="presenterBadge" class="badge badge-primary mr-1" style="background-color:#228893;"><i class="fas fa-id-card"></i> Presenter</badge> privilege in <a class="btn btn-xs btn-secondary ml-1 mr-1" href="<?=$this->project_url?>/admin/users"><i class="fas fa-users"></i> Users</a> list in order to list them here)</small></label>
 										<select box-id="sessionPresenters" multiple="multiple" size="10" name="sessionPresenters[]" title="sessionPresenters[]">
 											<?php if (isset($presenters)): ?>
 												<?php foreach ($presenters as $presenter): ?>
@@ -193,6 +194,10 @@
 <script>
 
 	$(function () {
+
+		$('#presenterBadge').css('background-color', access_color_codes['presenter']);
+		$('#presenterBadge').html('<i class="'+access_icons['presenter']+'"></i> Presenter');
+
 		$('#sessionDescription')
 				.summernote
 				({
