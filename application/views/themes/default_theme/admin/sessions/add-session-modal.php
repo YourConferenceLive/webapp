@@ -188,7 +188,7 @@
 <script>
 
 	$(function () {
-		$('#sessionDescription, #sessionAgenda')
+		$('#sessionDescription')
 				.summernote
 				({
 					placeholder: $('#sessionDescription').attr('placeholder'),
