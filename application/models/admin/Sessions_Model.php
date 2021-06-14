@@ -233,6 +233,7 @@ class Sessions_Model extends CI_Model
 		$this->db->join('session_presenters', 'session_presenters.presenter_id = user.id');
 		$this->db->where('session_presenters.session_id', $session_id);
 		$this->db->group_by('user.id');
+		$this->db->order_by('user.name', 'asc');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();
