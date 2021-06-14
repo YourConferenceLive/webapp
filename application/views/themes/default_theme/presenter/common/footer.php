@@ -17,9 +17,9 @@ $ci_method = $this->router->fetch_method();
 >
 	<strong>Copyright &copy; 2021 <a href="https://yourconference.live">Your Conference Live</a>. </strong>
 	All rights reserved.
-<!--	<div class="float-right d-none d-sm-inline-block">-->
-<!--		<b>Version</b> 3.1.0-->
-<!--	</div>-->
+	<div id="attendeesOnline" class="float-right d-none d-sm-inline-block"> <!-- Filled by JS only in sessions/view pages -->
+
+	</div>
 </footer>
 </div>
 <!-- ./wrapper -->

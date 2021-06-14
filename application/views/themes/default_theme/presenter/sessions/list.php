@@ -50,21 +50,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>End Time</th>
 									<th>Duration</th>
 									<th>Name</th>
-									<th>Actions</th>
+									<th>Join Zoom</th>
+									<th>Session Presentation</th>
 								</tr>
 								</thead>
 								<tbody>
 								<?php foreach ($sessions as $session): ?>
 									<tr>
 										<td><?=$session->id?></td>
-										<td><?=date("l - jS M", strtotime($session->start_date_time))?></td>
-										<td><?=date("g:iA", strtotime($session->start_date_time))?></td>
-										<td><?=date("g:iA", strtotime($session->end_date_time))?></td>
+										<td><?=date("F jS, l", strtotime($session->start_date_time))?></td>
+										<td><?=date("g:iA", strtotime($session->start_date_time))?> EST</td>
+										<td><?=date("g:iA", strtotime($session->end_date_time))?> EST</td>
 										<td><?=round(abs(strtotime($session->end_date_time) - strtotime($session->start_date_time)) / 60,2). " Minutes"?></td>
 										<td><?=$session->name?></td>
 										<td>
+											<a href="#">
+												<button class="btn btn-sm btn-info"><i class="fas fa-video"></i> Zoom</button>
+											</a>
+										</td>
+										<td>
 											<a href="<?=$this->project_url.'/presenter/sessions/view/'.$session->id?>">
-												<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>
+												<button class="btn btn-sm btn-primary"><i class="fas fa-tv"></i> Join</button>
 											</a>
 										</td>
 									</tr>
@@ -109,6 +115,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			"info": true,
 			"autoWidth": false,
 			"responsive": true,
+
+			"order": [[ 1, "desc" ]]
 		});
 	});
 </script>

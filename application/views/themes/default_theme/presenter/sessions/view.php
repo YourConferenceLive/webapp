@@ -281,6 +281,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		startsIn();
 		$('#presenter_timer').show();
 
+		$('#attendeesOnline').html('<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees watching this session"><i class="fas fa-eye"></i> 0</span>');
+		$('[data-toggle="tooltip"]').tooltip()
 
 	});
 

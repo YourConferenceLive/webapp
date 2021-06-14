@@ -31,7 +31,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/toastr/toastr.min.css">
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/toastr/toastr.min.js"></script>
 	<!-- SweetAlert -->
-	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/sweetalert2/sweetalert2.css">
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/sweetalert2/sweetalert2.all.js"></script>
 	<!-- AdminLTE App -->
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/dist/js/adminlte.js"></script>
 
