@@ -11,33 +11,67 @@
 			<div class="modal-body">
 
 				<form id="createSponsorForm">
-					<div class="form-group">
-						<label>Sponsor name</label>
-						<input name="sponsor_name" id="sponsor_name" class="form-control form-control-lg" type="text" placeholder="Sponsor name">
-					</div>
 
-					<div class="form-group">
-						<label>About us</label>
-						<textarea name="about_us" id="about_us" class="form-control" rows="5" placeholder="About the sponsor" ></textarea>
-					</div>
+					<div class="card card-primary card-outline card-tabs">
+						<div class="card-header p-0 pt-1 border-bottom-0">
+							<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
 
-					<div class="form-group">
-						<label>Logo</label>
-						<div class="custom-file">
-							<input name="logo" id="logo" type="file" class="custom-file-input">
-							<label id="logo_label" class="custom-file-label" for="logo"></label>
+								<li class="nav-item">
+									<a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true">General</a>
+								</li>
+
+								<li class="nav-item">
+									<a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Admins</a>
+								</li>
+							</ul>
 						</div>
-					</div>
-					<img class="image-preview mb-5" id="logo_preview" src="" style="display: none;" width="75px">
+						<div class="card-body">
+							<div class="tab-content" id="custom-tabs-three-tabContent">
 
-					<div class="form-group">
-						<label>Banner</label>
-						<div class="custom-file">
-							<input name="banner" id="banner" type="file" class="custom-file-input">
-							<label id="banner_label" class="custom-file-label" for="banner"></label>
+								<div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+									<div class="form-group">
+										<label>Sponsor name</label>
+										<input name="sponsor_name" id="sponsor_name" class="form-control form-control-lg" type="text" placeholder="Sponsor name">
+									</div>
+
+									<div class="form-group">
+										<label>About us</label>
+										<textarea name="about_us" id="about_us" class="form-control" rows="5" placeholder="About the sponsor" ></textarea>
+									</div>
+
+									<div class="form-group">
+										<label>Logo</label>
+										<div class="custom-file">
+											<input name="logo" id="logo" type="file" class="custom-file-input">
+											<label id="logo_label" class="custom-file-label" for="logo"></label>
+										</div>
+									</div>
+									<img class="image-preview mb-5" id="logo_preview" src="" style="display: none;" width="75px">
+
+									<div class="form-group">
+										<label>Banner</label>
+										<div class="custom-file">
+											<input name="banner" id="banner" type="file" class="custom-file-input">
+											<label id="banner_label" class="custom-file-label" for="banner"></label>
+										</div>
+									</div>
+									<img class="image-preview" id="banner_preview" src="" style="display: none;" width="75px">
+								</div>
+
+								<div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
+
+									<div class="form-group">
+										<label>Select booth admins from the box on the left</label>
+										<select multiple="multiple" size="10" name="boothAdmins[]" title="boothAdmins[]">
+											<option></option>
+										</select>
+									</div>
+
+								</div>
+							</div>
 						</div>
+						<!-- /.card -->
 					</div>
-					<img class="image-preview" id="banner_preview" src="" style="display: none;" width="75px">
 
 					<input type="hidden" id="sponsorId" name="sponsorId" value="0">
 				</form>
@@ -52,6 +86,11 @@
 </div>
 
 <script>
+
+	$('select[name="boothAdmins[]"]').bootstrapDualListbox({
+		selectorMinimalHeight : 300
+	});
+
 	$('#logo, #banner').on('change',function(){
 		let item = $(this);
 		let fileName = $(this).val();

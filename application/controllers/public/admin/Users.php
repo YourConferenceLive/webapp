@@ -12,7 +12,7 @@ class Users extends CI_Controller
 
 		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 
-		$this->load->model('admin/Users_Model', 'users');
+		$this->load->model('Users_Model', 'users');
 	}
 
 	public function index()

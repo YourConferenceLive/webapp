@@ -77,6 +77,8 @@ class Users_Model extends CI_Model
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'moderator'));
 			if (isset($post['admin_access']))
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'admin'));
+			if (isset($post['exhibitor_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'exhibitor'));
 
 			return true;
 		}
@@ -172,5 +174,30 @@ class Users_Model extends CI_Model
 			->get()
 			->num_rows()
 			) > 0;
+	}
+
+	public function getAllAttendees()
+	{
+		$user_ids = $this->db
+			->select('user_id')
+			->where('level', 'attendee')
+			->where('project_id', $this->project->id)
+			->group_by('user_id')
+			->get_compiled_select('user_project_access', true);
+
+		$this->db->select('id, name, surname, email, active');
+		$this->db->from('user');
+		$this->db->where('id IN ('.$user_ids.')');
+		$this->db->order_by("id", "desc");
+		$users = $this->db->get();
+		if ($users->num_rows() > 0)
+		{
+			foreach ($users->result() as $user)
+				$user->accesses = $this->getProjectAccesses($user->id);
+
+			return $users->result();
+		}
+
+		return new stdClass();
 	}
 }

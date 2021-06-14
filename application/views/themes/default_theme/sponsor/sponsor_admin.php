@@ -6,12 +6,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //exit;
 ?>
 
-<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=2" rel="stylesheet">
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js"></script>
 
 <!-- Full Calendar-->
-<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.2.0/main.min.css' rel='stylesheet' />
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.2.0/main.min.js'></script>
+<link rel="stylesheet" href="https://localhost/adminLTE/plugins/fullcalendar/main.css">
+<script src="https://localhost/adminLTE/plugins/moment/moment.min.js"></script>
+<script src="https://localhost/adminLTE/plugins/fullcalendar/main.js"></script>
 
 <!-- Date Range Picker-->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -145,7 +146,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<div class="row mb-5 d-flex flex-row justify-content-between rounded mb-4">
 			<!--				############      GROUP CHAT #####################-->
-			<div class="col-lg-4 col-md-12 col-sm-12 mb-3">
+			<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3">
 				<div class="group-chat card ">
 					<div class="group-chat-header card-header text-white bg-blue ">
 						<div class="row">
@@ -181,7 +182,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<!--				############     END GROUP CHAT #####################-->
 			<!--				############# SPONSOR CHAT ##########################-->
 
-			<div class="col-xl-7 col-lg-8 col-md-12 ">
+			<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
 				<div class="sponsor-card card ">
 					<div class="card-header bg-blue text-white"> Attendees <i class="far fa-comments"> </i>
 						<span class="btn btn-outline-info fa fa-bars fa-2x float-left show-attendees mr-4 text-white" style="cursor: pointer;"></span>
@@ -190,25 +191,63 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div >
 						<div class="collapse show" id="collapse-sponsor-chat">
 							<div class="row ">
-								<div class="col-lg-4 col-xs-3 col-md-8 col-sm-12 w-100">
-									<div class="card w-md-100 overflow-auto attendee-list position-absolute ">
+								<div class="col-4 pr-0">
+									<div class="card w-md-100 overflow-auto attendee-list">
 										<div class="card-header ">
 											<div class="input-group ">
-												<input type="text" id="search-attendee-chat" class="form-control shadow-none"><span	class="btn fas fa-times position-absolute text-danger pt-2" id="clear-search" style="right: 40px; cursor: pointer"></span>
+												<input type="text" id="search-attendee-chat" class="form-control shadow-none">
 												<div class="input-group-append"><span class="btn form-control bg-blue" aria-hidden="true" ><i class="fas fa-search text-white"></i></span></div>
 											</div>
 										</div>
 
-										<div class="card-body attendee-list-body pl-0">
-											<!--<div class="card ml-3 my-1 btn pl-1"><div class="card-header p-0 bg-white border-0 btn btn-xs text-right mr-3"><span class=" fa fa-user text-primary position-absolute "></span></div><div class="card-body p-0"><a class="float-left"><img class=" btn p-0 " src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></a><div class="attendee-name mt-2 text-left ">Rexter Dayuta</div></div></div>-->
+										<div class="card-body attendee-list-body p-0">
+											<span><strong>Attendees in your booth</strong></span>
+											<ul class="list-group mb-3">
+												<li class="list-group-item" style="cursor: pointer;">
+													<div class="row">
+														<div class="col-1 p-0">
+															<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">
+														</div>
+														<div class="col-9 p-0 pl-2">
+															John Doe <i class="fas fa-dot-circle" style="color: springgreen;"></i>
+														</div>
+														<div class="col-2 p-0 pl-1">
+															<button class="btn btn-info btn-sm"><i class="fas fa-video"></i></button>
+														</div>
+													</div>
+												</li>
+											</ul>
+
+											<span><strong>Other attendees</strong></span>
+											<ul class="list-group">
+												<?php if (empty($attendees)): ?>
+													<li class="list-group-item">
+														Empty
+													</li>
+												<? endif; ?>
+												<?php foreach ($attendees as $attendee): ?>
+													<li class="list-group-item" style="cursor: pointer;">
+														<div class="row">
+															<div class="col-1 p-0">
+																<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">
+															</div>
+															<div class="col-10 p-0 pl-2">
+																<?=$attendee->name?> <?=$attendee->surname?> <i class="fas fa-dot-circle" style="color: grey;"></i>
+															</div>
+															<div class="col-1 p-0 pl-1">
+<!--																<i class="fas fa-video"></i>-->
+															</div>
+														</div>
+													</li>
+												<?php endforeach; ?>
+											</ul>
 										</div>
-										<div class="footer"></div>
 
 									</div>
 
 								</div>
 								<!--				############# SPONSOR CHAT ##########################-->
-								<div class="col-lg-8 float-right ">
+								<div class="col-8 pl-0">
 									<div class="card sponsor-card">
 										<div class="sponsor-chat-header card-header text-white bg-blue " >
 
@@ -297,7 +336,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="card current-bookings w-100" >
 					<div class="card-header p-0  bg-light-green btn booking-header" >
 						<div class="m-2">
-							<span class="h5 float-left" style="color: #3C763D"> <i class="far fa-calendar-check fa-2x"></i> 	<?= (isset($booth->name) && !empty ($booth->name))?$booth->name:'' ?> Current Bookings </span>
+							<span class="h5 float-left" style="color: #3C763D"> <i class="far fa-calendar-check fa-2x"></i>Current Bookings </span>
 							<span class="btn float-right fas fa-minus ml-5 text-green btn-outline-info mt-1" id="btn-collapse-booking" data-toggle="collapse" data-target="#collapse-booking"></span>
 						</div>
 					</div>
@@ -361,7 +400,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  var date_now = "<?=date('Y-m-d H:i:s')?>";
  var current_id = "<?=$this->session->userdata('sponsor_id')?>";
  var current_booth_id = "<?=$this->session->userdata('booth_id')?>";
- var sponsor_name = "<?=$booth->sponsor_name?>";
+ var sponsor_name = "<?=$booth->name?>";
 
 </script>
 <script>
@@ -370,6 +409,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('.attendee-list').toggle('transisition');
 		});
+
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			initialView: 'dayGridMonth'
+		});
+		calendar.render();
 	});
 
 </script>

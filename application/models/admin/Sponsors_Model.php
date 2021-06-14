@@ -144,4 +144,18 @@ class Sponsors_Model extends CI_Model
 
 		return true;
 	}
+
+	public function getAllExhibitors()
+	{
+		$this->db->select('users.*');
+		$this->db->from('users');
+		$this->db->join();
+		$this->db->where('project_id', $this->project->id);
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
 }

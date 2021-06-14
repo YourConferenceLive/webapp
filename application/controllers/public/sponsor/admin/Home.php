@@ -22,18 +22,22 @@ class Home extends CI_Controller
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->helper('string');
 		$this->load->model('sponsor/Sponsor_Model', 'sponsor');
+
+		$this->load->model('Users_Model', 'users');
 	}
 
 	public function index()
 	{
+		$menu_data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
+
 		$data['booth'] = $this->sponsor->getBoothData($this->booth_id);
-		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$data['attendees'] = $this->users->getAllAttendees();
 
 		$this->load
-			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/menu-bar", $menu_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/sponsor_admin", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/footer", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/footer")
 		;
 
 	}

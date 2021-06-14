@@ -58,28 +58,34 @@
 						<div class="card-body">
 
 							<div class="row">
-								<div class="col-3">
+								<div class="col-2 offset-1">
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="attendee_access" id="attendee_access" checked="">
 										<label for="attendee_access" class="custom-control-label">Attendee</label>
 									</div>
 								</div>
-								<div class="col-3">
+								<div class="col-2">
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="presenter_access" id="presenter_access">
 										<label for="presenter_access" class="custom-control-label">Presenter</label>
 									</div>
 								</div>
-								<div class="col-3">
+								<div class="col-2">
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="moderator_access" id="moderator_access">
 										<label for="moderator_access" class="custom-control-label">Moderator</label>
 									</div>
 								</div>
-								<div class="col-3">
+								<div class="col-2">
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="admin_access" id="admin_access">
 										<label for="admin_access" class="custom-control-label">Admin</label>
+									</div>
+								</div>
+								<div class="col-2">
+									<div class="custom-control custom-checkbox">
+										<input class="custom-control-input" type="checkbox" name="exhibitor_access" id="exhibitor_access">
+										<label for="exhibitor_access" class="custom-control-label">Exhibitor</label>
 									</div>
 								</div>
 							</div>
