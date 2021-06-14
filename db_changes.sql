@@ -9,3 +9,5 @@ ALTER TABLE `your_conference_live`.`sponsor_booth_admin` ADD UNIQUE `admin_per_b
 
 ALTER TABLE `sessions` ADD `zoom_link` TEXT NULL DEFAULT NULL AFTER `presenter_embed_code`;
 
+ALTER TABLE `sponsor_booth` ADD `created_on` DATETIME NULL AFTER `level`, ADD `created_by` INT NULL AFTER `created_on`, ADD `updated_on` DATETIME NULL AFTER `created_by`, ADD `updated_by` INT NULL AFTER `updated_on`;
+

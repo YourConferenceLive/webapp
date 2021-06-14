@@ -197,4 +197,43 @@ class Users_Model extends CI_Model
 
 		return new stdClass();
 	}
+
+	public function getAllExhibitors()
+	{
+		$user_ids = $this->db
+			->select('user_id')
+			->where('level', 'exhibitor')
+			->where('project_id', $this->project->id)
+			->group_by('user_id')
+			->get_compiled_select('user_project_access', true);
+
+		$this->db->select('id, name, surname, email, active');
+		$this->db->from('user');
+		$this->db->where('id IN ('.$user_ids.')');
+		$this->db->order_by("id", "desc");
+		$users = $this->db->get();
+		if ($users->num_rows() > 0)
+			return $users->result();
+
+		return new stdClass();
+	}
+
+	public function getExhibitorsByBoothId($booth_id)
+	{
+		$user_ids = $this->db
+			->select('user_id')
+			->where('booth_id', $booth_id)
+			->group_by('user_id')
+			->get_compiled_select('sponsor_booth_admin', true);
+
+		$this->db->select('id, name, surname, email, active');
+		$this->db->from('user');
+		$this->db->where('id IN ('.$user_ids.')');
+		$this->db->order_by("id", "desc");
+		$users = $this->db->get();
+		if ($users->num_rows() > 0)
+			return $users->result();
+
+		return new stdClass();
+	}
 }

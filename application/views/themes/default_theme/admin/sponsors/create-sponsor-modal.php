@@ -1,3 +1,9 @@
+<?php
+//echo "<pre>";
+//print_r($exhibitors); exit;
+//echo "</pre>";
+//exit;
+?>
 <!--Create Sponsor Modal-->
 <div class="modal fade" id="createSponsorModal" tabindex="-1" role="dialog" aria-labelledby="createSponsorModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
@@ -63,7 +69,9 @@
 									<div class="form-group">
 										<label>Select booth admins from the box on the left</label>
 										<select multiple="multiple" size="10" name="boothAdmins[]" title="boothAdmins[]">
-											<option></option>
+											<?php foreach ($exhibitors as $exhibitor): ?>
+												<option value="<?=$exhibitor->id?>"><?=$exhibitor->name?> <?=$exhibitor->surname?> (<?=$exhibitor->email?>)</option>
+											<?php endforeach; ?>
 										</select>
 									</div>
 
@@ -193,10 +201,9 @@
 				{
 					listSponsors();
 					toastr.success('Sponsor updated');
-					$('#createSponsorModal').modal('hide');
 
 				}else{
-					toastr.error("Error");
+					toastr.warning("No changes made");
 				}
 			}
 		});

@@ -17,23 +17,28 @@ class Sponsors_Model extends CI_Model
 		$this->db->from('sponsor_booth');
 		$this->db->where('project_id', $this->project->id);
 		$this->db->order_by("id", "desc");
-		$sessions = $this->db->get();
-		if ($sessions->num_rows() > 0)
-			return $sessions->result();
+		$booth = $this->db->get();
+		if ($booth->num_rows() > 0)
+			return $booth->result();
 
 		return new stdClass();
 	}
 
 	public function getById($id)
 	{
+		$this->load->model('Users_Model', 'users');
+
 		$this->db->select('*');
 		$this->db->from('sponsor_booth');
 		$this->db->where('project_id', $this->project->id);
 		$this->db->where('id', $id);
 		$this->db->order_by("id", "desc");
-		$sessions = $this->db->get();
-		if ($sessions->num_rows() > 0)
-			return $sessions->result()[0];
+		$booth = $this->db->get();
+		if ($booth->num_rows() > 0)
+		{
+			$booth->result()[0]->admins = $this->users->getExhibitorsByBoothId($id);
+			return $booth->result()[0];
+		}
 
 		return new stdClass();
 	}
@@ -78,15 +83,32 @@ class Sponsors_Model extends CI_Model
 			'cover_photo' => $banner_name
 
 		);
-		$this->db->insert('sponsor_booth', $data);
 
-		return ($this->db->affected_rows() == 0) ? false : true;
+		$this->db->insert('sponsor_booth', $data);
+		
+		if ($this->db->affected_rows() > 0)
+		{
+			$booth_id = $this->db->insert_id();
+
+			if (isset($post['boothAdmins']) && !empty($post['boothAdmins']))
+			{
+				foreach ($post['boothAdmins'] as $admin_id)
+					$this->db->insert('sponsor_booth_admin', array('user_id' => $admin_id, 'booth_id' => $booth_id));
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public function update()
 	{
 		$post = $this->input->post();
 		$data = array();
+
+		if (!isset($post['sponsorId']) || $post['sponsorId'] == 0)
+			return array('status' => 'failed', 'msg'=>'No booth(ID) selected', 'technical_data'=>'');
 
 		// Upload files if set
 		if (isset($_FILES['logo']) && $_FILES['logo']['name'] != '')
@@ -121,12 +143,30 @@ class Sponsors_Model extends CI_Model
 		$data['project_id'] = $this->project->id;
 		$data['name'] = $post['sponsor_name'];
 		$data['about_us'] = $post['about_us'];
+		$data['updated_on'] = date('Y-m-d H:i:s');
+		$data['updated_by'] = $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'];
 
 		$this->db->set($data);
 		$this->db->where('id', $post['sponsorId']);
 		$this->db->update('sponsor_booth');
 
-		return ($this->db->affected_rows() == 0) ? false : true;
+		if ($this->db->affected_rows() > 0)
+		{
+			$booth_id = $post['sponsorId'];
+
+			$this->db->where('booth_id', $booth_id);
+			$this->db->delete('sponsor_booth_admin');
+
+			if (isset($post['boothAdmins']) && !empty($post['boothAdmins']))
+			{
+				foreach ($post['boothAdmins'] as $admin_id)
+					$this->db->insert('sponsor_booth_admin', array('user_id' => $admin_id, 'booth_id' => $booth_id));
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public function delete($id)
@@ -143,19 +183,6 @@ class Sponsors_Model extends CI_Model
 		$this->db->delete('sponsor_booth', array('id' => $id));
 
 		return true;
-	}
-
-	public function getAllExhibitors()
-	{
-		$this->db->select('users.*');
-		$this->db->from('users');
-		$this->db->join();
-		$this->db->where('project_id', $this->project->id);
-		$sessions = $this->db->get();
-		if ($sessions->num_rows() > 0)
-			return $sessions->result();
-
-		return new stdClass();
 	}
 
 }

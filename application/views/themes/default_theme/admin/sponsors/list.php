@@ -100,6 +100,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#logo_label').text('');
 			$('#banner_preview').hide();
 			$('#banner_label').text('');
+
+			$('select[name="boothAdmins[]"] option').prop('selected', false);
+			$('select[name="boothAdmins[]"]').bootstrapDualListbox('refresh', true);
+
 			$('#save-sponsor').html('<i class="fas fa-plus"></i> Create');
 
 			$('#createSponsorModal').modal({
@@ -137,6 +141,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#logo_preview').show();
 				$('#banner_label').text((sponsor.cover_photo).substring((sponsor.cover_photo).indexOf('_') + 1));
 				$('#banner_preview').show();
+
+				$('select[name="boothAdmins[]"] option').prop('selected', false);
+				$('select[name="boothAdmins[]"]').bootstrapDualListbox('refresh', true);
+				$.each(sponsor.admins, function(key, admins){
+					$('select[name="boothAdmins[]"] option[value="'+admins.id+'"]').prop('selected', true);
+				});
+				$('select[name="boothAdmins[]"]').bootstrapDualListbox('refresh', true);
 
 				$('#save-sponsor').html('<i class="fas fa-save"></i> Save');
 

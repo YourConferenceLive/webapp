@@ -13,18 +13,21 @@ class Sponsors extends CI_Controller
 		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$this->load->model('admin/Sponsors_Model', 'sponsors');
+		$this->load->model('Users_Model', 'users');
 	}
 
 	public function index()
 	{
 		$sidebar_data['user'] = $this->user;
 
+		$createModal['exhibitors'] = $this->users->getAllExhibitors();
+
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sponsors/list")
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/sponsors/create-sponsor-modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sponsors/create-sponsor-modal", $createModal)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
