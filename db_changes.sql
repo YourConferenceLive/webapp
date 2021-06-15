@@ -188,4 +188,15 @@ alter table user add photo varchar(255) null after password;
 
 ALTER TABLE `sessions` ADD `created_by` INT NOT NULL AFTER `end_date_time`, ADD `created_on` DATETIME NOT NULL AFTER `created_by`, ADD `updated_by` INT NOT NULL AFTER `created_on`, ADD `updated_on` DATETIME NOT NULL AFTER `updated_by`;
 
+create table session_keynote_speakers
+(
+    id int auto_increment
+        primary key,
+    speaker_id int not null,
+    session_id int not null,
+    added_on datetime not null,
+    added_by int not null
+);
+
+
 
