@@ -73,7 +73,8 @@ class Evaluation_model extends CI_Model
 				'question_id' =>$item,
 				'answer' => "$answer",
 				'project_id' => $this->project->id,
-				'evaluation_id' => $post['evaluation_id']
+				'evaluation_id' => $post['evaluation_id'],
+				'date_time'=>date('Y-m-d H:i:s')
 			);
 			if ($this->check_answer_exist($post['evaluation_id'], $item)) {
 				$this->db->insert('evaluation_answer', $fields_array);
