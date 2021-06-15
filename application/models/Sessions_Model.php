@@ -8,7 +8,7 @@ class Sessions_Model extends CI_Model
 	{
 		parent::__construct();
 
-		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 		$this->load->model('Logger_Model', 'logger');
 	}
 
@@ -107,7 +107,9 @@ class Sessions_Model extends CI_Model
 			'presenter_embed_code' => $session_data['slidesHtml'],
 			'zoom_link' => $session_data['zoomLink'],
 			'start_date_time' => $start_time_mysql,
-			'end_date_time' => $end_time_mysql
+			'end_date_time' => $end_time_mysql,
+			'created_by' => $this->user->user_id,
+			'created_on' => date('Y-m-d H:i:s')
 		);
 
 		$this->db->insert('sessions', $data);
@@ -122,7 +124,7 @@ class Sessions_Model extends CI_Model
 					'presenter_id' => $presenter_id,
 					'session_id' => $session_id,
 					'added_on' => date('Y-m-d H:i:s'),
-					'added_by' => $this->user['user_id'],
+					'added_by' => $this->user->user_id,
 				);
 
 				$this->db->insert('session_presenters', $data);
@@ -174,7 +176,9 @@ class Sessions_Model extends CI_Model
 			'presenter_embed_code' => $session_data['slidesHtml'],
 			'zoom_link' => $session_data['zoomLink'],
 			'start_date_time' => $start_time_mysql,
-			'end_date_time' => $end_time_mysql
+			'end_date_time' => $end_time_mysql,
+			'updated_by' => $this->user->user_id,
+			'updated_on' => date('Y-m-d H:i:s')
 		);
 
 		$this->db->set($data);
@@ -196,7 +200,7 @@ class Sessions_Model extends CI_Model
 						'presenter_id' => $presenter_id,
 						'session_id' => $session_id,
 						'added_on' => date('Y-m-d H:i:s'),
-						'added_by' => $this->user['user_id'],
+						'added_by' => $this->user->user_id,
 					);
 
 					$this->db->insert('session_presenters', $data);
