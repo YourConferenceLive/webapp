@@ -183,3 +183,7 @@ CREATE TABLE `session_host_chat` ( `id` INT NOT NULL AUTO_INCREMENT , `session_i
 ALTER TABLE `session_host_chat` ADD `date_time` DATETIME NOT NULL AFTER `chat_text`;
 ALTER TABLE `session_host_chat` CHANGE `chat_from` `from_id` INT(11) NOT NULL;
 ALTER TABLE `session_host_chat` CHANGE `chat_text` `message` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+
+alter table user add photo varchar(255) null after password;
+
+
