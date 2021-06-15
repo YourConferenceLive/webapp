@@ -186,4 +186,6 @@ ALTER TABLE `session_host_chat` CHANGE `chat_text` `message` TEXT CHARACTER SET 
 
 alter table user add photo varchar(255) null after password;
 
+ALTER TABLE `sessions` ADD `created_by` INT NOT NULL AFTER `end_date_time`, ADD `created_on` DATETIME NOT NULL AFTER `created_by`, ADD `updated_by` INT NOT NULL AFTER `created_on`, ADD `updated_on` DATETIME NOT NULL AFTER `updated_by`;
+
 
