@@ -52,7 +52,7 @@ $ci_method = $this->router->fetch_method();
 					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/relaxation_zone"><strong>Relaxation Zone</strong></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#"><strong>Evaluation</strong></a>
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/evaluation"><strong>Evaluation</strong></a>
 				</li>
 
 				<li class="nav-item dropdown">
