@@ -37,9 +37,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="lobby-content">
 	<div class="custom-container">
-		<div class="left">
-			<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_left.png">
-		</div>
 		<div class="middle">
 			<div class="top-banner">
 				<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_top.png">
@@ -62,6 +59,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="bottom-peoples">
 				<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/peoples.png">
 			</div>
+		</div>
+		<div class="left">
+			<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_left.png">
 		</div>
 		<div class="right">
 			<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_right.png">
