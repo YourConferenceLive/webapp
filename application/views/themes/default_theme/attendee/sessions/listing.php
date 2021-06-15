@@ -22,14 +22,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<div class="col-md-9 col-sm-12 pl-0 pt-2">
 							<div class="col-12 text-md-left text-sm-center">
-								<small><?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?></small>
+								<?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?> EST
 								<h4><?=$session->name?></h4>
 								<p><?=$session->description?></p>
 							</div>
 							<div class="col-12 text-md-right text-sm-center" style="position: absolute;bottom: 0;">
 								<a class="btn btn-sm btn-primary m-1 rounded-0"><i class="fas fa-clipboard-list"></i> Agenda</a>
-								<a class="btn btn-sm btn-info m-1 rounded-0"><i class="fas fa-calendar-check"></i> Add to itinerary</a>
-								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Attend</a>
+								<a class="btn btn-sm btn-info m-1 rounded-0"><i class="fas fa-calendar-check"></i> Add to Briefcase</a>
+								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Join</a>
 							</div>
 						</div>
 					</div>
