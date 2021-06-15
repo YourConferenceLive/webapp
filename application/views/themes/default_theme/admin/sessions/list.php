@@ -49,38 +49,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Day</th>
 									<th>Start Time</th>
 									<th>End Time</th>
+									<th>People</th>
 									<th>Name</th>
 									<th>Actions</th>
 									<th>Manage</th>
 								</tr>
 								</thead>
 								<tbody id="sessionsTableBody">
-								<?php if (isset($sessions)) {
-									foreach ($sessions as $session): ?>
-										<tr>
-											<td><?=$session->id?></td>
-											<td><?=date("l - jS M", strtotime($session->start_date_time))?></td>
-											<td><?=date("g:iA", strtotime($session->start_date_time))?></td>
-											<td><?=date("g:iA", strtotime($session->end_date_time))?></td>
-											<td><?=$session->name?></td>
-											<td>
-												<a href="<?=$this->project_url.'/admin/sessions/view/'.$session->id?>">
-													<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>
-												</a>
 
-											</td>
-											<td>
-												<a href="#">
-													<button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Manage</button>
-													<button id="openPoll" class="btn btn-sm btn-primary">Open Poll</button>
-													<button id="closePoll" class="btn btn-sm btn-primary">Close Poll</button>
-													<button id="openResult" class="btn btn-sm btn-primary">Open Result</button>
-													<button id="openResult" class="btn btn-sm btn-primary">Close Result</button>
-												</a>
-											</td>
-										</tr>
-									<?php endforeach;
-								} ?>
 								</tbody>
 							</table>
 						</div>
@@ -261,22 +237,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$.each(sessions, function(key, session)
 			{
+
+				// Moderators badge
+				let moderatorsList = '';
+				let moderatorsNumber = Object.keys(session.moderators).length;
+				let moderatorsBadgeType = 'badge-danger';
+				if (moderatorsNumber > 0)
+					moderatorsList += '<strong>Moderators List</strong><br><br>';
+				$.each(session.moderators, function(key, moderator)
+				{
+					moderatorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
+				});
+				if (moderatorsNumber > 0)
+					moderatorsBadgeType = 'badge-success';
+				let moderatorsBadge = '<badge class="badge badge-pill '+moderatorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+moderatorsList+'">M ('+moderatorsNumber+')</badge>';
+
+
+				// Keynote Speakers badge
+				let keynoteSpeakersList = '';
+				let keynoteSpeakersNumber = Object.keys(session.keynote_speakers).length;
+				let keynoteSpeakerBadgeType = 'badge-danger';
+				if (keynoteSpeakersNumber > 0)
+					keynoteSpeakersList += '<strong>Keynote Speakers List</strong><br><br>';
+				$.each(session.keynote_speakers, function(key, keynote_speaker)
+				{
+					keynoteSpeakersList += keynote_speaker.name+' '+keynote_speaker.surname+' <br>('+keynote_speaker.email+')<br><br>';
+				});
+				if (keynoteSpeakersNumber > 0)
+					keynoteSpeakerBadgeType = 'badge-success';
+				let keynoteSpeakersBadge = '<badge class="badge badge-pill '+keynoteSpeakerBadgeType+'" data-html="true" data-toggle="tooltip" title="'+keynoteSpeakersList+'">K ('+keynoteSpeakersNumber+')</badge>';
+
+
+				// Presenters badge
 				let presentersList = '';
 				let presentersNumber = Object.keys(session.presenters).length;
-				let badgeType = 'badge-danger';
-
+				let presenterBadgeType = 'badge-danger';
 				if (presentersNumber > 0)
 					presentersList += '<strong>Presenters List</strong><br><br>';
-
 				$.each(session.presenters, function(key, presenter)
 				{
 					presentersList += presenter.name+' '+presenter.surname+' <br>('+presenter.email+')<br><br>';
 				});
-
 				if (presentersNumber > 0)
-					badgeType = 'badge-success';
+					presenterBadgeType = 'badge-success';
+				let presentersBadge = '<badge class="badge badge-pill '+presenterBadgeType+'" data-html="true" data-toggle="tooltip" title="'+presentersList+'">P ('+presentersNumber+')</badge>';
 
-				let presentersBadge = '<badge class="badge badge-pill '+badgeType+'" data-html="true" data-toggle="tooltip" title="'+presentersList+'"><i class="fas fa-user-tag"></i> ('+presentersNumber+')</badge>';
 
 				$('#sessionsTableBody').append(
 					'<tr>' +
@@ -293,7 +298,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
-					'		'+presentersBadge+' '+session.name+
+					'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+
+					'	</td>' +
+					'	<td>' +
+					'		'+session.name+
 					'	</td>' +
 					'	<td>' +
 					'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +
