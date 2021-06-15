@@ -18,7 +18,7 @@ class Sessions extends CI_Controller
 		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$this->load->model('Logger_Model', 'logger');
-		$this->load->model('attendee/Sessions_Model', 'sessions');
+		$this->load->model('Sessions_Model', 'sessions');
 	}
 
 	public function index()

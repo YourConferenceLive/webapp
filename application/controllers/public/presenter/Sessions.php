@@ -10,16 +10,16 @@ class Sessions extends CI_Controller
 		if (!isset($_SESSION['project_sessions']["project_{$this->project->id}"]) || $_SESSION['project_sessions']["project_{$this->project->id}"]['is_presenter'] != 1)
 			redirect(base_url().$this->project->main_route."/presenter/login"); // Not logged-in
 
-		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 
-		$this->load->model('admin/Sessions_Model', 'sessions');
+		$this->load->model('Sessions_Model', 'sessions');
 	}
 
 	public function index()
 	{
 		$sidebar_data['user'] = $this->user;
 
-		$data["sessions"] = $this->sessions->getAllSessionsByPresenter($this->user['user_id']);
+		$data["sessions"] = $this->sessions->getAllSessionsByPresenter($this->user->user_id);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
@@ -32,7 +32,7 @@ class Sessions extends CI_Controller
 
 	public function view($id)
 	{
-		$sidebar_data['user'] = $this->user;
+		//$sidebar_data['user'] = $this->user;
 
 		$session = $this->sessions->getById($id);
 
@@ -42,6 +42,7 @@ class Sessions extends CI_Controller
 
 
 		$data["session"] = $session;
+		$data["user"] = $this->user;
 
 		//$menu_data['host_chat_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_host_chat", '', true);
 		//$menu_data['questions_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_questions.php", '', true);
@@ -51,9 +52,21 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
 			//->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_modal", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_result_modal", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_result_modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")
 		;
 	}
+
+	public function getHostChatsJson($session_id)
+	{
+		echo json_encode($this->sessions->getHostChat($session_id));
+	}
+
+	public function sendHostChat()
+	{
+		echo json_encode($this->sessions->sendHostChat($this->input->post()));
+	}
+
+
 }

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-//echo"<pre>";print_r($session);exit("</pre>");
+//echo"<pre>";print_r($user);exit("</pre>");
 ?>
 <style>
 	html,
@@ -72,40 +72,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab" style="height: 100%;overflow: scroll;">
 
 								<!-- Conversations are loaded here -->
-								<div class="direct-chat-messages" style="height: 100% !important;">
-
-									<!-- Message. Default to the left -->
-									<div class="direct-chat-msg">
-										<div class="direct-chat-infos clearfix">
-											<span class="direct-chat-name float-left">Alexander Pierce</span>
-											<span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
-										</div>
-										<!-- /.direct-chat-infos -->
-										<img class="direct-chat-img" src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user1-128x128.jpg" alt="Message User Image">
-										<!-- /.direct-chat-img -->
-										<div class="direct-chat-text">
-											This is a sample chat text!
-										</div>
-										<!-- /.direct-chat-text -->
-									</div>
-									<!-- /.direct-chat-msg -->
-
-									<!-- Message to the right -->
-									<div class="direct-chat-msg right">
-										<div class="direct-chat-infos clearfix">
-											<span class="direct-chat-name float-right">Sarah Bullock</span>
-											<span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
-										</div>
-										<!-- /.direct-chat-infos -->
-										<img class="direct-chat-img" src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user3-128x128.jpg" alt="Message User Image">
-										<!-- /.direct-chat-img -->
-										<div class="direct-chat-text">
-											This is another sample chat text!
-										</div>
-										<!-- /.direct-chat-text -->
-									</div>
-									<!-- /.direct-chat-msg -->
-
+								<div id="hostChatDiv" class="direct-chat-messages" style="height: 100% !important;">
+									<!-- Automatically filled by the JS:loadAllHostChats() (theme_assets/{theme_name}/js/presenter/sessions/host_chat.js) -->
 								</div>
 
 
@@ -114,9 +82,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<!-- /.direct-chat-pane -->
 
 								<div class="input-group" style="position: absolute;bottom: 5px">
-									<input type="text" name="message" placeholder="Type Message ..." class="form-control">
+									<input id="hostChatNewMessage" type="text" placeholder="Type Message... (Host Chat)" class="form-control">
 									<span class="input-group-append">
-											<button type="button" class="btn btn-primary">Send</button>
+											<button id="sendHostChatBtn" type="button" class="btn btn-primary">Send</button>
 										</span>
 								</div>
 
@@ -295,6 +263,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 
+	let session_id = "<?=$session->id?>";
+
+	let user_id = "<?=$user->user_id?>";
+	let user_name = "<?=$user->name?> <?=$user->surname?>";
+	let user_photo = "<?=$user->photo?>";
+
 	let session_start_datetime = "<?= date('M d, Y', strtotime($session->start_date_time)).' UTC-4' ?>";
 
 	$(function () {
@@ -367,3 +341,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}, 1000);
 	}
 </script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/presenter/sessions/host_chat.js"></script>

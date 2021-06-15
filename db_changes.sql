@@ -5,7 +5,7 @@ ALTER TABLE `sessions` ADD `agenda` TEXT NULL AFTER `description`;
 
 ALTER TABLE `user_project_access` CHANGE `level` `level` ENUM('attendee','moderator','presenter','admin','exhibitor') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `sponsor_booth_admin` DROP `project_id`;
-ALTER TABLE `your_conference_live`.`sponsor_booth_admin` ADD UNIQUE `admin_per_booth` (`user_id`, `booth_id`);
+ALTER TABLE `sponsor_booth_admin` ADD UNIQUE `admin_per_booth` (`user_id`, `booth_id`);
 
 ALTER TABLE `sessions` ADD `zoom_link` TEXT NULL DEFAULT NULL AFTER `presenter_embed_code`;
 
@@ -176,3 +176,10 @@ ALTER TABLE `evaluation_answer`
 COMMIT;
 
 # Rexter - Evaluation Page End
+
+
+# Athul - Session Host Chat
+CREATE TABLE `session_host_chat` ( `id` INT NOT NULL AUTO_INCREMENT , `session_id` INT NOT NULL , `chat_from` INT NOT NULL , `chat_text` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `session_host_chat` ADD `date_time` DATETIME NOT NULL AFTER `chat_text`;
+ALTER TABLE `session_host_chat` CHANGE `chat_from` `from_id` INT(11) NOT NULL;
+ALTER TABLE `session_host_chat` CHANGE `chat_text` `message` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

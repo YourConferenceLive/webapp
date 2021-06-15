@@ -11,8 +11,10 @@ if(!function_exists('global_js'))
 		$js_end_tag = '</script>';
 
 		$js_variables .= "
+			let project_timezone = '{$CI->project_timezone}';
 			let project_url = '{$CI->project_url}';
 			let project_admin_url = '{$CI->project_url}/admin';
+			let project_presenter_url = '{$CI->project_url}/presenter';
 			let ycl_root = '".ycl_root."';
 			
 			let access_color_codes = {'admin':'#e60b2a', 'presenter':'#228893', 'moderator':'#b37f04', 'attendee':'#007bff', 'exhibitor':'#9409d2'};
