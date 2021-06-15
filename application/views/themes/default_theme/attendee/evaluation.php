@@ -41,6 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 	}
 </style>
+<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 <body>
 	<main role="main" class="mx-lg-5 mx-md-0">
 		<div class="container-fluid mb-5" >
@@ -69,16 +70,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<table class="table table-responsive pb-5" style="background-color: white; position: sticky">
 							<thead class="" >
 								<th></th>
-								<th>Strongly Disagree</th>
-								<th>Disagree</th>
-								<th>Neutral</th>
-								<th>Agree</th>
-								<th>Strongly Agree</th>
+								<th class="text-center">Strongly Disagree</th>
+								<th class="text-center">Disagree</th>
+								<th class="text-center">Neutral</th>
+								<th class="text-center">Agree</th>
+								<th class="text-center">Strongly Agree</th>
 							</thead>
 							<tbody>
 							<?php
 
 							foreach ($evaluation->questions as $question) {
+
 								if($question->question_type == 'radio_opt'){
 									?>
 										<tr>
@@ -86,11 +88,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<?=$question->name?><br>
 											<span style="color: #4773C5"><?= $question->translation ?></span>
 										</td>
-											<td class="text-center align-middle "  data-th="Strongly Disagree">	<input value="1" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='1')?'checked':'':''?>  class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  type="radio" data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>" name="answer[<?=$question->id?>]" > </td>
-											<td class="text-center align-middle "  data-th="Disagree ">			<input value="2" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='2')?'checked':'':''?>   class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" type="radio"  data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>" name="answer[<?=$question->id?>]" > </td>
-											<td class="text-center align-middle "  data-th="Neutral ">			<input value="3" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='3')?'checked':'':''?> class="survey_option  <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" type="radio"  data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>" name="answer[<?=$question->id?>]" > </td>
-											<td class="text-center align-middle "  data-th="Agree ">			<input value="4" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='4')?'checked':'':''?>   class="survey_option  <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" type="radio" data-input_type="<?=$question->question_type?>"  id="question_<?=$question->id?>"  name="answer[<?=$question->id?>]" > </td>
-											<td class="text-center align-middle "  data-th="Strongly Agree ">	<input value="5" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='5')?'checked':'':''?>  class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" type="radio"  data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>"  name="answer[<?=$question->id?>]" > </td>
+											<td class="text-center align-middle "  data-th="Strongly Disagree">	<input value="1" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='1')?'checked':'':''?>  class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" data-question_title="<?=$question->name?>" type="radio" data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>" name="answer[<?=$question->id?>]" > </td>
+											<td class="text-center align-middle "  data-th="Disagree ">			<input value="2" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='2')?'checked':'':''?>   class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" data-question_title="<?=$question->name?>" type="radio"  data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>" name="answer[<?=$question->id?>]" > </td>
+											<td class="text-center align-middle "  data-th="Neutral ">			<input value="3" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='3')?'checked':'':''?> class="survey_option  <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" data-question_title="<?=$question->name?>" type="radio"  data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>" name="answer[<?=$question->id?>]" > </td>
+											<td class="text-center align-middle "  data-th="Agree ">			<input value="4" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='4')?'checked':'':''?>   class="survey_option  <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" data-question_title="<?=$question->name?>" type="radio" data-input_type="<?=$question->question_type?>"  id="question_<?=$question->id?>"  name="answer[<?=$question->id?>]" > </td>
+											<td class="text-center align-middle "  data-th="Strongly Agree ">	<input value="5" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='5')?'checked':'':''?>  class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" data-question_title="<?=$question->name?>" type="radio"  data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>"  name="answer[<?=$question->id?>]" > </td>
 										</tr>
 										<?php
 								}if ($question->question_type == null || $question->question_type == ''	){
@@ -107,7 +109,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<td class="text-justify">
 										<?=$question->name?><br><span style="color: #4773C5"><?=$question->translation?></span>
 									</td>
-									<td colspan="5"><textarea class="w-100 form-control shadow-none border-info <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  rows="3" name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  id="question_<?=$question->id?>" ><?=(isset($question->answer) && !empty($question->answer))?$question->answer:''?></textarea></td>
+									<td colspan="5"><textarea class="w-100 form-control shadow-none border-info <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  rows="3" name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  data-question_title="<?=$question->name?>" id="question_<?=$question->id?>" ><?=(isset($question->answer) && !empty($question->answer))?$question->answer:''?></textarea></td>
 									</tr>
 									<?php
 								}
@@ -117,8 +119,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<td class="text-justify">
 											<?=$question->name?><br><span style="color: #4773C5"><?=$question->translation?></span>
 										</td>
-										<td colspan="3" class="text-center align-middle " > <lable>Yes </lable><input type="radio" value="yes" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='yes')?'checked':'':''?>  class="survey_option  <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  id="question_<?=$question->id?>" ></td>
-										<td colspan="2" class="text-center align-middle " > <lable>No </lable><input type="radio" value="no" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='no')?'checked':'':''?>  class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  id="question_<?=$question->id?>" ></td>
+										<td colspan="3" class="text-center align-middle " > <lable>Yes </lable><input type="radio" value="yes" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='yes')?'checked':'':''?>  class="survey_option  <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  data-question_title="<?=$question->name?>" id="question_<?=$question->id?>" ></td>
+										<td colspan="2" class="text-center align-middle " > <lable>No </lable><input type="radio" value="no" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='no')?'checked':'':''?>  class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  data-question_title="<?=$question->name?>" id="question_<?=$question->id?>" ></td>
 									</tr>
 										<?php
 								}
@@ -152,15 +154,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var success_message = "<?=$evaluation->success_message?>";
 			$('.required').each(function(){
 				var data = $(this).attr('data-question_id');
+				var question = $(this).attr('data-question_title');
 				var input_name = "answer["+data+"]";
 				if($(this).attr('data-input_type')==='radio_opt'){
 					if(!$("input[name='" +input_name+ "']").is(":checked")){
-					toastr['warning']('Please Fill all required fields')
+					toastr['warning']('Required field #'+question)
+						$(this).addClass('border-danger');
 					return false;
 				}
-				} else if($(this).attr('data-input_type')==='text_input' && ($("textarea[name='" + input_name + "']").val() === '')) {
-						toastr['warning']('Please Fill all required fields')
+				} else if ($(this).attr('data-input_type')==='text_input' && ($("textarea[name='" + input_name + "']").val() === '')) {
+						toastr['warning']('Required field #'+question)
+						$(this).addClass('border-danger');
 						return false;
+
 				}else{
 					Swal.fire({
 						title: confirm_title,
