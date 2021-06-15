@@ -24,6 +24,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="col-12 text-md-left text-sm-center">
 								<?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?> EST
 								<h4><?=$session->name?></h4>
+								<p>
+								<?php foreach ($session->presenters as $presenter):?>
+								| <?= $presenter->name ." ".$presenter->surname?>
+								<?php endforeach;?>
+								</p>
 								<p><?=$session->description?></p>
 							</div>
 							<div class="col-12 text-md-right text-sm-center" style="position: absolute;bottom: 0;">
