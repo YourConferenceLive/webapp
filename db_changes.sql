@@ -198,5 +198,15 @@ create table session_keynote_speakers
     added_by int not null
 );
 
+create table session_moderators
+(
+    id int auto_increment
+        primary key,
+    moderator_id int not null,
+    session_id int not null,
+    added_on datetime not null,
+    added_by int not null
+);
+
 
 
