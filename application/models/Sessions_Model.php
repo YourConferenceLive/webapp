@@ -21,7 +21,11 @@ class Sessions_Model extends CI_Model
 		if ($sessions->num_rows() > 0)
 		{
 			foreach ($sessions->result() as $session)
+			{
 				$session->presenters = $this->getPresentersPerSession($session->id);
+				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
+				$session->moderators = $this->getModeratorsPerSession($session->id);
+			}
 
 			return $sessions->result();
 		}
@@ -54,6 +58,9 @@ class Sessions_Model extends CI_Model
 		if ($sessions->num_rows() > 0)
 		{
 			$sessions->result()[0]->presenters = $this->getPresentersPerSession($id);
+			$sessions->result()[0]->keynote_speakers = $this->getKeynoteSpeakersPerSession($id);
+			$sessions->result()[0]->moderators = $this->getModeratorsPerSession($id);
+
 			return $sessions->result()[0];
 		}
 
@@ -131,7 +138,31 @@ class Sessions_Model extends CI_Model
 				$this->db->insert('session_presenters', $data);
 			}
 
-			return array('status' => 'success', 'session_id' => $this->db->insert_id());
+			foreach ($session_data['sessionKeynoteSpeakers'] as $speaker_id)
+			{
+				$data = array(
+					'speaker_id' => $speaker_id,
+					'session_id' => $session_id,
+					'added_on' => date('Y-m-d H:i:s'),
+					'added_by' => $this->user->user_id,
+				);
+
+				$this->db->insert('session_keynote_speakers', $data);
+			}
+
+			foreach ($session_data['sessionModerators'] as $moderator_id)
+			{
+				$data = array(
+					'moderator_id' => $moderator_id,
+					'session_id' => $session_id,
+					'added_on' => date('Y-m-d H:i:s'),
+					'added_by' => $this->user->user_id,
+				);
+
+				$this->db->insert('session_moderators', $data);
+			}
+
+			return array('status' => 'success', 'session_id' => $session_id);
 		}
 
 		return array('status' => 'failed', 'msg' => 'Error occurred', 'technical_data'=> $this->db->error());
@@ -208,6 +239,42 @@ class Sessions_Model extends CI_Model
 				}
 			}
 
+			if (isset($session_data['sessionKeynoteSpeakers']))
+			{
+				$this->db->where('session_id', $session_id);
+				$this->db->delete('session_keynote_speakers');
+
+				foreach ($session_data['sessionKeynoteSpeakers'] as $speaker_id)
+				{
+					$data = array(
+						'speaker_id' => $speaker_id,
+						'session_id' => $session_id,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
+
+					$this->db->insert('session_keynote_speakers', $data);
+				}
+			}
+
+			if (isset($session_data['sessionModerators']))
+			{
+				$this->db->where('session_id', $session_id);
+				$this->db->delete('session_moderators');
+
+				foreach ($session_data['sessionModerators'] as $moderator_id)
+				{
+					$data = array(
+						'moderator_id' => $moderator_id,
+						'session_id' => $session_id,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
+
+					$this->db->insert('session_moderators', $data);
+				}
+			}
+
 			$session = $this->db->get_where('sessions', array('id'=>$session_data['sessionId']))->result()[0];
 
 			return array('status' => 'success', 'session_id' => $session_data['sessionId'], 'session' => $session);
@@ -233,12 +300,58 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getAllModerators()
+	{
+		$this->db->select('user.*');
+		$this->db->from('user');
+		$this->db->join('user_project_access', 'user_project_access.user_id = user.id');
+		$this->db->where('user_project_access.level', 'moderator');
+		$this->db->where('user_project_access.project_id', $this->project->id);
+		$this->db->group_by('user.id');
+		$this->db->order_by('user.name', 'asc');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
 	public function getPresentersPerSession($session_id)
 	{
 		$this->db->select('user.*');
 		$this->db->from('user');
 		$this->db->join('session_presenters', 'session_presenters.presenter_id = user.id');
 		$this->db->where('session_presenters.session_id', $session_id);
+		$this->db->group_by('user.id');
+		$this->db->order_by('user.name', 'asc');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
+	public function getKeynoteSpeakersPerSession($session_id)
+	{
+		$this->db->select('user.*');
+		$this->db->from('user');
+		$this->db->join('session_keynote_speakers', 'session_keynote_speakers.speaker_id = user.id');
+		$this->db->where('session_keynote_speakers.session_id', $session_id);
+		$this->db->group_by('user.id');
+		$this->db->order_by('user.name', 'asc');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
+	public function getModeratorsPerSession($session_id)
+	{
+		$this->db->select('user.*');
+		$this->db->from('user');
+		$this->db->join('session_moderators', 'session_moderators.moderator_id = user.id');
+		$this->db->where('session_moderators.session_id', $session_id);
 		$this->db->group_by('user.id');
 		$this->db->order_by('user.name', 'asc');
 		$sessions = $this->db->get();

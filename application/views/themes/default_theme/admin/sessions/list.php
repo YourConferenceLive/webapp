@@ -183,12 +183,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#zoomLink').val(session.zoom_link);
 				$('#slidesHtml').html(session.presenter_embed_code);
 
+				// Moderators
+				$('select[name="sessionModerators[]"] option').prop('selected', false);
+				$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
+				$.each(session.moderators, function(key, moderator){
+					$('select[name="sessionModerators[]"] option[value="'+moderator.id+'"]').prop('selected', true);
+				});
+				$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
+
+				// Keynote Speakers
+				$('select[name="sessionKeynoteSpeakers[]"] option').prop('selected', false);
+				$('select[name="sessionKeynoteSpeakers[]"]').bootstrapDualListbox('refresh', true);
+				$.each(session.keynote_speakers, function(key, keynote_speaker){
+					$('select[name="sessionKeynoteSpeakers[]"] option[value="'+keynote_speaker.id+'"]').prop('selected', true);
+				});
+				$('select[name="sessionKeynoteSpeakers[]"]').bootstrapDualListbox('refresh', true);
+
+				// Presenters
 				$('select[name="sessionPresenters[]"] option').prop('selected', false);
 				$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
 				$.each(session.presenters, function(key, presenter){
 					$('select[name="sessionPresenters[]"] option[value="'+presenter.id+'"]').prop('selected', true);
-					$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
 				});
+				$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
 
 				$('#save-session').html('<i class="fas fa-save"></i> Save');
 
@@ -254,7 +271,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$.each(session.presenters, function(key, presenter)
 				{
 					presentersList += presenter.name+' '+presenter.surname+' <br>('+presenter.email+')<br><br>';
-					console.log(presenter);
 				});
 
 				if (presentersNumber > 0)

@@ -60,6 +60,14 @@
 								</li>
 
 								<li class="nav-item">
+									<a class="nav-link" id="moderatorsTab" data-toggle="pill" href="#moderatorsTabContents" role="tab" aria-controls="moderatorsTabContents" aria-selected="false"><i class="fas fa-user-tie"></i> Moderators</a>
+								</li>
+
+								<li class="nav-item">
+									<a class="nav-link" id="keynoteSpeakersTab" data-toggle="pill" href="#keynoteSpeakersTabContents" role="tab" aria-controls="keynoteSpeakersTabContents" aria-selected="false"><i class="fas fa-user-check"></i> Keynote Speakers</a>
+								</li>
+
+								<li class="nav-item">
 									<a class="nav-link" id="presentersTab" data-toggle="pill" href="#presentersTabContents" role="tab" aria-controls="presentersTabContents" aria-selected="false"><i class="fas fa-user-friends"></i> Presenters</a>
 								</li>
 
@@ -161,6 +169,34 @@
 
 								</div>
 
+								<div class="tab-pane fade" id="moderatorsTabContents" role="tabpanel" aria-labelledby="moderatorsTab">
+									<div class="form-group">
+										<label>Select moderators from the box on the left</label><br>
+										<label><small>(You must add moderators with <badge id="moderatorBadge" class="badge badge-primary mr-1" style="background-color:#228893;"><i class="fas fa-id-card"></i> Moderator</badge> privilege in <a class="btn btn-xs btn-secondary ml-1 mr-1" href="<?=$this->project_url?>/admin/users"><i class="fas fa-users"></i> Users</a> list in order to list them here)</small></label>
+										<select box-id="sessionModerators" multiple="multiple" size="10" name="sessionModerators[]" title="sessionModerators[]">
+											<?php if (isset($moderators)): ?>
+												<?php foreach ($moderators as $moderator): ?>
+													<option value="<?=$moderator->id?>"><?=$moderator->name?> <?=$moderator->surname?> (<?=$moderator->email?>)</option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
+									</div>
+								</div>
+
+								<div class="tab-pane fade" id="keynoteSpeakersTabContents" role="tabpanel" aria-labelledby="keynoteSpeakersTab">
+									<div class="form-group">
+										<label>Select keynote speakers from the box on the left</label><br>
+										<label><small>(You must add keynote speakers with <badge id="presenterBadge" class="badge badge-primary mr-1" style="background-color:#228893;"><i class="fas fa-id-card"></i> Presenter</badge> privilege in <a class="btn btn-xs btn-secondary ml-1 mr-1" href="<?=$this->project_url?>/admin/users"><i class="fas fa-users"></i> Users</a> list in order to list them here)</small></label>
+										<select box-id="sessionKeynoteSpeakers" multiple="multiple" size="10" name="sessionKeynoteSpeakers[]" title="sessionKeynoteSpeakers[]">
+											<?php if (isset($presenters)): ?>
+												<?php foreach ($presenters as $presenter): ?>
+													<option value="<?=$presenter->id?>"><?=$presenter->name?> <?=$presenter->surname?> (<?=$presenter->email?>)</option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
+									</div>
+								</div>
+
 								<div class="tab-pane fade" id="presentersTabContents" role="tabpanel" aria-labelledby="presentersTab">
 									<div class="form-group">
 										<label>Select presenters from the box on the left</label><br>
@@ -173,9 +209,9 @@
 											<?php endif; ?>
 										</select>
 									</div>
+								</div>
 
 							</div>
-						</div>
 						<!-- /.card -->
 					</div>
 
@@ -197,6 +233,9 @@
 
 		$('#presenterBadge').css('background-color', access_color_codes['presenter']);
 		$('#presenterBadge').html('<i class="'+access_icons['presenter']+'"></i> Presenter');
+
+		$('#moderatorBadge').css('background-color', access_color_codes['moderator']);
+		$('#moderatorBadge').html('<i class="'+access_icons['moderator']+'"></i> Moderator');
 
 		$('#sessionDescription')
 				.summernote
@@ -244,6 +283,14 @@
 					//format: 'MMMM Mo (dddd) - h:mmA'
 				}
 		);
+
+		$('select[name="sessionModerators[]"]').bootstrapDualListbox({
+			selectorMinimalHeight : 300
+		});
+
+		$('select[name="sessionKeynoteSpeakers[]"]').bootstrapDualListbox({
+			selectorMinimalHeight : 300
+		});
 
 		$('select[name="sessionPresenters[]"]').bootstrapDualListbox({
 			selectorMinimalHeight : 300
