@@ -36,6 +36,7 @@ class Sessions_Model extends CI_Model
 		$this->db->join('session_presenters', 'session_presenters.session_id = sessions.id');
 		$this->db->where('session_presenters.presenter_id', $presenter_id);
 		$this->db->where('sessions.project_id', $this->project->id);
+		$this->db->group_by('sessions.id');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();
