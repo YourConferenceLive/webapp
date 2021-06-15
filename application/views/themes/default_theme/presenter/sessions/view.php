@@ -263,6 +263,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 
+	let controllerPath = project_presenter_url;
+
 	let session_id = "<?=$session->id?>";
 
 	let user_id = "<?=$user->user_id?>";
@@ -341,4 +343,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}, 1000);
 	}
 </script>
-<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/presenter/sessions/host_chat.js"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
