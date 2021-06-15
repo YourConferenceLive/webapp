@@ -28,7 +28,7 @@ $(function () {
 // Once on page load
 function loadAllHostChats(session_id)
 {
-	$.get(project_presenter_url+"/sessions/getHostChatsJson/"+session_id, function (chats) {
+	$.get(controllerPath+"/sessions/getHostChatsJson/"+session_id, function (chats) {
 		chats = JSON.parse(chats);
 
 		$('#hostChatDiv').html('');
@@ -90,7 +90,7 @@ function sendHostChatMessage()
 			'date_time' : moment().tz(project_timezone).format('YYYY-MM-DD kk:mm:ss')
 		};
 
-	$.post(project_presenter_url+"/sessions/sendHostChat", chat,
+	$.post(controllerPath+"/sessions/sendHostChat", chat,
 		function (response)
 		{
 			response = JSON.parse(response);

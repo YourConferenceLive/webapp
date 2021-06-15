@@ -10,7 +10,7 @@ class Sessions extends CI_Controller
 		if (!isset($_SESSION['project_sessions']["project_{$this->project->id}"]) || $_SESSION['project_sessions']["project_{$this->project->id}"]['is_admin'] != 1)
 			redirect(base_url().$this->project->main_route."/admin/login"); // Not logged-in
 
-		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 
 		$this->load->model('Sessions_Model', 'sessions');
 	}
@@ -46,6 +46,7 @@ class Sessions extends CI_Controller
 
 
 		$data["session"] = $session;
+		$data['user'] = $this->user;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
@@ -74,5 +75,15 @@ class Sessions extends CI_Controller
 	public function update()
 	{
 		echo json_encode($this->sessions->update());
+	}
+
+	public function getHostChatsJson($session_id)
+	{
+		echo json_encode($this->sessions->getHostChat($session_id));
+	}
+
+	public function sendHostChat()
+	{
+		echo json_encode($this->sessions->sendHostChat($this->input->post()));
 	}
 }

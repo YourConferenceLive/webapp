@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<img src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user.png" class="img-circle elevation-2" alt="User Image">
 			</div>
 			<div class="info">
-				<a href="#" class="d-block"><?=$user['name']?> <?=$user['surname']?></a>
+				<a href="#" class="d-block"><?=$user->name?> <?=$user->surname?></a>
 			</div>
 		</div>
 
