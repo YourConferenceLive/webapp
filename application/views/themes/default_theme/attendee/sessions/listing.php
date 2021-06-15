@@ -23,10 +23,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="col-md-9 col-sm-12 pl-0 pt-2">
 							<div class="col-12 text-md-left text-sm-center">
 								<?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?> EST
-								<h4><?=$session->name?></h4>
+								<br>
+								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color:#487391"><h4><?=$session->name?></h4></a>
 								<p>
 								<?php foreach ($session->presenters as $presenter):?>
-								| <?= $presenter->name ." ".$presenter->surname?>
+								| <?= $presenter->name ." ".$presenter->surname.(!empty($presenter->credentials)?', '.$presenter->credentials:'')?>
 								<?php endforeach;?>
 								</p>
 								<p><?=$session->description?></p>

@@ -31,7 +31,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 				<div class="col-4">
-
+					<?php foreach ($session->presenters as $presenter):?>
+					| <?=$presenter->name.' '.$presenter->surname.(!empty($presenter->credentials)?', '.$presenter->credentials:'')?>
+					<?php endforeach;?>
 				</div>
 			</div>
 			<div class="row mt-5">
