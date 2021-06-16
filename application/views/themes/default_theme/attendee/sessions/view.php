@@ -3,7 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <style>
-	body{overflow: hidden;}
+	body{
+		overflow: hidden;
+		background-color: #151515;
+	}
 </style>
 
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
