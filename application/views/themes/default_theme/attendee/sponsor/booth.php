@@ -7,7 +7,6 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 	$data=$sponsor_data[0];
 
 }
-//print_r($data->name);exit;
 ?>
 <link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css" rel="stylesheet">
 <!-- Date Time Picker-->
@@ -17,10 +16,9 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 
 <main role="main">
 	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/' . $data->cover_photo:'' ?> ')">
-	  <span href="javascript:void(0)" class="btn fish-bowl mt-0 position-absolute" style="right:10px"><img src="<?=ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/fishbowl.png'?>" style="width: 150px;height: 130px"><br><span class="text-white">Click to leave your card</span></span>
 		<div class="content">
 			<div class="middle">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/tv.png">
+				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->tv_banner?>">
 				<?php if (isset($data->main_video_url) && !empty($data->main_video_url) && $data->video_position == '1') {
 					?>
 					<div id="tv-container" >
@@ -37,18 +35,18 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 				</div>
 			</div>
 			<div class="left">
-			  <img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/left_banner.png">
+			  <img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->left_banner?>">
 			</div>
 			<div class="right">
-			  <img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/right_banner.png">
+			  <img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->right_banner?>">
 			</div>
 		</div>
 		<div class="tables">
 			<div class="table_left">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/left_table.png">
+				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->left_table?>">
 			</div>
 			<div class="table_right">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/right_table.png">
+				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->right_table?>">
 			</div>
 		</div>
 	</div>
