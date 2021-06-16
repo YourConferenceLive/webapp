@@ -1,4 +1,4 @@
-<?php
+	<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
@@ -15,24 +15,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </style>
 
 <link href="<?=ycl_root?>/theme_assets/default_theme/css/login.css" rel="stylesheet">
-<body class="text-center">
-<form class="form-signin">
-
-	<div class="mb-4">
-		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="max-width: 100%;max-height: 100%;">
+<body class="text-center ">
+<div class="row">
+	<div class="col">
+		<div class="mb-4">
+			<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/main_banner.jpg" width="100%">
+		</div>
 	</div>
+</div>
+<div class="row">
+	<div class="col">
+		<form class="form-signin">
 
-	<h1 class="h3 mb-3 font-weight-normal">Please Login</h1>
+			<div class="mb-4">
+				<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="max-width: 100%;max-height: 100%;">
+			</div>
 
-	<label for="inputEmail" class="sr-only">Email address</label>
-	<input type="email" id="email" class="form-control" placeholder="Email address" required autofocus>
+			<h1 class="h3 mb-3 font-weight-normal">Please Login</h1>
 
-	<label for="inputPassword" class="sr-only">Password</label>
-	<input type="password" id="password" class="form-control" placeholder="Password" required>
+			<label for="inputEmail" class="sr-only">Email address</label>
+			<input type="email" id="email" class="form-control" placeholder="Email address" required autofocus>
 
-	<button id="login-btn" class="btn btn-lg btn-primary btn-block" type="button">Login</button>
+			<label for="inputPassword" class="sr-only">Password</label>
+			<input type="password" id="password" class="form-control" placeholder="Password" required>
 
-</form>
+			<button id="login-btn" class="btn btn-lg btn-primary btn-block" type="button">Login</button>
+
+		</form>
+	</div>
+</div>
 </body>
 
 <script>
