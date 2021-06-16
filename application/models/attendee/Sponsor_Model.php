@@ -345,4 +345,17 @@ class Sponsor_Model extends CI_Model
 			return array('status'=>'error');
 		}
 	}
+
+	public function getBoothAdmins($booth_id)
+	{
+		$data = $this->db->select('u.*')
+			->from('sponsor_booth_admin')
+			->join('user u', 'sponsor_booth_admin.user_id = u.id')
+			->where('sponsor_booth_admin.booth_id', $booth_id)
+			->get()
+		;
+		if ($data->num_rows() > 0)
+			return $data->result();
+		return new stdClass();
+	}
 }

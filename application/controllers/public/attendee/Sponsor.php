@@ -41,6 +41,7 @@ class Sponsor extends CI_Controller
 		$this->logger->log_visit("Booth", $booth_id);
 		$data['project'] = $this->project;
 		$data['sponsor_data'] = $this->m_sponsor->get_booth_data($booth_id);
+		$data['admins'] = $this->m_sponsor->getBoothAdmins($booth_id);
 		$data['user'] = $this->user;
 
 		$this->load
