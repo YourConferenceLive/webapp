@@ -31,7 +31,23 @@ $ci_method = $this->router->fetch_method();
 			<ul class="navbar-nav">
 
 				<li class="nav-item">
-					<a class="nav-link disabled" href="#"><?=$user['name']?></a>
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sponsor/admin"><strong><i class="fas fa-tachometer-alt"></i> Dashboard</strong></a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sponsor/admin/analytics"><strong><i class="far fa-chart-bar"></i> Analytics</strong></a>
+				</li>
+
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<?=$user['name']?>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="<?=$this->project_url?>/authentication/logout/<?=base64_encode('sponsor/admin')?>">Logout <i class="fas fa-sign-out-alt"></i></a>
+<!--						<a class="dropdown-item" href="#">Another action</a>-->
+<!--						<div class="dropdown-divider"></div>-->
+<!--						<a class="dropdown-item" href="#">Something else here</a>-->
+					</div>
 				</li>
 			</ul>
 		</div>

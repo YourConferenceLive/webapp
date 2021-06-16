@@ -6,8 +6,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //exit;
 ?>
 
-<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=2" rel="stylesheet">
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js"></script>
+<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=3" rel="stylesheet">
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=1"></script>
 
 <!-- Full Calendar-->
 <link rel="stylesheet" href="https://localhost/adminLTE/plugins/fullcalendar/main.css">
@@ -446,4 +446,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js?v=2"></script>

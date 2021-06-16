@@ -35,11 +35,13 @@ function callAdmin(adminId, adminName='') {
 			$('#modal-call-sponsor').modal('show');
 
 			$('#hangUp').on('click', function () {
+
 				myVideo.pause();
 				myVideo.src = "";
+				console.log(myVideoStream.getVideoTracks());
 				myVideoStream.getVideoTracks()[0].stop();
-				document.getElementById("myVideo").innerHTML = '';
 				$('#modal-call-sponsor').modal('hide');
+				document.getElementById("myVideo").innerHTML = '';
 			});
 		});
 }

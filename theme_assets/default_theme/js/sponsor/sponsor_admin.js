@@ -159,7 +159,7 @@ $(document).ready(function () {
 	$('.btn-customize').on('click', function () {
 
 		if($(this).hasClass('fa-wrench')){
-			$(this).removeClass('fa-wrench').addClass('fa-check').html('').append(' Done Cusotmize').removeClass('btn-outline-info').addClass('btn-success');
+			$(this).removeClass('fa-wrench').addClass('fa-check').html('').append(' Done').removeClass('btn-outline-info').addClass('btn-success');
 		}else{
 			$(this).removeClass('fa-check').addClass('fa-wrench').html('').append(' Customize').removeClass('btn-success').addClass('btn-outline-info');
 		}
