@@ -16,25 +16,42 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.css">
 
 <main role="main">
-		<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/' . $data->cover_photo:'' ?> ')">
-            <span href="javascript:void(0)" class="btn fish-bowl mt-0 position-absolute" style="right:10px"><img src="<?=ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/fishbowl.png'?>" style="width: 150px;height: 130px"><br><span class="text-white">Click to leave your card</span></span>
-
-                <?php if (isset($data->main_video_url) && !empty($data->main_video_url) && $data->video_position == '1') {
-                    ?>
-                    <div id="tv-container" >
-                        <div id="monitor" style="z-index: 2 !important;">
-                            <div id="monitorscreen">
-                                <?=($data->main_video_url)?>
-                            </div>
-                        </div>
-                    </div>
-                    <?php
-                } ?>
-                <div class="row justify-content-center">
-                    <h4 class="text-white"><?= $data->main_video_description ?></h4>
-                </div>
-
+	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/' . $data->cover_photo:'' ?> ')">
+	  <span href="javascript:void(0)" class="btn fish-bowl mt-0 position-absolute" style="right:10px"><img src="<?=ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/fishbowl.png'?>" style="width: 150px;height: 130px"><br><span class="text-white">Click to leave your card</span></span>
+		<div class="content">
+			<div class="middle">
+				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/tv.png">
+				<?php if (isset($data->main_video_url) && !empty($data->main_video_url) && $data->video_position == '1') {
+					?>
+					<div id="tv-container" >
+						<div id="monitor" style="z-index: 2 !important;">
+							<div id="monitorscreen">
+								<?=($data->main_video_url)?>
+							</div>
+						</div>
+					</div>
+					<?php
+				} ?>
+				<div class="row justify-content-center">
+					<h4 class="text-white"><?= $data->main_video_description ?></h4>
+				</div>
+			</div>
+			<div class="left">
+			  <img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/left_banner.png">
+			</div>
+			<div class="right">
+			  <img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/right_banner.png">
+			</div>
 		</div>
+		<div class="tables">
+			<div class="table_left">
+				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/left_table.png">
+			</div>
+			<div class="table_right">
+				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/right_table.png">
+			</div>
+		</div>
+	</div>
 	<div class="container-fluid px-lg-5">
 		<div class="row mx-xl-4 mx-md-1">
 			<div class="col-lg-4 col-md-12  mt-3 ">
