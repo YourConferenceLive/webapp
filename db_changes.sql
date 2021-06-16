@@ -384,3 +384,11 @@ INSERT INTO `eposter_tracks` (`id`, `project_id`, `track`, `status`, `created_da
 (8, 3, 'Uveitis', 1, '2021-06-14 18:40:40', '2021-06-14 18:40:40'),
 (9, 3, 'Vision Rehabilitation', 1, '2021-06-14 18:40:41', '2021-06-14 18:40:41');
 COMMIT;
+
+
+ALTER TABLE `sponsor_booth`
+ADD COLUMN `left_banner` TEXT NULL AFTER `level`,
+ADD COLUMN `right_banner` TEXT NULL AFTER `left_banner`,
+ADD COLUMN `tv_banner` TEXT NULL AFTER `right_banner`,
+ADD COLUMN `left_table` TEXT NULL AFTER `tv_banner`,
+ADD COLUMN `right_table` TEXT NULL AFTER `left_table`;
