@@ -26,7 +26,10 @@ class Sessions extends CI_Controller
 		$this->logger->log_visit("Sessions Listing");
 
 		$data['user'] = $this->user;
-		$data['sessions'] = $this->sessions->getAll();
+		$data["sessions_week"] = $this->sessions->getSessionsWeek();
+		if (!empty($data["sessions_week"])) {
+			$data["sessions"] = $this->sessions->getAll($data['sessions_week'][0]->start_date_time);
+		}
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
@@ -79,5 +82,19 @@ class Sessions extends CI_Controller
 		if ($difference >= $offset)
 			return $difference - $offset;
 		return 0;
+	}
+
+	public function getSessions_byDate($date) {
+
+		$data['user'] = $this->user;
+		$data["sessions_week"] = $this->sessions->getSessionsWeek();
+		$data["sessions"] = $this->sessions->getAll($date);
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/listing", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
+		;
 	}
 }
