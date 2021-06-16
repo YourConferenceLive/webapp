@@ -86,29 +86,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color:#487391"><h4><?=$session->name?></h4></a>
 								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color: #1ab6cf "><h4><?=$session->other_language_name?></h4></a>
 								<p>
-									<?php foreach ($session->presenters as $index=> $presenter):?>
-										<?=(isset($index) && ($index >=1))?', ':''?>
-										<span class="text-primary"><?= $presenter->name." ".$presenter->surname.(!empty($presenter->credentials)?', '.$presenter->credentials:'').', Speaker'?></span>
-									<?php endforeach;?>
-
+									<label>Moderators:</label>
 									<?php foreach ($session->moderators as $index=> $moderator):?>
 										<?=(isset($index) && ($index >= 1))?', ':''?>
-										<?= $moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?', '.$moderator->credentials:'').', Moderator'?>
-									<?php endforeach; ?>
-
+										<?= $moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?', '.$moderator->credentials:'')?>
+									<?php endforeach; ?><br>
+									<label>Keynote:</label>
 									<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
 										<?=(isset($index) && ($index >= 1))?', ':''?>
-										<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'').', Keynote'?>
-									<?php endforeach; ?>
-									<!--	todo: need to confirm to shannon the order -->
+										<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'')?>
+									<?php endforeach; ?><br>
+									<label>Speakers:</label>
+									<?php foreach ($session->presenters as $index=> $presenter):?>
+										<?=(isset($index) && ($index >=1))?', ':''?>
+										<?= $presenter->name." ".$presenter->surname.(!empty($presenter->credentials)?', '.$presenter->credentials:'')?>
+									<?php endforeach;?><br>
 								</p>
 								<p><?=$session->description?></p>
 							</div>
 							<div class="col-12 text-md-right text-sm-center" style="position: relative;bottom: 0;">
-								<a class="btn btn-sm btn-primary m-1 rounded-0"><i class="fas fa-clipboard-list"></i> Agenda</a>
+								<a class="agenda-btn btn btn-sm btn-primary m-1 rounded-0" session-id ="<?=$session->id?>" session-title ="<?=$session->name?>" ><i class="fas fa-clipboard-list"></i> Agenda</a>
 								<a class="btn btn-sm btn-info m-1 rounded-0"><i class="fas fa-calendar-check"></i> Add to Briefcase</a>
 								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Join</a>
 							</div>
+							<agenda style="display: none;" session-id="<?=$session->id?>"><?=$session->agenda?></agenda>
 						</div>
 					</div>
 				</div>
@@ -116,3 +117,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php endforeach; ?>
 	</div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="agenda-modal" tabindex="-1" aria-labelledby="agenda-modal" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title" id="agenda-modal-label ">
+					<h4 class="fas fa-clipboard-list " style="color:#487391"> Agenda</h4>
+					<h5 id="agenda-modal-session-name" class="ml-4" style="color:#487391">Session Title</h5>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary " data-dismiss="modal" >Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(function(){
+		$('.agenda-btn').on('click', function(){
+			$('#agenda-modal-session-name').text($(this).attr('session-title'));
+			$("#agenda-modal .modal-body").html($("agenda[session-id="+$(this).attr('session-id')+"]").html());
+			$('#agenda-modal').modal('show');
+		})
+	});
+</script>
