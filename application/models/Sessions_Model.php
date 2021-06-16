@@ -12,12 +12,11 @@ class Sessions_Model extends CI_Model
 		$this->load->model('Logger_Model', 'logger');
 	}
 
-	public function getAll($date)
+	public function getAll()
 	{
 		$this->db->select('*');
-		$this->db->from('sessions s');
+		$this->db->from('sessions');
 		$this->db->where('project_id', $this->project->id);
-		$this->db->where("DATE_FORMAT(s.start_date_time,'%Y-%m-%d') =", date('Y-m-d', strtotime($date)));
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 		{
@@ -401,20 +400,5 @@ class Sessions_Model extends CI_Model
 
 	/******./ Host Chat ********/
 
-	// ##### Sessions Week ########//
-	public function getSessionsWeek()
-	{
-		$this->db->select("s.start_date_time, DAYNAME(s.start_date_time) as dayname");
-		$this->db->from("sessions s");
-		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") >=', date('Y-m-d'));
-		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") <', date('Y-m-d', strtotime("+7 days")));
-		$this->db->group_by('dayname');
-		$this->db->order_by("s.start_date_time", "asc");
-		$result = $this->db->get();
-		if ($result->num_rows() > 0) {
-			return $result->result();
-		} else {
-			return '';
-		}
-	}
+
 }
