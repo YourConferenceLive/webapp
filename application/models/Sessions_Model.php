@@ -201,7 +201,6 @@ class Sessions_Model extends CI_Model
 			'name' => $session_data['sessionName'],
 			'other_language_name' => $session_data['sessionNameOther'],
 			'description' => $session_data['sessionDescription'],
-			'thumbnail' => $session_photo,
 			'agenda' => $session_data['sessionAgenda'],
 			'track' => $session_data['sessionTrack'],
 			'millicast_stream' => $session_data['millicastStream'],
@@ -212,6 +211,9 @@ class Sessions_Model extends CI_Model
 			'updated_by' => $this->user->user_id,
 			'updated_on' => date('Y-m-d H:i:s')
 		);
+
+		if ($session_photo != '')
+			$data['thumbnail'] = $session_photo;
 
 		$this->db->set($data);
 		$this->db->where('id', $session_data['sessionId']);
