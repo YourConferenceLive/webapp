@@ -152,6 +152,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				{
 					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.thumbnail);
 					$('#currentPhotoDiv').show();
+				}else{
+					$('#currentPhotoDiv').hide();
 				}
 
 				$("#sessionAgenda").summernote("code", session.agenda);
