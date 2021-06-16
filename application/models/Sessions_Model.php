@@ -67,6 +67,28 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getByDay($day)
+	{
+		$this->db->select('*');
+		$this->db->from('sessions');
+		$this->db->where('DATE(start_date_time)', $day);
+		$this->db->where('project_id', $this->project->id);
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+		{
+			foreach ($sessions->result() as $session)
+			{
+				$session->presenters = $this->getPresentersPerSession($session->id);
+				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
+				$session->moderators = $this->getModeratorsPerSession($session->id);
+			}
+
+			return $sessions->result();
+		}
+
+		return new stdClass();
+	}
+
 	public function getAllTracks()
 	{
 		$this->db->select('*');
