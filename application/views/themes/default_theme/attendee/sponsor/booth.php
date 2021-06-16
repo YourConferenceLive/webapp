@@ -126,8 +126,19 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 										<div class="sponsor-chat-header card-header text-white"
 											 style="background-color: #337AB7">
 											Sponsor Chat <span class="far fa-comments"></span>
-											<i class="btn badge badge-light float-right ml-2" id="sponsor-call"><span class="fas fa-phone-alt"> call </span></i>
-											<i class="btn badge badge-light float-right" id="schedule-a-meet"><span class="far fa-calendar-check"> schedule a meet </span></i>
+
+											<div class="dropdown float-right ml-2">
+												<button class="btn btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													<i class="fas fa-video"></i> Call
+												</button>
+												<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+													<?php foreach ($admins as $admin): ?>
+														<button class="dropdown-item call-admin" admin-id="<?=$admin->id?>" admin-name="<?=$admin->name?> <?=$admin->surname?>"><?=$admin->name?> <?=$admin->surname?></button>
+													<?php endforeach; ?>
+												</div>
+											</div>
+
+											<button class="btn btn-sm btn-success float-right" id="schedule-a-meet"><span class="far fa-calendar-check"> Schedule a meet </span></button>
 										</div>
 										<div class="sponsor-chat-body card-body overflow-auto">
 											<br>
@@ -209,41 +220,21 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 </div>
 <!-- Modal CALL-->
 <div class="modal fade" id="modal-call-sponsor" tabindex="-1" role="dialog" aria-labelledby="modal-schedule-meet" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-                <div class="row">
-                    <div class="col-md-2">
-                        <h5 class="modal-title" id="modal-schedule-meet">CALL</h5>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-inline">
-                            <select class="form-control" id="sponsor-list">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <span class="btn btn-success fas fa-phone text-white form-control pt-2"> Call</span>
-                    </div>
-                </div>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingAdminName"></span>...</h5>
 			</div>
-			<div class="modal-body">
-				<div class="card">
-					<div class="card-header">
+			<div class="modal-body p-0 m-0">
+				<div id="videoChatContainer" class="container-fluid text-center" style="height: 50vh;background: black;">
 
-					</div>
-					<div class="card-body">
+					<div id="myVideo" style="height: 100%">
 
-					</div>
-					<div class="card-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="end-call"></span></button>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
+				<button id="hangUp" type="button" class="btn btn-danger"><i class="fas fa-phone-slash"></i> Hang Up</button>
 			</div>
 		</div>
 	</div>
@@ -252,6 +243,8 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 	var project_id = "<?= $this->project->id ?>";
 	var logo = "<?= $data->logo ?>";
 	var date_now = "<?= date('Y-m-d H:i:s') ?>";
+
+	let user_id = "<?=$user['user_id']?>";
 
 	var current_user_id = "<?= ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']) ?>";
 	var current_booth_id= "<?= $data->id ?>";
@@ -262,3 +255,4 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 </script>
 
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js"></script>

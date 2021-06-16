@@ -198,14 +198,6 @@ $(document).ready(function () {
 		});
 	}
 
-	$('#sponsor-call').click(function(){
-			var modal='modal-call-sponsor';
-			get_sponsor_list(modal);
-
-		$('#modal-call-sponsor').modal('show');
-
-	})
-
 	$('#modal-schedule-meet').on('change','#sponsor-list',function(){
 
 		var sponsor_id = $('#sponsor-list option:selected').data('sponsor_id');
