@@ -212,7 +212,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 															John Doe <i class="fas fa-dot-circle" style="color: springgreen;"></i>
 														</div>
 														<div class="col-2 p-0 pl-1">
-															<button class="btn btn-info btn-sm"><i class="fas fa-video"></i></button>
+															<button class="btn btn-info btn-sm call-admin" admin-id="1" admin-name="John Doe"><i class="fas fa-video"></i></button>
 														</div>
 													</div>
 												</li>
@@ -394,7 +394,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 </div>
+
+
+<!-- Modal CALL-->
+<div class="modal fade" id="modal-call-sponsor" tabindex="-1" role="dialog" aria-labelledby="modal-schedule-meet" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingAdminName"></span>...</h5>
+			</div>
+			<div class="modal-body p-0 m-0">
+				<div id="videoChatContainer" class="container-fluid text-center" style="height: 50vh;background: black;">
+
+					<div id="myVideo" style="height: 100%">
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="hangUp" type="button" class="btn btn-danger"><i class="fas fa-phone-slash"></i> Hang Up</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
+
+	let user_id = "2";
+
  var project_id = "<?= $this->project->id?>";
  var logo = "<?=$booth->logo?>";
  var date_now = "<?=date('Y-m-d H:i:s')?>";
@@ -419,3 +446,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </script>
 
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js"></script>

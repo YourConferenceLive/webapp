@@ -37,8 +37,8 @@ function callAdmin(adminId, adminName='') {
 			$('#hangUp').on('click', function () {
 				myVideo.pause();
 				myVideo.src = "";
-				console.log(myVideoStream);
 				myVideoStream.getVideoTracks()[0].stop();
+				document.getElementById("myVideo").innerHTML = '';
 				$('#modal-call-sponsor').modal('hide');
 			});
 		});
