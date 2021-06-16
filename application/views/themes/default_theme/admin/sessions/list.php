@@ -148,6 +148,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#startDateTimeInput').datetimepicker('date', moment(session.start_date_time, 'YYYY-MM-DD HH:mm:ss'));
 				$('#endDateTimeInput').datetimepicker('date', moment(session.end_date_time, 'YYYY-MM-DD HH:mm:ss'));
 
+				$('#sessionPhoto').val('');
 				if (session.thumbnail != '')
 				{
 					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.thumbnail);
