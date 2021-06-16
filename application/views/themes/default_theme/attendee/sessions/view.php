@@ -68,9 +68,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
-					<li data-type="messagesSticky"><a data-type2="off">Messages</a></li>
-					<li data-type="questionsSticky"><a data-type2="off">Questions</a></li>
-					<li data-type="notesSticky"><a data-type2="off">Take Notes</a></li>
+					<li data-type="messagesSticky" data-type2="off">Messages</li>
+					<li data-type="questionsSticky" data-type2="off">Questions</li>
+					<li data-type="notesSticky" data-type2="off">Take Notes</li>
 				</ul>
 			</div>
 		</div>
@@ -116,9 +116,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
-					<li data-type="resourcesSticky"><a data-type2="off">Resources</a></li>
-					<li data-type="questionsSticky"><a data-type2="off">Questions</a></li>
-					<li data-type="notesSticky"><a data-type2="off">Take Notes</a></li>
+					<li data-type="resourcesSticky" data-type2="off">Resources</li>
+					<li data-type="questionsSticky" data-type2="off">Questions</li>
+					<li data-type="notesSticky" data-type2="off">Take Notes</li>
 				</ul>
 			</div>
 		</div>
@@ -143,9 +143,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
-					<li data-type="resourcesSticky"><a data-type2="off">Resources</a></li>
-					<li data-type="messagesSticky"><a data-type2="off">Messages</a></li>
-					<li data-type="notesSticky"><a data-type2="off">Take Notes</a></li>
+					<li data-type="resourcesSticky" data-type2="off">Resources</li>
+					<li data-type="messagesSticky" data-type2="off">Messages</li>
+					<li data-type="notesSticky" data-type2="off">Take Notes</li>
 				</ul>
 			</div>
 		</div>
@@ -161,18 +161,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div style="text-align: center; display: flex; " id="questions_section">
 
 					<div class="col-md-12 input-group">
-						<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= base_url() ?>front_assets/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
+						<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
 						<input type="text" id="questions" class="form-control" placeholder="Enter Question" value="">
 					</div>
 					<a class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>
 				</div>
 				<div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
-					<img src="<?= base_url() ?>front_assets/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= base_url() ?>front_assets/images/emoji/sad.png" title="Sad" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= base_url() ?>front_assets/images/emoji/laughing.png" title="Laughing" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= base_url() ?>front_assets/images/emoji/thumbs_up.png" title="Thumbs Up" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= base_url() ?>front_assets/images/emoji/thumbs_down.png" title="Thumbs Down" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= base_url() ?>front_assets/images/emoji/clapping.png" title="Clapping" id="questions_clapping" data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/sad.png" title="Sad" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/laughing.png" title="Laughing" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/thumbs_up.png" title="Thumbs Up" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/thumbs_down.png" title="Thumbs Down" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/clapping.png" title="Clapping" id="questions_clapping" data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
 				</div>
 				<span id='error_questions' style='color:red;'></span>
 				<span id='success_questions' style='color:green;'></span>
