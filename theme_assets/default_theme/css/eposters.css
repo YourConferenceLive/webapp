@@ -1,0 +1,143 @@
+/************* Listing Page **************/
+.eposters-container, .eposters-view-container
+{
+	padding-bottom: 50px;
+	background-color: #487391;
+	color: #fff;
+}
+
+.eposters-listing-item
+{
+	background-color: #e9ecef8c;
+	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
+}
+
+/************** Join Page *************/
+#full-screen-background.eposters-join
+{
+	background-color: #e3e3e3;
+}
+
+.eposter-join-info
+{
+	background-color: #e9ecef8c;
+	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
+}
+
+.eposter-join-title
+{
+	background-color: #cecece;
+	color: #555;
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+.author, .form-check-label{
+	color: #000;
+}
+
+/************** View Page *************/
+#full-screen-background.eposters-view
+{
+	background-color: #e3e3e3;
+}
+
+.eposters-view-container
+{
+	height: 100vh;
+}
+
+.live-stream-container
+{
+	height: 100%;
+	background-color: black;
+}
+
+.middleText
+{
+	position: absolute;
+	width: auto;
+	height: 50px;
+	top: 30%;
+	left: 45%;
+	margin-left: -50px; /* margin is -0.5 * dimension */
+	margin-top: -25px;
+	color: #c6c6c6;
+}
+
+/********************************/
+.eposter_view-browse {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    visibility: visible;
+    z-index: 99;
+    width: 26px;
+    margin: 0 15px;
+    font-size: 45px;
+    opacity: 1;
+    border: none;
+    background: 0 0;
+    cursor: pointer;
+    -webkit-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+}
+.eposter_view-browse:disabled {
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+    transition: visibility 0.1s ease-in-out, opacity 0.1s ease-in-out;
+}
+.eposter_view-browse {
+    width: 0.87em;
+    height: 1.5em;
+}
+a.eposter_view-browse{
+	color: #fff;
+}
+a.eposter_view-browse:active, a.eposter_view-browse:hover {
+    -webkit-transition: fill 0.1s ease-in-out;
+    transition: fill 0.1s ease-in-out;
+}
+.eposter_view-browse--right {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: auto;
+}
+/********************/
+
+/********************/
+.tool-btns a{
+    top:70%;
+    position:fixed;
+    right:0px;
+    z-index: 1000;/*
+    transform: rotate(-90deg);*/
+    background-color: red;
+    padding:10px 20px 35px;
+    height: 0px;
+    background-color: #fff;
+    color:#000;
+}
+.tool-btns.prize a{
+    top:20%;
+    background: 0 0;
+    padding: 5px;
+}
+.tool-btns.comments a{
+    top:80%;
+}
+.tool-btns.credits a{
+	top: 60%;
+}
+.tool-btns a:hover{
+    text-decoration: none;
+    color:#333;
+}
+/********************/
+
+#enlargeable{
+	cursor: zoom-in;
+}

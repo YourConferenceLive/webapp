@@ -37,3 +37,5 @@ project_routes.php
 ## CMS Files
 #cms uploads is not version controlled to prevent rewriting user uploaded files
 cms_uploads/
+project_docs/*
+user_guide/*

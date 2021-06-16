@@ -37,7 +37,7 @@ $ci_method = $this->router->fetch_method();
 					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sessions"><strong>Agenda</strong></a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#"><strong>ePosters</strong></a>
+					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/eposters"><strong>ePosters</strong></a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/lounge"><strong>Lounge</strong></a>
