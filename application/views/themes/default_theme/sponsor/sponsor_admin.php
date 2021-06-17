@@ -426,22 +426,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 		socket.on('ycl_active_user_on_booth', function (user) {
-			console.log(user);
-			console.log(current_booth_id);
 			if (user.booth_id == current_booth_id && user_id != '')
 			{
 				$('.video-call[user-id="'+user.user_id+'"]').show();
 
-				//let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').clone();
-				let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').get(0).outerHTML
-				console.log(userHtml);
+				let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').clone();
 
-				// $('#usersInThisBooth').append('' +
-				// 		'<li class="all-users-item list-group-item" user-id="' + userHtml.attr('user-id')+ '" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
-				// 		''+userHtml.html()+
-				// 		'</li>');
 				$('.all-users-item[user-id="'+user.user_id+'"]').remove();
-				$('#usersInThisBooth').append(userHtml);
+				$('#usersInThisBooth').append('' +
+						'<li class="all-users-item list-group-item" socket-id="'+user.socket_id+'" user-id="' + userHtml.attr('user-id')+ '" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
+						''+userHtml.html()+
+						'</li>');
 			}
 		});
 

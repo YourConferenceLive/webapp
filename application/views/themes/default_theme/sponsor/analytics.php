@@ -77,11 +77,9 @@
 
 	<div class="row mb-2">
 		<div class="col-12">
-			<div class="card">
-				<div class="card-body">
-					<h4 class="card-title" style="color: #487391;"><i class="fas fa-chart-pie"></i> Analytics</h4>
-				</div>
-			</div>
+			<nav class="navbar navbar-light bg-light">
+				<span class="navbar-brand mb-0 h1" style="color: #487391;"><i class="fas fa-chart-pie"></i> Analytics</span>
+			</nav>
 		</div>
 	</div>
 
@@ -92,7 +90,21 @@
 
 					<div class="row">
 
-						<div class="col-4">
+						<div class="col-3">
+							<div class="info-box">
+								<span class="info-box-icon bg-info elevation-1" style="background-color: #bf9737 !important;"><i class="fas fa-users text-white"></i></span>
+
+								<div class="info-box-content">
+									<span class="info-box-text">Number of total visits</span>
+									<span class="info-box-number">
+										<?=$total_visits?>
+									</span>
+								</div>
+								<!-- /.info-box-content -->
+							</div>
+						</div>
+
+						<div class="col-3">
 							<div class="info-box">
 								<span class="info-box-icon bg-info elevation-1"><i class="fas fa-id-card-alt text-white"></i></span>
 
@@ -106,7 +118,8 @@
 							</div>
 						</div>
 
-						<div class="col-4">
+
+						<div class="col-3">
 							<div class="info-box">
 								<span class="info-box-icon elevation-1" style="background-color: #426db0 !important;"><i class="fas fa-user-friends text-white"></i></span>
 
@@ -120,12 +133,12 @@
 							</div>
 						</div>
 
-						<div class="col-4">
+						<div class="col-3">
 							<div class="info-box">
 								<span class="info-box-icon elevation-1" style="background-color: #75930b !important;"><i class="fas fa-briefcase text-white"></i></span>
 
 								<div class="info-box-content">
-									<span class="info-box-text">Number of total resource added to the briefcases</span>
+									<span class="info-box-text">Number of total resource to the briefcases</span>
 									<span class="info-box-number">
 										<?=$total_resource_downloads?>
 									</span>

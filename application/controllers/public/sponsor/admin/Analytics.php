@@ -32,6 +32,7 @@ class Analytics extends CI_Controller
 
 		$data['booth'] = $this->sponsor->getBoothData($this->booth_id);
 		$data['logs'] = $this->logger->getBoothLogs($this->booth_id);
+		$data['total_visits'] = $this->logger->getTotalBoothVisits($this->booth_id);
 		$data['unique_visits'] = $this->logger->getUniqueBoothVisits($this->booth_id);
 		$data['returning_visits'] = $this->logger->getReturningBoothVisits($this->booth_id);
 		$data['total_resource_downloads'] = $this->logger->getTotalResourceDownloads($this->booth_id);

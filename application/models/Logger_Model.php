@@ -99,6 +99,20 @@ class Logger_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getTotalBoothVisits($booth_id)
+	{
+		$this->db->select('logs.*')
+			->from('logs')
+			->where('logs.info', 'Booth')
+			->where('logs.name', 'Visit')
+			->where('logs.ref_1', $booth_id)
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return sizeof($result->result());
+		return 0;
+	}
+
 	public function getUniqueBoothVisits($booth_id)
 	{
 		$this->db->select('logs.*')
