@@ -2,10 +2,11 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 <?php
+$show_admin_panel=false;
 //print_r($sponsor_data);exit;
 if(isset($sponsor_data) && !empty($sponsor_data)){
 	$data=$sponsor_data[0];
-
+	$show_admin_panel=$sponsor_data["show_admin_panel"];
 }
 ?>
 <link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css" rel="stylesheet">
@@ -18,7 +19,14 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/' . $data->cover_photo:'' ?> ')">
 		<div class="content">
 			<div class="middle">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->tv_banner?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->tv_banner?>" id="tv_banner">
+				<?php if($show_admin_panel){ ?>
+					<div class="change_tv_url">
+						<input type="text" id="tv_url" value="<?=$data->main_video_url?>"/>
+						<input type="button" value="Save" class="save_tv_url">
+					</div>
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="tv_banner" />
+				<?php } ?>
 				<?php if (isset($data->main_video_url) && !empty($data->main_video_url) && $data->video_position == '1') {
 					?>
 					<div id="tv-container" >
@@ -35,18 +43,30 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 				</div>
 			</div>
 			<div class="left">
-			  <img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->left_banner?>">
+			  <img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_banner?>" id="left_banner">
+				<?php if($show_admin_panel){ ?>
+						<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_banner" />
+				<?php } ?>
 			</div>
 			<div class="right">
-			  <img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->right_banner?>">
+			  <img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_banner?>" id="right_banner">
+				<?php if($show_admin_panel){ ?>
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_banner" />
+				<?php } ?>
 			</div>
 		</div>
 		<div class="tables">
 			<div class="table_left">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->left_table?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_table?>" id="left_table">
+				<?php if($show_admin_panel){ ?>
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_table" />
+				<?php } ?>
 			</div>
 			<div class="table_right">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/booth/<?=$data->right_table?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_table?>" id="right_table">
+				<?php if($show_admin_panel){ ?>
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_table" />
+				<?php } ?>
 			</div>
 		</div>
 	</div>

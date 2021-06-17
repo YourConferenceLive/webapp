@@ -67,6 +67,33 @@ class Sponsor_model extends CI_Model
 		}
 	}
 
+	function upload_booth_photos()
+	{
+		$project_id=$this->input->post('project_id');
+		$current_booth_id=$this->input->post('current_booth_id');
+		$photo_type=$this->input->post('type');
+
+		if ($_FILES['file']) {
+			$fileExt = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+			$file_name="{$project_id}.{$current_booth_id}.{$photo_type}.{$fileExt}";
+			if (move_uploaded_file($_FILES["file"]["tmp_name"], FCPATH . "/theme_assets/booth_uploads/{$file_name}")) {
+				$this->db->update('sponsor_booth', array($photo_type => $file_name), array('id' => $current_booth_id));
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+	}
+
+	function change_booth_url()
+	{
+		$current_booth_id=$this->input->post('current_booth_id');
+		$tv_url=$this->input->post('tv_url');
+		$this->db->update('sponsor_booth', array('main_video_url' => $tv_url), array('id' => $current_booth_id));
+	}
+
+
 	function upload_cover()
 	{
 		$post = $this->input->post();

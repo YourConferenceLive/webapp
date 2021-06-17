@@ -224,7 +224,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<li class="list-group-item">
 														Empty
 													</li>
-												<? endif; ?>
+												<?php endif; ?>
 												<?php foreach ($attendees as $attendee): ?>
 													<li class="list-group-item" style="cursor: pointer;">
 														<div class="row">
