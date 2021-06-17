@@ -202,44 +202,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 										<div class="card-body attendee-list-body p-0">
 											<span><strong>Attendees in your booth</strong></span>
-											<ul id="usersInThisBooth" class="list-group mb-3 pl-4">
-												<!--												<li id="usersInThisBooth" class="list-group-item" style="cursor: pointer;">-->
-												<!--													<div class="row">-->
-												<!--														<div class="col-1 p-0">-->
-												<!--															<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">-->
-												<!--														</div>-->
-												<!--														<div class="col-9 p-0 pl-2">-->
-												<!--															John Doe <i class="fas fa-dot-circle" style="color: springgreen;"></i>-->
-												<!--														</div>-->
-												<!--														<div class="col-2 p-0 pl-1">-->
-												<!--															<button class="btn btn-info btn-sm video-call" user-id="1" user-name="John Doe"><i class="fas fa-video"></i></button>-->
-												<!--														</div>-->
-												<!--													</div>-->
-												<!--												</li>-->
+											<ul id="usersInThisBooth" class="list-group mb-3">
+
 											</ul>
 
 											<span><strong>Other attendees</strong></span>
-											<ul class="list-group">
-												<?php if (empty($attendees)): ?>
-													<li class="list-group-item">
-														Empty
-													</li>
-												<? endif; ?>
-												<?php foreach ($attendees as $attendee): ?>
-													<li class="all-users-item list-group-item" user-id="<?=$attendee->id?>" active-status="0" style="cursor: pointer;" >
-														<div class="row">
-															<div class="col-1 p-0">
-																<img src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">
-															</div>
-															<div class="col-9 p-0 pl-2">
-																<span><?=$attendee->name?> <?=$attendee->surname?> <i class="user-status-indicator fas fa-dot-circle" user-id="<?=$attendee->id?>" style="color: grey;"></i></span>
-															</div>
-															<div class="col-2 p-0 pl-1">
-																<button style="display: none;" class="btn btn-info btn-sm video-call" user-id="<?=$attendee->id?>" user-name="<?=$attendee->name?> <?=$attendee->surname?>"><i class="fas fa-video"></i></button>
-															</div>
-														</div>
-													</li>
-												<?php endforeach; ?>
+											<ul id="other_attendees_list" class="list-group">
+
 											</ul>
 										</div>
 
@@ -463,11 +432,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			{
 				$('.video-call[user-id="'+user.user_id+'"]').show();
 
-				let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').clone();
+				//let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').clone();
+				let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').get(0).outerHTML
 				console.log(userHtml);
 
-				$('#usersInThisBooth').append(userHtml.html());
+				// $('#usersInThisBooth').append('' +
+				// 		'<li class="all-users-item list-group-item" user-id="' + userHtml.attr('user-id')+ '" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
+				// 		''+userHtml.html()+
+				// 		'</li>');
 				$('.all-users-item[user-id="'+user.user_id+'"]').remove();
+				$('#usersInThisBooth').append(userHtml);
 			}
 		});
 

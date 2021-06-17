@@ -271,7 +271,7 @@ $(document).ready(function () {
 
 
 	get_sponsor_group_chat();
-	//get_sponsor_attendee_lists();
+	get_sponsor_attendee_lists();
 	get_resource_files();
 	get_availability_list();
 	get_full_calendar_events();
@@ -399,10 +399,24 @@ $(document).ready(function () {
 			datas = JSON.parse(datas);
 			if (datas.status !== "error") {
 
+				$('#other_attendees_list').html('');
 				$.each(datas.result, function (index, data) {
 
-					$('.attendee-list-body').append('' +
-						'<div class="all-users-item ml-3 my-1 btn pl-1 list " data-list_id = "' + data.user_id + '" data-chatting_to ="' + data.name + ' ' + data.surname + '" data-to_id="' + data.id + '"><div class="card-header p-0 bg-white border-0 btn btn-xs text-right mr-3 user-info" data-user_id="' + data.user_id + '"><span class=" fas fa-id-card text-info position-absolute " data-user_id="' + data.user_id + '" style="font-size: 20px"></span></div><div class="card-body p-0"><a class="float-left"><img class=" btn p-0 " src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></a><div class="attendee-name mt-2 text-left ">' + data.name + ' ' + data.surname + '</div></div></div>')
+					$('#other_attendees_list').append('' +
+						'<li class="all-users-item list-group-item" user-id="' + data.user_id + '" active-status="0" style="cursor: pointer;" data-list_id = "' + data.user_id + '" data-chatting_to ="' + data.name + ' ' + data.surname + '" data-to_id="' + data.id + '">\n' +
+						'  <div class="row">\n' +
+						'    <div class="col-1 p-0">\n' +
+						'      <img src="'+ycl_root+'/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">\n' +
+						'    </div>\n' +
+						'    <div class="col-8 p-0 pl-2">\n' +
+						'       <span>' + data.name + ' ' + data.surname + ' <i class="user-status-indicator fas fa-dot-circle" user-id="' + data.user_id + '" style="color: grey;"></i></span>\n' +
+						'    </div>\n' +
+						'    <div class="col-3 p-0 pl-1">\n' +
+						'    <button style="display: none;" class="btn btn-info btn-sm video-call" user-id="' + data.user_id + '" user-name="' + data.name + ' ' + data.surname + '"><i class="fas fa-video"></i></button>\n' +
+						'     <span class="user-info fas fa-id-card" data-user_id="' + data.user_id + '" style="font-size: 20px;cursor: pointer;position: absolute;left: 65px;top: -10px;color: #01b57a;"></span>' +
+						'    </div>\n' +
+						'   </div>\n' +
+						'</li>')
 				});
 			}
 		});
@@ -421,7 +435,7 @@ $(document).ready(function () {
 	});
 
 	function search_attendee(filter) {
-		$(".attendee-list-body .list").each(function () {
+		$(".attendee-list-body .all-users-item").each(function () {
 			if ($(this).text().search(new RegExp(filter, "i")) < 0) {
 				$(this).hide();
 			} else {
@@ -430,11 +444,11 @@ $(document).ready(function () {
 		});
 	}
 
-	$('.attendee-list-body').on('click', '.list', function () {
+	$('.attendee-list-body').on('click', '.all-users-item', function () {
 		var chat_from_id = $(this).attr('data-list_id');
 		var chatting_to = $(this).attr('data-chatting_to');
 
-		$('.attendee-list-body .list').css('background-color', 'white');
+		$('.attendee-list-body .all-users-item').css('background-color', 'white');
 		$(this).css('background-color', 'gray');
 		$('.sponsor-chat-header').html('<div class="text-center">' + chatting_to + '<span class="float-right btn  text-danger pt-0" id="close_chat"><i class="fas fa-times"></i></span></div>').attr('data-to_id', chat_from_id);
 		$('.sponsor-chat-body').html('');
@@ -446,7 +460,7 @@ $(document).ready(function () {
 	$('.sponsor-chat-header').on('click', '#close_chat', function () {
 
 		$('.sponsor-chat-body').html('');
-		$('.attendee-list-body .list').css('background-color', 'white');
+		$('.attendee-list-body .all-users-item').css('background-color', 'white');
 		$('.sponsor-chat-header').html('');
 		$('.sponsor-chat-header').attr('data-to_id', '');
 

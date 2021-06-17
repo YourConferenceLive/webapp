@@ -110,7 +110,7 @@ class Home extends CI_Controller
 
 	public function get_sponsor_attendee_chat(){
 
-		$result= $this->sponsor->get_sponsor_attendee_chat();
+		$result= $this->sponsor->get_sponsor_attendee_chat($this->booth_id);
 		echo $result;
 	}
 

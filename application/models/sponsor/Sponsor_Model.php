@@ -252,7 +252,8 @@ class Sponsor_model extends CI_Model
 			->join('user_project_access upa','upa.user_id = u.id','right')
 			->where('u.id!=',$this->sponsor_id)
 			->where('upa.project_id',$this->project->id)
-			->order_by('u.name');
+			->order_by('u.name')
+			->group_by('u.name');
 
 		$result = $this->db->get();
 		if ($result->num_rows() > 0) {
@@ -263,21 +264,21 @@ class Sponsor_model extends CI_Model
 		return json_encode($json_array);
 	}
 
-	function get_sponsor_attendee_chat()
+	function get_sponsor_attendee_chat($booth_id)
 	{
 		$post = $this->input->post();
 //		print_r($post);
 		$this->db->select('*')
 			->from('sponsor_attendee_chat sac')
 			->join('user u','sac.from_id = u.id','left')
-			->where('booth_id', $this->booth_id)
+			->where('booth_id', $booth_id)
 			->group_start()
 			->where('sac.to_id', $post['chat_from_id'])
 			->or_where('sac.from_id', $post['chat_from_id'])
 			->group_end()
 //			->where('sac.to_id = '.$post['chat_from_id'].' OR sac.from_id = '.$post['chat_from_id'].'' )
 			->order_by('sac.id', 'asc')
-;
+		;
 		$result = $this->db->get();
 		if ($result->num_rows() > 0) {
 
