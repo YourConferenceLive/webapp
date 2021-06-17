@@ -19,7 +19,7 @@ var toggleFxaa=document.getElementById("toggleFxaa");
 var toggleBandW=document.getElementById("toggleBandW");
 var toggleSepia=document.getElementById("toggleSepia");
 var sceneChecked;
-var sceneLocation="scene/";    
+var sceneLocation="https://dev.yourconference.live/vendor_frontend/3d_exhibition/scene/";    
 var zoomed=false;
 
 //var engine=new BABYLON.Engine(canvas,true,{preserveDrawingBuffer:true});
