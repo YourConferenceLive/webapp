@@ -94,7 +94,7 @@ class Eposters_Model extends CI_Model
 
 	public function getAuthorsPerEposter($eposter_id)
 	{
-		$this->db->select('u.id, CONCAT (u.name, " ", u.surname) AS author, email, ea.contact');
+		$this->db->select('u.id, CONCAT_WS(" ", u.credentials, u.name, u.surname) AS author, email, ea.contact');
 		$this->db->from('eposter_authors ea');
 		$this->db->join('user u', 'u.id=ea.user_id');
 		$this->db->where('ea.eposter_id', $eposter_id);
@@ -108,7 +108,7 @@ class Eposters_Model extends CI_Model
 	public function getAllAuthors()
 	{
 		$this->db->distinct('u.id');
-		$this->db->select('u.id, CONCAT (u.name, " ", u.surname) AS author');
+		$this->db->select('u.id, CONCAT_WS(" ", u.credentials, u.name, u.surname) AS author');
 		$this->db->from('user u');
 		$this->db->join('eposter_authors ea', 'u.id=ea.user_id');
 		$this->db->where(array('u.active' => 1));
@@ -171,6 +171,83 @@ class Eposters_Model extends CI_Model
 				$eposter->author = $this->getAuthorsPerEposter($eposter->id);
 			}
 			return $eposters->result()[0];
+
+		return new stdClass();
+	}
+
+	public function postComments()
+	{		
+		$post = $this->input->post();
+		if ($post['comments'] != '' && $post['eposterId'] != '' && $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] != '') {
+			$data = array('project_id' 		=> $this->project->id,
+						  'eposter_id' 		=> $post['eposterId'],
+						  'user_id' 		=> $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
+						  'comment' 		=> $post['comments'],
+						  'is_deleted' 		=> 0,
+						  'status' 			=> 1,
+						  'created_datetime' => date('Y-m-d H:i:s'),
+						  'updated_datetime' => date('Y-m-d H:i:s'));
+
+			if ($this->db->insert('eposter_comments', $data)){
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public function getEposterCommentsCount($eposter_id)
+	{
+		$this->db->select("eposter_comments.idr");
+		$this->db->from('eposter_comments');
+		$this->db->join('user', 'user.id = eposter_comments.user_id');
+		$this->db->where('eposter_comments.eposter_id', $eposter_id);
+		$this->db->where('user.active', 1);
+		$this->db->where('eposter_comments.is_deleted', 0);
+		$this->db->where('eposter_comments.status', 1);
+		return $this->db->count_all_results();
+	}
+
+	public function getEposterComments($eposter_id)
+	{
+		$this->db->select("eposter_comments.id, eposter_comments.user_id, eposter_comments.comment, eposter_comments.created_datetime, CONCAT(user.name, ' ', user.surname) as commenter, user.photo as avatar");
+		$this->db->from('eposter_comments');
+		$this->db->join('user', 'user.id = eposter_comments.user_id');
+		$this->db->where('eposter_comments.eposter_id', $eposter_id);
+		$this->db->where('user.active', 1);
+		$this->db->where('eposter_comments.is_deleted', 0);
+		$this->db->where('eposter_comments.status', 1);
+		$this->db->order_by('eposter_comments.created_datetime', 'DESC');
+		$eposters = $this->db->get();
+		if ($eposters->num_rows() > 0)
+			foreach ($eposters->result() as $eposter) {
+				$then 			= new DateTime($eposter->created_datetime);
+				$now 			= new DateTime();
+				$delta 			= $now->diff($then);
+				$quantities 	= array('year' 	=> $delta->y,
+										'month' => $delta->m,
+										'day' 	=> $delta->d,
+										'hour' 	=> $delta->h,
+										'minute' => $delta->i);
+
+				$str 			= '';
+				foreach($quantities as $unit => $value) {
+					if($value == 0)
+						continue;
+
+				    $str .= $value . ' ' . $unit;
+
+				    if($value != 1) {
+				    	$str .= 's';
+				    }
+					$str .=  ', ';
+				}
+
+				$eposter->time = $str == '' ? 'a moment ago' : substr($str, 0, -2).' ago';
+			}
+			return $eposters->result();
 
 		return new stdClass();
 	}
