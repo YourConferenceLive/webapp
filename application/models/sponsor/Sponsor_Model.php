@@ -308,15 +308,15 @@ class Sponsor_model extends CI_Model
 		return json_encode($json_array);
 	}
 
-	function save_sponsor_attendee_chat()
+	function save_sponsor_attendee_chat($booth_id, $user_id)
 	{
 		$post = $this->input->post();
 		$fields = array(
 			'project_id'=>$this->project->id,
-			'booth_id' => $this->booth_id,
+			'booth_id' => $booth_id,
 			'chat_from' => 'sponsor',
 			'to_id' => $post['chat_to_id'],
-			'from_id' => $this->sponsor_id,
+			'from_id' => $user_id,
 			'chat_text' => $post['chat_text'],
 			'date_time' => date('Y-m-d H:i:s'),
 		);

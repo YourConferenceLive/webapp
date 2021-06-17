@@ -121,7 +121,7 @@ class Home extends CI_Controller
 	}
 
 	public function save_sponsor_attendee_chat(){
-		$result= $this->sponsor->save_sponsor_attendee_chat();
+		$result= $this->sponsor->save_sponsor_attendee_chat($this->booth_id, $this->user_id);
 		echo $result;
 	}
 
