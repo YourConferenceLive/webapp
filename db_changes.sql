@@ -403,3 +403,7 @@ ADD COLUMN `right_banner` TEXT NULL AFTER `left_banner`,
 ADD COLUMN `tv_banner` TEXT NULL AFTER `right_banner`,
 ADD COLUMN `left_table` TEXT NULL AFTER `tv_banner`,
 ADD COLUMN `right_table` TEXT NULL AFTER `left_table`;
+
+# ####### Adding column bio to user
+ALTER TABLE `user` ADD `bio` TEXT NULL DEFAULT NULL AFTER `credentials`;
+#

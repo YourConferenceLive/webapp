@@ -31,9 +31,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 				<div class="col-4">
-
+					<p>
 					<?php if($session->moderators != new stdClass()):?>
-						<label>Moderator:</label>
+						<span>Moderator:</span>
 						<?php foreach ($session->moderators as $index=> $moderator):?>
 							<?=(isset($index) && ($index >= 1))?', ':''?>
 							<?= $moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?', '.$moderator->credentials:'')?>
@@ -41,20 +41,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<?php endif;?>
 
 					<?php if($session->keynote_speakers != new stdClass()):?>
-						<label>Keynote:</label>
+						<span>Keynote:</span>
 						<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
 							<?=(isset($index) && ($index >= 1))?', ':''?>
-							<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'')?>
+								<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'')?>
 						<?php endforeach; ?><br>
 					<?php endif; ?>
 
 					<?php if($session->presenters != new stdClass()):?>
-						<label>Speakers:</label>
+						<span>Speakers:</span>
 						<?php foreach ($session->presenters as $index=> $presenter):?>
 							<?=(isset($index) && ($index >=1))?', ':''?>
 							<?= $presenter->name." ".$presenter->surname.(!empty($presenter->credentials)?', '.$presenter->credentials:'')?>
 						<?php endforeach;?><br>
 					<?php endif; ?>
+					</p>
 
 				</div>
 			</div>

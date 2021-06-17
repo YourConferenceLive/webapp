@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<?php else:?>
 							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
 								<?php endif;?>
-								<h3>Thursday <br> June 24 2021</h3>
+								<h3>Thursday <br> June 24, 2021</h3>
 						</div>
 					</div>
 				</a>
@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<?php else:?>
 							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
 								<?php endif;?>
-								<h3>Friday <br> June 25 2021</h3>
+								<h3>Friday <br> June 25, 2021</h3>
 						</div>
 					</div>
 				</a>
@@ -51,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<?php else:?>
 							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
 								<?php endif;?>
-								<h3>Saturday <br> June 26 2021</h3>
+								<h3>Saturday <br> June 26, 2021</h3>
 						</div>
 					</div>
 				</a>
@@ -65,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<?php else:?>
 							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
 								<?php endif;?>
-								<h3>Sunday <br> June 27 2021</h3>
+								<h3>Sunday <br> June 27, 2021</h3>
 						</div>
 					</div>
 				</a>
@@ -93,38 +93,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<p>
 
 									<?php if($session->moderators != new stdClass()):?>
-									<label>Moderator:</label>
+									<span>Moderator:</span>
 									<?php foreach ($session->moderators as $index=> $moderator):?>
-										<?=(isset($index) && ($index >= 1))?', ':''?>
-										<?= $moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?', '.$moderator->credentials:'')?>
+										<?=(isset($index) && ($index >= 1))?',':''?>
+										<?=$moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?' '.$moderator->credentials:'')?>
 									<?php endforeach; ?><br>
 									<?php endif;?>
 
 									<?php if($session->keynote_speakers != new stdClass()):?>
-									<label>Keynote:</label>
+									<span>Keynote:</span>
 									<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
-										<?=(isset($index) && ($index >= 1))?', ':''?>
-										<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'')?>
+										<?=(isset($index) && ($index >= 1))?',':''?>
+										<a style="cursor: pointer" class="keynote-link" keynote-id="<?=$keynote->id?>" speaker-name="<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>">
+											<?=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>
+										</a>
+											<bio style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->bio?></bio>
+											<disclosure style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->disclosures?></disclosure>
 									<?php endforeach; ?><br>
 									<?php endif; ?>
 
 									<?php if($session->presenters != new stdClass()):?>
-									<label>Speakers:</label>
+									<span>Speakers:</span>
 									<?php foreach ($session->presenters as $index=> $presenter):?>
-										<?=(isset($index) && ($index >=1))?', ':''?>
-										<?= $presenter->name." ".$presenter->surname.(!empty($presenter->credentials)?', '.$presenter->credentials:'')?>
+										<?=(isset($index) && ($index >=1))?",":''?>
+										<?=$presenter->name." ".$presenter->surname.(!empty($presenter->credentials)?' '.$presenter->credentials:'')?>
 									<?php endforeach;?><br>
 									<?php endif; ?>
-
 								</p>
+								<hr>
 								<p><?=$session->description?></p>
 							</div>
+
 							<div class="col-12 text-md-right text-sm-center" style="position: relative;bottom: 0;">
 								<a class="agenda-btn btn btn-sm btn-primary m-1 rounded-0" session-id ="<?=$session->id?>" session-title ="<?=$session->name?>" ><i class="fas fa-clipboard-list"></i> Agenda</a>
 								<a class="btn btn-sm btn-info m-1 rounded-0"><i class="fas fa-calendar-check"></i> Add to Briefcase</a>
 								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Join</a>
 							</div>
 							<agenda style="display: none;" session-id="<?=$session->id?>"><?=$session->agenda?></agenda>
+
 						</div>
 					</div>
 				</div>
@@ -132,7 +138,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php endforeach; ?>
 	</div>
 </div>
-<!-- Modal -->
+<!-- Agenda Modal  -->
 <div class="modal fade" id="agenda-modal" tabindex="-1" aria-labelledby="agenda-modal" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -155,12 +161,58 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 </div>
 
+<!-- User Bio Modal -->
+<div class="modal fade" id="speaker-modal" tabindex="-1" aria-labelledby="speaker-modal" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title" id="bio-modal-label ">
+					<h3 id="speaker-modal-speaker-name" class="ml-4" style="color:#487391; font-weight: 650">Speaker Name</h3>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class=" mb-3">
+					<span class="bio-body text-left ">
+
+					</span>
+				</div>
+				<div>
+					<span class="disclosure-body text-left">
+
+					</span>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary " data-dismiss="modal" >Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$(function(){
 		$('.agenda-btn').on('click', function(){
 			$('#agenda-modal-session-name').text($(this).attr('session-title'));
 			$("#agenda-modal .modal-body").html($("agenda[session-id="+$(this).attr('session-id')+"]").html());
 			$('#agenda-modal').modal('show');
+		})
+
+		$('.keynote-link').on('click', function (){
+			if($("bio[session-id="+$(this).attr('keynote-id')+"]").html() !== ''){
+				$("#speaker-modal .modal-body .bio-body").html('<h5 class="text-center">Biography:</h5>' + $("bio[session-id="+$(this).attr('keynote-id')+"]").html());
+			}else{
+				$("#speaker-modal .modal-body .bio-body").html('');
+			}
+			if($("disclosure[session-id="+$(this).attr('keynote-id')+"]").html() !== '') {
+				$("#speaker-modal .modal-body .disclosure-body").html('<h5 class="text-center">Disclosures:</h5>' + $("disclosure[session-id=" + $(this).attr('keynote-id') + "]").html());
+			}else{
+				$("#speaker-modal .modal-body .disclosure-body").html('');
+			}
+			$('#speaker-modal-speaker-name').text($(this).attr('speaker-name'));
+			$("#speaker-modal ").modal('show');
 		})
 	});
 </script>
