@@ -1,8 +1,7 @@
 var canvas=document.getElementById("renderCanvas");
 var controlPanel=document.getElementById("controlPanel");
-/*
 var cameraPanel=document.getElementById("cameraPanel");
-var divFps=document.getElementById("fps");
+//var divFps=document.getElementById("fps");
 var divMensaje=document.getElementById("mensaje");
 var aboutPanel=document.getElementById("aboutPanel");
 var enableDebug=document.getElementById("enableDebug");
@@ -19,20 +18,21 @@ var toggleFsaa4=document.getElementById("toggleFsaa4");
 var toggleFxaa=document.getElementById("toggleFxaa");
 var toggleBandW=document.getElementById("toggleBandW");
 var toggleSepia=document.getElementById("toggleSepia");
-*/
 var sceneChecked;
-var sceneLocation= ycl_root+"/vendor_frontend/3d_exhibition/scene/";
-var zoomed=true;
+var sceneLocation="scene/";    
+var zoomed=false;
 
+//var engine=new BABYLON.Engine(canvas,true,{preserveDrawingBuffer:true});
+//engine = new BABYLON.Engine(canvas, false); // built-in smoothing will be disabled 
 var engine = new BABYLON.Engine(canvas, null, null, true);
 
 var scene;
 var previousPickedMesh;
 var toques=0;
-var zoompos=1;
+var zoompos=0;
 
 
-//pantalla de preload
+////////////pantalla de preload
 var loadingScreenDiv = window.document.getElementById("loadingScreen");
 function customLoadingScreen() {
     console.log("customLoadingScreen creation")
@@ -48,7 +48,18 @@ customLoadingScreen.prototype.hideLoadingUI = function () {
 var loadingScreen = new customLoadingScreen();
 engine.loadingScreen = loadingScreen;
 engine.displayLoadingUI();
+/////////////////////
 
+/*
+if (userid==0)
+{
+    //stats.innerHTML="Dirijase a la zona de acreditación para poder acceder al evento completo";    
+}
+else 
+{
+    //stats.innerHTML="Bienvenido "+nombre;
+}    
+*/
 
 
 
@@ -119,13 +130,31 @@ var loadScene=async function(name,incremental,sceneLocation,then)
     var dlCount=0;
 
 
+    //BABYLON.SceneLoader.Load(sceneLocation+name+"/",name+incremental+".babylon",engine,function(newScene)
     BABYLON.SceneLoader.Load(sceneLocation,name,engine,function(newScene)
     {
 
         scene=newScene;       
         
         scene.collisionsEnabled = true;
-        var camera = new BABYLON.ArcRotateCamera("Camera", 1.5680, BABYLON.Tools.ToRadians(40), 70, BABYLON.Vector3.Zero(), scene);
+        
+
+        // Skybox
+        //var skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size:1000.0}, scene);
+        //var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+        //skyboxMaterial.backFaceCulling = false;
+        //skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("assets/skybox", scene);
+        //skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+        //skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+        //skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+        //skybox.material = skyboxMaterial;	
+
+        //camara local
+        //(100-camera.radius)*0.014        
+        //var camera = new BABYLON.ArcRotateCamera("Camera", 1.5680, BABYLON.Tools.ToRadians(80), 40, BABYLON.Vector3.Zero(), scene);
+        var camera = new BABYLON.ArcRotateCamera("Camera", 1.5680, BABYLON.Tools.ToRadians(80), 40, new BABYLON.Vector3(3,0,18.5), scene);
+        
+
         camera.attachControl(canvas, false);
         camera.ellipsoid = new BABYLON.Vector3(2, 2, 2);
         camera.minZ = 0.1;
@@ -135,10 +164,11 @@ var loadScene=async function(name,incremental,sceneLocation,then)
         camera.detachControl(canvas);
         addControls(scene, camera);
 
+        // Limit target on render        
         scene.beforeRender = function() {
             
             limitex=42;
-            limitez=42;
+            limitez=50;
 
             /*
             limitex=(50-camera.radius)+10;
@@ -172,8 +202,16 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                 camera.target.x = limitex;
             if (camera.target.x < -limitex)
                 camera.target.x = -limitex;
+            //console.log("limite: "+limite+" radius: "+camera.radius);
         };
 
+    //return scene;
+
+        
+
+        //camera.inputs.addMouse();
+
+        ///////////////////////////////
         camera.inputs.removeByType("FreeCameraKeyboardMoveInput");
 
         var FreeCameraKeyboardRotateInput = function() {
@@ -260,6 +298,12 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                 var keyCode = this._keys[index];
                 var speed = 0.02;
 
+                //if (this.keysLeft.indexOf(keyCode) !== -1) {
+                //  camera.cameraRotation.y += this.sensibility;
+                //} else if (this.keysRight.indexOf(keyCode) !== -1) {
+                //  camera.cameraRotation.y -= this.sensibility;
+                //}
+
                 if (this.keysLeft.indexOf(keyCode) !== -1) {
                     camera.rotation.y -= camera.angularSpeed;
                     camera.direction.copyFromFloats(0, 0, 0);                
@@ -301,6 +345,9 @@ var loadScene=async function(name,incremental,sceneLocation,then)
         };
 
 
+        //camera.inputs.add(new FreeCameraKeyboardRotateInput());
+        //camera.inputs.add(new FreeCameraKeyboardRotateInput());
+
         //The Mouse Manager to use the mouse (touch) to search around including above and below
         var FreeCameraSearchInput = function (touchEnabled) {
             if (touchEnabled === void 0) { touchEnabled = true; }
@@ -312,27 +359,43 @@ var loadScene=async function(name,incremental,sceneLocation,then)
         }
 
 
+        ///////////////////////////////
+
+        //camera.applyGravity = true;            
+        //camera.checkCollisions = true;
+        //camera.ellipsoid = new BABYLON.Vector3(.9, .9, 1);
+        
         scene.gravity = new BABYLON.Vector3(0, -0.1, 0);
         scene.collisionsEnabled = true;
         //camera.checkCollisions = true;
         
         camera.onCollide = function (colMesh) {
+            //if (colMesh.uniqueId === box.uniqueId) {
+            //    camera.position = new BABYLON.Vector3(0, -8, -20);
+            //}
             if (colMesh.name!="PISO")
             {
                 if(colMesh.name=="xxx")
                 {                    
                     //alert("aha!");
                 }    
-                //divMensaje.innerHTML="Chocaste con: "+colMesh.name;
+                //alert(colMesh.name);
+                divMensaje.innerHTML="Chocaste con: "+colMesh.name;
             }
         }
 
         scene.executeWhenReady(function()
         {
             canvas.style.opacity=1;
+            
+            //sombra mata la maquina
+            //var light1x = new BABYLON.PointLight("light1x", new BABYLON.Vector3(0,70,0), scene);
+            //light1x.intensity = .1;
+
             scene.meshes.forEach(function(m) {
                 m.checkCollisions = true;
             });  
+
 
             // GUI
             var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
@@ -340,27 +403,64 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
             if(is_touch_device())
             {        
+            
                 scene.activeCamera.pinchDeltaPercentage = 0.001;
+              //var camera=new BABYLON.TouchCamera("touchCamera",scene.activeCamera.position,scene);
+              //switchCamera(camera)
+
+              camera.onCollide = function (colMesh) {
+                //if (colMesh.uniqueId === box.uniqueId) {
+                //    camera.position = new BABYLON.Vector3(0, -8, -20);
+                //}
+                    if (colMesh.name!="PISO")
+                    {
+                        if(colMesh.name=="ENTRADA AUDITORIO_primitive0")
+                        {
+                            window.location.assign("auditorio.html");
+                            //alert("entramos al auditorio");
+                        }    
+                        //alert(colMesh.name);
+                        divMensaje.innerHTML="Chocaste con: "+colMesh.name;
+                    }
+                    if (userid==0){
+                        if (colMesh.name=="Box1407" || colMesh.name=="Box1422")
+                        {
+                            window.location.assign("register.php");
+                        }
+                    }
+                }
+
             }
             else
             {
+                /*
+                scene.meshes.forEach(function(m) {
+                    shadowGenerator.getShadowMap().renderList.push(m);                
+                    m.receiveShadows = true;
+                });                  
+                */
             };
             
             // Light
             var light = new BABYLON.HemisphericLight("Luz", new BABYLON.Vector3(0, 10, 0), scene);
             var light1 = new BABYLON.PointLight("Luz1", new BABYLON.Vector3(10, 5, 5), scene);
+            //var light2 = new BABYLON.PointLight("Luz2", new BABYLON.Vector3(-10, 5, 5), scene);
+            //var light3 = new BABYLON.PointLight("Luz3", new BABYLON.Vector3(10, 5, -15), scene);
             var light4 = new BABYLON.PointLight("Luz4", new BABYLON.Vector3(-10, 5, -15), scene);
             
             light.intensity = 1.8;
             light1.intensity = 300;
+            //light2.intensity = 300;
+            //light3.intensity = 300;
             light4.intensity = 300;
 
 
             var matpant = new BABYLON.StandardMaterial("matpant", scene);
-            var videoTexturepant = new BABYLON.VideoTexture("videoclip", ycl_root+"/vendor_frontend/3d_exhibition/assets/CLIP.mp4", scene, true, true);
+            var videoTexturepant = new BABYLON.VideoTexture("videoclip", "assets/CLIP.mp4", scene, true, true);
 
             matpant.diffuseTexture = videoTexturepant;
 
+            /*
             p1=scene.getMeshByName("Allergen1-0_primitive1")
             p2=scene.getMeshByName("Allergen2-1_primitive1")
             p3=scene.getMeshByName("Allergen3-1_primitive1")
@@ -370,49 +470,113 @@ var loadScene=async function(name,incremental,sceneLocation,then)
             p2.material = matpant;
             p3.material = matpant;
             p4.material = matpant;
-            
+            */
 
             var cam = scene.activeCamera;
             var ease = new BABYLON.CubicEase();
             ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
 
-            BABYLON.Animation.CreateAndStartAnimation('at5', cam, 'target', 80, 120, cam.target, new BABYLON.Vector3(-6.02,2.5,42), 0, ease);
-            BABYLON.Animation.CreateAndStartAnimation('at3', cam, 'radius', 100, 120, cam.radius, 5, 0, ease);
-            BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'alpha', 100, 120, cam.alpha, 1.5680, 0, ease);
-            var animo = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'beta', 100, 120, cam.beta, BABYLON.Tools.ToRadians(85), 0, ease);    
+            cam.upperBetaLimit = BABYLON.Tools.ToRadians(85);
+            cam.lowerBetaLimit = BABYLON.Tools.ToRadians(40);
+            betax=40;
+    
+            BABYLON.Animation.CreateAndStartAnimation('at5', cam, 'target', 80, 120, cam.target, new BABYLON.Vector3(3,0,18.5), 0, ease);
             
+            var animo = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'beta', 100, 120, cam.beta, BABYLON.Tools.ToRadians(betax), 0, ease);
+            var animo2 = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'radius', 100, 120, cam.radius, 80, 0, ease);
+    
             animo.onAnimationEnd = function (){
-                scene.activeCamera.upperBetaLimit = BABYLON.Tools.ToRadians(85);
-                scene.activeCamera.lowerBetaLimit = BABYLON.Tools.ToRadians(85);
+                cam.upperBetaLimit = BABYLON.Tools.ToRadians(40);
+                cam.lowerBetaLimit = BABYLON.Tools.ToRadians(40);
+            }
+            animo2.onAnimationEnd = function (){
+                cam.lowerRadiusLimit = 12;
+                cam.upperRadiusLimit = 80;
+                zoomed=false;
             }
 
-            scene.onPointerUp = function () {
-                videoTexturepant.video.play();
-            }
+            
+            //BABYLON.Animation.CreateAndStartAnimation('at5', cam, 'target', 80, 120, cam.target, new BABYLON.Vector3(-6.02,2.5,42), 0, ease);
+            //BABYLON.Animation.CreateAndStartAnimation('at5', cam, 'target', 80, 120, cam.target, new BABYLON.Vector3(3,0,18.5), 0, ease);
+            
+            //BABYLON.Animation.CreateAndStartAnimation('at3', cam, 'radius', 100, 120, cam.radius, 5, 0, ease);
+            //BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'alpha', 100, 120, cam.alpha, 1.5680, 0, ease);
+            //var animo = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'beta', 100, 120, cam.beta, BABYLON.Tools.ToRadians(85), 0, ease);    
+            
+            //ppp
+            //BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'radius', 100, 120, cam.radius, radiusx, 0, ease);
+            
+            //animo.onAnimationEnd = function (){
+            //    scene.activeCamera.upperBetaLimit = BABYLON.Tools.ToRadians(85);
+            //    scene.activeCamera.lowerBetaLimit = BABYLON.Tools.ToRadians(85);
+            //}
+
+            //scene.onPointerUp = function () {
+            //    videoTexturepant.video.play();
+            //    //videoTexture2.video.play();
+            //}
+
+            ///////////////////////////////////////
 
             //pone el foco en el canvas para poder manejar sin hacer click en la escena
             document.getElementById('renderCanvas').focus();
 
 
+            ///////////////////Detecta los clicks sobre los objetos
             $(window).click(function(e) {
                 var pickResult = scene.pick(scene.pointerX, scene.pointerY);
                 console.log(pickResult.pickedMesh.id);
                 toques++;
                 e.preventDefault();
             
-                if(pickResult.pickedMesh.id=='xxx')
+                if (zoomed)
                 {
-                    //do something
+                    nombrecito=pickResult.pickedMesh.id;
+                    idx=0;
+                    if(nombrecito.indexOf('Aequuspharma_pie_enter_')>-1) idx=20;
+                    if(nombrecito.indexOf('Alcon_pie_enter_')>-1) idx=25;                    
+                    if(nombrecito.indexOf('Allergen_pie_enter_')>-1) idx=43;
+                    if(nombrecito.indexOf('Axis Medical_pie_enter_')>-1) idx=39;
+                    if(nombrecito.indexOf('Bausch & Lomb_pie_enter_')>-1) idx=38;
+                    if(nombrecito.indexOf('Bayer_pie_enter_')>-1) idx=0;
+                    if(nombrecito.indexOf('BioScript_pie_enter_')>-1) idx=37;
+                    if(nombrecito.indexOf('Candorvision_pie_enter_')>-1) idx=36;
+                    if(nombrecito.indexOf('Clarion Medical_pie_enter_')>-1) idx=0;
+                    if(nombrecito.indexOf('Glaukos_pie_enter_')>-1) idx=35;
+                    if(nombrecito.indexOf('Innova_pie_enter_')>-1) idx=34;
+                    if(nombrecito.indexOf('Ivantis_pie_enter_')>-1) idx=0;
+                    if(nombrecito.indexOf('Johnson & Johnson_pie_enter_')>-1) idx=40;
+                    if(nombrecito.indexOf('Labtician_pie_enter_')>-1) idx=33;
+                    if(nombrecito.indexOf('McKesson_pie_enter_')>-1) idx=35;
+                    if(nombrecito.indexOf('MD Financial_pie_enter_')>-1) idx=31;
+                    if(nombrecito.indexOf('Natus_pie_enter_')>-1) idx=30;
+                    if(nombrecito.indexOf('Novartis_pie_enter_')>-1) idx=41;
+                    if(nombrecito.indexOf('Oculus_pie_enter_')>-1) idx=0;
+                    if(nombrecito.indexOf('Pacific Surgical_pie_enter_')>-1) idx=42;
+                    if(nombrecito.indexOf('Roche_pie_enter_')>-1) idx=0;
+                    if(nombrecito.indexOf('Sacor_pie_enter_')>-1) idx=29;
+                    if(nombrecito.indexOf('Santen_pie_enter_')>-1) idx=45;
+                    if(nombrecito.indexOf('Seaford Pharmaceuticals_pie_enter_')>-1) idx=28;
+                    if(nombrecito.indexOf('TopCon_pie_enter_')>-1) idx=27;
+                    if(nombrecito.indexOf('Zeiss_pie_enter_')>-1) idx=26;
+
+                    if (idx>0)
+                    {
+                        destino="https://dev.yourconference.live/COS/sponsor/booth/"+idx;
+                        window.open(destino, '_blank');
+                    }
+
                 }
-                return false;
+                    return false;
             });
             ////////////////////////////////////////////////////
 
             if(scene.activeCamera){
                 scene.activeCamera.attachControl(canvas);
                 scene.createDefaultEnvironment();
+                //scene.environmentTexture = new BABYLON.CubeTexture("assets/skybox2", scene);
 
-                //remove loader
+                //quita loader
                 loadingScreenDiv.innerHTML = "";
                 engine.hideLoadingUI();
                 
@@ -458,6 +622,8 @@ window.addEventListener('click', function() {
     if (clickCount === 1) {
         singleClickTimer = setTimeout(function() {
             clickCount = 0;
+            //singleClick();
+            //alert("simple");
         }, 200);
     } else if (clickCount === 2) {
         clearTimeout(singleClickTimer);
@@ -467,6 +633,10 @@ window.addEventListener('click', function() {
     }
 }, false);
 
+
+
+//scene.constantlyUpdateMeshUnderPointer = true;
+//window.addEventListener("dblclick", function (e) {	    
 function dobleclick(){
     var cam = scene.activeCamera;
     if (zoomed==false)
@@ -477,7 +647,7 @@ function dobleclick(){
         scene.activeCamera.upperBetaLimit = BABYLON.Tools.ToRadians(85);
         scene.activeCamera.lowerBetaLimit = BABYLON.Tools.ToRadians(40);
         scene.activeCamera.lowerRadiusLimit = 5;
-        scene.activeCamera.upperRadiusLimit = 70;
+        scene.activeCamera.upperRadiusLimit = 80;
 
         var pickResult = scene.pick(scene.pointerX, scene.pointerY);     
         
@@ -487,15 +657,119 @@ function dobleclick(){
         var tocado=pickResult.pickedMesh.name;
         
         var esobject=false;
+
         if (!tocado.indexOf("Allergen")){
-            objetivo = new BABYLON.Vector3(-6.19, 2.5, 42);
+            objetivo = new BABYLON.Vector3(-6.19, 2.5, 50);
             esobject=true;
         }
         if (!tocado.indexOf("Clarion")){
-            objetivo = new BABYLON.Vector3(25.216, 2.5, 22.1);
+            objetivo = new BABYLON.Vector3(25.216, 2.5, 25.5);
             esobject=true;
         }
-
+        if (!tocado.indexOf("Labtician")){
+            objetivo = new BABYLON.Vector3(35.64, 2.5, 50);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Santen")){
+            objetivo = new BABYLON.Vector3(19.16, 2.5, 50);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Novartis")){
+            objetivo = new BABYLON.Vector3(-30, 2.5, 50);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Johnson")){
+            objetivo = new BABYLON.Vector3(25, 2.5, 38);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Bayer")){
+            objetivo = new BABYLON.Vector3(12.8, 2.5, 38);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Pacific Surgical")){
+            objetivo = new BABYLON.Vector3(-35, 2.5, 25);
+            esobject=true;
+        }        
+        if (!tocado.indexOf("Bausch")){
+            objetivo = new BABYLON.Vector3(35.6, 2.5, 26);
+            esobject=true;
+        }        
+        if (!tocado.indexOf("Alcon")){
+            objetivo = new BABYLON.Vector3(6, 2.5, 28);
+            esobject=true;
+        }        
+        if (!tocado.indexOf("MD Financial")){
+            objetivo = new BABYLON.Vector3(-12.15, 2.5, 26);
+            esobject=true;
+        }
+        if (!tocado.indexOf("MD Financial")){
+            objetivo = new BABYLON.Vector3(-12.15, 2.5, 26);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Sacor")){
+            objetivo = new BABYLON.Vector3(35.8, 2.5, 14);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Glaukos")){
+            objetivo = new BABYLON.Vector3(25.3, 2.5, 14);
+            esobject=true;
+        }
+        if (!tocado.indexOf("TopCon")){
+            objetivo = new BABYLON.Vector3(12.9, 2.5, 13.5);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Roche")){
+            objetivo = new BABYLON.Vector3(0.2, 2.5, 12.9);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Innova")){
+            objetivo = new BABYLON.Vector3(-24.2, 2.5, 15);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Ivantis")){
+            objetivo = new BABYLON.Vector3(25.31, 2.5, 1.75);
+            esobject=true;
+        }
+        if (!tocado.indexOf("BioScript")){
+            objetivo = new BABYLON.Vector3(12.91, 2.5, 1.6);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Zeiss")){
+            objetivo = new BABYLON.Vector3(0.37, 2.5, 1.7);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Seaford")){
+            objetivo = new BABYLON.Vector3(-12.5, 2.5, 1.63);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Oculus")){
+            objetivo = new BABYLON.Vector3(-25.37, 2.5, 1.4);
+            esobject=true;
+        }
+        if (!tocado.indexOf("McKesson")){
+            objetivo = new BABYLON.Vector3(-35.50, 2.5, 1.4);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Aequuspharma")){
+            objetivo = new BABYLON.Vector3(25.239, 2.5, -10.84);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Axis")){
+            objetivo = new BABYLON.Vector3(12.927, 2.5, -11.324);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Candorvision")){
+            objetivo = new BABYLON.Vector3(0.3, 2.5, -10.8);
+            esobject=true;
+        }
+        if (!tocado.indexOf("Natus")){
+            objetivo = new BABYLON.Vector3(-12.6, 2.5, -10.8);
+            esobject=true;
+        }
+        if (!tocado.indexOf("COS")){
+            objetivo = new BABYLON.Vector3(0, 2.5, -24.4);
+            esobject=true;
+        }
         if (esobject==false)
         {
             objetivo = new BABYLON.Vector3(pickResult.pickedPoint._x, pickResult.pickedPoint._y+2, pickResult.pickedPoint._z+1.5)
@@ -505,6 +779,8 @@ function dobleclick(){
         BABYLON.Animation.CreateAndStartAnimation('at5', cam, 'target', 80, 120, cam.target, objetivo, 0, ease);
         BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'radius', 100, 120, cam.radius, radiusx, 0, ease);
         var animo = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'beta', 100, 120, cam.beta, BABYLON.Tools.ToRadians(betax), 0, ease);    
+        
+        //BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'radius', 100, 120, cam.radius, radiusx, 0, ease);
         
         animo.onAnimationEnd = function (){
             scene.activeCamera.upperBetaLimit = BABYLON.Tools.ToRadians(85);
@@ -517,10 +793,12 @@ function dobleclick(){
         cam.lowerBetaLimit = BABYLON.Tools.ToRadians(40);
         betax=40;
 
-        BABYLON.Animation.CreateAndStartAnimation('at5', cam, 'target', 80, 120, cam.target, new BABYLON.Vector3(-1.8,0,7.3), 0, ease);
-
+        BABYLON.Animation.CreateAndStartAnimation('at5', cam, 'target', 80, 120, cam.target, new BABYLON.Vector3(3,0,18.5), 0, ease);
+        
+        
+        
         var animo = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'beta', 100, 120, cam.beta, BABYLON.Tools.ToRadians(betax), 0, ease);
-        var animo2 = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'radius', 100, 120, cam.radius, 70, 0, ease);
+        var animo2 = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'radius', 100, 120, cam.radius, 80, 0, ease);
 
         animo.onAnimationEnd = function (){
             cam.upperBetaLimit = BABYLON.Tools.ToRadians(40);
@@ -528,12 +806,13 @@ function dobleclick(){
         }
         animo2.onAnimationEnd = function (){
             cam.lowerRadiusLimit = 12;
-            cam.upperRadiusLimit = 70;
+            cam.upperRadiusLimit = 80;
             zoomed=false;
         }
    
     }
 }   
+//});
 
 /** Add map-like controls to an ArcRotate camera.
  * @param {BABYLON.Scene} scene
@@ -542,12 +821,14 @@ function dobleclick(){
 function addControls(scene, camera) {
     camera.inertia = 0.5;
     camera.lowerRadiusLimit = 5;
-    camera.upperRadiusLimit = 70;
+    camera.upperRadiusLimit = 80;
     camera.lowerAlphaLimit = 1.5680;
     camera.upperAlphaLimit = 1.5680;
     camera.upperBetaLimit = BABYLON.Tools.ToRadians(40);
     camera.lowerBetaLimit = BABYLON.Tools.ToRadians(40);
     
+
+    //camera.upperBetaLimit = Math.PI / 2 - 0.1;
     camera.angularSensibilityX = camera.angularSensibilityY = 1800;
 
     const plane =
@@ -577,6 +858,7 @@ function addControls(scene, camera) {
 
     const zoomFn = (p,e) => {
         const delta = zoomWheel(p,e,camera);
+        //zooming(delta, scene, camera, plane, inertialPanning);
     }
 
     const prvScreenPos = BABYLON.Vector2.Zero();
@@ -640,10 +922,20 @@ function getPosition(scene, camera, plane) {
  */
 function panning(newPos, initialPos, inertia, ref) {
     const directionToZoomLocation = initialPos.subtract(newPos);
+   
+    /*Esto le habia agregado yo para frenal el paneo
+    if (newPos._x > 20 || newPos._x < -20) {
+        return;
+    } else if (newPos._z > 20 || newPos._z < -20) {
+        return;
+    }
+    */
+
     const panningX = directionToZoomLocation.x * (1-inertia);
     const panningZ = directionToZoomLocation.z * (1-inertia);
     ref.copyFromFloats(panningX, 0, panningZ);
     return ref;
+
 };
 
 /** Get the wheel delta divided by the camera wheel precision.
@@ -669,20 +961,37 @@ function zoomWheel(p, e, camera) {
     var ease = new BABYLON.CubicEase();
     ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
 
+    //console.log("radius: "+cam.radius + " beta: "+ BABYLON.Tools.ToDegrees(cam.beta));
     if (cam.radius>5 && BABYLON.Tools.ToDegrees(cam.beta)>50)
     {
         camera.upperBetaLimit = BABYLON.Tools.ToRadians(85);
         camera.lowerBetaLimit = BABYLON.Tools.ToRadians(40);
         betax=40;
 
+        //BABYLON.Animation.CreateAndStartAnimation('at5', cam, 'target', 80, 120, cam.target, BABYLON.Vector3.Zero(), 0, ease);
+        
+        
+        
         var animo = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'beta', 100, 120, cam.beta, BABYLON.Tools.ToRadians(betax), 0, ease);
+        //var animo2 = BABYLON.Animation.CreateAndStartAnimation('at4', cam, 'radius', 100, 120, cam.radius, 90, 0, ease);
 
         animo.onAnimationEnd = function (){
             camera.upperBetaLimit = BABYLON.Tools.ToRadians(40);
             camera.lowerBetaLimit = BABYLON.Tools.ToRadians(40);
             zoomed=false;
         }
+        /*
+        animo2.onAnimationEnd = function (){
+            camera.lowerRadiusLimit = 12;
+            camera.upperRadiusLimit = 90;
+            zoomed=false;
+        }
+        */
     }
+
+
+    //console.log("zoompos: " + zoompos);
+
 
     return delta;    
 }
@@ -828,7 +1137,10 @@ function abrirventana()
 function abripopup(mensajex){
     mensax=document.getElementById("mensajex");    
     mensax.innerHTML="Tocaste: "+mensajex;    
+    //document.getElementById("hover_bkgr_fricc").style.visibility = "visible";
+    //document.getElementById("hover_bkgr_fricc").style.display = "block";
     $("#hover_bkgr_fricc").show();
+    
 };
 
 
@@ -839,8 +1151,8 @@ window.addEventListener("resize",function()
 });
 
 var panelIsClosed=true;
-//var cameraPanelIsClosed=true;
-//var aboutIsClosed=true;
+var cameraPanelIsClosed=true;
+var aboutIsClosed=true;
 
 function is_touch_device() {  
     try {  
@@ -866,7 +1178,6 @@ document.getElementById("clickableTag").addEventListener("click",function()
         controlPanel.style.transform="translateY(100px)";
     }
 });
-
 /*
 document.getElementById("cameraClickableTag").addEventListener("click",function()
 {
@@ -885,13 +1196,12 @@ document.getElementById("notSupported").addEventListener("click",function()
     document.getElementById("notSupported").className="hidden";
 });
 
-/*
 var hideCameraPanel=function(){
     cameraPanelIsClosed=true;
     cameraPanel.style.webkitTransform="translateX(17em)";
     cameraPanel.style.transform="translateX(17em)";
 };
-*/
+
 enableDebug.addEventListener("click",function()
 {
     if(scene)
@@ -928,6 +1238,8 @@ var switchCamera=function(camera)
     {
         camera.ellipsoid=scene.activeCamera.ellipsoid.clone();
     }
+    //camera.checkCollisions=scene.activeCamera.checkCollisions;
+    //camera.applyGravity=scene.activeCamera.applyGravity;
     camera.speed=scene.activeCamera.speed;
     camera.postProcesses=scene.activeCamera.postProcesses;
 
@@ -945,7 +1257,7 @@ var switchCamera=function(camera)
     scene.activeCamera.attachControl(canvas);
 
     
-    //hideCameraPanel()
+    hideCameraPanel()
 };
 /*
 touchCamera.addEventListener("click",function()
@@ -1096,6 +1408,17 @@ if(!BABYLON.Engine.isSupported())
 }
 else
 {
+    //if(window.location.hostname.indexOf("localhost")===-1&&!demo.forceLocal)
+    //{
+    //    if(demo.doNotUseCDN)
+    //    {
+    //        sceneLocation="/Scenes/";
+    //    }
+    //    else
+    //    {
+    //        sceneLocation="/Scenes/";
+    //    }
+    //}
     var mode="";
     if(demo.incremental)
     {
@@ -1117,6 +1440,7 @@ else
     {
         BABYLON.StandardMaterial.BumpTextureEnabled=true;
 
+
         if(demo.collisions!==undefined)
         {
             scene.collisionsEnabled=demo.collisions;
@@ -1135,7 +1459,7 @@ else
             {
                 option.selected=true;
             }
-            //camerasList.appendChild(option);
+            camerasList.appendChild(option);
         }
     })
 }
