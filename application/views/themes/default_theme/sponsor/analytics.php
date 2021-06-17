@@ -1,6 +1,6 @@
 <?php
 //echo"<pre>";
-//print_r($unique_visits);
+//print_r($booth);
 //exit("</pre>");
 ?>
 
@@ -67,6 +67,11 @@
 		display: block;
 		margin-top: .25rem;
 		font-weight: 700;
+	}
+
+	div.dt-buttons {
+		float: right;
+		margin-left: 10px;
 	}
 
 
@@ -160,7 +165,7 @@
 				<div class="card-body">
 					<h5 class="card-title"><i class="fas fa-clipboard-list" style="color: #5b8cff;"></i> All Logs</h5>
 				</div>
-				<div class="card-body">
+				<div class="card-body pb-0">
 					<table id="analyticsTable" class="table table-bordered">
 						<thead>
 						<tr>
@@ -210,6 +215,7 @@
 
 <script>
 	$('#analyticsTable').DataTable({
+		"dom": 'lBfrtip',
 		"paging": true,
 		"lengthChange": true,
 		"searching": true,
@@ -218,5 +224,9 @@
 		"autoWidth": false,
 		"responsive": true,
 		"order": [[ 5, "desc" ]],
+		buttons:
+				[
+					{ extend: 'excel', text: '<i class="far fa-file-excel"></i> Export Excel', className:'btn-success', title:'<?=$booth->name?> - booth analytics (<?=date('Y-m-d')?>)' }
+				]
 	});
 </script>
