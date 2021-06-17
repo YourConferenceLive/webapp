@@ -7,7 +7,7 @@ class Eposters extends CI_Controller
 	 * @var mixed
 	 */
 	private $user;
-	private $commentsPerPage = 1;
+	private $commentsPerPage = 10;
 
 	public function __construct()
 	{
@@ -18,6 +18,7 @@ class Eposters extends CI_Controller
 
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('attendee/Eposters_Model', 'eposter');
+		$this->load->model('attendee/Comments_Model', 'comment');
         $this->load->library("pagination");
         $this->load->helper('form');
 	}
@@ -53,8 +54,8 @@ class Eposters extends CI_Controller
 		$config['full_tag_close']       = '</ul>';
 		$config['num_tag_open']         = '<li class="page-item">';
 		$config['num_tag_close']        = '</li>';
-		$config['cur_tag_open']         = '<li class="page-item active"><li class="page-link"><a href="#">';
-		$config['cur_tag_close']        = '<span class="sr-only"></span></a></li>';
+		$config['cur_tag_open']         = '<li class="page-item active"><a href="#" class="page-link">';
+		$config['cur_tag_close']        = '</a></li>';
 		$config['next_tag_open']        = '<li class="page-item">';
 		$config['next_tagl_close']      = '</li>';
 		$config['prev_tag_open']        = '<li class="page-item">';
@@ -72,7 +73,7 @@ class Eposters extends CI_Controller
 
 		$this->pagination->initialize($config);
 
-		$page = ($this->input->get('page'))? $this->input->get('page') : 0;
+		$page = ($this->input->get('page')) ? $this->input->get('page') : 0;
 
 		$data["links"] 			= $this->pagination->create_links();
 
@@ -108,17 +109,22 @@ class Eposters extends CI_Controller
 
 	public function post_comments()
 	{
-		if ($this->eposter->postComments())
+		$this->logger->log_visit("Commented on", $this->input->post('eposter_id'));
+		if ($this->comment->postComments())
 			echo json_encode(array('status'=>'success'));
 		else
 			echo json_encode(array('status'=>'failed'));
 	}
 
-	public function comments($eposter_id)
+	public function comments($eposter_id, $page)
 	{
-		$data['comments_count']		= $this->eposter->getEposterCommentsCount($eposter_id);
+		$data['comments_count']		= $this->comment->getCount($eposter_id);
+		$page--;
+		$offset 					= (($page)*$this->commentsPerPage);
+
 		$data['comments']['total'] 	= $data['comments_count'];
-		$data['comments']['data'] 	= $this->eposter->getEposterComments($eposter_id);
+		$data['comments']['data'] 	= $this->comment->getAll($eposter_id, $this->commentsPerPage, $offset);
+
 		echo json_encode($data['comments']);
 		exit;
 	}

@@ -13,9 +13,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <div class="eposters-view-container container-fluid pl-md-6 pr-md-6 text-center" id="eposter-container">
 <?php
-// $hash = unserialize(file_get_contents("http://vimeo.com/api/v2/video/".str_replace(array('https://', 'vimeo.com/'), array(''), $eposter->video_url).".php"));
-// echo $hash[0]['thumbnail_large'];
-// die();
 			if (($eposter->type == 'surgical_video' && $eposter->video_url != '') || $eposter->type == 'eposter'): 
 				if ($eposter->type == 'surgical_video'):?>
 			<iframe id="vimeo_player" src="https://player.vimeo.com/video/<?=str_replace(array('https://', 'vimeo.com/'), array(''), $eposter->video_url);?>?color=f7dfe9&title=0&byline=0&portrait=0" style="/*position:absolute;top:0;left:0;*/width:100%;height:90%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
@@ -33,10 +30,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	    		<div class="col-auto my-1 mx-auto">
 <?php
 					if ($eposter->type == 'eposter') {?>
-					<button type="button" class="btn btn-primary btn-sm" id="enlargeable">View Full Screen</button>
+					<button type="button" class="btn btn-info btn-sm" id="enlargeable">View Full Screen</button>
 <?php
 					}?>
-					<a role="button" class="btn btn-secondary btn-sm" href="<?=$this->project_url?>/eposters">Return to ePoster Listing</a>
+					<a role="button" class="btn btn-info btn-sm" href="<?=$this->project_url?>/eposters">Return to ePoster Listing</a>
 				</div>
 			</div>
 <?php
@@ -64,19 +61,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				}?>
 			</div>
 
-			<div class="tool-btns first"><a href="javascript:void(0);" class="claim-credits" title="Claim Credits" data-toggle="tooltip" data-placement="left"><i class="fas fa-certificate"></i></div>
+			<div class="tool-btns btn-cstm-first"><a href="javascript:void(0);" data-eposter-id="<?php echo $eposter->id;?>" class="take-notes" title="Take Notes" data-toggle="tooltip" data-placement="left"><i class="fas fa-clipboard fa-fw fa-2x"></i></a></div>
+			<div class="tool-btns btn-cstm-second"><a href="javascript:void(0);" class="claim-credits" title="Claim Credits" data-toggle="tooltip" data-placement="left"><i class="fas fa-certificate fa-fw fa-2x"></i></a></div>
 <?php
-			$link_order = '';
+			$link_order = ' btn-cstm-third';
 			foreach ($eposter->author as $row) {
 				if ($row->contact) {?>
-			<div class="tool-btns email">
-				<a href="mailto:<?php echo $row->email;?>" class="email-author" title="Contact <?php echo $row->author;?>" data-toggle="tooltip" data-placement="left"><i class="fas fa-envelope"></i></a></div>
+			<div class="tool-btns<?php echo $link_order;?>"><a href="mailto:<?php echo $row->email;?>" class="email-author" title="Contact <?php echo $row->author;?>" data-toggle="tooltip" data-placement="left"><i class="fas fa-envelope fa-fw fa-2x"></i></a></div>
 <?php
-					$link_order = ' third';
+					$link_order = ' btn-cstm-fourth';
 					break;
 				}
 			}?>
-			<div class="tool-btns<?php echo $link_order;?>"><a href="javascript:void(0);" data-eposter-id="<?php echo $eposter->id;?>" class="comments" title="Discuss" data-toggle="tooltip" data-placement="left"><i class="fas fa-comment"></i></a></div>
+			<div class="tool-btns<?php echo $link_order;?>"><a href="javascript:void(0);" data-eposter-id="<?php echo $eposter->id;?>" class="comments" title="Discuss" data-toggle="tooltip" data-placement="left"><i class="fas fa-comment fa-fw fa-2x"></i></a></div>
 <?php
 			else: ?>//In case eposter is deactivated or deleted
 			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
@@ -89,7 +86,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 </div>
 
 <script type="application/javascript">
-	let project_id = "<?=$this->project->id?>";
 	let comment_page = 1;
 	let comments_per_page = "<?=$comments_per_page;?>";
 
@@ -130,8 +126,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				success: function(response){
 					Swal.close();
 					jsonObj = JSON.parse(response);
-					// console.log('Comment Total Page : '+ (jsonObj.total / comments_per_page));
-					// console.log('Comment Current Page : '+ comment_page);
 					// Add response in Modal body
 					if (jsonObj.total) {
 						$('.count_comment strong').text(jsonObj.total);
@@ -153,6 +147,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 						if (previousHTML == '')
 							iHTML += '</ul>';
+
+						$('#commentsModal .modal-footer').html('<button' + (((comment_page+1) <= Math.ceil(jsonObj.total/comments_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMore('+eposter_id+', '+comment_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more comments</button>');
 
 						if (previousHTML == '') {
 							$('#comments_list_container').html(iHTML);
@@ -194,13 +190,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		document.getElementById("enlargeable").addEventListener("click", function() {
 		  toggleFullScreen(elem);
 		});
-
-		// On pressing ENTER call toggleFullScreen method
-	  	document.addEventListener("keypress", function(e) {
-	    	if (e.key === 'Enter') {
-	      		toggleFullScreen(elem);
-	    	}
-	  	}, false);
 	}
 
 	function toggleFullScreen(elem) {

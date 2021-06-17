@@ -1,8 +1,8 @@
 /************* Listing Page **************/
-.eposters-container, .eposters-view-container
+.eposters-container, .eposters-view-container, .no-eposter-found
 {
 	padding-bottom: 50px;
-	color: #fff;
+	color:#487391;
 }
 
 .eposters-listing-item
@@ -11,6 +11,16 @@
 	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
 }
 
+.page-title
+{
+	height: 80px;
+	color:#487391;
+}
+
+.btn.not-allowed
+{
+  cursor: not-allowed !important;
+}
 /************** Join Page *************/
 #full-screen-background.eposters-join
 {
@@ -31,7 +41,7 @@
 	font-weight: bold;
 }
 .author, .form-check-label{
-	color: #000;
+	color: #487391;
 }
 
 /************** View Page *************/
@@ -44,6 +54,12 @@
 {
 	height: 100vh;
 }
+.no-eposter-found
+{
+	height: 60vh;
+	/*padding-bottom: 0px;*/
+	padding: 0px;
+}
 
 .live-stream-container
 {
@@ -55,7 +71,7 @@
 	border-color: #487391;
 	border: 0;
 }
-h4 a{
+h4 a, .page-link, .form-control, .modal-dialog{
 	color: #487391;
 }
 .img-prize-detail {
@@ -78,10 +94,17 @@ h4 a{
 	color: #c6c6c6;
 }
 
-/********************************/
+.no-eposter-found .middleText
+{
+	top: 50%;
+}
+
+/*****************************/
+/*  NEXT | PREVIOUS BUTTONS  */
+/*****************************/
 .eposter_view-browse {
 	position: absolute;
-	top: 50%;
+	top: 40%;
 	left: 0;
 	-webkit-transform: translateY(-50%);
 	transform: translateY(-50%);
@@ -116,35 +139,41 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 }
 .eposter_view-browse--right {
 	position: absolute;
-	top: 50%;
 	right: 0;
 	left: auto;
 }
-/********************/
+/*****************************/
+/*  /NEXT | PREVIOUS BUTTONS */
+/*****************************/
 
-/********************/
+/*****************************/
+/*       RIGHT BUTTONS       */
+/*****************************/
 .tool-btns a{
-	top:70%;
+	top:60%;
 	position:fixed;
 	right:0px;
 	z-index: 1000;/*
 	transform: rotate(-90deg);*/
 	background-color: red;
-	padding:10px 20px 35px;
+	padding:5px 8px 40px;
 	height: 0px;
 	background-color: #487391;
 	color:#fff;
 }
 .tool-btns.prize a{
-	top:20%;
+	top:15%;
 	background: 0 0;
 	padding: 5px;
 }
-.tool-btns.third a{
+.tool-btns.btn-cstm-third a{
+	top:70%;
+}
+.tool-btns.btn-cstm-fourth a{
 	top:80%;
 }
-.tool-btns.first a{
-	top: 60%;
+.tool-btns.btn-cstm-first a{
+	top: 50%;
 }
 .tool-btns a:hover{
 	text-decoration: none;
@@ -155,10 +184,13 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 #enlargeable{
 	cursor: zoom-in;
 }
+/*****************************/
+/*      /RIGHT BUTTONS       */
+/*****************************/
 
-/**********************/
-/*  COMMENTS SECTION  */
-/**********************/
+/*****************************/
+/*      COMMENTS POPUP       */
+/*****************************/
 #comments-list .pull-right{
   float:right;
 }
@@ -173,12 +205,12 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
   padding:50px;*/
 }
 #comments-list .header_comment{
-    font-size: 14px;
-    overflow: hidden;
-    border-bottom: 1px solid #e9ebee;
-    line-height: 25px;
-    margin-bottom: 24px;
-    padding: 10px 0;
+	font-size: 14px;
+	overflow: hidden;
+	border-bottom: 1px solid #e9ebee;
+	line-height: 25px;
+	margin-bottom: 24px;
+	padding: 10px 0;
 }
 #comments-list .sort_title{
   color: #4b4f56;
@@ -201,11 +233,11 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
   font-weight: 600;
 }
 #comments-list .body_comment{
-    padding: 0 8px;
-    font-size: 14px;
-    display: block;
-    line-height: 25px;
-    word-break: break-word;
+  padding: 0 8px;
+  font-size: 14px;
+  display: block;
+  line-height: 25px;
+  word-break: break-word;
 }
 #comments-list .avatar_comment{
   display: block;
@@ -213,16 +245,16 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 }
 #comments-list .box_comment{
 	display: block;
-    position: relative;
-    line-height: 1.358;
-    word-break: break-word;
-    border: 1px solid #d3d6db;
-    word-wrap: break-word;
-    background: #fff;
-    box-sizing: border-box;
-    cursor: text;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 16px;
+	position: relative;
+	line-height: 1.358;
+	word-break: break-word;
+	border: 1px solid #d3d6db;
+	word-wrap: break-word;
+	background: #fff;
+	box-sizing: border-box;
+	cursor: text;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 16px;
 	padding: 0;
 }
 #comments-list .box_comment textarea{
@@ -237,10 +269,10 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 }
 #comments-list .box_comment .box_post{
 	border-top: 1px solid #d3d6db;
-    background: #f5f6f7;
-    padding: 8px;
-    display: block;
-    overflow: hidden;
+	background: #f5f6f7;
+	padding: 4px;
+	display: block;
+	overflow: hidden;
 }
 #comments-list .box_comment label{
   display: inline-block;
@@ -251,7 +283,6 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 }
 #comments-list .box_comment button{
   margin-left:8px;
-
   text-decoration: none;
   line-height: 22px;
   border-radius: 2px;
