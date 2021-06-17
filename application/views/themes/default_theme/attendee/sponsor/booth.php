@@ -22,7 +22,7 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->tv_banner?>" id="tv_banner">
 				<?php if($show_admin_panel){ ?>
 					<div class="change_tv_url">
-						<input type="text" id="tv_url" value="<?=$data->main_video_url?>"/>
+						<input type="text" id="tv_url" value='<?=$data->main_video_url?>'/>
 						<input type="button" value="Save" class="save_tv_url">
 					</div>
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="tv_banner" />
