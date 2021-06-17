@@ -52,135 +52,135 @@ class Home extends CI_Controller
 
 	public function save_booth_details()
 	{
-		echo  $this->m_sponsor->save_booth_details();
+		echo  $this->sponsor->save_booth_details();
 		return;
 	}
 
 	public function upload_cover(){
-		echo $this->m_sponsor->upload_cover();
+		echo $this->sponsor->upload_cover();
 		return;
 	}
 
 	public function upload_logo(){
-		echo $this->m_sponsor->upload_logo();
+		echo $this->sponsor->upload_logo();
 		return;
 	}
 
 	public function update_sponsor_name(){
-		echo $this->m_sponsor->update_sponsor_name();
+		echo $this->sponsor->update_sponsor_name();
 		return;
 	}
 
 	public function update_about_us(){
-		echo $this->m_sponsor->update_about_us();
+		echo $this->sponsor->update_about_us();
 		return;
 	}
 
 	public function update_twitter(){
-		echo $this->m_sponsor->update_twitter();
+		echo $this->sponsor->update_twitter();
 		return;
 	}
 	public function update_facebook(){
-		echo $this->m_sponsor->update_facebook();
+		echo $this->sponsor->update_facebook();
 		return;
 	}
 	public function update_linkedin(){
-		echo $this->m_sponsor->update_linkedin();
+		echo $this->sponsor->update_linkedin();
 		return;
 	}
 	public function update_website(){
-		echo $this->m_sponsor->update_website();
+		echo $this->sponsor->update_website();
 		return;
 	}
 
 	public function save_sponsor_group_chat(){
-		echo $this->m_sponsor->save_sponsor_group_chat();
+		echo $this->sponsor->save_sponsor_group_chat();
 		return;
 	}
 
 	public function get_sponsor_group_chat(){
-		$result= $this->m_sponsor->get_sponsor_group_chat();
+		$result= $this->sponsor->get_sponsor_group_chat();
 		echo $result;
 	}
 
 	public function get_sponsor_attendee_lists(){
-		$result= $this->m_sponsor->get_sponsor_attendee_lists();
+		$result= $this->sponsor->get_sponsor_attendee_lists();
 		echo $result;
 	}
 
 	public function get_sponsor_attendee_chat(){
 
-		$result= $this->m_sponsor->get_sponsor_attendee_chat();
+		$result= $this->sponsor->get_sponsor_attendee_chat();
 		echo $result;
 	}
 
 	public function get_attendee_info(){
-		$result= $this->m_sponsor->get_attendee_info();
+		$result= $this->sponsor->get_attendee_info();
 		echo $result;
 	}
 
 	public function save_sponsor_attendee_chat(){
-		$result= $this->m_sponsor->save_sponsor_attendee_chat();
+		$result= $this->sponsor->save_sponsor_attendee_chat();
 		echo $result;
 	}
 
 	public function upload_resource_file(){
-		$result= $this->m_sponsor->upload_resource_file();
+		$result= $this->sponsor->upload_resource_file();
 		echo $result;
 	}
 
 	public function get_resource_files(){
-		$result= $this->m_sponsor->get_resource_files();
+		$result= $this->sponsor->get_resource_files();
 		echo $result;
 	}
 
 	public function delete_resource_file(){
-		$result= $this->m_sponsor->delete_resource_file();
+		$result= $this->sponsor->delete_resource_file();
 		echo $result;
 	}
 
 	public function download_resource_file(){
-		$result= $this->m_sponsor->download_resource_file();
+		$result= $this->sponsor->download_resource_file();
 		echo $result;
 	}
 
 	public function add_availability_date_time(){
-		$result= $this->m_sponsor->add_availability_date_time();
+		$result= $this->sponsor->add_availability_date_time();
 		echo $result;
 	}
 
 	public function get_availability_list(){
-		$result= $this->m_sponsor->get_availability_list();
+		$result= $this->sponsor->get_availability_list();
 		echo $result;
 	}
 
 	public function delete_availability(){
-		$result= $this->m_sponsor->delete_availability();
+		$result= $this->sponsor->delete_availability();
 		echo $result;
 	}
 
 	public function get_calendar_events(){
-		$result= $this->m_sponsor->get_calendar_events();
+		$result= $this->sponsor->get_calendar_events();
 		echo $result;
 	}
 
 	public function clear_group_chat(){
-		$result = $this->m_sponsor->clear_group_chat();
+		$result = $this->sponsor->clear_group_chat();
 		echo $result;
 	}
 
 	public function copy_from_group_chat(){
-		$result = $this->m_sponsor->copy_from_group_chat();
+		$result = $this->sponsor->copy_from_group_chat();
 		echo json_encode($result);
 	}
 
 	public function get_saved_group_chats(){
-		$result = $this->m_sponsor->get_saved_group_chats();
+		$result = $this->sponsor->get_saved_group_chats();
 		echo $result;
 	}
 
 	public function delete_saved_chats(){
-		$result = $this->m_sponsor->delete_saved_chats();
+		$result = $this->sponsor->delete_saved_chats();
 		echo $result;
 	}
 }
