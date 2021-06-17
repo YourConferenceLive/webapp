@@ -3,6 +3,10 @@ $(function () {
 	$('.video-call').on('click', function () {
 		callUser($(this).attr('user-id'), $(this).attr('user-name'));
 	});
+
+	$('#usersInThisBooth').on('click', '.video-call', function () {
+		callUser($(this).attr('user-id'), $(this).attr('user-name'));
+	});
 });
 
 function callUser(userId, userName='') {

@@ -28,13 +28,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="col">
 			<?php if (isset($booth->main_video_url) && !empty($booth->main_video_url)): ?>
 
-			<div id="tv-container">
-				<div id="monitor">
-					<div id="monitorscreen">
-						<?=($booth->main_video_url)?>
+				<div id="tv-container">
+					<div id="monitor">
+						<div id="monitorscreen">
+							<?=($booth->main_video_url)?>
+						</div>
 					</div>
 				</div>
-			</div>
 			<?php endif; ?>
 		</div>
 	</div>
@@ -202,20 +202,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 										<div class="card-body attendee-list-body p-0">
 											<span><strong>Attendees in your booth</strong></span>
-											<ul class="list-group mb-3">
-<!--												<li id="usersInThisBooth" class="list-group-item" style="cursor: pointer;">-->
-<!--													<div class="row">-->
-<!--														<div class="col-1 p-0">-->
-<!--															<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">-->
-<!--														</div>-->
-<!--														<div class="col-9 p-0 pl-2">-->
-<!--															John Doe <i class="fas fa-dot-circle" style="color: springgreen;"></i>-->
-<!--														</div>-->
-<!--														<div class="col-2 p-0 pl-1">-->
-<!--															<button class="btn btn-info btn-sm video-call" user-id="1" user-name="John Doe"><i class="fas fa-video"></i></button>-->
-<!--														</div>-->
-<!--													</div>-->
-<!--												</li>-->
+											<ul id="usersInThisBooth" class="list-group mb-3 pl-4">
+												<!--												<li id="usersInThisBooth" class="list-group-item" style="cursor: pointer;">-->
+												<!--													<div class="row">-->
+												<!--														<div class="col-1 p-0">-->
+												<!--															<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">-->
+												<!--														</div>-->
+												<!--														<div class="col-9 p-0 pl-2">-->
+												<!--															John Doe <i class="fas fa-dot-circle" style="color: springgreen;"></i>-->
+												<!--														</div>-->
+												<!--														<div class="col-2 p-0 pl-1">-->
+												<!--															<button class="btn btn-info btn-sm video-call" user-id="1" user-name="John Doe"><i class="fas fa-video"></i></button>-->
+												<!--														</div>-->
+												<!--													</div>-->
+												<!--												</li>-->
 											</ul>
 
 											<span><strong>Other attendees</strong></span>
@@ -224,7 +224,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<li class="list-group-item">
 														Empty
 													</li>
-												<?php endif; ?>
+												<? endif; ?>
 												<?php foreach ($attendees as $attendee): ?>
 													<li class="all-users-item list-group-item" user-id="<?=$attendee->id?>" active-status="0" style="cursor: pointer;" >
 														<div class="row">
@@ -419,11 +419,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 
 <script>
- var logo = "<?=$booth->logo?>";
- var date_now = "<?=date('Y-m-d H:i:s')?>";
- var current_id = "<?=$this->session->userdata('sponsor_id')?>";
- var current_booth_id = "<?=$_SESSION['project_sessions']["project_{$this->project->id}"]['exhibitor_booth_id']?>";
- var sponsor_name = "<?=$booth->name?>";
+	var logo = "<?=$booth->logo?>";
+	var date_now = "<?=date('Y-m-d H:i:s')?>";
+	var current_id = "<?=$this->session->userdata('sponsor_id')?>";
+	var current_booth_id = "<?=$_SESSION['project_sessions']["project_{$this->project->id}"]['exhibitor_booth_id']?>";
+	var sponsor_name = "<?=$booth->name?>";
 
 </script>
 <script>
@@ -449,7 +449,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let uniqueActiveUsers = [...new Set(activeUsers)];
 			$('.user-status-indicator').css('color', 'grey');
 			$.each(uniqueActiveUsers, function (key, userId) {
-				$('.user-status-indicator[user-id='+userId+']').css('color', 'springgreen');
+				if (userId != '')
+					$('.user-status-indicator[user-id='+userId+']').css('color', 'springgreen');
 			});
 		});
 		socket.emit('ycl_get_active_users_list');
@@ -458,9 +459,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		socket.on('ycl_active_user_on_booth', function (user) {
 			console.log(user);
 			console.log(current_booth_id);
-			if (user.booth_id == current_booth_id)
+			if (user.booth_id == current_booth_id && user_id != '')
 			{
 				$('.video-call[user-id="'+user.user_id+'"]').show();
+
+				let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').clone();
+				console.log(userHtml);
+
+				$('#usersInThisBooth').append(userHtml.html());
+				$('.all-users-item[user-id="'+user.user_id+'"]').remove();
 			}
 		});
 
