@@ -42,5 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 		let socketServer = "https://socket.yourconference.live:443";
 		let socket = io(socketServer);
+		let user_id = "<?=($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id'])?>";
 	</script>
+	<script src="<?=ycl_root?>/ycl_assets/js/active-status.js"></script>
 </head>

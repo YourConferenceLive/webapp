@@ -385,6 +385,17 @@ INSERT INTO `eposter_tracks` (`id`, `project_id`, `track`, `status`, `created_da
 (9, 3, 'Vision Rehabilitation', 1, '2021-06-14 18:40:41', '2021-06-14 18:40:41');
 COMMIT;
 
+create table session_questions
+(
+    id int auto_increment,
+    session_id int not null,
+    user_id int not null,
+    question text null collate utf8_general_ci,
+    asked_on datetime not null,
+    constraint session_questions_pk
+        primary key (id)
+);
+
 
 ALTER TABLE `sponsor_booth`
 ADD COLUMN `left_banner` TEXT NULL AFTER `level`,
