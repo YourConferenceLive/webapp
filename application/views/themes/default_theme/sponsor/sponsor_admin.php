@@ -10,9 +10,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=1"></script>
 
 <!-- Full Calendar-->
-<link rel="stylesheet" href="https://localhost/adminLTE/plugins/fullcalendar/main.css">
-<script src="https://localhost/adminLTE/plugins/moment/moment.min.js"></script>
-<script src="https://localhost/adminLTE/plugins/fullcalendar/main.js"></script>
+<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.css">
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/moment/moment.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.js"></script>
 
 <!-- Date Range Picker-->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -229,7 +229,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<li class="all-users-item list-group-item" user-id="<?=$attendee->id?>" active-status="0" style="cursor: pointer;" >
 														<div class="row">
 															<div class="col-1 p-0">
-																<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">
+																<img src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">
 															</div>
 															<div class="col-9 p-0 pl-2">
 																<span><?=$attendee->name?> <?=$attendee->surname?> <i class="user-status-indicator fas fa-dot-circle" user-id="<?=$attendee->id?>" style="color: grey;"></i></span>

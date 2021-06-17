@@ -83,4 +83,19 @@ class Logger_Model extends CI_Model
 		return false;
 
 	}
+
+	public function getBoothLogs($booth_id)
+	{
+		$this->db->select('user.name as user_fname, user.surname as user_surname, user.email, logs.*')
+			->from('logs')
+			->join('user','user.id = logs.user_id')
+			->where('logs.info', 'Booth')
+			->where('logs.ref_1', $booth_id)
+			->order_by('logs.date_time', 'desc')
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return $result->result();
+		return new stdClass();
+	}
 }

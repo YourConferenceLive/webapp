@@ -1,3 +1,9 @@
+<?php
+//echo"<pre>";
+//print_r($logs);
+//exit("</pre>");
+?>
+
 <style>
 	body{
 		background: #e8e8e8;
@@ -17,15 +23,26 @@
 						<thead>
 						<tr>
 							<th>User ID</th>
-							<th>Name</th>
+							<th>First Name</th>
+							<th>Second Name</th>
 							<th>Email</th>
 							<th>Action</th>
 							<th>Action Time</th>
-							<th>Details</th>
+							<th>IP</th>
 						</tr>
 						</thead>
 						<tbody id="sessionsTableBody">
-
+							<?php foreach ($logs as $log): ?>
+								<tr>
+									<td><?=$log->user_id?></td>
+									<td><?=$log->user_fname?></td>
+									<td><?=$log->user_surname?></td>
+									<td><?=$log->email?></td>
+									<td><?=$log->name?></td>
+									<td><?=$log->date_time?></td>
+									<td><?=$log->ip?></td>
+								</tr>
+							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>

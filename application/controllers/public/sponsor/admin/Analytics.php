@@ -31,7 +31,7 @@ class Analytics extends CI_Controller
 		$menu_data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$data['booth'] = $this->sponsor->getBoothData($this->booth_id);
-		$data['attendees'] = $this->users->getAllAttendees();
+		$data['logs'] = $this->logger->getBoothLogs($this->booth_id);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header")
