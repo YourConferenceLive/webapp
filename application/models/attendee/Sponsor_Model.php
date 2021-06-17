@@ -311,7 +311,10 @@ class Sponsor_Model extends CI_Model
 			);
 
 			$this->db->insert('sponsor_bag', $data_field);
-				return array('status'=>'success','message'=>'file added to bag');
+
+			$this->logger->add($this->project->id, $this->user_id, "Resource to briefcase", "Booth", $data->booth_id, $resource_id);
+			return array('status'=>'success','message'=>'file added to bag');
+
 			}
 		}
 		return '';

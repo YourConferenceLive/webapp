@@ -13,6 +13,7 @@ class Users extends CI_Controller
 		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 
 		$this->load->model('Users_Model', 'users');
+		$this->load->model('Account_Model', 'account');
 	}
 
 	public function index()
@@ -69,5 +70,11 @@ class Users extends CI_Controller
 		if ($print)
 			echo ($this->users->emailExists($email))?'true':'false';
 		return $this->users->emailExists($email);
+	}
+
+	public function resetPasswordsOfAll($access_level)
+	{
+		$this->account->resetPasswordsOfAll($access_level);
+		echo 'done';
 	}
 }

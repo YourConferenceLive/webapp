@@ -1,6 +1,6 @@
 <?php
 //echo"<pre>";
-//print_r($logs);
+//print_r($unique_visits);
 //exit("</pre>");
 ?>
 
@@ -8,15 +8,144 @@
 	body{
 		background: #e8e8e8;
 	}
+
+	.info-box {
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
+		border-radius: 0.25rem;
+		background-color: #fff;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+		margin-bottom: 1rem;
+		min-height: 80px;
+		padding: .5rem;
+		position: relative;
+		width: 100%;
+	}
+
+	.info-box .info-box-icon {
+		border-radius: 0.25rem;
+		-webkit-align-items: center;
+		-ms-flex-align: center;
+		align-items: center;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+		font-size: 1.875rem;
+		-webkit-justify-content: center;
+		-ms-flex-pack: center;
+		justify-content: center;
+		text-align: center;
+		width: 70px;
+	}
+
+	.info-box .info-box-content {
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+		-webkit-flex-direction: column;
+		-ms-flex-direction: column;
+		flex-direction: column;
+		-webkit-justify-content: center;
+		-ms-flex-pack: center;
+		justify-content: center;
+		line-height: 1.8;
+		-webkit-flex: 1;
+		-ms-flex: 1;
+		flex: 1;
+		padding: 0 10px;
+	}
+
+	.info-box .progress-description, .info-box .info-box-text {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.info-box .info-box-number {
+		display: block;
+		margin-top: .25rem;
+		font-weight: 700;
+	}
+
+
 </style>
 
 <div class="clearfix" style="margin-top: 75px"></div>
 <div class="container-fluid mt-5">
-	<div class="row">
+
+	<div class="row mb-2">
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
-					<h4 class="card-title"><i class="far fa-chart-bar"></i> Analytics</h4>
+					<h4 class="card-title" style="color: #487391;"><i class="fas fa-chart-pie"></i> Analytics</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row mb-2">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+
+					<div class="row">
+
+						<div class="col-4">
+							<div class="info-box">
+								<span class="info-box-icon bg-info elevation-1"><i class="fas fa-id-card-alt text-white"></i></span>
+
+								<div class="info-box-content">
+									<span class="info-box-text">Number of unique visitors</span>
+									<span class="info-box-number">
+										<?=$unique_visits?>
+									</span>
+								</div>
+								<!-- /.info-box-content -->
+							</div>
+						</div>
+
+						<div class="col-4">
+							<div class="info-box">
+								<span class="info-box-icon elevation-1" style="background-color: #426db0 !important;"><i class="fas fa-user-friends text-white"></i></span>
+
+								<div class="info-box-content">
+									<span class="info-box-text">Number of returning visitors</span>
+									<span class="info-box-number">
+										<?=$returning_visits?>
+									</span>
+								</div>
+								<!-- /.info-box-content -->
+							</div>
+						</div>
+
+						<div class="col-4">
+							<div class="info-box">
+								<span class="info-box-icon elevation-1" style="background-color: #75930b !important;"><i class="fas fa-briefcase text-white"></i></span>
+
+								<div class="info-box-content">
+									<span class="info-box-text">Number of total resource added to the briefcases</span>
+									<span class="info-box-number">
+										<?=$total_resource_downloads?>
+									</span>
+								</div>
+								<!-- /.info-box-content -->
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row mb-2">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title"><i class="fas fa-clipboard-list" style="color: #5b8cff;"></i> All Logs</h5>
 				</div>
 				<div class="card-body">
 					<table id="analyticsTable" class="table table-bordered">
@@ -75,5 +204,6 @@
 		"info": true,
 		"autoWidth": false,
 		"responsive": true,
+		"order": [[ 5, "desc" ]],
 	});
 </script>

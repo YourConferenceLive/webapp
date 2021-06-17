@@ -98,4 +98,49 @@ class Logger_Model extends CI_Model
 			return $result->result();
 		return new stdClass();
 	}
+
+	public function getUniqueBoothVisits($booth_id)
+	{
+		$this->db->select('logs.*')
+			->from('logs')
+			->where('logs.info', 'Booth')
+			->where('logs.name', 'Visit')
+			->where('logs.ref_1', $booth_id)
+			->group_by('logs.user_id')
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return sizeof($result->result());
+		return 0;
+	}
+
+	public function getReturningBoothVisits($booth_id)
+	{
+		$this->db->select('logs.user_id')
+			->from('logs')
+			->where('logs.info', 'Booth')
+			->where('logs.name', 'Visit')
+			->where('logs.ref_1', $booth_id)
+			->group_by('logs.user_id')
+			->having('COUNT(logs.user_id) > 1')
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return sizeof($result->result());
+		return 0;
+	}
+
+	public function getTotalResourceDownloads($booth_id)
+	{
+		$this->db->select('logs.*')
+			->from('logs')
+			->where('logs.info', 'Booth')
+			->where('logs.name', 'Resource to briefcase')
+			->where('logs.ref_1', $booth_id)
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return sizeof($result->result());
+		return 0;
+	}
 }
