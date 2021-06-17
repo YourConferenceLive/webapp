@@ -159,7 +159,7 @@
 		</div>
 	</div>
 
-	<div class="row mb-2">
+	<div class="row mb-5">
 		<div class="col-12">
 			<div class="card">
 				<div class="card-body">
