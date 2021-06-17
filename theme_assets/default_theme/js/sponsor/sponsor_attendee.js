@@ -139,6 +139,7 @@ $(document).ready(function () {
 		$.post(project_url+"/sponsor/get_sponsor_attendee_chat/",
 			{
 				'booth_id':current_booth_id,
+				'chat_from_id':current_user_id
 			},
 			function(){
 

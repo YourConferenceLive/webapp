@@ -74,13 +74,13 @@ class Sponsor_Model extends CI_Model
 		return json_encode($json_array);
 	}
 
-	function get_sponsor_attendee_chat($booth_id){
+	function get_sponsor_attendee_chat(){
 		$post = $this->input->post();
 //		print_r($post);exit;
 		$this->db->select('*, CONCAT(u.name," ",u.surname) as full_name')
 			->from('sponsor_attendee_chat sac')
 			->join('user u', 'sac.from_id = u.id','left')
-			->where('sac.booth_id', $booth_id)
+			->where('sac.booth_id', $post['booth_id'])
 			->where('sac.project_id', $this->project->id)
 			->group_start()
 			->where('from_id', $post['chat_from_id'])
