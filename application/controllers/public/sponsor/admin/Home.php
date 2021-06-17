@@ -15,6 +15,7 @@ class Home extends CI_Controller
 			redirect(base_url($this->project->main_route)."/sponsor/admin/login"); // Not logged-in
 
 		$this->booth_id = $_SESSION['project_sessions']["project_{$this->project->id}"]['exhibitor_booth_id'];
+		$this->user_id = ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']);
 
 		if ($this->booth_id == null) // No booth has been assigned to this account
 			redirect(base_url($this->project->main_route)."/sponsor/admin/login");
@@ -94,12 +95,12 @@ class Home extends CI_Controller
 	}
 
 	public function save_sponsor_group_chat(){
-		echo $this->sponsor->save_sponsor_group_chat();
+		echo $this->sponsor->save_sponsor_group_chat($this->booth_id, $this->user_id);
 		return;
 	}
 
 	public function get_sponsor_group_chat(){
-		$result= $this->sponsor->get_sponsor_group_chat();
+		$result= $this->sponsor->get_sponsor_group_chat($this->booth_id);
 		echo $result;
 	}
 

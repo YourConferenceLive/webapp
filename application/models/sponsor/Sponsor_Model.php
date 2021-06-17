@@ -203,13 +203,13 @@ class Sponsor_model extends CI_Model
 		}
 	}
 
-	function save_sponsor_group_chat()
+	function save_sponsor_group_chat($booth_id, $user_id)
 	{
 		$post = $this->input->post();
 		$fields = array(
 			'project_id'=> $this->project->id,
-			'booth_id' => $this->booth_id,
-			'chat_from' => $this->sponsor_id,
+			'booth_id' => $booth_id,
+			'chat_from' => $user_id,
 			'chat_text' => $post['chat_text'],
 			'date_time' => date('Y-m-d H:i:s'),
 		);
@@ -224,7 +224,7 @@ class Sponsor_model extends CI_Model
 
 	}
 
-	function get_sponsor_group_chat()
+	function get_sponsor_group_chat($booth_id)
 	{
 		$post = $this->input->post();
 		$this->db->select('*')
@@ -232,7 +232,7 @@ class Sponsor_model extends CI_Model
 				->join('user u', 'sc.chat_from = u.id', 'left')
 				->where('cleared', 0)
 				->where('project_id', $this->project->id)
-				->where('booth_id', $this->booth_id)
+				->where('booth_id', $booth_id)
 				->order_by('sc.date_time', 'asc');
 
 		$result = $this->db->get();
