@@ -7,6 +7,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
 <div class="sessions-container container-fluid pl-md-6 pr-md-6">
 	<div class="col-12">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="text-center btn card mb-5" style="height: 80px;color:#487391;"><h1>Agenda</h1></div>
+			</div>
+		</div>
 <!--		Date tabs -->
 		<div class="row mb-5">
 			<div class="col-md-3">
@@ -16,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<?php if ($current_date == '2021-06-24'):?>
 						<div class="card-body p-0 pt-4 text-white text-center rounded" style="height: 130px; background-color: #487391">
 							<?php else:?>
-							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px">
+							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
 								<?php endif;?>
 								<h3>Thursday <br> June 24 2021</h3>
 						</div>
@@ -30,7 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<?php if ($current_date == '2021-06-25'):?>
 						<div class="card-body p-0 pt-4 text-white text-center rounded" style="height: 130px; background-color: #487391">
 							<?php else:?>
-							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px">
+							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
 								<?php endif;?>
 								<h3>Friday <br> June 25 2021</h3>
 						</div>
@@ -44,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<?php if ($current_date == '2021-06-26'):?>
 						<div class="card-body p-0 pt-4 text-white text-center rounded" style="height: 130px; background-color: #487391">
 							<?php else:?>
-							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px">
+							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
 								<?php endif;?>
 								<h3>Saturday <br> June 26 2021</h3>
 						</div>
@@ -58,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<?php if ($current_date == '2021-06-27'):?>
 						<div class="card-body p-0 pt-4 text-white text-center rounded" style="height: 130px; background-color: #487391">
 							<?php else:?>
-							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px">
+							<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
 								<?php endif;?>
 								<h3>Sunday <br> June 27 2021</h3>
 						</div>
@@ -86,21 +91,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color:#487391"><h4><?=$session->name?></h4></a>
 								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color: #1ab6cf "><h4><?=$session->other_language_name?></h4></a>
 								<p>
-									<label>Moderators:</label>
+
+									<?php if($session->moderators != new stdClass()):?>
+									<label>Moderator:</label>
 									<?php foreach ($session->moderators as $index=> $moderator):?>
 										<?=(isset($index) && ($index >= 1))?', ':''?>
 										<?= $moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?', '.$moderator->credentials:'')?>
 									<?php endforeach; ?><br>
+									<?php endif;?>
+
+									<?php if($session->keynote_speakers != new stdClass()):?>
 									<label>Keynote:</label>
 									<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
 										<?=(isset($index) && ($index >= 1))?', ':''?>
 										<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'')?>
 									<?php endforeach; ?><br>
+									<?php endif; ?>
+
+									<?php if($session->presenters != new stdClass()):?>
 									<label>Speakers:</label>
 									<?php foreach ($session->presenters as $index=> $presenter):?>
 										<?=(isset($index) && ($index >=1))?', ':''?>
 										<?= $presenter->name." ".$presenter->surname.(!empty($presenter->credentials)?', '.$presenter->credentials:'')?>
 									<?php endforeach;?><br>
+									<?php endif; ?>
+
 								</p>
 								<p><?=$session->description?></p>
 							</div>
