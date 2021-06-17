@@ -1,9 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<style>
+	body{background-color: #487391;}
+</style>
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/eposters.css?v=<?=rand()?>" rel="stylesheet">
 
-<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/eposters/eposters_listing_background.jpg">
+<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
 <div class="eposters-container container-fluid pl-md-6 pr-md-6">
@@ -66,14 +69,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			foreach ($eposters as $eposter): ?>
 		<!-- ePoster Listing Item -->
 		<div class="eposters-listing-item pb-3">
-			<div class="container-fluid">
+			<div class="container-fluid" style="min-height: 210px;">
 				<div class="row mt-2">
 					<div class="col-md-3 col-sm-12 p-0">
 						<div class="eposter-img-div pl-2 pt-2 pb-2 pr-2 text-center">
 							<a href="<?=$this->project_url?>/eposters/view/<?=$eposter->id;?>" title="<?=$eposter->title;?>">
 							<img class="eposter-img img-fluid"
 								 src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/<?=$eposter->eposter?>"
-								 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/default'">
+								 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/default.jpg'">
 							</a>
 						</div>
 					</div>
@@ -83,7 +86,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<p class="author"><?php foreach($eposter->author as $index=>$item){echo (($index) ? ', ' : '').$item->author;}?></p>
 <?php
 						if ($eposter->prize) {?>
-					  	<img class="img-fluid img-thumbnail"
+					  	<img data-toggle="tooltip" data-placement="right" title="<?php echo (($eposter->prize != 'hot topic') ? 'Won ' : '' ).ucwords($eposter->prize);?>" class="img-fluid img-prize img-thumbnail"
 					  		 src="<?= ycl_root ?>/theme_assets/default_theme/images/eposters/thumb/<?=str_replace(' ', '_', $eposter->prize).'.png';?>">
 						<div class="clearfix"></div>
 <?php
@@ -91,7 +94,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 
 						<div class="col-12 text-md-right text-sm-center" style="position: absolute; bottom: 0;">
-							<a href="<?=$this->project_url?>/eposters/view/<?=$eposter->id;?>" class="btn btn-sm btn-warning m-1 rounded-0">VIEW</a>
+							<a href="<?=$this->project_url?>/eposters/view/<?=$eposter->id;?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-search"></i> VIEW</a>
 						</div>
 					</div>
 				</div>
@@ -106,3 +109,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}?>
 	</div>
 </div>
+<script type="application/javascript">
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+</script>
