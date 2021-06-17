@@ -17,6 +17,7 @@ class Sessions_Model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('sessions');
 		$this->db->where('project_id', $this->project->id);
+		$this->db->order_by('start_date_time', 'ASC');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 		{
@@ -41,6 +42,7 @@ class Sessions_Model extends CI_Model
 		$this->db->where('session_presenters.presenter_id', $presenter_id);
 		$this->db->where('sessions.project_id', $this->project->id);
 		$this->db->group_by('sessions.id');
+		$this->db->order_by('sessions.start_date_time', 'ASC');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();
@@ -73,6 +75,7 @@ class Sessions_Model extends CI_Model
 		$this->db->from('sessions');
 		$this->db->where('DATE(start_date_time)', $day);
 		$this->db->where('project_id', $this->project->id);
+		$this->db->order_by('sessions.start_date_time', 'ASC');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 		{

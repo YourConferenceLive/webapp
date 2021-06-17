@@ -80,4 +80,16 @@ class Sessions extends CI_Controller
 			return $difference - $offset;
 		return 0;
 	}
+
+	public function day($day){
+		$data['user'] = $this->user;
+		$data['sessions'] = $this->sessions->getByDay($day);
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/listing", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
+		;
+	}
+
 }
