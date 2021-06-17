@@ -329,7 +329,7 @@ class Sponsor_model extends CI_Model
 		}
 	}
 
-	function upload_resource_file()
+	function upload_resource_file($booth_id)
 	{
 		$post = $this->input->post();
 		$random_string = md5(uniqid(rand(), true));
@@ -341,7 +341,7 @@ class Sponsor_model extends CI_Model
 			if (move_uploaded_file($_FILES["resource_file"]["tmp_name"], FCPATH . "cms_uploads/projects/".$this->project->id."/sponsor_assets/uploads/resource_management_files/resource_{$this->booth_id}_{$random_string}.{$fileExt}")) {
 				$data = array(
 					'project_id'=>$this->project->id,
-					'booth_id' => $this->booth_id,
+					'booth_id' => $booth_id,
 					'resource_name' => $resource_name,
 					'screen_name' => $screen_name,
 					'file_name' => "resource_{$this->booth_id}_{$random_string}.{$fileExt}"
@@ -355,11 +355,11 @@ class Sponsor_model extends CI_Model
 		return $ret;
 	}
 
-	function get_resource_files(){
+	function get_resource_files($booth_id){
 		$this->db->select('*')
 				->from('sponsor_resource_management')
 				->where('project_id',$this->project->id)
-				->where('booth_id',$this->booth_id)
+				->where('booth_id',$booth_id)
 				->order_by('date_time','desc');
 		$result = $this->db->get();
 		if($result->num_rows() > 0){

@@ -271,7 +271,7 @@ $(document).ready(function () {
 
 
 	get_sponsor_group_chat();
-	get_sponsor_attendee_lists();
+	//get_sponsor_attendee_lists();
 	get_resource_files();
 	get_availability_list();
 	get_full_calendar_events();
@@ -401,7 +401,8 @@ $(document).ready(function () {
 
 				$.each(datas.result, function (index, data) {
 
-					$('.attendee-list-body').append('<div class="card ml-3 my-1 btn pl-1 list " data-list_id = "' + data.user_id + '" data-chatting_to ="' + data.name + ' ' + data.surname + '" data-to_id="' + data.id + '"><div class="card-header p-0 bg-white border-0 btn btn-xs text-right mr-3 user-info" data-user_id="' + data.user_id + '"><span class=" fas fa-id-card text-info position-absolute " data-user_id="' + data.user_id + '" style="font-size: 20px"></span></div><div class="card-body p-0"><a class="float-left"><img class=" btn p-0 " src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></a><div class="attendee-name mt-2 text-left ">' + data.name + ' ' + data.surname + '</div></div></div>')
+					$('.attendee-list-body').append('' +
+						'<div class="all-users-item ml-3 my-1 btn pl-1 list " data-list_id = "' + data.user_id + '" data-chatting_to ="' + data.name + ' ' + data.surname + '" data-to_id="' + data.id + '"><div class="card-header p-0 bg-white border-0 btn btn-xs text-right mr-3 user-info" data-user_id="' + data.user_id + '"><span class=" fas fa-id-card text-info position-absolute " data-user_id="' + data.user_id + '" style="font-size: 20px"></span></div><div class="card-body p-0"><a class="float-left"><img class=" btn p-0 " src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></a><div class="attendee-name mt-2 text-left ">' + data.name + ' ' + data.surname + '</div></div></div>')
 				});
 			}
 		});

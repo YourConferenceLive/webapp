@@ -125,12 +125,12 @@ class Home extends CI_Controller
 	}
 
 	public function upload_resource_file(){
-		$result= $this->sponsor->upload_resource_file();
+		$result= $this->sponsor->upload_resource_file($this->booth_id);
 		echo $result;
 	}
 
 	public function get_resource_files(){
-		$result= $this->sponsor->get_resource_files();
+		$result= $this->sponsor->get_resource_files($this->booth_id);
 		echo $result;
 	}
 
