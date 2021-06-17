@@ -42,6 +42,13 @@ class Home extends CI_Controller
 
 	}
 
+	public function upload_booth_photos(){
+		echo  $this->sponsor->upload_booth_photos();
+	}
+
+	public function change_booth_url(){
+		echo  $this->sponsor->change_booth_url();
+	}
 
 	public function save_booth_details()
 	{
