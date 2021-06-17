@@ -78,7 +78,7 @@
 	<div class="row mb-2">
 		<div class="col-12">
 			<nav class="navbar navbar-light bg-light">
-				<span class="navbar-brand mb-0 h1" style="color: #487391;"><i class="fas fa-chart-pie"></i> Analytics</span>
+				<span class="navbar-brand mb-0 h1" style="color: #487391;"><h4><i class="fas fa-chart-pie"></i> Analytics</h4></span>
 			</nav>
 		</div>
 	</div>
