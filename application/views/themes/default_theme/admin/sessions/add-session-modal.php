@@ -323,10 +323,26 @@
 			return false;
 		}
 
-		if ($('#sessionId').val() == 0)
-			addSession();
-		else
-			updateSession();
+		let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
+		Swal.fire({
+			title: 'Are you sure?',
+			html: '<span style="color: white;">'+sessionName+
+					'<br><br> <small>starts on</small> '+$('#startDateTimeInput').val()+
+					'<br> <small>and ends on</small> '+$('#endDateTimeInput').val()+' ? </span>',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, save it!',
+			cancelButtonText: 'No'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				if ($('#sessionId').val() == 0)
+					addSession();
+				else
+					updateSession();
+			}
+		})
 	});
 
 

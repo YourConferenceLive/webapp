@@ -39,6 +39,15 @@
 						<div class="card-body">
 
 							<div class="form-group">
+								<label>Display Photo</label>
+								<div class="custom-file">
+									<input name="user-photo" id="user-photo" type="file" class="custom-file-input">
+									<label id="user-photo_label" class="custom-file-label" for="user-photo"></label>
+								</div>
+							</div>
+							<img class="image-preview" id="user-photo-preview" src="" style="display: none;" width="75px">
+
+							<div class="form-group">
 								<label>First name</label>
 								<input name="first_name" id="first_name" class="form-control" type="text" placeholder="User's first name">
 							</div>
@@ -46,6 +55,16 @@
 							<div class="form-group">
 								<label>Surname</label>
 								<input name="surname" id="surname" class="form-control" type="text" placeholder="User's surname">
+							</div>
+
+							<div class="form-group">
+								<label>Biography</label>
+								<input name="bio" id="bio" class="form-control" type="text" placeholder="User's bio">
+							</div>
+
+							<div class="form-group">
+								<label>Disclosure</label>
+								<input name="disclosure" id="disclosure" class="form-control" type="text" placeholder="User's disclosure">
 							</div>
 
 						</div>
@@ -255,5 +274,18 @@
 			}
 		});
 	}
+
+	$('#user-photo').on('change',function(){
+		let item = $(this);
+		let fileName = $(this).val();
+		let reader = new FileReader();
+
+		reader.onload = function (e) { item.parent().parent().next('.image-preview').attr('src', e.target.result); }
+		reader.readAsDataURL(this.files[0]);
+		item.parent().parent().next('.image-preview').show();
+		fileName = fileName.replace("C:\\fakepath\\", "");
+		$(this).next('.custom-file-label').html(fileName);
+	});
+
 
 </script>

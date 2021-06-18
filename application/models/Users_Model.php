@@ -37,7 +37,7 @@ class Users_Model extends CI_Model
 
 	public function getById($id)
 	{
-		$this->db->select('id, name, surname, email, active');
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo');
 		$this->db->from('user');
 		$this->db->where('id', $id);
 		$user = $this->db->get();
@@ -53,14 +53,30 @@ class Users_Model extends CI_Model
 	public function create()
 	{
 		$post = $this->input->post();
+		$user_photo_name = '';
+		// Upload files if set
+		if (isset($_FILES['user-photo']) && $_FILES['user-photo']['name'] != '')
+		{
+			$upload_config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$upload_config['file_name'] = $user_photo_name = rand().'_'.str_replace(' ', '_', $_FILES['user-photo']['name']);
+			$upload_config['upload_path'] = FCPATH.'cms_uploads/user_photo/profile_pictures/';
+
+			$this->load->library('upload', $upload_config);
+			if ( ! $this->upload->do_upload('user-photo'))
+				return false;
+			//print_r($this->upload->display_errors());
+		}
 
 		$data = array(
 			'name' => $post['first_name'],
 			'surname' => $post['surname'],
 			'email' => $post['email'],
 			'password' => password_hash($post['password'], PASSWORD_DEFAULT),
+			'bio' => $post['bio'],
+			'disclosures' => $post['disclosure'],
+			'photo' => $user_photo_name,
 			'created_on' => date('Y-m-d H:i:s'),
-			'created_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
+			'created_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
 
 		);
 		$this->db->insert('user', $data);
@@ -89,13 +105,31 @@ class Users_Model extends CI_Model
 	public function update()
 	{
 		$post = $this->input->post();
+		$user_photo_name = '';
 
 		if (!isset($post['userId']) || $post['userId'] == 0)
 			return array('status' => 'failed', 'msg'=>'No User(ID) selected', 'technical_data'=>'');
 
+		// Upload files if set
+		if (isset($_FILES['user-photo']) && $_FILES['user-photo']['name'] != '')
+		{
+			$upload_config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$upload_config['file_name'] = $user_photo_name = rand().'_'.str_replace(' ', '_', $_FILES['user-photo']['name']);
+			$upload_config['upload_path'] = FCPATH.'cms_uploads/user_photo/profile_pictures/';
+
+			$this->load->library('upload', $upload_config);
+			if ( ! $this->upload->do_upload('user-photo'))
+				return false;
+			//print_r($this->upload->display_errors());
+		}
+
+
 		$data = array(
 			'name' => $post['first_name'],
 			'surname' => $post['surname'],
+			'bio' => $post['bio'],
+			'disclosures' => $post['disclosure'],
+			'photo' => $user_photo_name,
 			'updated_on' => date('Y-m-d H:i:s'),
 			'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
 
@@ -236,4 +270,7 @@ class Users_Model extends CI_Model
 
 		return new stdClass();
 	}
+
+
+
 }

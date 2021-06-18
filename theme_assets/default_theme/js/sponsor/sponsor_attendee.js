@@ -27,48 +27,6 @@ $(document).ready(function () {
 
 	});
 
-	$('.upload_photo').on('change', function () {
-		var file = this.files[0];
-		var type=$(this).attr("data-type");
-		var form_data=new FormData();
-		form_data.append("file",file)
-		form_data.append("project_id",project_id)
-		form_data.append("current_booth_id",current_booth_id)
-		form_data.append("type",type)
-
-		$.ajax({
-			url: project_url + "/sponsor/admin/home/upload_booth_photos/",
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,
-			type: 'post',
-			success: function (response) {
-				if(response){
-					$(`#${type}`).attr("src",URL.createObjectURL(file));
-				}
-			}
-		});
-
-	});
-
-	$('.save_tv_url').on('click', function () {
-		var tv_url=$("#tv_url");
-		console.log(tv_url.val());
-		$.ajax({
-			url: project_url + "/sponsor/admin/home/change_booth_url/",
-			data: {
-				tv_url:tv_url.val(),
-				current_booth_id:current_booth_id
-			},
-			type: 'post',
-			success: function (response) {
-
-			}
-		});
-
-	});
-
 
 	$('#group-chat-text').keypress(function (e) {
 		var key = e.which;
@@ -139,6 +97,7 @@ $(document).ready(function () {
 		$.post(project_url+"/sponsor/get_sponsor_attendee_chat/",
 			{
 				'booth_id':current_booth_id,
+				'chat_from_id':current_user_id
 			},
 			function(){
 
@@ -203,7 +162,7 @@ $(document).ready(function () {
 					else {
 						icon = "fa-question-circle";
 					}
-					$('.resources-body').append('<div class=" col-md-6 "><div class="card col-md-12 w-100 p-0 my-1"><div class="card-header bg-light-blue w-100 p-1 text-blue " style="cursor: pointer" title="' + hover + '" data-toggle="collapse" data-target="#resource_screen_name_' + data.id + '"><span class="fa ' + icon + ' text-info"></span> ' + data.resource_name + '<span class="fa fa-caret-down float-right text-blue"></span></div><div class="card-body collapse align-content-center" id="resource_screen_name_' + data.id + '"><div class="">' + data.screen_name + '</div><a target="_blank" href="' + ycl_root + '/cms_uploads/projects/' + project_id + '/sponsor_assets/uploads/resource_management_files/' + data.file_name + '" download="' + data.screen_name + '"  class="btn btn-success btn-sm float-right ml-2"><small><span class="fas fa-download"> </span> Open</small> </a> <a class="btn btn-info btn-sm float-right " id="btn-add-to-bag" data-sponsor_resource_id="' + data.id + '" ><small>Add to Sponsor bag</small></a></div></div></div>')
+					$('.resources-body').append('<div class=" col-md-6 "><div class="card col-md-12 w-100 p-0 my-1"><div class="card-header bg-light-blue w-100 p-1 text-blue " style="cursor: pointer" title="' + hover + '" data-toggle="collapse" data-target="#resource_screen_name_' + data.id + '"><span class="fa ' + icon + ' text-info"></span> ' + data.resource_name + '<span class="fa fa-caret-down float-right text-blue"></span></div><div class="card-body collapse align-content-center" id="resource_screen_name_' + data.id + '"><div class="">' + data.screen_name + '</div><a target="_blank" href="' + ycl_root + '/cms_uploads/projects/' + project_id + '/sponsor_assets/uploads/resource_management_files/' + data.file_name + '" download="' + data.screen_name + '"  class="btn btn-success btn-sm float-right ml-2"><small><span class="fas fa-download"> </span> Download</small> </a> <a class="btn btn-info btn-sm float-right " id="btn-add-to-bag" data-sponsor_resource_id="' + data.id + '" ><small>Add to briefcase</small></a></div></div></div>')
 				});
 			}else{
 				return false;

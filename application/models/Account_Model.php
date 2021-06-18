@@ -137,4 +137,31 @@ class Account_Model extends CI_Model
 			return array('status'=>'success', 'msg'=>'Import successful');
 		}
 	}
+
+	public function resetPasswordsOfAll($access_level)
+	{
+
+		$user_ids = $this->db
+			->select('user_id')
+			->where('project_id', $this->project->id)
+			->where('level', $access_level)
+			->group_by('user_id')
+			->get_compiled_select('user_project_access', true);
+
+		$this->db->set('password', password_hash('COS2021', PASSWORD_DEFAULT));
+		$this->db->where('id IN ('.$user_ids.')');
+		$this->db->update("user");
+
+	}
+
+	public function resetPasswordsOf($user_id)
+	{
+		$this->db->set('password', password_hash('COS2021', PASSWORD_DEFAULT));
+		$this->db->where('id', $user_id);
+		$this->db->update("user");
+
+		if ($this->db->affected_rows() > 0)
+			return true;
+		return false;
+	}
 }

@@ -83,8 +83,8 @@ class Sponsor_Model extends CI_Model
 			->where('sac.booth_id', $post['booth_id'])
 			->where('sac.project_id', $this->project->id)
 			->group_start()
-			->where('from_id', $this->user_id)
-			->or_where('to_id', $this->user_id)
+			->where('from_id', $post['chat_from_id'])
+			->or_where('to_id', $post['chat_from_id'])
 			->group_end()
 			->order_by('sac.id', 'asc')
 			;
@@ -311,7 +311,10 @@ class Sponsor_Model extends CI_Model
 			);
 
 			$this->db->insert('sponsor_bag', $data_field);
-				return array('status'=>'success','message'=>'file added to bag');
+
+			$this->logger->add($this->project->id, $this->user_id, "Resource to briefcase", "Booth", $data->booth_id, $resource_id);
+			return array('status'=>'success','message'=>'file added to bag');
+
 			}
 		}
 		return '';

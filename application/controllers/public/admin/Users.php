@@ -13,6 +13,7 @@ class Users extends CI_Controller
 		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 
 		$this->load->model('Users_Model', 'users');
+		$this->load->model('Account_Model', 'account');
 	}
 
 	public function index()
@@ -49,6 +50,7 @@ class Users extends CI_Controller
 			echo json_encode(array('status'=>'failed'));
 	}
 
+	// DO NOT USE - We only disables a user - not delete
 	public function delete($id)
 	{
 		if ($this->users->delete($id))
@@ -69,5 +71,19 @@ class Users extends CI_Controller
 		if ($print)
 			echo ($this->users->emailExists($email))?'true':'false';
 		return $this->users->emailExists($email);
+	}
+
+	public function resetPasswordsOfAll($access_level)
+	{
+		$this->account->resetPasswordsOfAll($access_level);
+		echo 'done';
+	}
+
+	public function resetPasswordOf($user_id)
+	{
+		if ($this->account->resetPasswordsOf($user_id))
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
 	}
 }

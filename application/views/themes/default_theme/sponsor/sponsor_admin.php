@@ -7,12 +7,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=3" rel="stylesheet">
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=1"></script>
 
 <!-- Full Calendar-->
-<link rel="stylesheet" href="https://localhost/adminLTE/plugins/fullcalendar/main.css">
-<script src="https://localhost/adminLTE/plugins/moment/moment.min.js"></script>
-<script src="https://localhost/adminLTE/plugins/fullcalendar/main.js"></script>
+<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.css">
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/moment/moment.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.js"></script>
 
 <!-- Date Range Picker-->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -25,17 +24,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="file" name="cover_upload " id="cover-upload" class="cover-upload" accept=".jpg,.png,.jpeg" style="display: none">
 			<span class="btn badge badge-primary float-right btn-cover"  ><i class="fa fa-upload" aria-hidden="true" ></i> upload cover</span>
 		</div>
-		<div class="col">
-			<?php if (isset($booth->main_video_url) && !empty($booth->main_video_url)): ?>
-
-				<div id="tv-container">
-					<div id="monitor">
-						<div id="monitorscreen">
-							<?=($booth->main_video_url)?>
+<div class="main">
+			<div class="content">
+				<div class="middle">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->tv_banner?>" id="tv_banner">
+					<div class="change_tv_url">
+						<input type="text" id="tv_url" value='<?=$booth->main_video_url?>'/>
+						<input type="button" value="Save" class="save_tv_url">
+					</div>
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="tv_banner" />
+					<?php if (isset($booth->main_video_url) && !empty($booth->main_video_url) && $booth->video_position == '1') {
+						?>
+						<div id="tv-container" >
+							<div id="monitor" style="z-index: 2 !important;">
+								<div id="monitorscreen">
+									<?=($booth->main_video_url)?>
+								</div>
+							</div>
 						</div>
+						<?php
+					} ?>
+					<div class="row justify-content-center">
+						<h4 class="text-white"><?= $booth->main_video_description ?></h4>
 					</div>
 				</div>
-			<?php endif; ?>
+				<div class="left">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_banner?>" id="left_banner">
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_banner" />
+				</div>
+				<div class="right">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_banner?>" id="right_banner">
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_banner" />
+				</div>
+			</div>
+			<div class="tables">
+				<div class="table_left">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_table?>" id="left_table">
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_table" />
+				</div>
+				<div class="table_right">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_table?>" id="right_table">
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_table" />
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -202,44 +233,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 										<div class="card-body attendee-list-body p-0">
 											<span><strong>Attendees in your booth</strong></span>
-											<ul id="usersInThisBooth" class="list-group mb-3 pl-4">
-												<!--												<li id="usersInThisBooth" class="list-group-item" style="cursor: pointer;">-->
-												<!--													<div class="row">-->
-												<!--														<div class="col-1 p-0">-->
-												<!--															<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">-->
-												<!--														</div>-->
-												<!--														<div class="col-9 p-0 pl-2">-->
-												<!--															John Doe <i class="fas fa-dot-circle" style="color: springgreen;"></i>-->
-												<!--														</div>-->
-												<!--														<div class="col-2 p-0 pl-1">-->
-												<!--															<button class="btn btn-info btn-sm video-call" user-id="1" user-name="John Doe"><i class="fas fa-video"></i></button>-->
-												<!--														</div>-->
-												<!--													</div>-->
-												<!--												</li>-->
+											<ul id="usersInThisBooth" class="list-group mb-3">
+
 											</ul>
 
 											<span><strong>Other attendees</strong></span>
-											<ul class="list-group">
-												<?php if (empty($attendees)): ?>
-													<li class="list-group-item">
-														Empty
-													</li>
-												<? endif; ?>
-												<?php foreach ($attendees as $attendee): ?>
-													<li class="all-users-item list-group-item" user-id="<?=$attendee->id?>" active-status="0" style="cursor: pointer;" >
-														<div class="row">
-															<div class="col-1 p-0">
-																<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">
-															</div>
-															<div class="col-9 p-0 pl-2">
-																<span><?=$attendee->name?> <?=$attendee->surname?> <i class="user-status-indicator fas fa-dot-circle" user-id="<?=$attendee->id?>" style="color: grey;"></i></span>
-															</div>
-															<div class="col-2 p-0 pl-1">
-																<button style="display: none;" class="btn btn-info btn-sm video-call" user-id="<?=$attendee->id?>" user-name="<?=$attendee->name?> <?=$attendee->surname?>"><i class="fas fa-video"></i></button>
-															</div>
-														</div>
-													</li>
-												<?php endforeach; ?>
+											<ul id="other_attendees_list" class="list-group">
+
 											</ul>
 										</div>
 
@@ -423,10 +423,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	var date_now = "<?=date('Y-m-d H:i:s')?>";
 	var current_id = "<?=$this->session->userdata('sponsor_id')?>";
 	var current_booth_id = "<?=$_SESSION['project_sessions']["project_{$this->project->id}"]['exhibitor_booth_id']?>";
+	var booth_project_id = "<?= $this->project->id?>";
+	var booth_id = "<?=$booth->id?>";
 	var sponsor_name = "<?=$booth->name?>";
-
 </script>
 <script>
+	console.log(booth_project_id)
+	console.log(booth_id)
 	$(document).ready(function(){
 		$('.show-attendees').on('click', function(){
 
@@ -457,17 +460,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 		socket.on('ycl_active_user_on_booth', function (user) {
-			console.log(user);
-			console.log(current_booth_id);
 			if (user.booth_id == current_booth_id && user_id != '')
 			{
 				$('.video-call[user-id="'+user.user_id+'"]').show();
 
 				let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').clone();
-				console.log(userHtml);
 
-				$('#usersInThisBooth').append(userHtml.html());
 				$('.all-users-item[user-id="'+user.user_id+'"]').remove();
+				$('#usersInThisBooth').append('' +
+						'<li class="all-users-item list-group-item" socket-id="'+user.socket_id+'" user-id="' + userHtml.attr('user-id')+ '" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
+						''+userHtml.html()+
+						'</li>');
 			}
 		});
 
@@ -475,4 +478,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </script>
 
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=2"></script>
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js?v=2"></script>

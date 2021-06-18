@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<textarea class="form-control" name="comments" id="comments" placeholder="Add a comment..."></textarea>
 						  					<div class="box_post">
 												<div class="pull-right">
-								  					<button id="post-comment" class="btn btn-primary" type="button" value="1">Post</button>
+								  					<button id="post-comment" class="btn btn-info btn-sm" type="button" value="1">Post</button>
 												</div>
 						  					</div>
 						  				</form>
@@ -48,6 +48,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="modal-footer">
 			</div>
 		</div>
 	</div>
@@ -87,12 +89,11 @@ $('#post-comment').on('click', function () {
 
 			data = JSON.parse(data);
 
-			if (data.status == 'success')
-			{
+			if (data.status == 'success') {
+				$('#comments_list_container').html('');
 				loadComments(formData.get('eposterId'), comment_page);
 				toastr.success('Comment has been added.');
 				$('#comments').val('');
-
 			}else{
 				toastr.error("Error");
 			}

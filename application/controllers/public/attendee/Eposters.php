@@ -7,7 +7,8 @@ class Eposters extends CI_Controller
 	 * @var mixed
 	 */
 	private $user;
-	private $commentsPerPage = 1;
+	private $commentsPerPage = 10;
+	private $notesPerPage = 10;
 
 	public function __construct()
 	{
@@ -18,6 +19,8 @@ class Eposters extends CI_Controller
 
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('attendee/Eposters_Model', 'eposter');
+		$this->load->model('attendee/Comments_Model', 'comment');
+		$this->load->model('attendee/Notes_Model', 'note');
         $this->load->library("pagination");
         $this->load->helper('form');
 	}
@@ -53,8 +56,8 @@ class Eposters extends CI_Controller
 		$config['full_tag_close']       = '</ul>';
 		$config['num_tag_open']         = '<li class="page-item">';
 		$config['num_tag_close']        = '</li>';
-		$config['cur_tag_open']         = '<li class="page-item active"><li class="page-link"><a href="#">';
-		$config['cur_tag_close']        = '<span class="sr-only"></span></a></li>';
+		$config['cur_tag_open']         = '<li class="page-item active"><a href="#" class="page-link">';
+		$config['cur_tag_close']        = '</a></li>';
 		$config['next_tag_open']        = '<li class="page-item">';
 		$config['next_tagl_close']      = '</li>';
 		$config['prev_tag_open']        = '<li class="page-item">';
@@ -72,7 +75,7 @@ class Eposters extends CI_Controller
 
 		$this->pagination->initialize($config);
 
-		$page = ($this->input->get('page'))? $this->input->get('page') : 0;
+		$page = ($this->input->get('page')) ? $this->input->get('page') : 0;
 
 		$data["links"] 			= $this->pagination->create_links();
 
@@ -98,27 +101,57 @@ class Eposters extends CI_Controller
 		$data['next'] 				= $this->eposter->getEposterID($eposter_id, 'next');
 		$data['previous'] 			= $this->eposter->getEposterID($eposter_id, 'previous');
 		$data['comments_per_page']	= $this->commentsPerPage;
+		$data['notes_per_page']		= $this->notesPerPage;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/eposters/view", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/eposters/comments_modal", $data);
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/eposters/comments_modal", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/eposters/notes_modal", $data);
 	}
 
-	public function post_comments()
+	public function add_notes()
 	{
-		if ($this->eposter->postComments())
+		$this->logger->log_visit("Note added on ePoster", $this->input->post('entity_type_id'));
+		if ($this->note->add())
 			echo json_encode(array('status'=>'success'));
 		else
 			echo json_encode(array('status'=>'failed'));
 	}
 
-	public function comments($eposter_id)
+	public function notes($eposter_id, $page)
 	{
-		$data['comments_count']		= $this->eposter->getEposterCommentsCount($eposter_id);
+		$data['notes']['user']		= $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$data['notes_count']		= $this->note->getCount($eposter_id, $data['notes']['user']['user_id']);
+		$page--;
+		$offset 					= (($page)*$this->notesPerPage);
+
+		$data['notes']['total'] 	= $data['notes_count'];
+		$data['notes']['data'] 		= $this->note->getAll($eposter_id, $data['notes']['user']['user_id'], $this->notesPerPage, $offset);
+
+		echo json_encode($data['notes']);
+		exit;
+	}
+
+	public function post_comments()
+	{
+		$this->logger->log_visit("Commented on ePoster", $this->input->post('eposter_id'));
+		if ($this->comment->postComments())
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
+	}
+
+	public function comments($eposter_id, $page)
+	{
+		$data['comments_count']		= $this->comment->getCount($eposter_id);
+		$page--;
+		$offset 					= (($page)*$this->commentsPerPage);
+
 		$data['comments']['total'] 	= $data['comments_count'];
-		$data['comments']['data'] 	= $this->eposter->getEposterComments($eposter_id);
+		$data['comments']['data'] 	= $this->comment->getAll($eposter_id, $this->commentsPerPage, $offset);
+
 		echo json_encode($data['comments']);
 		exit;
 	}

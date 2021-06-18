@@ -38,7 +38,11 @@ $ci_method = $this->router->fetch_method();
 					<a class="nav-link" href="<?=base_url().$this->project->main_route?>/sponsor/admin/analytics"><strong><i class="far fa-chart-bar"></i> Analytics</strong></a>
 				</li>
 
-				<li class="nav-item dropdown">
+				<li class="nav-item">
+					<a class="nav-link btn btn-sm btn-info text-white" href="mailto:exhibits@yourconference.live"><i class="far fa-life-ring"></i> Support</a>
+				</li>
+
+				<li class="nav-item dropdown ml-5">
 					<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<?=$user['name']?>
 					</a>
