@@ -7,7 +7,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=3" rel="stylesheet">
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=1"></script>
 
 <!-- Full Calendar-->
 <link rel="stylesheet" href="https://localhost/adminLTE/plugins/fullcalendar/main.css">
@@ -25,17 +24,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="file" name="cover_upload " id="cover-upload" class="cover-upload" accept=".jpg,.png,.jpeg" style="display: none">
 			<span class="btn badge badge-primary float-right btn-cover"  ><i class="fa fa-upload" aria-hidden="true" ></i> upload cover</span>
 		</div>
-		<div class="col">
-			<?php if (isset($booth->main_video_url) && !empty($booth->main_video_url)): ?>
-
-			<div id="tv-container">
-				<div id="monitor">
-					<div id="monitorscreen">
-						<?=($booth->main_video_url)?>
+		<div class="main">
+			<div class="content">
+				<div class="middle">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->tv_banner?>" id="tv_banner">
+					<div class="change_tv_url">
+						<input type="text" id="tv_url" value='<?=$booth->main_video_url?>'/>
+						<input type="button" value="Save" class="save_tv_url">
+					</div>
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="tv_banner" />
+					<?php if (isset($booth->main_video_url) && !empty($booth->main_video_url) && $booth->video_position == '1') {
+						?>
+						<div id="tv-container" >
+							<div id="monitor" style="z-index: 2 !important;">
+								<div id="monitorscreen">
+									<?=($booth->main_video_url)?>
+								</div>
+							</div>
+						</div>
+						<?php
+					} ?>
+					<div class="row justify-content-center">
+						<h4 class="text-white"><?= $booth->main_video_description ?></h4>
 					</div>
 				</div>
+				<div class="left">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_banner?>" id="left_banner">
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_banner" />
+				</div>
+				<div class="right">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_banner?>" id="right_banner">
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_banner" />
+				</div>
 			</div>
-			<?php endif; ?>
+			<div class="tables">
+				<div class="table_left">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_table?>" id="left_table">
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_table" />
+				</div>
+				<div class="table_right">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_table?>" id="right_table">
+					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_table" />
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -426,6 +457,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  var logo = "<?=$booth->logo?>";
  var date_now = "<?=date('Y-m-d H:i:s')?>";
  var current_id = "<?=$this->session->userdata('sponsor_id')?>";
+ var booth_id = "<?=$booth->id?>";
  var current_booth_id = "<?=$this->session->userdata('booth_id')?>";
  var sponsor_name = "<?=$booth->name?>";
 
@@ -446,4 +478,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </script>
 
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=1"></script>
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js?v=2"></script>

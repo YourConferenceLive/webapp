@@ -204,15 +204,6 @@ main .content .middle{
 	max-width: 100%;
 }
 
-main .content .middle .change_tv_url{
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	margin: auto;
-	width: max-content;
-}
-
 main .content .middle img{
 	width: 500px;
 }
@@ -269,14 +260,6 @@ main .table_left,main .table_right{
 
 main .table_left img,main .table_right img{
 	width: 150px;
-}
-
-main .upload_photo{
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	margin: auto;
 }
 
 @media only screen and (max-width: 1275px) {
