@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	    		<div class="col-auto my-1 mx-auto">
 <?php
 					if ($eposter->type == 'eposter') {?>
-					<button type="button" class="btn btn-info btn-sm" id="">View Full Screen</button>
+					<button type="button" class="btn btn-info btn-sm" id="enlargeable">View Full Screen</button>
 <?php
 					}?>
 					<a role="button" class="btn btn-info btn-sm" href="<?=$this->project_url?>/eposters">Return to ePoster Listing</a>
