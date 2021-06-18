@@ -25,34 +25,17 @@ class Eposters extends CI_Controller
         $this->load->helper('form');
 	}
 
-	public function index()
+	public function index($track_id = 'NaN', $author_id = 'NaN', $type = 'NaN', $keyword = 'NaN', $page = '')
 	{
 		$this->logger->log_visit("ePosters Listing");
 
 		$data['project'] 				= $this->project;
 		$data['user'] 					= $_SESSION['project_sessions']["project_{$this->project->id}"];
 
-		$data['track_id'] = $data['author_id'] = $data['type'] = $data['keyword'] = '';
-
-        if ($this->input->get('track'))
-        	$data['track_id'] 			= $this->input->get('track');
-
-        if ($this->input->get('author'))
-        	$data['author_id'] 			= $this->input->get('author');
-
-        if ($this->input->get('type'))
-        	$data['type'] 				= $this->input->get('type');
-
-        if ($this->input->get('keyword'))
-        	$data['keyword']			= $this->input->get('keyword');
-
 		$config 						= array();
-		$config["base_url"] 			= $this->project_url . "/eposters/index";
-		$config["total_rows"] 			= $this->eposter->getCount($data['track_id'], $data['author_id'], $data['type'], $data['keyword']);
-
+		$config["base_url"] 			= $this->project_url . "/eposters/index/$track_id/$author_id/$type/$keyword";
 		$config["per_page"] 			= 10;
-
-		$config['full_tag_open']        = '<ul class="pagination">';
+		$config['full_tag_open']        = '<ul class="pagination justify-content-center">';
 		$config['full_tag_close']       = '</ul>';
 		$config['num_tag_open']         = '<li class="page-item">';
 		$config['num_tag_close']        = '</li>';
@@ -66,23 +49,26 @@ class Eposters extends CI_Controller
 		$config['first_tagl_close']     = '</li>';
 		$config['last_tag_open']        = '<li class="page-item">';
 		$config['last_tagl_close']      = '</li>';
+		$config['num_links'] 			= 3;
 		$config['attributes'] 			= array('class' => 'page-link');
 
-		$config['page_query_string']    = true;
- 		$config['query_string_segment'] = 'page';
- 		$config['reuse_query_string']   = true;
- 		$config['use_page_numbers']     = false;
+		$data['track_id'] 				= (($track_id != ''  && $track_id != 'NaN') ? $track_id : '' );
+		$data['author_id'] 				= (($author_id != '' && $author_id != 'NaN') ? $author_id : '' );
+		$data['type'] 					= (($type != '' && $type != 'NaN') ? $type : '' );
+		$data['keyword'] 				= (($keyword != '' && $keyword != 'NaN') ? $keyword : '' );
+
+		$config["total_rows"] 			= $this->eposter->getCount($data['track_id'], $data['author_id'], $data['type'], $data['keyword']);
 
 		$this->pagination->initialize($config);
 
-		$page = ($this->input->get('page')) ? $this->input->get('page') : 0;
+		$page 							= (($page != '' && $page != 'NaN') ? $page : 0 );
 
-		$data["links"] 			= $this->pagination->create_links();
+		$data["links"] 					= $this->pagination->create_links();
 
-		$data['tracks'] 		= $this->eposter->getAllTracks();
-		$data['authors'] 		= $this->eposter->getAllAuthors();
+		$data['tracks'] 				= $this->eposter->getAllTracks();
+		$data['authors'] 				= $this->eposter->getAllAuthors();
 
-		$data['eposters'] 		= $this->eposter->getAll($config["per_page"], $page, $data['track_id'], $data['author_id'], $data['type'], $data['keyword']);
+		$data['eposters'] 				= $this->eposter->getAll($config["per_page"], $page, $data['track_id'], $data['author_id'], $data['type'], $data['keyword']);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
