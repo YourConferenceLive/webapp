@@ -262,6 +262,47 @@ $(document).ready(function () {
 	}
 
 
+	$('.upload_photo').on('change', function () {
+		var file = this.files[0];
+		var type=$(this).attr("data-type");
+		var form_data=new FormData();
+		form_data.append("file",file)
+		form_data.append("project_id",project_id)
+		form_data.append("current_booth_id",booth_id)
+		form_data.append("type",type)
+
+		$.ajax({
+			url: project_url + "/sponsor/admin/home/upload_booth_photos/",
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,
+			type: 'post',
+			success: function (response) {
+				if(response){
+					$(`#${type}`).attr("src",URL.createObjectURL(file));
+				}
+			}
+		});
+
+	});
+
+	$('.save_tv_url').on('click', function () {
+		var tv_url=$("#tv_url");
+		console.log(tv_url.val());
+		$.ajax({
+			url: project_url + "/sponsor/admin/home/change_booth_url/",
+			data: {
+				tv_url:tv_url.val(),
+				current_booth_id:booth_id
+			},
+			type: 'post',
+			success: function (response) {
+
+			}
+		});
+
+	});
 
 });
 
