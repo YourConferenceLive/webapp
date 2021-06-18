@@ -267,7 +267,7 @@ $(document).ready(function () {
 		var type=$(this).attr("data-type");
 		var form_data=new FormData();
 		form_data.append("file",file)
-		form_data.append("project_id",project_id)
+		form_data.append("project_id",booth_project_id)
 		form_data.append("current_booth_id",booth_id)
 		form_data.append("type",type)
 

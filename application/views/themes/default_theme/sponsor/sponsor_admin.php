@@ -423,11 +423,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	var date_now = "<?=date('Y-m-d H:i:s')?>";
 	var current_id = "<?=$this->session->userdata('sponsor_id')?>";
 	var current_booth_id = "<?=$_SESSION['project_sessions']["project_{$this->project->id}"]['exhibitor_booth_id']?>";
-  var project_id = "<?= $this->project->id?>";
-  var booth_id = "<?=$booth->id?>";
+	var booth_project_id = "<?= $this->project->id?>";
+	var booth_id = "<?=$booth->id?>";
 	var sponsor_name = "<?=$booth->name?>";
 </script>
 <script>
+	console.log(booth_project_id)
+	console.log(booth_id)
 	$(document).ready(function(){
 		$('.show-attendees').on('click', function(){
 
@@ -476,5 +478,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=1"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=2"></script>
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js?v=2"></script>
