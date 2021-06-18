@@ -142,6 +142,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#bio').val(user.bio);
 				$('#disclosure').val(user.disclosures);
 
+				if(user.photo){
+					$('#user-photo_label').text((user.photo).substring((user.photo).indexOf('_') + 1));
+					$('#user-photo-preview').attr('src', '<?=ycl_base_url?>/cms_uploads/user_photo/profile_pictures/'+user.photo).show();
+				}else{
+					$('#user-photo_label').text('');
+					$('#user-photo-preview').attr('src', '').hide();
+				}
+
 				$('#attendee_access, #presenter_access, #moderator_access, #admin_access, #exhibitor_access').prop('checked', false);
 				$.each(user.accesses, function(key, access){
 					$('#'+access.level+'_access').prop('checked', true);
