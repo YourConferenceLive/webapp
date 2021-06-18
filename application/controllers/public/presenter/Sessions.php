@@ -7,8 +7,14 @@ class Sessions extends CI_Controller
 	{
 		parent::__construct();
 
-		if (!isset($_SESSION['project_sessions']["project_{$this->project->id}"]) || $_SESSION['project_sessions']["project_{$this->project->id}"]['is_presenter'] != 1)
-			redirect(base_url().$this->project->main_route."/presenter/login"); // Not logged-in
+		if
+		(
+			!isset($_SESSION['project_sessions']["project_{$this->project->id}"]) ||
+			(
+				$_SESSION['project_sessions']["project_{$this->project->id}"]['is_presenter'] != 1 ||
+				$_SESSION['project_sessions']["project_{$this->project->id}"]['is_moderator'] != 1
+			)
+		)redirect(base_url().$this->project->main_route."/presenter/login"); // Not logged-in
 
 		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 
@@ -19,7 +25,7 @@ class Sessions extends CI_Controller
 	{
 		$sidebar_data['user'] = $this->user;
 
-		$data["sessions"] = $this->sessions->getAllSessionsByPresenter($this->user->user_id);
+		$data["sessions"] = $this->sessions->getAllSessionsByPresenterAndModerator($this->user->user_id);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")

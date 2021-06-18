@@ -50,6 +50,24 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getAllSessionsByPresenterAndModerator($user_id)
+	{
+		$this->db->select('sessions.*');
+		$this->db->from('sessions');
+		$this->db->join('session_presenters', 'session_presenters.session_id = sessions.id', 'left');
+		$this->db->join('session_moderators', 'session_moderators.session_id = sessions.id', 'left');
+		$this->db->where('session_presenters.presenter_id', $user_id);
+		$this->db->or_where('session_moderators.moderator_id', $user_id);
+		$this->db->where('sessions.project_id', $this->project->id);
+		$this->db->group_by('sessions.id');
+		$this->db->order_by('sessions.start_date_time', 'ASC');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
 	public function getById($id)
 	{
 		$this->db->select('*');
