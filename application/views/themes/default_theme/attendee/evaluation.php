@@ -122,10 +122,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<td colspan="3" class="text-center align-middle " > <lable>Yes </lable><input type="radio" value="yes" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='yes')?'checked':'':''?>  class="survey_option  <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  data-question_title="<?=$question->name?>" id="question_<?=$question->id?>" ></td>
 										<td colspan="2" class="text-center align-middle " > <lable>No </lable><input type="radio" value="no" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='no')?'checked':'':''?>  class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  data-question_title="<?=$question->name?>" id="question_<?=$question->id?>" ></td>
 									</tr>
+
+									<confirm_title style="display: none"><?=$evaluation->confirm_title?> </confirm_title>
+									<confirm_message style="display: none"><?=$evaluation->confirm_message?> </confirm_message>
+									<success_title style="display: none"><?=$evaluation->success_title?> </success_title>
+									<success_message style="display: none"><?=$evaluation->success_message?> </success_message>
 										<?php
 								}
-							?>
-							<?php
 							}
 							?>
 							</tbody>
@@ -148,29 +151,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		function validate(){
-			var confirm_title = "<?=$evaluation->confirm_title?>";
-			var confirm_message = "<?=$evaluation->confirm_message?>";
-			var success_title = "<?=$evaluation->success_title?>";
-			var success_message = "<?=$evaluation->success_message?>";
+
 			$('.required').each(function(){
-				var data = $(this).attr('data-question_id');
-				var question = $(this).attr('data-question_title');
-				var input_name = "answer["+data+"]";
-				if($(this).attr('data-input_type')==='radio_opt'){
-					if(!$("input[name='" +input_name+ "']").is(":checked")){
-					toastr['warning']('Required field #'+question)
-						$(this).addClass('border-danger');
-					return false;
-				}
-				} else if ($(this).attr('data-input_type')==='text_input' && ($("textarea[name='" + input_name + "']").val() === '')) {
-						toastr['warning']('Required field #'+question)
+				var question_id = $(this).attr('data-question_id');
+				var question_title = $(this).attr('data-question_title');
+				var input_name = "answer["+question_id+"]";
+				if($(this).attr('data-input_type')==='radio_opt')
+				{
+					if(!$("input[name='" +input_name+ "']").is(":checked"))
+					{
+						toastr['warning']('Required field #'+question_title)
 						$(this).addClass('border-danger');
 						return false;
-
-				}else{
+					}
+				}
+				else if ($(this).attr('data-input_type')=='text_input')
+				{
+					if (($("textarea[name='" + input_name + "']").val() == '')) {
+						toastr['warning']('Required field #' + question_title)
+						$(this).addClass('border-danger');
+						return false;
+					}
+				}else
+					{
 					Swal.fire({
-						title: confirm_title,
-						html: confirm_message,
+						title: $('confirm_title').html(),
+						html: $('confirm_message').html(),
 						showCancelButton: true,
 						confirmButtonColor: '#3085d6',
 						cancelButtonColor: '#d33',
@@ -181,8 +187,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								if (response) {
 									Swal.fire({
 										icon: 'success',
-										title: "<span class='text-success'>"+success_title+"</span>",
-										html: success_message,
+										title: "<span class='text-success'>"+$('success_title').html()+"</span>",
+										html: $('success_message').html(),
 										confirmButtonText: "ok",
 									});
 								}

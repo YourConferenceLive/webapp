@@ -74,7 +74,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</p>
 					</a>
 				</li>
-
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/evaluation'?>" class="nav-link <?=($this->router->fetch_class()=='evaluation')?'active':''?>">
+						<i class="fas fa-clipboard-check"></i>
+						<p>
+							Evaluations
+						</p>
+					</a>
+				</li>
 <!--				<li class="nav-item">-->
 <!--					<a href="pages/widgets.html" class="nav-link">-->
 <!--						<i class="nav-icon fas fa-th"></i>-->
