@@ -426,3 +426,7 @@ CREATE TABLE IF NOT EXISTS `notes` (
   `updated_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- Athul - June 18th 2021
+ALTER TABLE `session_moderators` ADD `is_invisible` BOOLEAN NOT NULL DEFAULT FALSE AFTER `session_id`;

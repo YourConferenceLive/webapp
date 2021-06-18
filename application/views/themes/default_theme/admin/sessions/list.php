@@ -186,6 +186,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				});
 				$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
 
+
+				// Invisible Moderators
+				$('select[name="sessionInvisibleModerators[]"] option').prop('selected', false);
+				$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
+				$.each(session.invisible_moderators, function(key, invisible_moderator){
+					$('select[name="sessionInvisibleModerators[]"] option[value="'+invisible_moderator.id+'"]').prop('selected', true);
+				});
+				$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
+
+
 				$('#save-session').html('<i class="fas fa-save"></i> Save');
 
 				Swal.close();
