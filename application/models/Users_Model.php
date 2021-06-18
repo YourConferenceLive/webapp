@@ -125,6 +125,7 @@ class Users_Model extends CI_Model
 
 
 		$data = array(
+			'email' => $post['email'],
 			'name' => $post['first_name'],
 			'surname' => $post['surname'],
 			'bio' => $post['bio'],
