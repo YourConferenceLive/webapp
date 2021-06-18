@@ -82,12 +82,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<!-- /.col -->
 				<div class="col-12 col-sm-6 col-md-3">
 
-					<a href="<?=$this->project_url?>" target="_blank">
+					<a href="<?=$this->project_url.'/admin/evaluation'?>" target="_blank">
 						<div class="info-box mb-3">
-							<span class="info-box-icon bg-warning elevation-1"><i class="fas fa-laptop text-white"></i></span>
+							<span class="info-box-icon bg-warning elevation-1"><i class="fas fa-clipboard-check text-white"></i></i></span>
 
 							<div class="info-box-content">
-								<span class="info-box-text">Main Site</span>
+								<span class="info-box-text">Evaluations</span>
 <!--								<span class="info-box-number">2,000</span>-->
 							</div>
 							<!-- /.info-box-content -->
