@@ -16,7 +16,7 @@ class Landing extends CI_Controller
 		(
 			!isset($_SESSION['project_sessions']["project_{$this->project->id}"]) ||
 			(
-				$_SESSION['project_sessions']["project_{$this->project->id}"]['is_presenter'] != 1 ||
+				$_SESSION['project_sessions']["project_{$this->project->id}"]['is_presenter'] != 1 &&
 				$_SESSION['project_sessions']["project_{$this->project->id}"]['is_moderator'] != 1
 			)
 		)redirect(base_url().$this->project->main_route."/presenter/login"); // Not logged-in
