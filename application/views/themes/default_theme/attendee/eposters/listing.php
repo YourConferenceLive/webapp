@@ -79,37 +79,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
 		} else {
 			foreach ($eposters as $eposter): 
-				$eposter_url = (($eposter->eposter != '') ? $this->project_url.'/eposters/view/'.$eposter->id : '' );
-
-
-
-if ($eposter->type == 'surgical_video' && $eposter->eposter == '') {
-
-	$uri = "http://vimeo.com/api/v2/video/".str_replace(array('https://vimeo.com/'), array(''), $eposter->video_url).".php";
-
-	$apiData = unserialize( file_get_contents( $uri ) );
-
-	$thumbType = 'large';
-
-    if ( is_array( $apiData ) && count( $apiData ) > 0 ) {
-
-        $videoInfo = $apiData[ 0 ];
-
-        switch ( $thumbType ) {
-            case 'small':
-                echo $videoInfo[ 'thumbnail_small' ];
-                break;
-            case 'large':
-                echo '<a href="'.$videoInfo[ 'thumbnail_large' ].'" target="_blank">Click to Image</a>';
-                break;
-            case 'medium':
-                echo $videoInfo[ 'thumbnail_medium' ];
-            default:
-                break;
-        }
-
-    }
-}?>
+				$eposter_url = (($eposter->eposter != '') ? $this->project_url.'/eposters/view/'.$eposter->id : '' );?>
 		<!-- ePoster Listing Item -->
 		<div class="eposters-listing-item pb-3">
 			<div class="container-fluid" style="min-height: 210px;">
