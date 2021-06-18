@@ -212,6 +212,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			})
 		});
 
+		$('#usersTable').on('click', '.reset-user-pass-btn', function () {
+
+			let userId = $(this).attr('user-id');
+			let userName = $(this).attr('user-name');
+
+			Swal.fire({
+				title: 'Are you sure?',
+				html: "You are about to reset <strong>"+userName+"</strong>'s password to 'COS2021' (without quotes)",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, reset it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire({
+						title: 'Please Wait',
+						text: "Resetting "+userName+"'s password...",
+						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+						imageAlt: 'Loading...',
+						showCancelButton: false,
+						showConfirmButton: false,
+						allowOutsideClick: false
+					});
+
+					$.get(project_admin_url+"/users/resetPasswordOf/"+userId, function (response) {
+						response = JSON.parse(response);
+
+						if (response.status == 'success')
+							Swal.fire(
+									'Done!',
+									userName+"'s password is now reset to COS2021",
+									'success'
+							);
+						else
+							Swal.fire(
+									'Error!',
+									"Unable to reset the password",
+									'error'
+							);
+					});
+
+				}
+			})
+		});
+
 	});
 
 	function listUsers()
@@ -268,7 +315,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'	</td>' +
 						'	<td>' +
 						'		<button class="manage-user btn btn-sm btn-info m-2" user-id="'+user.id+'"><i class="fas fa-edit"></i> Manage</button>' +
-						'		<button class="suspend-user btn btn-sm btn-warning m-2" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-user-slash"></i> Suspend</button>'+
+						'		<button class="reset-user-pass-btn btn btn-sm btn-success m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-lock-open"></i> Reset Password</button>'+
+						'		<button class="suspend-user btn btn-sm btn-warning m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-user-slash"></i> Suspend</button>'+
 						'	</td>' +
 						'</tr>'
 				);

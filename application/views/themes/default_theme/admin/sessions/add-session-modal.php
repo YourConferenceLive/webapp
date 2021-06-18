@@ -327,7 +327,7 @@
 		Swal.fire({
 			title: 'Are you sure?',
 			html: '<span style="color: white;">'+sessionName+
-					'<br> <small>starts on</small> '+$('#startDateTimeInput').val()+
+					'<br><br> <small>starts on</small> '+$('#startDateTimeInput').val()+
 					'<br> <small>and ends on</small> '+$('#endDateTimeInput').val()+' ? </span>',
 			icon: 'warning',
 			showCancelButton: true,

@@ -46,6 +46,7 @@ $ci_method = $this->router->fetch_method();
 			</div>
 		</li>
 
+		<?php if(1==2): ?>
 		<!-- Messages Dropdown Menu -->
 		<li class="nav-item dropdown">
 			<a class="nav-link" data-toggle="dropdown" href="#">
@@ -131,6 +132,9 @@ $ci_method = $this->router->fetch_method();
 				<a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
 			</div>
 		</li>
+		<?php endif; ?>
+
+		<!-- Fullscreen Btn -->
 		<li class="nav-item">
 			<a class="nav-link" data-widget="fullscreen" href="#" role="button">
 				<i class="fas fa-expand-arrows-alt"></i>
