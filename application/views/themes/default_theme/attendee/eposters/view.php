@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	    		<div class="col-auto my-1 mx-auto">
 <?php
 					if ($eposter->type == 'eposter') {?>
-					<button type="button" class="btn btn-info btn-sm" id="enlargeable">View Full Screen</button>
+					<button type="button" class="btn btn-info btn-sm" id="">View Full Screen</button>
 <?php
 					}?>
 					<a role="button" class="btn btn-info btn-sm" href="<?=$this->project_url?>/eposters">Return to ePoster Listing</a>
@@ -61,19 +61,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				}?>
 			</div>
 
-			<div class="tool-btns btn-cstm-first"><a href="javascript:void(0);" data-action-type="notes" data-eposter-id="<?php echo $eposter->id;?>" class="take-notes" title="Take Notes" data-toggle="tooltip" data-placement="left"><i class="fas fa-clipboard fa-fw fa-2x"></i></a></div>
-			<div class="tool-btns btn-cstm-second"><a href="javascript:void(0);" class="claim-credits" title="Claim Credits" data-toggle="tooltip" data-placement="left"><i class="fas fa-certificate fa-fw fa-2x"></i></a></div>
+			<div class="tool-btns btn-cstm-first"><a href="javascript:void(0);" data-action-type="notes" data-eposter-id="<?php echo $eposter->id;?>" class="take-notes" title="Take Notes" data-toggle="tooltip" data-placement="left"><i class="fas fa-clipboard fa-fw fa-2x"></i><br>Take Notes</a></div>
+			<div class="tool-btns btn-cstm-second"><a href="javascript:void(0);" class="claim-credits" title="Claim Credits" data-toggle="tooltip" data-placement="left"><i class="fas fa-certificate fa-fw fa-2x"></i><br>Claim Credits</a></div>
 <?php
 			$link_order = ' btn-cstm-third';
 			foreach ($eposter->author as $row) {
 				if ($row->contact) {?>
-			<div class="tool-btns<?php echo $link_order;?>"><a href="mailto:<?php echo $row->email;?>" class="email-author" title="Contact <?php echo $row->author;?>" data-toggle="tooltip" data-placement="left"><i class="fas fa-envelope fa-fw fa-2x"></i></a></div>
+			<div class="tool-btns<?php echo $link_order;?>"><a href="mailto:<?php echo $row->email;?>" class="email-author" title="Contact <?php echo $row->author;?>" data-toggle="tooltip" data-placement="left"><i class="fas fa-envelope fa-fw fa-2x"></i><br>Contact</a></div>
 <?php
 					$link_order = ' btn-cstm-fourth';
 					break;
 				}
 			}?>
-			<div class="tool-btns<?php echo $link_order;?>"><a href="javascript:void(0);" data-action-type="comments" data-eposter-id="<?php echo $eposter->id;?>" class="comments" title="Discuss" data-toggle="tooltip" data-placement="left"><i class="fas fa-comment fa-fw fa-2x"></i></a></div>
+			<div class="tool-btns<?php echo $link_order;?>"><a href="javascript:void(0);" data-action-type="comments" data-eposter-id="<?php echo $eposter->id;?>" class="comments" title="Discuss" data-toggle="tooltip" data-placement="left"><i class="fas fa-comment fa-fw fa-2x"></i><br>Discuss</a></div>
 <?php
 			else: //In case eposter is deactivated or deleted ?>
 			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
