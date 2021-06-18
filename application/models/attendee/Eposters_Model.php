@@ -144,6 +144,7 @@ class Eposters_Model extends CI_Model
 
 		$this->db->from('eposters');
 		$this->db->where('status', 1);
+		$this->db->where('eposter IS NOT NULL', null, false);
 		$this->db->where('project_id', $this->project->id);
 		$where 			= $this->db->get_compiled_select();
 
