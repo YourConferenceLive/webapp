@@ -9,9 +9,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=3" rel="stylesheet">
 
 <!-- Full Calendar-->
-<link rel="stylesheet" href="https://localhost/adminLTE/plugins/fullcalendar/main.css">
-<script src="https://localhost/adminLTE/plugins/moment/moment.min.js"></script>
-<script src="https://localhost/adminLTE/plugins/fullcalendar/main.js"></script>
+<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.css">
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/moment/moment.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.js"></script>
 
 <!-- Date Range Picker-->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<input type="file" name="cover_upload " id="cover-upload" class="cover-upload" accept=".jpg,.png,.jpeg" style="display: none">
 			<span class="btn badge badge-primary float-right btn-cover"  ><i class="fa fa-upload" aria-hidden="true" ></i> upload cover</span>
 		</div>
-		<div class="main">
+<div class="main">
 			<div class="content">
 				<div class="middle">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->tv_banner?>" id="tv_banner">
@@ -233,44 +233,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 										<div class="card-body attendee-list-body p-0">
 											<span><strong>Attendees in your booth</strong></span>
-											<ul class="list-group mb-3">
-												<li class="list-group-item" style="cursor: pointer;">
-													<div class="row">
-														<div class="col-1 p-0">
-															<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">
-														</div>
-														<div class="col-9 p-0 pl-2">
-															John Doe <i class="fas fa-dot-circle" style="color: springgreen;"></i>
-														</div>
-														<div class="col-2 p-0 pl-1">
-															<button class="btn btn-info btn-sm call-admin" admin-id="1" admin-name="John Doe"><i class="fas fa-video"></i></button>
-														</div>
-													</div>
-												</li>
+											<ul id="usersInThisBooth" class="list-group mb-3">
+
 											</ul>
 
 											<span><strong>Other attendees</strong></span>
-											<ul class="list-group">
-												<?php if (empty($attendees)): ?>
-													<li class="list-group-item">
-														Empty
-													</li>
-												<?php endif; ?>
-												<?php foreach ($attendees as $attendee): ?>
-													<li class="list-group-item" style="cursor: pointer;">
-														<div class="row">
-															<div class="col-1 p-0">
-																<img src="https://localhost/yourconference.live/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">
-															</div>
-															<div class="col-10 p-0 pl-2">
-																<?=$attendee->name?> <?=$attendee->surname?> <i class="fas fa-dot-circle" style="color: grey;"></i>
-															</div>
-															<div class="col-1 p-0 pl-1">
-<!--																<i class="fas fa-video"></i>-->
-															</div>
-														</div>
-													</li>
-												<?php endforeach; ?>
+											<ul id="other_attendees_list" class="list-group">
+
 											</ul>
 										</div>
 
@@ -432,7 +401,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingAdminName"></span>...</h5>
+				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingUserName"></span>...</h5>
 			</div>
 			<div class="modal-body p-0 m-0">
 				<div id="videoChatContainer" class="container-fluid text-center" style="height: 50vh;background: black;">
@@ -450,17 +419,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 
 <script>
-
-	let user_id = "2";
-
- var project_id = "<?= $this->project->id?>";
- var logo = "<?=$booth->logo?>";
- var date_now = "<?=date('Y-m-d H:i:s')?>";
- var current_id = "<?=$this->session->userdata('sponsor_id')?>";
- var booth_id = "<?=$booth->id?>";
- var current_booth_id = "<?=$this->session->userdata('booth_id')?>";
- var sponsor_name = "<?=$booth->name?>";
-
+	var logo = "<?=$booth->logo?>";
+	var date_now = "<?=date('Y-m-d H:i:s')?>";
+	var current_id = "<?=$this->session->userdata('sponsor_id')?>";
+	var current_booth_id = "<?=$_SESSION['project_sessions']["project_{$this->project->id}"]['exhibitor_booth_id']?>";
+  var project_id = "<?= $this->project->id?>";
+  var booth_id = "<?=$booth->id?>";
+	var sponsor_name = "<?=$booth->name?>";
 </script>
 <script>
 	$(document).ready(function(){
@@ -474,6 +439,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			initialView: 'dayGridMonth'
 		});
 		calendar.render();
+
+
+		socket.on('ycl_active_users_list', function (users) {
+			console.log(users);
+			let activeUsers = [];
+			$.each(users, function (socketId, userId) {
+				activeUsers.push(userId);
+			});
+			let uniqueActiveUsers = [...new Set(activeUsers)];
+			$('.user-status-indicator').css('color', 'grey');
+			$.each(uniqueActiveUsers, function (key, userId) {
+				if (userId != '')
+					$('.user-status-indicator[user-id='+userId+']').css('color', 'springgreen');
+			});
+		});
+		socket.emit('ycl_get_active_users_list');
+
+
+		socket.on('ycl_active_user_on_booth', function (user) {
+			if (user.booth_id == current_booth_id && user_id != '')
+			{
+				$('.video-call[user-id="'+user.user_id+'"]').show();
+
+				let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').clone();
+
+				$('.all-users-item[user-id="'+user.user_id+'"]').remove();
+				$('#usersInThisBooth').append('' +
+						'<li class="all-users-item list-group-item" socket-id="'+user.socket_id+'" user-id="' + userHtml.attr('user-id')+ '" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
+						''+userHtml.html()+
+						'</li>');
+			}
+		});
+
 	});
 
 </script>

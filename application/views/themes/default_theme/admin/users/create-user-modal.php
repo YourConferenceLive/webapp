@@ -48,6 +48,16 @@
 								<input name="surname" id="surname" class="form-control" type="text" placeholder="User's surname">
 							</div>
 
+							<div class="form-group">
+								<label>Biography</label>
+								<input name="bio" id="bio" class="form-control" type="text" placeholder="User's bio">
+							</div>
+
+							<div class="form-group">
+								<label>Disclosure</label>
+								<input name="disclosure" id="disclosure" class="form-control" type="text" placeholder="User's disclosure">
+							</div>
+
 						</div>
 					</div>
 

@@ -37,7 +37,7 @@ class Users_Model extends CI_Model
 
 	public function getById($id)
 	{
-		$this->db->select('id, name, surname, email, active');
+		$this->db->select('id, name, surname, email, active, bio, disclosures');
 		$this->db->from('user');
 		$this->db->where('id', $id);
 		$user = $this->db->get();
@@ -59,6 +59,8 @@ class Users_Model extends CI_Model
 			'surname' => $post['surname'],
 			'email' => $post['email'],
 			'password' => password_hash($post['password'], PASSWORD_DEFAULT),
+			'bio' => $post['bio'],
+			'disclosures' => $post['disclosure'],
 			'created_on' => date('Y-m-d H:i:s'),
 			'created_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
 
@@ -96,6 +98,8 @@ class Users_Model extends CI_Model
 		$data = array(
 			'name' => $post['first_name'],
 			'surname' => $post['surname'],
+			'bio' => $post['bio'],
+			'disclosures' => $post['disclosure'],
 			'updated_on' => date('Y-m-d H:i:s'),
 			'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
 

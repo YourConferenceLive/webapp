@@ -10,6 +10,9 @@
 	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
 }
 
+.sessions-listing-item .container-fluid {
+	min-height: 210px;
+}
 
 /************** Join Page *************/
 #full-screen-background.sessions-join

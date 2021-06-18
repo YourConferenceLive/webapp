@@ -1,13 +1,17 @@
 $(function () {
 
-	$('.call-admin').on('click', function () {
-		callAdmin($(this).attr('admin-id'), $(this).attr('admin-name'));
+	$('.video-call').on('click', function () {
+		callUser($(this).attr('user-id'), $(this).attr('user-name'));
+	});
+
+	$('#usersInThisBooth').on('click', '.video-call', function () {
+		callUser($(this).attr('user-id'), $(this).attr('user-name'));
 	});
 });
 
-function callAdmin(adminId, adminName='') {
+function callUser(userId, userName='') {
 
-	if (adminId == user_id)
+	if (userId == user_id)
 	{
 		toastr.warning("You can't call yourself");
 		return false;
@@ -26,22 +30,21 @@ function callAdmin(adminId, adminName='') {
 
 			myVideo.srcObject = stream;
 			myVideo.addEventListener("loadedmetadata", () => {
+				videoGrid.innerHTML = '';
 				myVideo.play();
 				videoGrid.append(myVideo);
 				myVideo.style.height = '100%';
 			});
 
-			$('#callingAdminName').text(adminName);
+			$('#callingUserName').text(userName);
 			$('#modal-call-sponsor').modal('show');
 
 			$('#hangUp').on('click', function () {
 
 				myVideo.pause();
 				myVideo.src = "";
-				console.log(myVideoStream.getVideoTracks());
 				myVideoStream.getVideoTracks()[0].stop();
 				$('#modal-call-sponsor').modal('hide');
-				document.getElementById("myVideo").innerHTML = '';
 			});
 		});
 }

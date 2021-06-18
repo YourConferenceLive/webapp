@@ -11,6 +11,7 @@ if(!function_exists('global_js'))
 		$js_end_tag = '</script>';
 
 		$js_variables .= "
+			let project_id = '{$CI->project->id}';
 			let project_timezone = '{$CI->project_timezone}';
 			let project_url = '{$CI->project_url}';
 			let project_admin_url = '{$CI->project_url}/admin';
