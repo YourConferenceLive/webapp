@@ -50,6 +50,7 @@ class Users extends CI_Controller
 			echo json_encode(array('status'=>'failed'));
 	}
 
+	// DO NOT USE - We only disables a user - not delete
 	public function delete($id)
 	{
 		if ($this->users->delete($id))
@@ -76,5 +77,13 @@ class Users extends CI_Controller
 	{
 		$this->account->resetPasswordsOfAll($access_level);
 		echo 'done';
+	}
+
+	public function resetPasswordOf($user_id)
+	{
+		if ($this->account->resetPasswordsOf($user_id))
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
 	}
 }

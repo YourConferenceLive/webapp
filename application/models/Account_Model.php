@@ -153,4 +153,15 @@ class Account_Model extends CI_Model
 		$this->db->update("user");
 
 	}
+
+	public function resetPasswordsOf($user_id)
+	{
+		$this->db->set('password', password_hash('COS2021', PASSWORD_DEFAULT));
+		$this->db->where('id', $user_id);
+		$this->db->update("user");
+
+		if ($this->db->affected_rows() > 0)
+			return true;
+		return false;
+	}
 }
