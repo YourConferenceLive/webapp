@@ -75,7 +75,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			}?>
 			<div class="tool-btns<?php echo $link_order;?>"><a href="javascript:void(0);" data-action-type="comments" data-eposter-id="<?php echo $eposter->id;?>" class="comments" title="Discuss" data-toggle="tooltip" data-placement="left"><i class="fas fa-comment fa-fw fa-2x"></i></a></div>
 <?php
-			else: ?>//In case eposter is deactivated or deleted
+			else: //In case eposter is deactivated or deleted ?>
 			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
 				<div class="middleText">
 					<h3>No ePoster found!</h3>
