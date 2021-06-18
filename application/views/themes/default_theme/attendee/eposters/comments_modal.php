@@ -89,12 +89,11 @@ $('#post-comment').on('click', function () {
 
 			data = JSON.parse(data);
 
-			if (data.status == 'success')
-			{
+			if (data.status == 'success') {
+				$('#comments_list_container').html('');
 				loadComments(formData.get('eposterId'), comment_page);
 				toastr.success('Comment has been added.');
 				$('#comments').val('');
-
 			}else{
 				toastr.error("Error");
 			}

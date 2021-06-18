@@ -2,7 +2,6 @@
 .eposters-container, .eposters-view-container, .no-eposter-found
 {
 	padding-bottom: 50px;
-	color:#487391;
 }
 
 .eposters-listing-item
@@ -71,9 +70,11 @@
 	border-color: #487391;
 	border: 0;
 }
-h4 a, .page-link, .form-control, .modal-dialog{
+h4, h4 a, .page-link{
 	color: #487391;
 }
+.tooltip-arrow, .comments + .tooltip > .tooltip-inner {background-color: #487391;}
+
 .img-prize-detail {
 	border-color: #FFFFFF;
 }
@@ -191,20 +192,20 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 /*****************************/
 /*      COMMENTS POPUP       */
 /*****************************/
-#comments-list .pull-right{
+#comments-list .pull-right, #notes-list .pull-right, .eposters-listing-item .pull-right{
   float:right;
 }
-#comments-list .pull-left{
+#comments-list .pull-left, #notes-list .pull-left, .eposters-listing-item .pull-left{
   float:left;
 }
-#comments-list{
+#comments-list, #notes-list{
   /*background:#fff;
   border: 1px solid #dddfe2;
   border-radius: 3px;
   color: #4b4f56;
   padding:50px;*/
 }
-#comments-list .header_comment{
+#comments-list .header_comment, #notes-list .header_comment, #notes-list .header_note, #notes-list .header_note {
 	font-size: 14px;
 	overflow: hidden;
 	border-bottom: 1px solid #e9ebee;
@@ -212,10 +213,16 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 	margin-bottom: 24px;
 	padding: 10px 0;
 }
-#comments-list .sort_title{
+#notes-list .header_note, #notes-list .header_note {
+	border-bottom: 0px;
+	margin-bottom: 10px;
+	padding: 0px;
+}
+}
+#comments-list .sort_title, #notes-list .sort_title{
   color: #4b4f56;
 }
-#comments-list .sort_by{
+#comments-list .sort_by, #notes-list .sort_by{
   background-color: #f5f6f7;
   color: #4b4f56;
   line-height: 22px;
@@ -229,21 +236,21 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
   border-radius: 2px;
   border: 1px solid #ccd0d5;
 }
-#comments-list .count_comment, #comments-list .count_comment strong{
+#comments-list .count_comment, #comments-list .count_comment strong, #notes-list .count_note, #notes-list .count_note strong{
   font-weight: 600;
 }
-#comments-list .body_comment{
+#comments-list .body_comment, #notes-list .body_note{
   padding: 0 8px;
   font-size: 14px;
   display: block;
   line-height: 25px;
   word-break: break-word;
 }
-#comments-list .avatar_comment{
+#comments-list .avatar_comment, #notes-list .avatar_note{
   display: block;
   padding: 0px;
 }
-#comments-list .box_comment{
+#comments-list .box_comment, #notes-list .box_note{
 	display: block;
 	position: relative;
 	line-height: 1.358;
@@ -257,31 +264,32 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 	font-size: 16px;
 	padding: 0;
 }
-#comments-list .box_comment textarea{
+#comments-list .box_comment textarea,
+#notes-list .box_note textarea{
 	min-height: 40px;
 	padding: 12px 8px;
 	width: 100%;
 	border: none;
 	resize: none;
 }
-#comments-list .box_comment textarea:focus{
+#comments-list .box_comment textarea:focus, #notes-list .box_note textarea:focus{
   outline: none !important;
 }
-#comments-list .box_comment .box_post{
+#comments-list .box_comment .box_post, #notes-list .box_note .box_post{
 	border-top: 1px solid #d3d6db;
 	background: #f5f6f7;
 	padding: 4px;
 	display: block;
 	overflow: hidden;
 }
-#comments-list .box_comment label{
+#comments-list .box_comment label, #notes-list .box_note label{
   display: inline-block;
   vertical-align: middle;
   font-size: 11px;
   color: #90949c;
   line-height: 22px;
 }
-#comments-list .box_comment button{
+#comments-list .box_comment button, #notes-list .box_note button{
   margin-left:8px;
   text-decoration: none;
   line-height: 22px;
@@ -291,7 +299,8 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
   position: relative;
   text-align: center;
 }
-#comments-list .box_comment .cancel{
+#comments-list .box_comment .cancel, 
+#notes-list .box_note .cancel{
 	margin-left:8px;
 	background-color: #f5f6f7;
 	color: #4b4f56;
@@ -304,23 +313,26 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 	text-align: center;
 	border-color: #ccd0d5;
 }
-#comments-list .box_comment .cancel:hover{
+#comments-list .box_comment .cancel:hover, 
+#notes-list .box_note .cancel:hover{
 	background-color: #d0d0d0;
 	border-color: #ccd0d5;
 }
-#comments-list .box_comment img{
+#comments-list .box_comment img,
+#notes-list .box_note img{
   height:16px;
   width:16px;
 }
-#comments-list .box_result{
+#comments-list .box_result,
+#notes-list .box_result{
   padding-top: 15px;
   padding-bottom: 15px;
 }
 
-#comments-list .box_result:not(:first-child){
+#comments-list .box_result:not(:first-child), #notes-list .box_result:not(:first-child){
   border-top: solid 1px #e9ebee;
 }
-#comments-list .box_result .result_comment h4{
+#comments-list .box_result .result_comment h4, #notes-list .box_result .result_note h4{
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
@@ -329,28 +341,30 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
   line-height: 1.358;
   margin:0;
 }
-#comments-list .box_result .result_comment{
+#comments-list .box_result .result_comment,
+#notes-list .box_result .result_note{
   display:block;
   overflow:hidden;
   padding: 0;
 }
-#comments-list .box_result .result_comment p{
+#comments-list .box_result .result_comment p, #notes-list .box_result .result_note p{
   margin: 4px 0;
   text-align:justify;
 }
-#comments-list .box_result .result_comment .tools_comment{
+#comments-list .box_result .result_comment .tools_comment, #notes-list .box_result .result_note .tools_note{
   font-size: 12px;
   line-height: 1.358;
 }
-#comments-list .box_result .result_comment .tools_comment a{
+#comments-list .box_result .result_comment .tools_comment a, 
+#notes-list .box_result .result_note .tools_note a{
   color: #4267b2;
   cursor: pointer;
   text-decoration: none;
 }
-#comments-list .box_result .result_comment .tools_comment span{
+#comments-list .box_result .result_comment .tools_comment span, #notes-list .box_result .result_note .tools_note span{
   color: #90949c;
 }
-.body_comment .show_more{
+.body_comment .show_more, .body_note .show_more{
   background: #3578e5;
   border: none;
   box-sizing: border-box;

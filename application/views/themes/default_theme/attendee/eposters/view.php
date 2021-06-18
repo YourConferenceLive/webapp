@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				}?>
 			</div>
 
-			<div class="tool-btns btn-cstm-first"><a href="javascript:void(0);" data-eposter-id="<?php echo $eposter->id;?>" class="take-notes" title="Take Notes" data-toggle="tooltip" data-placement="left"><i class="fas fa-clipboard fa-fw fa-2x"></i></a></div>
+			<div class="tool-btns btn-cstm-first"><a href="javascript:void(0);" data-action-type="notes" data-eposter-id="<?php echo $eposter->id;?>" class="take-notes" title="Take Notes" data-toggle="tooltip" data-placement="left"><i class="fas fa-clipboard fa-fw fa-2x"></i></a></div>
 			<div class="tool-btns btn-cstm-second"><a href="javascript:void(0);" class="claim-credits" title="Claim Credits" data-toggle="tooltip" data-placement="left"><i class="fas fa-certificate fa-fw fa-2x"></i></a></div>
 <?php
 			$link_order = ' btn-cstm-third';
@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					break;
 				}
 			}?>
-			<div class="tool-btns<?php echo $link_order;?>"><a href="javascript:void(0);" data-eposter-id="<?php echo $eposter->id;?>" class="comments" title="Discuss" data-toggle="tooltip" data-placement="left"><i class="fas fa-comment fa-fw fa-2x"></i></a></div>
+			<div class="tool-btns<?php echo $link_order;?>"><a href="javascript:void(0);" data-action-type="comments" data-eposter-id="<?php echo $eposter->id;?>" class="comments" title="Discuss" data-toggle="tooltip" data-placement="left"><i class="fas fa-comment fa-fw fa-2x"></i></a></div>
 <?php
 			else: ?>//In case eposter is deactivated or deleted
 			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
@@ -86,6 +86,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 </div>
 
 <script type="application/javascript">
+	let note_page = 1;
+	let notes_per_page = "<?=$notes_per_page;?>";
+
 	let comment_page = 1;
 	let comments_per_page = "<?=$comments_per_page;?>";
 
@@ -97,15 +100,75 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 		$('[data-toggle="tooltip"]').tooltip();
 
+		$('.comments, .take-notes').click(function(e) {
 
-		$('.comments').click(function() {
-			var eposter_id = $(this).data('eposter-id');
+			var action_type = $(this).data('action-type');
+			var eposter_id 	= $(this).data('eposter-id');
 
-			loadComments(eposter_id, comment_page);
-			$('#comments_list_container').html('');
-			$('#commentsModal').modal('show');
+			if (action_type == 'notes') {
+				loadNotes(eposter_id, note_page);
+				$('#notes_list_container').html('');
+				$('#notesModal').modal('show');
+			} else {
+				loadComments(eposter_id, comment_page);
+				$('#comments_list_container').html('');
+				$('#commentsModal').modal('show');
+			}
 		});
 	});
+
+	function loadNotes(eposter_id, note_page) {
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Loading notes...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+
+		$.ajax({
+				type: "GET",
+				url: project_url+"/eposters/notes/"+eposter_id+'/'+note_page,
+				data: '',
+				success: function(response){
+					Swal.close();
+					jsonObj = JSON.parse(response);
+					// Add response in Modal body
+					if (jsonObj.total) {
+						$('.count_note strong').text(jsonObj.total);
+						var previousHTML = $('#notes_list_container').html();
+						var iHTML = '';
+						if (previousHTML == '')
+							iHTML += '<ul id="list_note" class="col-md-12">';
+
+						for (let x in jsonObj.data) {
+							let note_id 	= jsonObj.data[x].id;
+							let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+							let datetime 	= jsonObj.data[x].time;
+
+							iHTML += '<!-- Start List Note ' + (x) +' --><li class="box_result row"><div class="result_note col-md-12"><p>'+note+'</p><div class="tools_note"><span>'+datetime+'</span></div></div></li>';
+						}
+
+						if (previousHTML == '')
+							iHTML += '</ul>';
+
+						$('#notesModal .modal-footer').html('<button' + (((note_page+1) <= Math.ceil(jsonObj.total/notes_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes('+eposter_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
+
+						if (previousHTML == '') {
+							$('#notes_list_container').html(iHTML);
+						} else {
+							$('#list_note').append(iHTML);
+						}
+
+					} else {
+						$('.count_note strong').text('No ');
+					}
+				}
+			});
+	}
 
 	function loadComments(eposter_id, comment_page) {
 		Swal.fire({
@@ -137,7 +200,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						for (let x in jsonObj.data) {
 							let comment_id 	= jsonObj.data[x].id;
 							let avatar 		= ((jsonObj.data[x].avatar === null) ? '' : jsonObj.data[x].avatar );
-							let comment 	= jsonObj.data[x].comment.replace(/(?:\r\n|\r|\n)/g, '<br>');;
+							let comment 	= jsonObj.data[x].comment.replace(/(?:\r\n|\r|\n)/g, '<br>');
 							let commenter 	= jsonObj.data[x].commenter;
 							let datetime 	= jsonObj.data[x].time;
 							let user_id 	= jsonObj.data[x].user_id;
@@ -148,7 +211,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						if (previousHTML == '')
 							iHTML += '</ul>';
 
-						$('#commentsModal .modal-footer').html('<button' + (((comment_page+1) <= Math.ceil(jsonObj.total/comments_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMore('+eposter_id+', '+comment_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more comments</button>');
+						$('#commentsModal .modal-footer').html('<button' + (((comment_page+1) <= Math.ceil(jsonObj.total/comments_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreComments('+eposter_id+', '+comment_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more comments</button>');
 
 						if (previousHTML == '') {
 							$('#comments_list_container').html(iHTML);
@@ -163,7 +226,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			});
 	}
 
-	function showMore(eposter_id, comment_page) {
+	function showMoreNotes(eposter_id, note_page) {
+		note_page = note_page+1;
+		loadNotes(eposter_id, note_page);
+	}
+
+	function showMoreComments(eposter_id, comment_page) {
 		comment_page = comment_page+1;
 		loadComments(eposter_id, comment_page);
 	}
