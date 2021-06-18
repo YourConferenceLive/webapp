@@ -680,7 +680,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<li class="nav-header">ACCOUNT</li>
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/authentication/logout/admin'?>" class="nav-link">
+					<a href="<?=$this->project_url.'/authentication/logout/'.base64_encode('admin')?>" class="nav-link">
 						<i class="nav-icon fas fa-sign-out-alt text-danger"></i>
 						<p class="text">Logout</p>
 					</a>

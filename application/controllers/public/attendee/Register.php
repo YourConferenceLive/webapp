@@ -10,6 +10,9 @@ class Register extends CI_Controller
 
 		if (isset($_SESSION['project_sessions']["project_{$this->project->id}"]) && $_SESSION['project_sessions']["project_{$this->project->id}"]['is_attendee'] == 1)
 			redirect(base_url().$this->project->main_route."/lobby"); // Already logged-in
+
+		if ($this->project->main_route == 'COS')
+			redirect(base_url().$this->project->main_route); // COS does not allow registration in the app (use COS API)
 	}
 
 	public function index()

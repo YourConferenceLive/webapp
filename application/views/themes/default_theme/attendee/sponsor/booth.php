@@ -130,7 +130,7 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 												</button>
 												<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
 													<?php foreach ($admins as $admin): ?>
-														<button class="dropdown-item call-admin" admin-id="<?=$admin->id?>" admin-name="<?=$admin->name?> <?=$admin->surname?>"><?=$admin->name?> <?=$admin->surname?></button>
+														<button class="dropdown-item video-call" user-id="<?=$admin->id?>" user-name="<?=$admin->name?> <?=$admin->surname?>"><?=$admin->name?> <?=$admin->surname?></button>
 													<?php endforeach; ?>
 												</div>
 											</div>
@@ -220,7 +220,7 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingAdminName"></span>...</h5>
+				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingUserName"></span>...</h5>
 			</div>
 			<div class="modal-body p-0 m-0">
 				<div id="videoChatContainer" class="container-fluid text-center" style="height: 50vh;background: black;">
@@ -237,11 +237,8 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 	</div>
 </div>
 <script>
-	var project_id = "<?= $this->project->id ?>";
 	var logo = "<?= $data->logo ?>";
 	var date_now = "<?= date('Y-m-d H:i:s') ?>";
-
-	let user_id = "<?=$user['user_id']?>";
 
 	var current_user_id = "<?= ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']) ?>";
 	var current_booth_id= "<?= $data->id ?>";
@@ -253,3 +250,6 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js"></script>
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js"></script>
+<script>
+	socket.emit('ycl_booth_visit', {'booth_id':current_booth_id, 'user_id' : user_id});
+</script>

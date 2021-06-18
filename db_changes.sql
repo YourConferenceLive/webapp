@@ -385,6 +385,17 @@ INSERT INTO `eposter_tracks` (`id`, `project_id`, `track`, `status`, `created_da
 (9, 3, 'Vision Rehabilitation', 1, '2021-06-14 18:40:41', '2021-06-14 18:40:41');
 COMMIT;
 
+create table session_questions
+(
+    id int auto_increment,
+    session_id int not null,
+    user_id int not null,
+    question text null collate utf8_general_ci,
+    asked_on datetime not null,
+    constraint session_questions_pk
+        primary key (id)
+);
+
 
 ALTER TABLE `sponsor_booth`
 ADD COLUMN `left_banner` TEXT NULL AFTER `level`,
@@ -392,3 +403,26 @@ ADD COLUMN `right_banner` TEXT NULL AFTER `left_banner`,
 ADD COLUMN `tv_banner` TEXT NULL AFTER `right_banner`,
 ADD COLUMN `left_table` TEXT NULL AFTER `tv_banner`,
 ADD COLUMN `right_table` TEXT NULL AFTER `left_table`;
+
+# ####### Adding column bio to user
+ALTER TABLE `user` ADD `bio` TEXT NULL DEFAULT NULL AFTER `credentials`;
+#
+
+-- Imran Tariq 
+-- Table structure for table `notes`
+-- 18th Jun 2021
+
+DROP TABLE IF EXISTS `notes`;
+CREATE TABLE IF NOT EXISTS `notes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `origin_type` enum('eposter','session') NOT NULL DEFAULT 'eposter',
+  `origin_type_id` int(11) DEFAULT NULL COMMENT 'session_id / eposter_id',
+  `user_id` int(11) NOT NULL,
+  `note_text` varchar(255) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL COMMENT '1 = yes, 0 = no',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 = active, 0 = inactive',
+  `created_datetime` datetime NOT NULL,
+  `updated_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

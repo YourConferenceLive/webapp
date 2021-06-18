@@ -1,13 +1,21 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<style>
+	body{background-color: #487391;}
+</style>
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/eposters.css?v=<?=rand()?>" rel="stylesheet">
 
-<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/eposters/eposters_listing_background.jpg">
+<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
 <div class="eposters-container container-fluid pl-md-6 pr-md-6">
 	<div class="col-12">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="text-center btn card mb-2 page-title"><h1 class="mb-0">ePosters and Surgical Videos</h1></div>
+			</div>
+		</div>
 <?php
 		$options = array('method' => 'get');
 		echo form_open($this->project_url.'/eposters/index', $options);?>
@@ -53,46 +61,76 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			    <input type="text" class="form-control" id="keyword" name="keyword" value="<?php echo $keyword;?>" placeholder="Search">
 			</div>
     		<div class="col-auto my-1">
-			    <button type="submit" class="btn btn-primary">Search</button>
+			    <button type="submit" class="btn btn-info">Search</button>
     		</div>
   		</div>
   		<div class="clearfix"></div>
 <?php
 		echo form_close();
 		if (!count((array)$eposters)) {?>
-		<div class="alert alert-danger">No ePoster found!</div>
+
+	<div class="no-eposter-found container-fluid ml-0 text-center">
+		<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;background-position:center;">
+			<div class="middleText">
+				<h3>Sorry, no ePoster found!</h3>
+			</div>
+		</div>
+	</div>
 <?php
 		} else {
-			foreach ($eposters as $eposter): ?>
+			foreach ($eposters as $eposter): 
+				$eposter_url = (($eposter->eposter != '') ? $this->project_url.'/eposters/view/'.$eposter->id : '' );?>
 		<!-- ePoster Listing Item -->
 		<div class="eposters-listing-item pb-3">
-			<div class="container-fluid">
+			<div class="container-fluid" style="min-height: 210px;">
 				<div class="row mt-2">
 					<div class="col-md-3 col-sm-12 p-0">
 						<div class="eposter-img-div pl-2 pt-2 pb-2 pr-2 text-center">
-							<a href="<?=$this->project_url?>/eposters/view/<?=$eposter->id;?>" title="<?=$eposter->title;?>">
+<?php
+							if ($eposter_url) {?>
+							<a href="<?php echo $eposter_url;?>" title="<?=$eposter->title;?>">
+<?php
+							}?>
 							<img class="eposter-img img-fluid"
 								 src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/<?=$eposter->eposter?>"
-								 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/default'">
+								 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/default.jpg'">
 							</a>
 						</div>
 					</div>
 					<div class="col-md-9 col-sm-12 pl-0 pt-2">
 						<div class="col-12 text-md-left text-sm-center">
-							<h4><a href="<?=$this->project_url?>/eposters/view/<?=$eposter->id;?>" title="<?=$eposter->title;?>"><?=$eposter->title;?></a></h4>
+							<div class="col-12 text-md-left text-sm-center p-0">
+								<div class="col-md-8 col-sm-4 text-left pull-left p-0"><span class=""><?php echo $eposter->track;?></span></div>
+								<div class="col-md-4 col-sm-4 text-right pull-right p-0"><span class="badge badge-pill badge-success"><?php echo (($eposter->type == 'eposter') ? 'ePoster' : 'Surgical Video' );?></span></div>
+								<div class="clearfix"></div>
+							</div>
+							<h4>
+<?php
+							if ($eposter_url) {?>
+								<a href="<?=$eposter_url;?>" title="<?=$eposter->title;?>">
+<?php
+							}
+								echo $eposter->title;
+							if ($eposter_url) {?>
+								</a>
+<?php
+							}?></h4>
 							<p class="author"><?php foreach($eposter->author as $index=>$item){echo (($index) ? ', ' : '').$item->author;}?></p>
 <?php
 						if ($eposter->prize) {?>
-					  	<img class="img-fluid img-thumbnail"
+					  	<img data-toggle="tooltip" data-placement="right" title="<?php echo (($eposter->prize != 'hot topic') ? 'Won ' : '' ).ucwords($eposter->prize);?>" class="img-fluid img-prize img-thumbnail"
 					  		 src="<?= ycl_root ?>/theme_assets/default_theme/images/eposters/thumb/<?=str_replace(' ', '_', $eposter->prize).'.png';?>">
 						<div class="clearfix"></div>
 <?php
 						}?>
 						</div>
-
-						<div class="col-12 text-md-right text-sm-center" style="position: absolute; bottom: 0;">
-							<a href="<?=$this->project_url?>/eposters/view/<?=$eposter->id;?>" class="btn btn-sm btn-warning m-1 rounded-0">VIEW</a>
+<?php
+							if ($eposter_url) {?>
+						<div class="col-12 text-md-right text-sm-right" style="position: absolute; bottom: 0;">
+							<a href="<?=$eposter_url;?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-search"></i> VIEW</a>
 						</div>
+<?php
+							}?>
 					</div>
 				</div>
 			</div>
@@ -106,3 +144,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}?>
 	</div>
 </div>
+<script type="application/javascript">
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+</script>

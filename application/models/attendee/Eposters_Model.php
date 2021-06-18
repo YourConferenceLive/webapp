@@ -54,9 +54,10 @@ class Eposters_Model extends CI_Model
 			$this->db->where('e.id IN ('.$eposter_ids.')');
 		}
 
-		$this->db->select('e.id, e.track_id, e.control_number, e.title, e.type, e.prize, e.eposter, e.video_url');
-		
+		$this->db->select('e.id, e.track_id, et.track, e.control_number, e.title, e.type, e.prize, e.eposter, e.video_url');
+
 		$this->db->from('eposters e');
+		$this->db->join('eposter_tracks et', 'et.id=e.track_id');
 
 		$where = array('e.project_id' => $this->project->id, 'e.status' => 1);
 
@@ -94,7 +95,7 @@ class Eposters_Model extends CI_Model
 
 	public function getAuthorsPerEposter($eposter_id)
 	{
-		$this->db->select('u.id, CONCAT (u.name, " ", u.surname) AS author, email, ea.contact');
+		$this->db->select('u.id, CONCAT_WS(" ", u.credentials, u.name, u.surname) AS author, email, ea.contact');
 		$this->db->from('eposter_authors ea');
 		$this->db->join('user u', 'u.id=ea.user_id');
 		$this->db->where('ea.eposter_id', $eposter_id);
@@ -108,7 +109,7 @@ class Eposters_Model extends CI_Model
 	public function getAllAuthors()
 	{
 		$this->db->distinct('u.id');
-		$this->db->select('u.id, CONCAT (u.name, " ", u.surname) AS author');
+		$this->db->select('u.id, CONCAT_WS(" ", u.credentials, u.name, u.surname) AS author');
 		$this->db->from('user u');
 		$this->db->join('eposter_authors ea', 'u.id=ea.user_id');
 		$this->db->where(array('u.active' => 1));

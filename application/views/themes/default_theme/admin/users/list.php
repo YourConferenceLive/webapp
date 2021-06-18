@@ -139,6 +139,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#first_name').val(user.name);
 				$('#surname').val(user.surname);
 
+				$('#bio').val(user.bio);
+				$('#disclosure').val(user.disclosures);
+
 				$('#attendee_access, #presenter_access, #moderator_access, #admin_access, #exhibitor_access').prop('checked', false);
 				$.each(user.accesses, function(key, access){
 					$('#'+access.level+'_access').prop('checked', true);
