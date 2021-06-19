@@ -177,6 +177,9 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 .tool-btns.btn-cstm-first a{
 	top: 52%;
 }
+.badge-eposter{
+	background-color: #800020;
+}
 .tool-btns a:hover{
 	text-decoration: none;
 	color:#f7dfe9;
