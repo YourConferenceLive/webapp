@@ -50,6 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Start Time</th>
 									<th>End Time</th>
 									<th>People</th>
+									<th>Credits</th>
 									<th>Name</th>
 									<th>Actions</th>
 									<th>Manage</th>
@@ -373,6 +374,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'	</td>' +
 					'	<td>' +
 					'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+' '+invisibleModeratorsBadge+
+					'	</td>' +
+					'	<td>' +
+					'		'+session.credits+
 					'	</td>' +
 					'	<td>' +
 					'		'+session.name+
