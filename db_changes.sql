@@ -431,3 +431,6 @@ CREATE TABLE IF NOT EXISTS `notes` (
 -- Athul - June 18th 2021
 ALTER TABLE `session_moderators` ADD `is_invisible` BOOLEAN NOT NULL DEFAULT FALSE AFTER `session_id`;
 ALTER TABLE `sessions` ADD `is_deleted` BOOLEAN NOT NULL DEFAULT FALSE AFTER `updated_on`;
+
+-- Athul - June 19th 2021
+ALTER TABLE `sessions` ADD `credits` FLOAT NOT NULL DEFAULT '0' AFTER `track`;

@@ -104,6 +104,11 @@
 									</div>
 
 									<div class="form-group">
+										<label for="sessionCredits">Credits</label>
+										<input type="number" class="form-control" id="sessionCredits" name="sessionCredits" placeholder="How much credit user will receive by attending this session? (default:0 | min:0 | max:20)" min="0" max="20" >
+									</div>
+
+									<div class="form-group">
 										<label for="sessionDescription">Description</label>
 										<textarea id="sessionDescription" name="sessionDescription" class="form-control" placeholder="Enter session description"></textarea>
 									</div>
@@ -342,6 +347,12 @@
 		if($('input[name="endDateTime"]').val() == '')
 		{
 			toastr.warning('Please select end date and time!')
+			return false;
+		}
+
+		if(!$.isNumeric($('input[name="sessionCredits"]').val()))
+		{
+			toastr.warning('Credit must be a positive number!')
 			return false;
 		}
 

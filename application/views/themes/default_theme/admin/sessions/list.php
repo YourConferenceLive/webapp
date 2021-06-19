@@ -144,6 +144,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#sessionName').val(session.name);
 				$('#sessionNameOther').val(session.other_language_name);
 				$('#sessionTrack option[value="'+session.track+'"]').prop('selected', true);
+				$('#sessionCredits').val(session.credits);
 				$("#sessionDescription").summernote("code", session.description);
 				$('#startDateTimeInput').datetimepicker('date', moment(session.start_date_time, 'YYYY-MM-DD HH:mm:ss'));
 				$('#endDateTimeInput').datetimepicker('date', moment(session.end_date_time, 'YYYY-MM-DD HH:mm:ss'));
