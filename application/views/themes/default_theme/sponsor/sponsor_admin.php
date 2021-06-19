@@ -18,8 +18,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+<?php
+$cover_photo_url='theme_assets/booth_uploads/'.$booth->cover_photo;
+
+if(!file_exists($cover_photo_url)){
+	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$booth->cover_photo;
+}
+
+?>
+
 <div class="container-fluid p-0 mt-5">
-	<div class="jumbotron rounded-0" id="cover_photo" style="background-image: url('<?= (isset($booth->cover_photo) && !empty($booth->cover_photo))? ycl_root.'/theme_assets/booth_uploads/'.$booth->cover_photo:''?>')">
+	<div class="jumbotron rounded-0" id="cover_photo" style="background-image: url('<?= (isset($booth->cover_photo) && !empty($booth->cover_photo))? ycl_root.'/'.$cover_photo_url:''?>')">
 		<div class="">
 			<input type="file" name="cover_upload " id="cover-upload" class="cover-upload" accept=".jpg,.png,.jpeg" style="display: none">
 			<span class="btn badge badge-primary float-right btn-cover"  ><i class="fa fa-upload" aria-hidden="true" ></i> upload cover</span>
