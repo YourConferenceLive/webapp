@@ -437,6 +437,22 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getAllKeynoteSpeakers()
+	{
+		$this->db->select('user.*');
+		$this->db->from('user');
+		$this->db->join('session_keynote_speakers', 'session_keynote_speakers.speaker_id = user.id');
+		$this->db->join('sessions', 'session_keynote_speakers.session_id = sessions.id');
+		$this->db->where('sessions.project_id', $this->project->id);
+		$this->db->group_by('user.id');
+		$this->db->order_by('user.name', 'asc');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
 	public function getPresentersPerSession($session_id)
 	{
 		$this->db->select('user.*');
