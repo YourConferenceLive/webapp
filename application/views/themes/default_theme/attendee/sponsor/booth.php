@@ -13,7 +13,7 @@ if(!file_exists($cover_photo_url)){
 	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo;
 }
 ?>
-<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css" rel="stylesheet">
+<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css?ver=5" rel="stylesheet">
 <!-- Date Time Picker-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.js"></script>
@@ -254,7 +254,7 @@ if(!file_exists($cover_photo_url)){
 	var company_name = "<?=$data->name?>";
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=2"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=5"></script>
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js"></script>
 <script>
 	socket.emit('ycl_booth_visit', {'booth_id':current_booth_id, 'user_id' : user_id});
