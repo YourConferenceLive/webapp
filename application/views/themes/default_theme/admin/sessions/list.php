@@ -207,6 +207,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 		});
 
+		$('#sessionsTable').on('click', '.removeSession', function () {
+			let session_id = $(this).attr('session-id');
+			let session_name = $(this).attr('session-name');
+
+			Swal.fire({
+				title: 'Are you sure?',
+				html: '<span class="text-white">You are about to remove<br>['+session_id+'] '+session_name+'<br><br><small>(We will still keep it in our records for auditing)</small></span>',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, remove it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+
+					Swal.fire({
+						title: 'Please Wait',
+						text: 'Removing the session...',
+						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+						imageAlt: 'Loading...',
+						showCancelButton: false,
+						showConfirmButton: false,
+						allowOutsideClick: false
+					});
+
+					$.get(project_admin_url+"/sessions/remove/"+session_id, function (response) {
+						response = JSON.parse(response);
+
+						if (response.status == 'success')
+						{
+							listSessions();
+							toastr.success(session_name+" has been removed!");
+						}else{
+							Swal.fire(
+									'Error!',
+									'Unable to remove '+session_name,
+									'error'
+							);
+						}
+					});
+				}
+			});
+		});
+
 		$('#sessionsTable').on('click', '.openPoll', function () {
 			socket.emit('openPoll');
 		});
@@ -322,11 +367,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		</a>' +
 					'	</td>' +
 					'	<td>' +
-					'		<button class="manageSession btn btn-sm btn-primary" session-id="'+session.id+'"><i class="fas fa-edit"></i> Manage</button>' +
-					'		<button class="openPoll btn btn-sm btn-primary">Open Poll</button>' +
-					'		<button class="closePoll btn btn-sm btn-primary">Close Poll</button>' +
-					'		<button class="openResult btn btn-sm btn-primary">Open Result</button>' +
-					'		<button class="closeResult btn btn-sm btn-primary">Close Result</button>' +
+					'		<button class="manageSession btn btn-sm btn-primary" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
+					'		<button class="removeSession btn btn-sm btn-danger" session-id="'+session.id+'" session-name="'+session.name+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
+					'		<!--<button class="closePoll btn btn-sm btn-primary">Close Poll</button>-->' +
+					'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
+					'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
 					'	</td>' +
 					'</tr>'
 				);
