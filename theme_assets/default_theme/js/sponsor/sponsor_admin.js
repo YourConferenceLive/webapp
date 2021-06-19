@@ -22,10 +22,13 @@ $(document).ready(function () {
 		var file_data = $("#cover-upload").prop("files")[0];
 		var form_data = new FormData();
 
-		form_data.append("cover", file_data);
+		form_data.append("file",file_data)
+		form_data.append("project_id",booth_project_id)
+		form_data.append("current_booth_id",booth_id)
+		form_data.append("type","cover_photo")
 
 		$.ajax({
-			url: project_url + "/sponsor/admin/home/upload_cover/",
+			url: project_url + "/sponsor/admin/home/upload_booth_photos/",
 			dataType: 'text',
 			cache: false,
 			contentType: false,
@@ -33,12 +36,8 @@ $(document).ready(function () {
 			data: form_data,
 			type: 'post',
 			success: function (cover) {
-
-				var version = Math.floor(Math.random() * 10000) + 1;
-				$('#cover_photo').css('background-image', '');
-				$('#cover_photo').css('background-image', 'url(' + ycl_root + "/cms_uploads/projects/" + project_id + "/sponsor_assets/uploads/cover_photo/" + cover + '?v=' + version + ')');
+				$('#cover_photo').css('background-image', 'url(' + URL.createObjectURL(file_data)+')');
 				toastr["success"]("Cover updated!")
-
 			},
 
 		});
