@@ -451,7 +451,7 @@ class Sessions_Model extends CI_Model
 		$this->db->where('user_project_access.level', 'presenter');
 		$this->db->where('user_project_access.project_id', $this->project->id);
 		$this->db->group_by('user.id');
-		$this->db->order_by('user.name', 'asc');
+		$this->db->order_by('user.surname', 'asc');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();
@@ -467,7 +467,7 @@ class Sessions_Model extends CI_Model
 		$this->db->where('user_project_access.level', 'moderator');
 		$this->db->where('user_project_access.project_id', $this->project->id);
 		$this->db->group_by('user.id');
-		$this->db->order_by('user.name', 'asc');
+		$this->db->order_by('user.surname', 'asc');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();
@@ -483,7 +483,7 @@ class Sessions_Model extends CI_Model
 		$this->db->join('sessions', 'session_keynote_speakers.session_id = sessions.id');
 		$this->db->where('sessions.project_id', $this->project->id);
 		$this->db->group_by('user.id');
-		$this->db->order_by('user.name', 'asc');
+		$this->db->order_by('user.surname', 'asc');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();
@@ -513,7 +513,7 @@ class Sessions_Model extends CI_Model
 		$this->db->join('session_keynote_speakers', 'session_keynote_speakers.speaker_id = user.id');
 		$this->db->where('session_keynote_speakers.session_id', $session_id);
 		$this->db->group_by('user.id');
-		$this->db->order_by('user.name', 'asc');
+		$this->db->order_by('user.surname', 'asc');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();
@@ -529,7 +529,7 @@ class Sessions_Model extends CI_Model
 		$this->db->where('session_moderators.session_id', $session_id);
 		$this->db->where('session_moderators.is_invisible', 0);
 		$this->db->group_by('user.id');
-		$this->db->order_by('user.name', 'asc');
+		$this->db->order_by('user.surname', 'asc');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();
@@ -545,7 +545,7 @@ class Sessions_Model extends CI_Model
 		$this->db->where('session_moderators.session_id', $session_id);
 		$this->db->where('session_moderators.is_invisible', 1);
 		$this->db->group_by('user.id');
-		$this->db->order_by('user.name', 'asc');
+		$this->db->order_by('user.surname', 'asc');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();
