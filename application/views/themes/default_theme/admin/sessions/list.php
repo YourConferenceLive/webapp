@@ -311,6 +311,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				let moderatorsBadge = '<badge class="badge badge-pill '+moderatorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+moderatorsList+'">M ('+moderatorsNumber+')</badge>';
 
 
+				// Invisible Moderators badge
+				let invisibleModeratorsList = '';
+				let invisibleModeratorsNumber = Object.keys(session.invisible_moderators).length;
+				let invisibleModeratorsBadgeType = 'badge-danger';
+				if (invisibleModeratorsNumber > 0)
+					invisibleModeratorsList += '<strong>Invisible Moderators</strong><br><br>';
+				$.each(session.invisible_moderators, function(key, moderator)
+				{
+					invisibleModeratorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
+				});
+				if (invisibleModeratorsNumber > 0)
+					invisibleModeratorsBadgeType = 'badge-success';
+				let invisibleModeratorsBadge = '<badge class="badge badge-pill '+invisibleModeratorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+invisibleModeratorsList+'">InM ('+invisibleModeratorsNumber+')</badge>';
+
+
 				// Keynote Speakers badge
 				let keynoteSpeakersList = '';
 				let keynoteSpeakersNumber = Object.keys(session.keynote_speakers).length;
@@ -356,7 +371,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
-					'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+
+					'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+' '+invisibleModeratorsBadge+
 					'	</td>' +
 					'	<td>' +
 					'		'+session.name+
