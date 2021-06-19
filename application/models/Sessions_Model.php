@@ -114,15 +114,51 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
-	public function getByDay($day)
+	public function getByDay($day, $track_id, $keynote_id, $speaker_id, $keyword)
 	{
+		if ($keynote_id) {
+			$session_ids = $this->db->select('session_id')
+								 ->where('speaker_id', $keynote_id)
+								 ->group_by('session_id')
+								 ->get_compiled_select('session_keynote_speakers', true);
+
+			$this->db->where('id IN ('.$session_ids.')');
+		}
+
 		$this->db->select('*');
 		$this->db->from('sessions');
-		$this->db->where('is_deleted', 0);
-		$this->db->where('DATE(start_date_time)', $day);
-		$this->db->where('project_id', $this->project->id);
+
+		$where = array('project_id' => $this->project->id,
+					   'is_deleted' => 0,
+					   'DATE(start_date_time)' => $day
+					);
+
+		if ($track_id) {
+			$where['track'] = $track_id;
+		}
+
+		if ($keynote_id) {
+			// $where['type'] = $type;
+		}
+
+
+		if ($speaker_id) {
+			$this->db->where("EXISTS(SELECT `session_id`
+										FROM `session_presenters`
+										WHERE `presenter_id`=$speaker_id
+										GROUP BY `session_id`)");
+		}
+
+		if ($keyword) {
+			$this->db->like('name',$keyword);
+			$this->db->or_like('description',$keyword);
+		}
+
+		$this->db->where($where);
+
 		$this->db->order_by('sessions.start_date_time', 'ASC');
 		$sessions = $this->db->get();
+		// echo $this->db->last_query();
 		if ($sessions->num_rows() > 0)
 		{
 			foreach ($sessions->result() as $session)
@@ -462,7 +498,7 @@ class Sessions_Model extends CI_Model
 		$this->db->join('session_presenters', 'session_presenters.presenter_id = user.id');
 		$this->db->where('session_presenters.session_id', $session_id);
 		$this->db->group_by('user.id');
-		$this->db->order_by('user.name', 'asc');
+		$this->db->order_by('user.surname', 'asc');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();

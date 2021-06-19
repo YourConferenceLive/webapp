@@ -96,11 +96,11 @@ class Eposters_Model extends CI_Model
 	public function getAuthorsPerEposter($eposter_id)
 	{
 		$this->db->distinct('u.id');
-		$this->db->select('u.id, CONCAT_WS(" ", u.credentials, u.name, u.surname) AS author, email, ea.contact');
+		$this->db->select('u.id, CONCAT_WS(" ", u.name, u.surname) AS author, u.credentials, email, ea.contact');
 		$this->db->from('eposter_authors ea');
 		$this->db->join('user u', 'u.id=ea.user_id');
 		$this->db->where('ea.eposter_id', $eposter_id);
-
+		$this->db->order_by('u.surname', 'ASC');
 		$authors = $this->db->get();
 		if ($authors->num_rows() > 0)
 			return $authors->result();
@@ -111,10 +111,11 @@ class Eposters_Model extends CI_Model
 	public function getAllAuthors()
 	{
 		$this->db->distinct('u.id');
-		$this->db->select('u.id, CONCAT_WS(" ", u.credentials, u.name, u.surname) AS author');
+		$this->db->select('u.id, CONCAT_WS(" ", u.name, u.surname) AS author, u.credentials');
 		$this->db->from('user u');
 		$this->db->join('eposter_authors ea', 'u.id=ea.user_id');
 		$this->db->where(array('u.active' => 1));
+		$this->db->order_by('u.name', 'ASC');
 		$tracks = $this->db->get();
 		if ($tracks->num_rows() > 0)
 			return $tracks->result();
