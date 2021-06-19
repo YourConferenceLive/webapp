@@ -62,8 +62,11 @@
 	margin-top: -25px;
 	color: #c6c6c6;
 }
-
 /* Add your custom css styles */
+
+a.keynote-link {
+	color: #487391;
+}
 
 .rightSticky {
 	width: 200px;
@@ -73,7 +76,6 @@
 	bottom: 200px;
 	margin: auto;
 	z-index: 4445;
-
 }
 
 .rightSticky ul {

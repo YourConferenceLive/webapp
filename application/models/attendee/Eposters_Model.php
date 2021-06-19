@@ -115,7 +115,7 @@ class Eposters_Model extends CI_Model
 		$this->db->from('user u');
 		$this->db->join('eposter_authors ea', 'u.id=ea.user_id');
 		$this->db->where(array('u.active' => 1));
-		$this->db->order_by('u.name', 'ASC');
+		$this->db->order_by('u.surname', 'ASC');
 		$tracks = $this->db->get();
 		if ($tracks->num_rows() > 0)
 			return $tracks->result();
