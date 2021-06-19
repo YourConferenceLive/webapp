@@ -16,6 +16,7 @@ class Sessions_Model extends CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from('sessions');
+		$this->db->where('is_deleted', 0);
 		$this->db->where('project_id', $this->project->id);
 		$this->db->order_by('start_date_time', 'ASC');
 		$sessions = $this->db->get();
@@ -40,6 +41,7 @@ class Sessions_Model extends CI_Model
 		$this->db->select('sessions.*');
 		$this->db->from('sessions');
 		$this->db->join('session_presenters', 'session_presenters.session_id = sessions.id');
+		$this->db->where('sessions.is_deleted', 0);
 		$this->db->where('session_presenters.presenter_id', $presenter_id);
 		$this->db->where('sessions.project_id', $this->project->id);
 		$this->db->group_by('sessions.id');
@@ -57,6 +59,7 @@ class Sessions_Model extends CI_Model
 		$this->db->from('sessions');
 		$this->db->join('session_presenters', 'session_presenters.session_id = sessions.id', 'left');
 		$this->db->join('session_moderators', 'session_moderators.session_id = sessions.id', 'left');
+		$this->db->where('sessions.is_deleted', 0);
 		$this->db->where('session_presenters.presenter_id', $user_id);
 		$this->db->or_where('session_moderators.moderator_id', $user_id);
 		$this->db->where('sessions.project_id', $this->project->id);
@@ -76,6 +79,7 @@ class Sessions_Model extends CI_Model
 		$this->db->join('session_presenters', 'session_presenters.session_id = sessions.id', 'left');
 		$this->db->join('session_moderators', 'session_moderators.session_id = sessions.id', 'left');
 		$this->db->join('session_keynote_speakers', 'session_keynote_speakers.session_id = sessions.id', 'left');
+		$this->db->where('sessions.is_deleted', 0);
 		$this->db->where('session_presenters.presenter_id', $user_id);
 		$this->db->or_where('session_moderators.moderator_id', $user_id);
 		$this->db->or_where('session_keynote_speakers.speaker_id', $user_id);
@@ -94,6 +98,7 @@ class Sessions_Model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('sessions');
 		$this->db->where('id', $id);
+		$this->db->where('is_deleted', 0);
 		$this->db->where('project_id', $this->project->id);
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
@@ -113,6 +118,7 @@ class Sessions_Model extends CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from('sessions');
+		$this->db->where('is_deleted', 0);
 		$this->db->where('DATE(start_date_time)', $day);
 		$this->db->where('project_id', $this->project->id);
 		$this->db->order_by('sessions.start_date_time', 'ASC');
@@ -386,6 +392,17 @@ class Sessions_Model extends CI_Model
 
 		return array('status' => 'warning', 'msg' => 'No changes made', 'technical_data'=> $this->db->error());
 
+	}
+
+	public function removeSession($session_id)
+	{
+		$this->db->set('is_deleted', 1);
+		$this->db->where('id', $session_id);
+		$this->db->update('sessions');
+
+		if ($this->db->affected_rows() > 0)
+			return array('status' => 'success');
+		return array('status' => 'failed');
 	}
 
 	public function getAllPresenters()
