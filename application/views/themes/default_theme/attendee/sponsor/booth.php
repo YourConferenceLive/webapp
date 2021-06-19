@@ -13,7 +13,7 @@ if(!file_exists($cover_photo_url)){
 	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo;
 }
 ?>
-<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css" rel="stylesheet">
+<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css?ver=5" rel="stylesheet">
 <!-- Date Time Picker-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.js"></script>
@@ -40,18 +40,18 @@ if(!file_exists($cover_photo_url)){
 				</div>
 			</div>
 			<div class="left">
-				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_banner?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_banner?>" class="wt_booth_img" data-url="<?=$data->left_banner_url?>">
 			</div>
 			<div class="right">
-				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_banner?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_banner?>" class="wt_booth_img" data-url="<?=$data->right_banner_url?>">
 			</div>
 		</div>
 		<div class="tables">
 			<div class="table_left">
-				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_table?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_table?>" class="wt_booth_img" data-url="<?=$data->left_table_url?>">
 			</div>
 			<div class="table_right">
-				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_table?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_table?>" class="wt_booth_img" data-url="<?=$data->right_table_url?>">
 			</div>
 		</div>
 	</div>
@@ -254,7 +254,7 @@ if(!file_exists($cover_photo_url)){
 	var company_name = "<?=$data->name?>";
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=5"></script>
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js"></script>
 <script>
 	socket.emit('ycl_booth_visit', {'booth_id':current_booth_id, 'user_id' : user_id});

@@ -408,7 +408,7 @@ ADD COLUMN `right_table` TEXT NULL AFTER `left_table`;
 ALTER TABLE `user` ADD `bio` TEXT NULL DEFAULT NULL AFTER `credentials`;
 #
 
--- Imran Tariq 
+-- Imran Tariq
 -- Table structure for table `notes`
 -- 18th Jun 2021
 
@@ -427,10 +427,17 @@ CREATE TABLE IF NOT EXISTS `notes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 -- Athul - June 18th 2021
 ALTER TABLE `session_moderators` ADD `is_invisible` BOOLEAN NOT NULL DEFAULT FALSE AFTER `session_id`;
 ALTER TABLE `sessions` ADD `is_deleted` BOOLEAN NOT NULL DEFAULT FALSE AFTER `updated_on`;
+
+
+ALTER TABLE `sponsor_booth`
+    ADD COLUMN `left_banner_url` TEXT NULL AFTER `right_table`,
+ADD COLUMN `right_banner_url` TEXT NULL AFTER `left_banner_url`,
+ADD COLUMN `left_table_url` TEXT NULL AFTER `right_banner_url`,
+ADD COLUMN `right_table_url` TEXT NULL AFTER `left_table_url`;
+
 
 -- Athul - June 19th 2021
 ALTER TABLE `sessions` ADD `credits` FLOAT NOT NULL DEFAULT '0' AFTER `track`;

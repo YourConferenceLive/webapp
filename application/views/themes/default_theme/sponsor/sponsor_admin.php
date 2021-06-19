@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //exit;
 ?>
 
-<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=3" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=4" rel="stylesheet">
 
 <!-- Full Calendar-->
 <link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.css">
@@ -38,8 +38,8 @@ if(!file_exists($cover_photo_url)){
 				<div class="middle">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->tv_banner?>" id="tv_banner">
 					<div class="change_tv_url">
-						<input type="text" id="tv_url" value='<?=$booth->main_video_url?>'/>
-						<input type="button" value="Save" class="save_tv_url">
+						<input type="text" data-type="main_video_url" class="url" value='<?=$booth->main_video_url?>' placeholder="url"/>
+						<input type="button" value="Save" class="save_booth_url">
 					</div>
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="tv_banner" />
 					<?php if (isset($booth->main_video_url) && !empty($booth->main_video_url) && $booth->video_position == '1') {
@@ -60,20 +60,36 @@ if(!file_exists($cover_photo_url)){
 				<div class="left">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_banner?>" id="left_banner">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_banner" />
+					<div class="update_image_url">
+						<input type="text" data-type="left_banner_url" class="url" value='<?=$booth->left_banner_url?>' placeholder="image link"/>
+						<input type="button" value="Save" class="save_booth_url">
+					</div>
 				</div>
 				<div class="right">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_banner?>" id="right_banner">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_banner" />
+					<div class="update_image_url">
+						<input type="text" data-type="right_banner_url" class="url" value='<?=$booth->right_banner_url?>' placeholder="image link"/>
+						<input type="button" value="Save" class="save_booth_url">
+					</div>
 				</div>
 			</div>
 			<div class="tables">
 				<div class="table_left">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_table?>" id="left_table">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_table" />
+					<div class="update_image_url">
+						<input type="text" data-type="left_table_url" class="url" value='<?=$booth->left_table_url?>' placeholder="image link"/>
+						<input type="button" value="Save" class="save_booth_url">
+					</div>
 				</div>
 				<div class="table_right">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_table?>" id="right_table">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_table" />
+					<div class="update_image_url">
+						<input type="text" data-type="right_table_url" class="url" value='<?=$booth->right_table_url?>' placeholder="image link"/>
+						<input type="button" value="Save" class="save_booth_url">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -487,5 +503,5 @@ if(!file_exists($cover_photo_url)){
 
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=2"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=3"></script>
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js?v=2"></script>
