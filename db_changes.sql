@@ -408,7 +408,7 @@ ADD COLUMN `right_table` TEXT NULL AFTER `left_table`;
 ALTER TABLE `user` ADD `bio` TEXT NULL DEFAULT NULL AFTER `credentials`;
 #
 
--- Imran Tariq 
+-- Imran Tariq
 -- Table structure for table `notes`
 -- 18th Jun 2021
 
@@ -426,3 +426,11 @@ CREATE TABLE IF NOT EXISTS `notes` (
   `updated_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+ALTER TABLE `cos`.`sponsor_booth`
+    ADD COLUMN `left_banner_url` TEXT NULL AFTER `right_table`,
+ADD COLUMN `right_banner_url` TEXT NULL AFTER `left_banner_url`,
+ADD COLUMN `left_table_url` TEXT NULL AFTER `right_banner_url`,
+ADD COLUMN `right_table_url` TEXT NULL AFTER `left_table_url`;

@@ -416,5 +416,16 @@ $(document).ready(function () {
 		},'json');
 	});
 
+	$('.wt_booth_img').click(function(){
+		var url=$(this).attr("data-url");
+		if(url){
+			Object.assign(document.createElement('a'), {
+				target: '_blank',
+				href: url,
+			}).click();
+		}
+	});
+
+
 
 });

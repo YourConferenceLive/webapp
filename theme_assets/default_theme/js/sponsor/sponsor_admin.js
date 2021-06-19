@@ -286,13 +286,15 @@ $(document).ready(function () {
 
 	});
 
-	$('.save_tv_url').on('click', function () {
-		var tv_url=$("#tv_url");
-		console.log(tv_url.val());
+	$('.save_booth_url').on('click', function () {
+		var $parent=$(this).parent();
+		var value=$parent.find("input").val();
+		var type=$parent.find("input").attr("data-type");
 		$.ajax({
 			url: project_url + "/sponsor/admin/home/change_booth_url/",
 			data: {
-				tv_url:tv_url.val(),
+				value:value,
+				type:type,
 				current_booth_id:booth_id
 			},
 			type: 'post',

@@ -489,6 +489,14 @@ body{
 	margin: auto;
 }
 
+.main .update_image_url{
+	position: absolute;
+	top: -60px;
+	width: max-content;
+	left: -42px;
+	z-index: 1241212;
+}
+
 @media only screen and (max-width: 1275px) {
 	.main .tables{
 		margin-top: 0;
