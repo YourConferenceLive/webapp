@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <div class="container-fluid p-0 mt-5">
-	<div class="jumbotron rounded-0" id="cover_photo" style="background-image: url('<?= (isset($booth->cover_photo) && !empty($booth->cover_photo))? ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$booth->cover_photo:''?>')">
+	<div class="jumbotron rounded-0" id="cover_photo" style="background-image: url('<?= (isset($booth->cover_photo) && !empty($booth->cover_photo))? ycl_root.'/theme_assets/booth_uploads/'.$booth->cover_photo:''?>')">
 		<div class="">
 			<input type="file" name="cover_upload " id="cover-upload" class="cover-upload" accept=".jpg,.png,.jpeg" style="display: none">
 			<span class="btn badge badge-primary float-right btn-cover"  ><i class="fa fa-upload" aria-hidden="true" ></i> upload cover</span>
