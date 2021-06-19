@@ -60,7 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- Socket IO -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.js" integrity="sha512-Y8KodDCDqst1e8z0EGKiqEQq3T8NszmgW2HvsC6+tlNw7kxYxHTLl5Iw/gqZj/6qhZdBt+jYyOsybgSAiB9OOA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
-		let socketServer = "https://socket.yourconference.live:443";
+		let socketServer = "<?=ycl_socket_server?>";
 		let socket = io(socketServer);
 	</script>
 

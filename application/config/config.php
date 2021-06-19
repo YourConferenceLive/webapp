@@ -25,6 +25,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $config['base_url'] = ycl_base_url; // DO NOT MODIFY
 
+
+/*
+|--------------------------------------------------------------------------
+| Socket IO Server URL
+|--------------------------------------------------------------------------
+|
+| You need to set socket server URL for the real-time features to function
+| Contact the lead developer for existing Socket IO app details.
+ */
+defined('ycl_socket_server') OR define('ycl_socket_server', 'http://localhost');
+
+
 /*
 |--------------------------------------------------------------------------
 | Index File
