@@ -99,9 +99,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 					<div class="col-md-9 col-sm-12 pl-0 pt-2">
 						<div class="col-12 text-md-left text-sm-center">
-							<div class="col-12 text-md-right text-sm-right p-0">
+							<div class="col-12 text-md-right text-sm-right p-0 ">
 								<span class="badge badge-pill badge-primary"><?php echo $eposter->track;?></span>  
-								<span class="badge badge-pill<?php echo (($eposter->type == 'eposter') ? ' badge-success' : ' badge-info' );?>"><?php echo (($eposter->type == 'eposter') ? 'ePoster' : 'Surgical Video' );?></span>
+								<span class="badge badge-pill<?php echo (($eposter->type == 'eposter') ? ' badge-success badge-eposter' : ' badge-info' );?>"><?php echo (($eposter->type == 'eposter') ? 'ePoster' : 'Surgical Video' );?></span>
 								<div class="clearfix"></div>
 							</div>
 							<h4>
