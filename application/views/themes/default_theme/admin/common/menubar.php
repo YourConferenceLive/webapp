@@ -24,6 +24,13 @@ $ci_method = $this->router->fetch_method();
 
 	<!-- Right navbar links -->
 	<ul class="navbar-nav ml-auto">
+
+		<li class="nav-item">
+			<a id="admin_timer" class="nav-link disabled" style="display: none;color: rgb(255, 255, 255);">
+				Starts In: __ __
+			</a>
+		</li>
+
 		<!-- Navbar Search -->
 		<li class="nav-item">
 			<a class="nav-link" data-widget="navbar-search" href="#" role="button">
@@ -46,6 +53,7 @@ $ci_method = $this->router->fetch_method();
 			</div>
 		</li>
 
+		<?php if(1==2): ?>
 		<!-- Messages Dropdown Menu -->
 		<li class="nav-item dropdown">
 			<a class="nav-link" data-toggle="dropdown" href="#">
@@ -131,6 +139,9 @@ $ci_method = $this->router->fetch_method();
 				<a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
 			</div>
 		</li>
+		<?php endif; ?>
+
+		<!-- Fullscreen Btn -->
 		<li class="nav-item">
 			<a class="nav-link" data-widget="fullscreen" href="#" role="button">
 				<i class="fas fa-expand-arrows-alt"></i>

@@ -27,32 +27,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<!-- Info boxes -->
 			<div class="row">
 				<div class="col-12 col-sm-6 col-md-3">
-					<div class="info-box">
-						<span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
 
-						<div class="info-box-content">
-							<span class="info-box-text">CPU Traffic</span>
-							<span class="info-box-number">
-                  10
-                  <small>%</small>
-                </span>
+					<a href="<?=$this->project_url.'/admin/sessions'?>">
+						<div class="info-box">
+							<span class="info-box-icon bg-info elevation-1"><i class="fas fa-chalkboard-teacher"></i></span>
+
+							<div class="info-box-content">
+								<span class="info-box-text">Sessions</span>
+<!--								<span class="info-box-number">10</span>-->
+							</div>
+							<!-- /.info-box-content -->
 						</div>
-						<!-- /.info-box-content -->
-					</div>
-					<!-- /.info-box -->
+						<!-- /.info-box -->
+					</a>
+
 				</div>
 				<!-- /.col -->
 				<div class="col-12 col-sm-6 col-md-3">
-					<div class="info-box mb-3">
-						<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+					<a href="<?=$this->project_url.'/admin/users'?>">
+						<div class="info-box mb-3">
+							<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-users"></i></span>
 
-						<div class="info-box-content">
-							<span class="info-box-text">Likes</span>
-							<span class="info-box-number">41,410</span>
+							<div class="info-box-content">
+								<span class="info-box-text">Users</span>
+<!--								<span class="info-box-number">41,410</span>-->
+							</div>
+							<!-- /.info-box-content -->
 						</div>
-						<!-- /.info-box-content -->
-					</div>
-					<!-- /.info-box -->
+						<!-- /.info-box -->
+					</a>
+
 				</div>
 				<!-- /.col -->
 
@@ -60,34 +64,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="clearfix hidden-md-up"></div>
 
 				<div class="col-12 col-sm-6 col-md-3">
-					<div class="info-box mb-3">
-						<span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
-						<div class="info-box-content">
-							<span class="info-box-text">Sales</span>
-							<span class="info-box-number">760</span>
+					<a href="<?=$this->project_url.'/admin/sponsors'?>">
+						<div class="info-box mb-3">
+							<span class="info-box-icon bg-success elevation-1"><i class="fas fa-border-all"></i></span>
+
+							<div class="info-box-content">
+								<span class="info-box-text">Sponsors</span>
+<!--								<span class="info-box-number">760</span>-->
+							</div>
+							<!-- /.info-box-content -->
 						</div>
-						<!-- /.info-box-content -->
-					</div>
-					<!-- /.info-box -->
+						<!-- /.info-box -->
+					</a>
+
 				</div>
 				<!-- /.col -->
 				<div class="col-12 col-sm-6 col-md-3">
-					<div class="info-box mb-3">
-						<span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
-						<div class="info-box-content">
-							<span class="info-box-text">New Members</span>
-							<span class="info-box-number">2,000</span>
+					<a href="<?=$this->project_url.'/admin/evaluation'?>" target="_blank">
+						<div class="info-box mb-3">
+							<span class="info-box-icon bg-warning elevation-1"><i class="fas fa-clipboard-check text-white"></i></i></span>
+
+							<div class="info-box-content">
+								<span class="info-box-text">Evaluations</span>
+<!--								<span class="info-box-number">2,000</span>-->
+							</div>
+							<!-- /.info-box-content -->
 						</div>
-						<!-- /.info-box-content -->
-					</div>
-					<!-- /.info-box -->
+						<!-- /.info-box -->
+					</a>
+
 				</div>
 				<!-- /.col -->
 			</div>
 			<!-- /.row -->
 
+			<?php if (1==2): ?>
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
@@ -853,6 +866,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<!-- /.col -->
 			</div>
 			<!-- /.row -->
+			<?php endif; ?>
 		</div><!--/. container-fluid -->
 	</section>
 	<!-- /.content -->

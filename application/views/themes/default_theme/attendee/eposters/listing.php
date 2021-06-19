@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 <?php
-		$options = array('method' => 'get');
+		$options = array('method' => 'get', 'id' => 'frm-search');
 		echo form_open($this->project_url.'/eposters/index', $options);?>
 		<div class="form-row">
     		<div class="col-md-2 my-1">
@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			    <input type="text" class="form-control" id="keyword" name="keyword" value="<?php echo $keyword;?>" placeholder="Search">
 			</div>
     		<div class="col-auto my-1">
-			    <button type="submit" class="btn btn-info">Search</button>
+			    <button type="button" class="btn btn-info">Search</button>
     		</div>
   		</div>
   		<div class="clearfix"></div>
@@ -99,9 +99,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 					<div class="col-md-9 col-sm-12 pl-0 pt-2">
 						<div class="col-12 text-md-left text-sm-center">
-							<div class="col-12 text-md-left text-sm-center p-0">
-								<div class="col-md-8 col-sm-4 text-left pull-left p-0"><span class=""><?php echo $eposter->track;?></span></div>
-								<div class="col-md-4 col-sm-4 text-right pull-right p-0"><span class="badge badge-pill badge-success"><?php echo (($eposter->type == 'eposter') ? 'ePoster' : 'Surgical Video' );?></span></div>
+							<div class="col-12 text-md-right text-sm-right p-0 ">
+								<span class="badge badge-pill badge-primary"><?php echo $eposter->track;?></span>  
+								<span class="badge badge-pill<?php echo (($eposter->type == 'eposter') ? ' badge-success badge-eposter' : ' badge-info' );?>"><?php echo (($eposter->type == 'eposter') ? 'ePoster' : 'Surgical Video' );?></span>
 								<div class="clearfix"></div>
 							</div>
 							<h4>
@@ -137,7 +137,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 <?php
 			endforeach;?>
-		<div class="mt-3 text-xs-center">
+		<div class="mt-3 text-center">
         	<?php echo $links;?>
 	    </div>
 <?php
@@ -147,5 +147,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script type="application/javascript">
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip();
+
+		$('#frm-search select[name="track"], #frm-search select[name="author"]').change(function() {
+			applySearch();			
+		});
+
+		$('#frm-search input[type="radio"]').change(function() {
+			applySearch();
+	    });
+
+		$('#frm-search button').click(function(){
+			applySearch();
+		});
+
+	    function applySearch() {
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Loading ePosters...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			var track 	= (($('#frm-search select[name="track"]').children("option:selected").val()) ? $('#frm-search select[name="track"]').children("option:selected").val() : 'NaN');
+			var author 	= (($('#frm-search select[name="author"]').children("option:selected").val()) ? $('#frm-search select[name="author"]').children("option:selected").val() : 'NaN' );
+			var type 	= (($('#frm-search input[type="radio"][name="type"]').filter(':checked').val()) ? $('#frm-search input[type="radio"][name="type"]').filter(':checked').val() : 'NaN' );
+			var keyword = (($('#frm-search input[type="text"]').val()) ? $('#frm-search input[type="text"]').val() : 'NaN' );
+
+			$(location).attr('href', project_url + '/eposters/index/' + track + '/' + author + '/' + type + '/' + keyword + '/');
+	    }
 	});
 </script>

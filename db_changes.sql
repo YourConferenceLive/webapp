@@ -427,6 +427,9 @@ CREATE TABLE IF NOT EXISTS `notes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Athul - June 18th 2021
+ALTER TABLE `session_moderators` ADD `is_invisible` BOOLEAN NOT NULL DEFAULT FALSE AFTER `session_id`;
+ALTER TABLE `sessions` ADD `is_deleted` BOOLEAN NOT NULL DEFAULT FALSE AFTER `updated_on`;
 
 
 ALTER TABLE `cos`.`sponsor_booth`
@@ -434,3 +437,4 @@ ALTER TABLE `cos`.`sponsor_booth`
 ADD COLUMN `right_banner_url` TEXT NULL AFTER `left_banner_url`,
 ADD COLUMN `left_table_url` TEXT NULL AFTER `right_banner_url`,
 ADD COLUMN `right_table_url` TEXT NULL AFTER `left_table_url`;
+

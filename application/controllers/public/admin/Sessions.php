@@ -76,6 +76,11 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->update());
 	}
 
+	public function remove($session_id)
+	{
+		echo json_encode($this->sessions->removeSession($session_id));
+	}
+
 	public function getHostChatsJson($session_id)
 	{
 		echo json_encode($this->sessions->getHostChat($session_id));

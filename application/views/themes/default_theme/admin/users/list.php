@@ -96,7 +96,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$('.add-user-btn').on('click', function () {
 
-			// $('#createSponsorForm')[0].reset();
+			$('#addUserForm')[0].reset();
+
+			$('#userId').val(0);
+			$('#password').prop('disabled', false);
+			$('#password').css('background-color', '#343a40');
+			$('#password').css('color', '#fff');
 			// $('#sponsorId').val(0);
 			// $('#logo_preview').hide();
 			// $('#logo_label').text('');
@@ -132,15 +137,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#userId').val(user.id);
 
 				$('#email').val(user.email);
-				$('#email').prop('disabled', true);
-				$('#password').val('********');
+
+				$('#password').val('#######################');
 				$('#password').prop('disabled', true);
+				$('#password').css('background-color', '#232e3a');
+				$('#password').css('color', '#a80000');
+
+				$('#reset-pass-update-modal').attr('user-id', user.id);
+				$('#reset-pass-update-modal').attr('user-name', user.name);
 
 				$('#first_name').val(user.name);
 				$('#surname').val(user.surname);
 
 				$('#bio').val(user.bio);
 				$('#disclosure').val(user.disclosures);
+
+				if(user.photo){
+					$('#user-photo_label').text((user.photo).substring((user.photo).indexOf('_') + 1));
+					$('#user-photo-preview').attr('src', '<?=ycl_base_url?>/cms_uploads/user_photo/profile_pictures/'+user.photo).show();
+				}else{
+					$('#user-photo_label').text('');
+					$('#user-photo-preview').attr('src', '').hide();
+				}
 
 				$('#attendee_access, #presenter_access, #moderator_access, #admin_access, #exhibitor_access').prop('checked', false);
 				$.each(user.accesses, function(key, access){
@@ -204,6 +222,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			})
 		});
 
+		$('#usersTable').on('click', '.reset-user-pass-btn', function () {
+			resetUserPassword($(this).attr('user-id'), $(this).attr('user-name'));
+		});
+
 	});
 
 	function listUsers()
@@ -260,7 +282,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'	</td>' +
 						'	<td>' +
 						'		<button class="manage-user btn btn-sm btn-info m-2" user-id="'+user.id+'"><i class="fas fa-edit"></i> Manage</button>' +
-						'		<button class="suspend-user btn btn-sm btn-warning m-2" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-user-slash"></i> Suspend</button>'+
+						'		<button class="reset-user-pass-btn btn btn-sm btn-success m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-lock-open"></i> Reset Password</button>'+
+						'		<button class="suspend-user btn btn-sm btn-warning m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-user-slash"></i> Suspend</button>'+
 						'	</td>' +
 						'</tr>'
 				);
@@ -280,5 +303,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			Swal.close();
 		});
+	}
+
+	function resetUserPassword(userId, userName)
+	{
+		Swal.fire({
+			title: 'Are you sure?',
+			html: "You are about to reset <strong>"+userName+"</strong>'s password to 'COS2021' (without quotes)",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, reset it!'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					title: 'Please Wait',
+					text: "Resetting "+userName+"'s password...",
+					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+					imageAlt: 'Loading...',
+					showCancelButton: false,
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
+
+				$.get(project_admin_url+"/users/resetPasswordOf/"+userId, function (response) {
+					response = JSON.parse(response);
+
+					if (response.status == 'success')
+						Swal.fire(
+								'Done!',
+								userName+"'s password is now reset to COS2021",
+								'success'
+						);
+					else
+						Swal.fire(
+								'Error!',
+								"Unable to reset the password",
+								'error'
+						);
+				});
+
+			}
+		})
 	}
 </script>

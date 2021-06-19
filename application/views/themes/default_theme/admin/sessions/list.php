@@ -186,6 +186,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				});
 				$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
 
+
+				// Invisible Moderators
+				$('select[name="sessionInvisibleModerators[]"] option').prop('selected', false);
+				$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
+				$.each(session.invisible_moderators, function(key, invisible_moderator){
+					$('select[name="sessionInvisibleModerators[]"] option[value="'+invisible_moderator.id+'"]').prop('selected', true);
+				});
+				$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
+
+
 				$('#save-session').html('<i class="fas fa-save"></i> Save');
 
 				Swal.close();
@@ -194,6 +204,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					backdrop: 'static',
 					keyboard: false
 				});
+			});
+		});
+
+		$('#sessionsTable').on('click', '.removeSession', function () {
+			let session_id = $(this).attr('session-id');
+			let session_name = $(this).attr('session-name');
+
+			Swal.fire({
+				title: 'Are you sure?',
+				html: '<span class="text-white">You are about to remove<br>['+session_id+'] '+session_name+'<br><br><small>(We will still keep it in our records for auditing)</small></span>',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, remove it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+
+					Swal.fire({
+						title: 'Please Wait',
+						text: 'Removing the session...',
+						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+						imageAlt: 'Loading...',
+						showCancelButton: false,
+						showConfirmButton: false,
+						allowOutsideClick: false
+					});
+
+					$.get(project_admin_url+"/sessions/remove/"+session_id, function (response) {
+						response = JSON.parse(response);
+
+						if (response.status == 'success')
+						{
+							listSessions();
+							toastr.success(session_name+" has been removed!");
+						}else{
+							Swal.fire(
+									'Error!',
+									'Unable to remove '+session_name,
+									'error'
+							);
+						}
+					});
+				}
 			});
 		});
 
@@ -256,6 +311,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				let moderatorsBadge = '<badge class="badge badge-pill '+moderatorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+moderatorsList+'">M ('+moderatorsNumber+')</badge>';
 
 
+				// Invisible Moderators badge
+				let invisibleModeratorsList = '';
+				let invisibleModeratorsNumber = Object.keys(session.invisible_moderators).length;
+				let invisibleModeratorsBadgeType = 'badge-danger';
+				if (invisibleModeratorsNumber > 0)
+					invisibleModeratorsList += '<strong>Invisible Moderators</strong><br><br>';
+				$.each(session.invisible_moderators, function(key, moderator)
+				{
+					invisibleModeratorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
+				});
+				if (invisibleModeratorsNumber > 0)
+					invisibleModeratorsBadgeType = 'badge-success';
+				let invisibleModeratorsBadge = '<badge class="badge badge-pill '+invisibleModeratorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+invisibleModeratorsList+'">InM ('+invisibleModeratorsNumber+')</badge>';
+
+
 				// Keynote Speakers badge
 				let keynoteSpeakersList = '';
 				let keynoteSpeakersNumber = Object.keys(session.keynote_speakers).length;
@@ -301,7 +371,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
-					'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+
+					'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+' '+invisibleModeratorsBadge+
 					'	</td>' +
 					'	<td>' +
 					'		'+session.name+
@@ -312,11 +382,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		</a>' +
 					'	</td>' +
 					'	<td>' +
-					'		<button class="manageSession btn btn-sm btn-primary" session-id="'+session.id+'"><i class="fas fa-edit"></i> Manage</button>' +
-					'		<button class="openPoll btn btn-sm btn-primary">Open Poll</button>' +
-					'		<button class="closePoll btn btn-sm btn-primary">Close Poll</button>' +
-					'		<button class="openResult btn btn-sm btn-primary">Open Result</button>' +
-					'		<button class="closeResult btn btn-sm btn-primary">Close Result</button>' +
+					'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
+					'		<button class="removeSession btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
+					'		<!--<button class="closePoll btn btn-sm btn-primary">Close Poll</button>-->' +
+					'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
+					'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
 					'	</td>' +
 					'</tr>'
 				);

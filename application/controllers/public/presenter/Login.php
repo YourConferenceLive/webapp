@@ -8,8 +8,14 @@ class Login extends CI_Controller
 	{
 		parent::__construct();
 
-		if (isset($_SESSION['project_sessions']["project_{$this->project->id}"]) && $_SESSION['project_sessions']["project_{$this->project->id}"]['is_presenter'] == 1)
-			redirect(base_url().$this->project->main_route."/presenter/dashboard"); // Already logged-in
+		if
+		(
+			isset($_SESSION['project_sessions']["project_{$this->project->id}"]) &&
+			(
+				$_SESSION['project_sessions']["project_{$this->project->id}"]['is_presenter'] == 1 ||
+				$_SESSION['project_sessions']["project_{$this->project->id}"]['is_moderator'] == 1
+			)
+		)redirect(base_url().$this->project->main_route."/presenter/dashboard"); // Already logged-in
 	}
 
 	public function index()

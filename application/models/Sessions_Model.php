@@ -16,6 +16,7 @@ class Sessions_Model extends CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from('sessions');
+		$this->db->where('is_deleted', 0);
 		$this->db->where('project_id', $this->project->id);
 		$this->db->order_by('start_date_time', 'ASC');
 		$sessions = $this->db->get();
@@ -26,6 +27,7 @@ class Sessions_Model extends CI_Model
 				$session->presenters = $this->getPresentersPerSession($session->id);
 				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
 				$session->moderators = $this->getModeratorsPerSession($session->id);
+				$session->invisible_moderators = $this->getInvisibleModeratorsPerSession($session->id);
 			}
 
 			return $sessions->result();
@@ -39,7 +41,48 @@ class Sessions_Model extends CI_Model
 		$this->db->select('sessions.*');
 		$this->db->from('sessions');
 		$this->db->join('session_presenters', 'session_presenters.session_id = sessions.id');
+		$this->db->where('sessions.is_deleted', 0);
 		$this->db->where('session_presenters.presenter_id', $presenter_id);
+		$this->db->where('sessions.project_id', $this->project->id);
+		$this->db->group_by('sessions.id');
+		$this->db->order_by('sessions.start_date_time', 'ASC');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
+	public function getAllSessionsByPresenterModerator($user_id)
+	{
+		$this->db->select('sessions.*');
+		$this->db->from('sessions');
+		$this->db->join('session_presenters', 'session_presenters.session_id = sessions.id', 'left');
+		$this->db->join('session_moderators', 'session_moderators.session_id = sessions.id', 'left');
+		$this->db->where('sessions.is_deleted', 0);
+		$this->db->where('session_presenters.presenter_id', $user_id);
+		$this->db->or_where('session_moderators.moderator_id', $user_id);
+		$this->db->where('sessions.project_id', $this->project->id);
+		$this->db->group_by('sessions.id');
+		$this->db->order_by('sessions.start_date_time', 'ASC');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
+	public function getAllSessionsByPresenterModeratorKeynote($user_id)
+	{
+		$this->db->select('sessions.*');
+		$this->db->from('sessions');
+		$this->db->join('session_presenters', 'session_presenters.session_id = sessions.id', 'left');
+		$this->db->join('session_moderators', 'session_moderators.session_id = sessions.id', 'left');
+		$this->db->join('session_keynote_speakers', 'session_keynote_speakers.session_id = sessions.id', 'left');
+		$this->db->where('sessions.is_deleted', 0);
+		$this->db->where('session_presenters.presenter_id', $user_id);
+		$this->db->or_where('session_moderators.moderator_id', $user_id);
+		$this->db->or_where('session_keynote_speakers.speaker_id', $user_id);
 		$this->db->where('sessions.project_id', $this->project->id);
 		$this->db->group_by('sessions.id');
 		$this->db->order_by('sessions.start_date_time', 'ASC');
@@ -55,6 +98,7 @@ class Sessions_Model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('sessions');
 		$this->db->where('id', $id);
+		$this->db->where('is_deleted', 0);
 		$this->db->where('project_id', $this->project->id);
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
@@ -62,6 +106,7 @@ class Sessions_Model extends CI_Model
 			$sessions->result()[0]->presenters = $this->getPresentersPerSession($id);
 			$sessions->result()[0]->keynote_speakers = $this->getKeynoteSpeakersPerSession($id);
 			$sessions->result()[0]->moderators = $this->getModeratorsPerSession($id);
+			$sessions->result()[0]->invisible_moderators = $this->getInvisibleModeratorsPerSession($id);
 
 			return $sessions->result()[0];
 		}
@@ -73,6 +118,7 @@ class Sessions_Model extends CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from('sessions');
+		$this->db->where('is_deleted', 0);
 		$this->db->where('DATE(start_date_time)', $day);
 		$this->db->where('project_id', $this->project->id);
 		$this->db->order_by('sessions.start_date_time', 'ASC');
@@ -180,6 +226,20 @@ class Sessions_Model extends CI_Model
 				$data = array(
 					'moderator_id' => $moderator_id,
 					'session_id' => $session_id,
+					'is_invisible' => 0,
+					'added_on' => date('Y-m-d H:i:s'),
+					'added_by' => $this->user->user_id,
+				);
+
+				$this->db->insert('session_moderators', $data);
+			}
+
+			foreach ($session_data['sessionInvisibleModerators'] as $moderator_id)
+			{
+				$data = array(
+					'moderator_id' => $moderator_id,
+					'session_id' => $session_id,
+					'is_invisible' => 1,
 					'added_on' => date('Y-m-d H:i:s'),
 					'added_by' => $this->user->user_id,
 				);
@@ -287,6 +347,7 @@ class Sessions_Model extends CI_Model
 			if (isset($session_data['sessionModerators']))
 			{
 				$this->db->where('session_id', $session_id);
+				$this->db->where('is_invisible', 0);
 				$this->db->delete('session_moderators');
 
 				foreach ($session_data['sessionModerators'] as $moderator_id)
@@ -294,6 +355,28 @@ class Sessions_Model extends CI_Model
 					$data = array(
 						'moderator_id' => $moderator_id,
 						'session_id' => $session_id,
+						'is_invisible' => 0,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
+
+					$this->db->insert('session_moderators', $data);
+				}
+			}
+
+
+			if (isset($session_data['sessionInvisibleModerators']))
+			{
+				$this->db->where('session_id', $session_id);
+				$this->db->where('is_invisible', 1);
+				$this->db->delete('session_moderators');
+
+				foreach ($session_data['sessionInvisibleModerators'] as $moderator_id)
+				{
+					$data = array(
+						'moderator_id' => $moderator_id,
+						'session_id' => $session_id,
+						'is_invisible' => 1,
 						'added_on' => date('Y-m-d H:i:s'),
 						'added_by' => $this->user->user_id,
 					);
@@ -309,6 +392,17 @@ class Sessions_Model extends CI_Model
 
 		return array('status' => 'warning', 'msg' => 'No changes made', 'technical_data'=> $this->db->error());
 
+	}
+
+	public function removeSession($session_id)
+	{
+		$this->db->set('is_deleted', 1);
+		$this->db->where('id', $session_id);
+		$this->db->update('sessions');
+
+		if ($this->db->affected_rows() > 0)
+			return array('status' => 'success');
+		return array('status' => 'failed');
 	}
 
 	public function getAllPresenters()
@@ -334,6 +428,22 @@ class Sessions_Model extends CI_Model
 		$this->db->join('user_project_access', 'user_project_access.user_id = user.id');
 		$this->db->where('user_project_access.level', 'moderator');
 		$this->db->where('user_project_access.project_id', $this->project->id);
+		$this->db->group_by('user.id');
+		$this->db->order_by('user.name', 'asc');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
+	public function getAllKeynoteSpeakers()
+	{
+		$this->db->select('user.*');
+		$this->db->from('user');
+		$this->db->join('session_keynote_speakers', 'session_keynote_speakers.speaker_id = user.id');
+		$this->db->join('sessions', 'session_keynote_speakers.session_id = sessions.id');
+		$this->db->where('sessions.project_id', $this->project->id);
 		$this->db->group_by('user.id');
 		$this->db->order_by('user.name', 'asc');
 		$sessions = $this->db->get();
@@ -379,6 +489,23 @@ class Sessions_Model extends CI_Model
 		$this->db->from('user');
 		$this->db->join('session_moderators', 'session_moderators.moderator_id = user.id');
 		$this->db->where('session_moderators.session_id', $session_id);
+		$this->db->where('session_moderators.is_invisible', 0);
+		$this->db->group_by('user.id');
+		$this->db->order_by('user.name', 'asc');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
+	public function getInvisibleModeratorsPerSession($session_id)
+	{
+		$this->db->select('user.*');
+		$this->db->from('user');
+		$this->db->join('session_moderators', 'session_moderators.moderator_id = user.id');
+		$this->db->where('session_moderators.session_id', $session_id);
+		$this->db->where('session_moderators.is_invisible', 1);
 		$this->db->group_by('user.id');
 		$this->db->order_by('user.name', 'asc');
 		$sessions = $this->db->get();

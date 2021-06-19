@@ -491,7 +491,7 @@ $(document).ready(function () {
 		var chatting_to = $(this).attr('data-chatting_to');
 
 		$('.attendee-list-body .all-users-item').css('background-color', 'white');
-		$(this).css('background-color', 'gray');
+		$(this).css('background-color', '#c6c6c6');
 		$('.sponsor-chat-header').html('<div class="text-center">' + chatting_to + '<span class="float-right btn  text-danger pt-0" id="close_chat"><i class="fas fa-times"></i></span></div>').attr('data-to_id', chat_from_id);
 		$('.sponsor-chat-body').html('');
 
@@ -554,7 +554,8 @@ $(document).ready(function () {
 				$.each(datas.result, function (index, data) {
 
 					$('#modal-user-info .modal-title').html('<img class=" btn p-0 " src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%">' + data.name + ' ' + data.surname);
-					$('#modal-user-info .modal-body').html('<span class="far fa-envelope text-primary "></span> ' + data.email);
+					//$('#modal-user-info .modal-body').html('<span class="far fa-envelope text-primary "></span> ' + data.email);
+					$('#modal-user-info .modal-body').html('');
 					swal.close();
 				});
 				$('#modal-user-info').modal('show');

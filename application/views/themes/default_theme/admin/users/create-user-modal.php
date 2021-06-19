@@ -26,7 +26,11 @@
 
 							<div class="form-group">
 								<label>Password</label>
-								<input name="password" id="password" class="form-control" type="text" placeholder="User's password">
+								<input name="password" id="password" class="form-control mb-2" type="text" placeholder="User's password">
+								<small class="mt-2">
+									Passwords are encrypted and cannot be displayed or updated in cleartext, you can only
+									<button type="button" id="reset-pass-update-modal" class="reset-user-pass-btn btn btn-xs btn-success text-white ml-2 mr-2" user-id="" user-name=""><i class="fas fa-lock-open"></i> Reset</button>
+									them.</small>
 							</div>
 
 						</div>
@@ -37,6 +41,15 @@
 							<i class="far fa-address-card"></i> Profile Details
 						</div>
 						<div class="card-body">
+
+							<div class="form-group">
+								<label>Display Photo</label>
+								<div class="custom-file">
+									<input name="user-photo" id="user-photo" type="file" class="custom-file-input">
+									<label id="user-photo_label" class="custom-file-label" for="user-photo"></label>
+								</div>
+							</div>
+							<img class="image-preview" id="user-photo-preview" src="" style="display: none;" width="75px">
 
 							<div class="form-group">
 								<label>First name</label>
@@ -265,5 +278,21 @@
 			}
 		});
 	}
+
+	$('#user-photo').on('change',function(){
+		let item = $(this);
+		let fileName = $(this).val();
+		let reader = new FileReader();
+
+		reader.onload = function (e) { item.parent().parent().next('.image-preview').attr('src', e.target.result); }
+		reader.readAsDataURL(this.files[0]);
+		item.parent().parent().next('.image-preview').show();
+		fileName = fileName.replace("C:\\fakepath\\", "");
+		$(this).next('.custom-file-label').html(fileName);
+	});
+
+	$('#addUserForm').on('click', '.reset-user-pass-btn', function () {
+		resetUserPassword($(this).attr('user-id'), $(this).attr('user-name'));
+	});
 
 </script>
