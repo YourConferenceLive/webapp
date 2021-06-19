@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<option value="">Filter By Author</option>
 <?php
 			foreach ($authors as $row): ?>
-					<option value="<?php echo $row->id?>"<?php echo (($row->id == $author_id) ? ' selected' : '' );?>><?php echo $row->author?></option>
+					<option value="<?php echo $row->id?>"<?php echo (($row->id == $author_id) ? ' selected' : '' );?>><?php echo $row->author.(!empty(trim($row->credentials))?' '.trim($row->credentials):'');?></option>
 <?php
 			endforeach;?>
 				</select>
@@ -115,7 +115,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</a>
 <?php
 							}?></h4>
-							<p class="author"><?php foreach($eposter->author as $index=>$item){echo (($index) ? ', ' : '').$item->author;}?></p>
+							<p class="author"><?php foreach($eposter->author as $index=>$item){echo (($index) ? ', ' : '').$item->author.((!empty(trim($item->credentials))) ? ' '.$item->credentials: '' );}?></p>
 <?php
 						if ($eposter->prize) {?>
 					  	<img data-toggle="tooltip" data-placement="right" title="<?php echo (($eposter->prize != 'hot topic') ? 'Won ' : '' ).ucwords($eposter->prize);?>" class="img-fluid img-prize img-thumbnail"
@@ -148,8 +148,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip();
 
+		$("#frm-search").submit(function( event ) {
+			event.preventDefault();
+			applySearch();
+		});
+
 		$('#frm-search select[name="track"], #frm-search select[name="author"]').change(function() {
-			applySearch();			
+			applySearch();
 		});
 
 		$('#frm-search input[type="radio"]').change(function() {

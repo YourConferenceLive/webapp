@@ -55,7 +55,7 @@ class Eposters extends CI_Controller
 		$data['track_id'] 				= (($track_id != ''  && $track_id != 'NaN') ? $track_id : '' );
 		$data['author_id'] 				= (($author_id != '' && $author_id != 'NaN') ? $author_id : '' );
 		$data['type'] 					= (($type != '' && $type != 'NaN') ? $type : '' );
-		$data['keyword'] 				= (($keyword != '' && $keyword != 'NaN') ? $keyword : '' );
+		$data['keyword'] 				= (($keyword != '' && $keyword != 'NaN') ? urldecode($keyword) : '' );
 
 		$config["total_rows"] 			= $this->eposter->getCount($data['track_id'], $data['author_id'], $data['type'], $data['keyword']);
 

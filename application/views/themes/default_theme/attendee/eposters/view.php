@@ -67,7 +67,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			$link_order = ' btn-cstm-third';
 			foreach ($eposter->author as $row) {
 				if ($row->contact) {?>
-			<div class="tool-btns<?php echo $link_order;?>"><a href="mailto:<?php echo $row->email;?>" class="email-author" title="Contact <?php echo $row->author;?>" data-toggle="tooltip" data-placement="left"><i class="fas fa-envelope fa-fw fa-2x"></i><br>Contact</a></div>
+			<div class="tool-btns<?php echo $link_order;?>"><a href="mailto:<?php echo $row->email;?>" class="email-author" title="Contact <?php echo $row->author.(!empty(trim($row->credentials))?' '.trim($row->credentials):'');?>" data-toggle="tooltip" data-placement="left"><i class="fas fa-envelope fa-fw fa-2x"></i><br>Contact</a></div>
 <?php
 					$link_order = ' btn-cstm-fourth';
 					break;
