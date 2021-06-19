@@ -74,8 +74,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</a>
 			</div>
 		</div>
+		<!--	End	Date tabs -->
 <?php
-		/******************************************/
 		$session_ids 	= array();
 		$track_ids 		= array();
 		$keynote_ids 	= array();
@@ -109,14 +109,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			endif;
 
 		endforeach;
-		// echo '<pre>';
-		// print_r($track_ids);
-		// print_r($session_ids);
-		// print_r($keynote_ids);
-		// print_r($presenter_ids);
-		// echo '</pre>';
+
 		$options = array('method' => 'get', 'id' => 'frm-search');
-		echo form_open($this->project_url.'/eposters/index', $options);?>
+		echo form_open($this->project_url.'/sessions/day', $options);?>
 		<div class="form-row">
     		<div class="col-md-3 my-1">
 				<label for="date" class="sr-only">Date</label>
@@ -179,9 +174,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   		</div>
   		<div class="clearfix"></div>
 <?php
-		echo form_close();
-		/******************************************/?>
-		<!--	End	Date tabs -->
+		echo form_close();?>
+
 		<?php foreach ($sessions as $session): ?>
 			<!-- Session Listing Item -->
 			<div class="sessions-listing-item pb-3">
@@ -196,10 +190,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<div class="col-md-9 col-sm-12 pl-0 pt-2">
 							<div class="col-12 text-md-left text-sm-center">
-								<?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?> EST
-								<br>
-								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color:#487391"><h4><?=$session->name?></h4></a>
-								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color: #1ab6cf "><h4><?=$session->other_language_name?></h4></a>
+								<div class="col-6 text-left float-left p-0">
+									<span><?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?> EST</span>  
+								</div>
+								<div class="col-4 text-right float-right p-0 ">
+									<span class="badge badge-pill badge-primary pull-right"><?php echo $session->session_track;?></span>  
+								</div>
+								<div class="clearfix"></div>
+								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="p-0 mt-1" style="color:#487391"><?=$session->name?></a></h4>
+								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color: #284050;"><?=$session->other_language_name?></a></h4>
 								<p>
 
 									<?php if($session->moderators != new stdClass()):?>
@@ -324,8 +323,13 @@ $(function(){
 		$("#speaker-modal ").modal('show');
 	});
 
+	$("#frm-search").submit(function( event ) {
+		event.preventDefault();
+		applySearch();
+	});
+
 	$('#frm-search select[name="date"], #frm-search select[name="track"], #frm-search select[name="keynote"], #frm-search select[name="speaker"]').change(function() {
-		applySearch();			
+		applySearch();
 	});
 
 	$('#frm-search input[type="radio"]').change(function() {

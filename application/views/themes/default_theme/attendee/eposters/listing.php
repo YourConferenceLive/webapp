@@ -148,8 +148,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip();
 
+		$("#frm-search").submit(function( event ) {
+			event.preventDefault();
+			applySearch();
+		});
+
 		$('#frm-search select[name="track"], #frm-search select[name="author"]').change(function() {
-			applySearch();			
+			applySearch();
 		});
 
 		$('#frm-search input[type="radio"]').change(function() {

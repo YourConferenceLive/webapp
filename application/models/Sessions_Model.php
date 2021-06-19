@@ -122,25 +122,20 @@ class Sessions_Model extends CI_Model
 								 ->group_by('session_id')
 								 ->get_compiled_select('session_keynote_speakers', true);
 
-			$this->db->where('id IN ('.$session_ids.')');
+			$this->db->where('sessions.id IN ('.$session_ids.')');
 		}
 
-		$this->db->select('*');
+		$this->db->select('sessions.*, session_tracks.name AS session_track');
 		$this->db->from('sessions');
 
-		$where = array('project_id' => $this->project->id,
-					   'is_deleted' => 0,
-					   'DATE(start_date_time)' => $day
+		$where = array('sessions.project_id' => $this->project->id,
+					   'sessions.is_deleted' => 0,
+					   'DATE(sessions.start_date_time)' => $day
 					);
 
 		if ($track_id) {
 			$where['track'] = $track_id;
 		}
-
-		if ($keynote_id) {
-			// $where['type'] = $type;
-		}
-
 
 		if ($speaker_id) {
 			$this->db->where("EXISTS(SELECT `session_id`
@@ -150,15 +145,14 @@ class Sessions_Model extends CI_Model
 		}
 
 		if ($keyword) {
-			$this->db->like('name',$keyword);
-			$this->db->or_like('description',$keyword);
+			$this->db->like('sessions.name',$keyword);
+			$this->db->or_like('sessions.description',$keyword);
 		}
 
+		$this->db->join('session_tracks', 'session_tracks.id=sessions.track');
 		$this->db->where($where);
-
 		$this->db->order_by('sessions.start_date_time', 'ASC');
 		$sessions = $this->db->get();
-		// echo $this->db->last_query();
 		if ($sessions->num_rows() > 0)
 		{
 			foreach ($sessions->result() as $session)
@@ -208,7 +202,6 @@ class Sessions_Model extends CI_Model
 
 		$end_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['endDateTime']);
 		$end_time_mysql = $end_time_object->format('Y-m-d H:i:s');
-
 
 		$data = array(
 			'project_id' => $this->project->id,
@@ -317,7 +310,6 @@ class Sessions_Model extends CI_Model
 		$end_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['endDateTime']);
 		$end_time_mysql = $end_time_object->format('Y-m-d H:i:s');
 
-
 		$data = array(
 			'project_id' => $this->project->id,
 			'name' => $session_data['sessionName'],
@@ -401,7 +393,6 @@ class Sessions_Model extends CI_Model
 					$this->db->insert('session_moderators', $data);
 				}
 			}
-
 
 			if (isset($session_data['sessionInvisibleModerators']))
 			{
@@ -553,9 +544,7 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
-
 	/******** Host Chat ********/
-
 	public function getHostChat($session_id)
 	{
 		$this->db->select("session_host_chat.*, CONCAT(user.name, ' ', user.surname) as host_name, user.id as host_id, user.photo as host_photo");
@@ -585,10 +574,6 @@ class Sessions_Model extends CI_Model
 		$this->db->insert('session_host_chat', $chat_data);
 		return ($this->db->affected_rows() > 0) ? array('status'=>'success'):array('status'=>'failed');
 	}
-
-
-
 	/******./ Host Chat ********/
-
 
 }
