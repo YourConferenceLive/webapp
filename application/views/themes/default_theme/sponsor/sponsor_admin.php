@@ -38,7 +38,7 @@ if(!file_exists($cover_photo_url)){
 				<div class="middle">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->tv_banner?>" id="tv_banner">
 					<div class="change_tv_url">
-						<input type="text" data-type="main_video_url" class="url" value='<?=$booth->main_video_url?>' placeholder="image link"/>
+						<input type="text" data-type="main_video_url" class="url" value='<?=$booth->main_video_url?>' placeholder="url"/>
 						<input type="button" value="Save" class="save_booth_url">
 					</div>
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="tv_banner" />
