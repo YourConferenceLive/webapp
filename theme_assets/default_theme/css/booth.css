@@ -261,6 +261,10 @@ main .table_left img,main .table_right img{
 	width: 150px;
 }
 
+.wt_booth_img{
+	cursor: pointer;
+}
+
 @media only screen and (max-width: 1275px) {
 	main .tables{
 		margin-top: 0;
