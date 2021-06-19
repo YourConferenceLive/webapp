@@ -367,8 +367,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		</a>' +
 					'	</td>' +
 					'	<td>' +
-					'		<button class="manageSession btn btn-sm btn-primary" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
-					'		<button class="removeSession btn btn-sm btn-danger" session-id="'+session.id+'" session-name="'+session.name+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
+					'		<button class="removeSession btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
 					'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
 					'		<!--<button class="closePoll btn btn-sm btn-primary">Close Poll</button>-->' +
 					'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
