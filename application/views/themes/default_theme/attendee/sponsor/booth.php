@@ -6,6 +6,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 if(isset($sponsor_data) && !empty($sponsor_data)){
 	$data=$sponsor_data[0];
 }
+
+$cover_photo_url='theme_assets/booth_uploads/'.$data->cover_photo;
+
+if(!file_exists($cover_photo_url)){
+	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo;
+}
 ?>
 <link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css" rel="stylesheet">
 <!-- Date Time Picker-->
@@ -14,7 +20,7 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.css">
 
 <main role="main">
-	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/' . $data->cover_photo:'' ?> ')">
+	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/'.$cover_photo_url:'' ?> ')">
 		<div class="content">
 			<div class="middle">
 				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->tv_banner?>" id="tv_banner">
