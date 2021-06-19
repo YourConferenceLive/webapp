@@ -271,7 +271,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	let user_name = "<?=$user->name?> <?=$user->surname?>";
 	let user_photo = "<?=$user->photo?>";
 
-	let session_start_datetime = "<?= date('M d, Y', strtotime($session->start_date_time)).' UTC-4' ?>";
+	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' UTC-5' ?>"; // UTC-5 from March 14 2021 | UTC-4 from November 7 2021
+	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' UTC-5' ?>"; // UTC-5 from March 14 2021 | UTC-4 from November 7 2021
+
+	console.log(session_start_datetime);
+	console.log(session_end_datetime);
 
 	$(function () {
 		$('#mainTopMenu').css('margin-left', 'unset !important');
@@ -324,11 +328,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			let countdown_str = "";
 
-			if (distance > 86400)
+			console.log(distance);
+			if (distance > 86400000)
 				countdown_str = `${days} ${days_label}, ${hours} ${hours_label}, ${minutes} ${minutes_label}, ${seconds} ${seconds_label}`;
-			else if(distance > 3600)
+			else if(distance > 3600000)
 				countdown_str = `${hours} ${hours_label}, ${minutes} ${minutes_label}, ${seconds} ${seconds_label}`;
-			else if(distance > 60)
+			else if(distance > 60000)
 				countdown_str = `${minutes} ${minutes_label}, ${seconds} ${seconds_label}`;
 			else
 				countdown_str = `${seconds} ${seconds_label}`;
@@ -338,7 +343,86 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			// If the count down is finished,
 			if (distance < 0) {
 				clearInterval(x);
-				$('#presenter_timer').hide();
+				//$('#presenter_timer').hide();
+				endsIn();
+			}
+		}, 1000);
+	}
+
+	function endsIn() {
+		// Set the date we're counting down to
+		var countDownDate = new Date(session_end_datetime).getTime();
+
+		console.log("session_end_datetime: " + session_end_datetime);
+
+		// Update the count down every 1 second
+		var x = setInterval(function() {
+
+			// Get today's date and time
+			var now = new Date().getTime();
+
+			// console.log("now: "+now);
+
+			// Find the distance between now and the count down date
+			var distance = countDownDate - now;
+
+			// Time calculations for days, hours, minutes and seconds
+			var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+			var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+			let days_label = "day";
+			let hours_label = "hour";
+			let minutes_label = "minute";
+			let seconds_label = "second";
+
+			if (pad(days) > 1)
+				days_label = "days";
+			if (pad(hours) > 1)
+				hours_label = "hours";
+			if (pad(minutes) > 1)
+				minutes_label = "minutes";
+			if (pad(seconds) > 1)
+				seconds_label = "seconds";
+
+			let countdown_str = "";
+
+			if (distance > 86400000)
+				countdown_str = `${days} ${days_label}, ${hours} ${hours_label}, ${minutes} ${minutes_label}, ${seconds} ${seconds_label}`;
+			else if(distance > 3600000)
+				countdown_str = `${hours} ${hours_label}, ${minutes} ${minutes_label}, ${seconds} ${seconds_label}`;
+			else if(distance > 60000)
+				countdown_str = `${minutes} ${minutes_label}, ${seconds} ${seconds_label}`;
+			else
+				countdown_str = `${seconds} ${seconds_label}`;
+
+			$('#presenter_timer').text("Ends in: "+countdown_str);
+
+			// If the count down is finished,
+			if (distance < 0) {
+
+				if (pad(Math.abs(days)) > 1)
+					days_label = "days";
+				if (pad(Math.abs(hours)) > 1)
+					hours_label = "hours";
+				if (pad(Math.abs(minutes)) > 1)
+					minutes_label = "minutes";
+				if (pad(Math.abs(seconds)) > 1)
+					seconds_label = "seconds";
+
+				if (distance < -86400000)
+					countdown_str = `${Math.abs(days)} ${days_label}, ${Math.abs(hours)} ${hours_label}, ${Math.abs(minutes)} ${minutes_label}, ${Math.abs(seconds)} ${seconds_label}`;
+				else if(distance < -3600000)
+					countdown_str = `${Math.abs(hours)} ${hours_label}, ${Math.abs(minutes)} ${minutes_label}, ${Math.abs(seconds)} ${seconds_label}`;
+				else if(distance < -60000)
+					countdown_str = `${Math.abs(minutes)} ${minutes_label}, ${Math.abs(seconds)} ${seconds_label}`;
+				else
+					countdown_str = `${Math.abs(seconds)} ${seconds_label}`;
+
+				//clearInterval(x);
+				$('#presenter_timer').html('<badge class="badge badge-danger">This session ended ('+countdown_str+') ago</badge>');
+				//$('#presenter_timer').hide();
 			}
 		}, 1000);
 	}
