@@ -3,8 +3,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 <?php
 //print_r($sponsor_data);exit;
+
+$hunting_icon="";
 if(isset($sponsor_data) && !empty($sponsor_data)){
 	$data=$sponsor_data[0];
+}
+
+if($hunt_item){
+	$hunting_icon=$sponsor_data[0]->hunting_icon;
 }
 
 $cover_photo_url='theme_assets/booth_uploads/'.$data->cover_photo;
@@ -13,7 +19,7 @@ if(!file_exists($cover_photo_url)){
 	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo;
 }
 ?>
-<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css?ver=5" rel="stylesheet">
+<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css?ver=6" rel="stylesheet">
 <!-- Date Time Picker-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.js"></script>
@@ -252,9 +258,10 @@ if(!file_exists($cover_photo_url)){
 	var current_user_surname = "<?= (isset($this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']))?$this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']:'' ?>";
 	var current_user_fullname = current_user_name+' '+current_user_surname;
 	var company_name = "<?=$data->name?>";
+	var hunting_icon = "<?=$hunting_icon?>";
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=5"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=6"></script>
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js"></script>
 <script>
 	socket.emit('ycl_booth_visit', {'booth_id':current_booth_id, 'user_id' : user_id});

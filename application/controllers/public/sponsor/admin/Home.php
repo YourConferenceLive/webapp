@@ -23,6 +23,7 @@ class Home extends CI_Controller
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->helper('string');
 		$this->load->model('sponsor/Sponsor_Model', 'sponsor');
+		$this->load->model('sponsor/Scavenger_Hunt_Items_Model', 'hunt_items');
 
 		$this->load->model('Users_Model', 'users');
 	}
@@ -41,6 +42,10 @@ class Home extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/footer")
 		;
 
+	}
+
+	public function item_found(){
+		echo  $this->hunt_items->item_found();
 	}
 
 	public function upload_booth_photos(){
