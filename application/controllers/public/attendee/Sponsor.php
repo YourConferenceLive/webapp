@@ -44,6 +44,11 @@ class Sponsor extends CI_Controller
 		$data['admins'] = $this->m_sponsor->getBoothAdmins($booth_id);
 		$data['user'] = $this->user;
 
+		$this->load->model('sponsor/Scavenger_Hunt_Items_Model', 'hunt_items');
+		$hunt_item = $this->hunt_items->get_hunt_item($data["sponsor_data"][0]->id);
+		$hunt_item = $hunt_item->num_rows() > 0 ? false : true;
+		$data['hunt_item'] = $hunt_item;
+
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)

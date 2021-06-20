@@ -427,5 +427,54 @@ $(document).ready(function () {
 	});
 
 
+	/*Hunting game*/
+	if(hunting_icon){
+		var main_menu_height=Math.floor($("#mainMenu").innerHeight());
+		var window_width=$(window).width();
+		var window_height=document.documentElement.scrollHeight;
+		var random_width = [0,window_width];
 
+
+		var object_width = 70;
+		var object_height = 70;
+		var object_x = random_width[Math.floor(Math.random() * 2)];
+		var object_y = Math.floor(Math.random() * window_height);
+
+		if(object_x > 0){
+			object_x -= object_width;
+		}
+
+		if(object_y < main_menu_height){
+			object_y = main_menu_height;
+		}
+
+		var style=`width:${object_width}px;height:${object_height}px;top:${object_y}px;left:${object_x}px;`;
+
+		$("html").append(`<div style="${style}" class="wt_hunting_icon" data-hunting-icon="${hunting_icon}"><img src="/theme_assets/booth_game_icons/${hunting_icon}.png"></div>`);
+
+		$(document).on("click",".wt_hunting_icon",function () {
+			var hunting_icon_id=$(this).attr("data-hunting-icon");
+			var item=$(this);
+
+			$.ajax({
+				url: project_url + "/sponsor/admin/home/item_found/",
+				data: {
+					hunting_icon_id:hunting_icon_id,
+					current_booth_id:current_booth_id,
+				},
+				type: 'post',
+				success: function (response) {
+					Swal.fire(
+						'Item Found',
+						"Scavenger hunt item found and added to your briefcase",
+						'success'
+					);
+
+					item.remove();
+				}
+			});
+		})
+
+	}
+	/*Hunting game*/
 });
