@@ -1,9 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<style>
-	body{background-color: #487391;}
-</style>
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/eposters.css?v=<?=rand()?>" rel="stylesheet">
 
 <img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
@@ -68,21 +65,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
 		echo form_close();
 		if (!count((array)$eposters)) {?>
-
-	<div class="no-eposter-found container-fluid ml-0 text-center">
-		<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;background-position:center;">
-			<div class="middleText">
-				<h3>Sorry, no ePoster found!</h3>
+		<div class="no-eposter-found container-fluid ml-0 text-center">
+			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;background-position:center;">
+				<div class="middleText">
+					<h3>Sorry, no ePoster found!</h3>
+				</div>
 			</div>
 		</div>
-	</div>
 <?php
 		} else {
 			foreach ($eposters as $eposter): 
 				$eposter_url = (($eposter->eposter != '') ? $this->project_url.'/eposters/view/'.$eposter->id : '' );?>
 		<!-- ePoster Listing Item -->
 		<div class="eposters-listing-item pb-3">
-			<div class="container-fluid" style="min-height: 210px;">
+			<div class="container-fluid">
 				<div class="row mt-2">
 					<div class="col-md-3 col-sm-12 p-0">
 						<div class="eposter-img-div pl-2 pt-2 pb-2 pr-2 text-center">
