@@ -138,10 +138,10 @@ class Sessions_Model extends CI_Model
 		}
 
 		if ($speaker_id) {
-			$this->db->where("EXISTS(SELECT `session_id`
+			$this->db->where('sessions.id IN (SELECT `session_id`
 										FROM `session_presenters`
-										WHERE `presenter_id`=$speaker_id
-										GROUP BY `session_id`)");
+										WHERE `presenter_id`='.$speaker_id.'
+										GROUP BY `session_id`)');
 		}
 
 		if ($keyword) {
