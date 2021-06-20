@@ -101,7 +101,12 @@ class Eposters extends CI_Controller
 	{
 		$this->logger->log_visit("Credits added on ePoster", $this->input->post('entity_type_id'));
 		$this->load->model('Credits_Model', 'credit');
-		if ($this->credit->add())
+
+		$origin_type 				= $this->input->post('origin_type');
+		$origin_type_id 			= $this->input->post('origin_type_id');
+		$credits 					= $this->input->post('credits');
+
+		if ($this->credit->claim($origin_type, $origin_type_id, $credits))
 			echo json_encode(array('status'=>'success'));
 		else
 			echo json_encode(array('status'=>'failed'));

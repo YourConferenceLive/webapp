@@ -10,15 +10,13 @@ class Credits_Model extends CI_Model
 		$this->load->model('Logger_Model', 'logger');
 	}
 
-	public function add()
+	public function claim($origin_type, $origin_type_id, $credits)
 	{
-		$post = $this->input->post();
-
-		if ($post['origin_type_id'] != '' && $post['origin_type'] != '' && $post['credits'] != '' && $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] != '') :
-			$data 	= array('origin_type'		=> $post['origin_type'],
-						  	'origin_type_id'	=> strip_tags($post['origin_type_id']),
+		if ($origin_type != '' && $origin_type_id != '' && $credits != '' && $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] != '') :
+			$data 	= array('origin_type'		=> $origin_type,
+						  	'origin_type_id'	=> $origin_type_id,
 						  	'user_id' 			=> $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
-						  	'credit' 			=> strip_tags($post['credits']),
+						  	'credit' 			=> $credits,
 						  	'claimed_datetime'	=> date('Y-m-d H:i:s'));
 
 			$insert 	= $this->db->insert_string('user_credits', $data);
