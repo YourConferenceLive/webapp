@@ -459,3 +459,24 @@ CREATE TABLE `scavenger_hunt_items` (
 `date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (`id`));
 
+-- Imran Tariq
+-- Table structure for table `user_credits`
+-- 20th June, 2021
+DROP TABLE IF EXISTS `user_credits`;
+CREATE TABLE IF NOT EXISTS `user_credits` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `origin_type` enum('eposter','session') NOT NULL DEFAULT 'eposter',
+  `origin_type_id` int(11) NOT NULL COMMENT 'session_id / eposter_id',
+  `user_id` int(11) NOT NULL,
+  `credit` float(3,2) NOT NULL,
+  `claimed_datetime` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `project_id` (`origin_type`,`origin_type_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ePoster credit field
+-- 20th June, 2021
+ALTER TABLE `eposters` ADD `credits` FLOAT(3,2) NOT NULL DEFAULT '0.5' AFTER `track_id`;
+
+ALTER TABLE `eposters` CHANGE `credits` `credits` FLOAT(3,2) NOT NULL;
+
