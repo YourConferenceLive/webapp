@@ -480,3 +480,13 @@ ALTER TABLE `eposters` ADD `credits` FLOAT(3,2) NOT NULL DEFAULT '0.5' AFTER `tr
 
 ALTER TABLE `eposters` CHANGE `credits` `credits` FLOAT(3,2) NOT NULL;
 
+
+-- My Agenda by Athul
+-- 20th June 2021
+CREATE TABLE `user_agenda` (
+    `id` INT NOT NULL AUTO_INCREMENT ,
+    `user_id` INT NOT NULL ,
+    `project_id` INT NOT NULL ,
+    `session_id` INT NOT NULL ,
+    `added_datetime` DATETIME NOT NULL ,
+    PRIMARY KEY  (`id`)) ENGINE = InnoDB;
