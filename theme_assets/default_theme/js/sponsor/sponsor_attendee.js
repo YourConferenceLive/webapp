@@ -457,7 +457,7 @@ $(document).ready(function () {
 			var item=$(this);
 
 			$.ajax({
-				url: project_url + "/sponsor/admin/home/item_found/",
+				url: project_url + "/sponsor/item_found/",
 				data: {
 					hunting_icon_id:hunting_icon_id,
 					current_booth_id:current_booth_id,
