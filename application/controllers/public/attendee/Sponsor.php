@@ -21,6 +21,8 @@ class Sponsor extends CI_Controller
 		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('attendee/Sponsor_Model', 'm_sponsor');
+		$this->load->model('sponsor/Scavenger_Hunt_Items_Model', 'hunt_items');
+
 	}
 
 	public function index()
@@ -199,5 +201,9 @@ class Sponsor extends CI_Controller
 	public function save_fishbowl_card(){
 		$result = $this->m_sponsor->save_fishbowl_card();
 		echo json_encode($result);
+	}
+
+	public function item_found(){
+		echo  $this->hunt_items->item_found();
 	}
 }
