@@ -54,7 +54,7 @@ class Eposters_Model extends CI_Model
 			$this->db->where('e.id IN ('.$eposter_ids.')');
 		}
 
-		$this->db->select('e.id, e.track_id, et.track, e.control_number, e.title, e.type, e.prize, e.eposter, e.video_url');
+		$this->db->select('e.id, e.track_id, et.track, e.control_number, e.credits, e.title, e.type, e.prize, e.eposter, e.video_url');
 
 		$this->db->from('eposters e');
 		$this->db->join('eposter_tracks et', 'et.id=e.track_id');

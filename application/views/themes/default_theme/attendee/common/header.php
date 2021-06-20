@@ -38,9 +38,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<!-- Theme style and js -->
 	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/app.css?v=2" rel="stylesheet">
-
-	<?php echo global_js() ?>
-
+<?php
+	echo global_js();?>
 	<!-- Socket IO -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.0/socket.io.js" integrity="sha512-Y8KodDCDqst1e8z0EGKiqEQq3T8NszmgW2HvsC6+tlNw7kxYxHTLl5Iw/gqZj/6qhZdBt+jYyOsybgSAiB9OOA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
@@ -50,3 +49,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</script>
 	<script src="<?=ycl_root?>/ycl_assets/js/active-status.js"></script>
 </head>
+<body>

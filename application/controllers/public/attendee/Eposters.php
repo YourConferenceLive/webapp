@@ -97,6 +97,16 @@ class Eposters extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/eposters/notes_modal", $data);
 	}
 
+	public function add_credits()
+	{
+		$this->logger->log_visit("Credits added on ePoster", $this->input->post('entity_type_id'));
+		$this->load->model('Credits_Model', 'credit');
+		if ($this->credit->add())
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
+	}
+
 	public function add_notes()
 	{
 		$this->logger->log_visit("Note added on ePoster", $this->input->post('entity_type_id'));
