@@ -477,7 +477,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                     case pickResultx.pickedMesh.id.indexOf("Allergen1_piso") > -1:
                         hl.addMesh(Allergen1_piso, BABYLON.Color3.Teal());
                         break;
-                    case pickResultx.pickedMesh.id.indexOf("Medical_piso") > -1:
+                    case pickResultx.pickedMesh.id.indexOf("Axis Medical_piso") > -1:
                         hl.addMesh(Medical_piso, BABYLON.Color3.Teal());
                         break;
                     case pickResultx.pickedMesh.id.indexOf("Lomb_piso") > -1:
