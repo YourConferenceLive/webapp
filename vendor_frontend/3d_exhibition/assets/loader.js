@@ -404,7 +404,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
             instrucciones.style.display = "block";
 
-
+/*
 
             var Aequuspharma_piso = scene.getMeshByName("Aequuspharma_piso");
             var Alcon_piso = scene.getMeshByName("Alcon_piso");
@@ -584,7 +584,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                 hl.removeMesh(TopCon_piso);
                 hl.removeMesh(Zeiss_piso);
             }));
-
+*/
 
             if(is_touch_device())
             {        
