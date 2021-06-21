@@ -404,8 +404,6 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
             instrucciones.style.display = "block";
 
-/*
-
             var Aequuspharma_piso = scene.getMeshByName("Aequuspharma_piso");
             var Alcon_piso = scene.getMeshByName("Alcon_piso");
             var Allergen1_piso = scene.getMeshByName("Allergen1_piso");
@@ -414,7 +412,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
             var Bayer_piso = scene.getMeshByName("Bayer_piso");
             var BioScript_piso = scene.getMeshByName("BioScript_piso");
             var Candorvision_piso = scene.getMeshByName("Candorvision_piso");
-            var Medical_piso = scene.getMeshByName("Clarion Medical_piso");
+            var CMedical_piso = scene.getMeshByName("Clarion Medical_piso");
             var COS_piso = scene.getMeshByName("COS_piso");
             var Glaukos_piso = scene.getMeshByName("Glaukos_piso");
             var Innova_piso = scene.getMeshByName("Innova_piso");
@@ -444,7 +442,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
             Bayer_piso.actionManager = actionManager;
             BioScript_piso.actionManager = actionManager;
             Candorvision_piso.actionManager = actionManager;
-            Medical_piso.actionManager = actionManager;
+            CMedical_piso.actionManager = actionManager;
             COS_piso.actionManager = actionManager;
             Glaukos_piso.actionManager = actionManager;
             Innova_piso.actionManager = actionManager;
@@ -479,7 +477,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                     case pickResultx.pickedMesh.id.indexOf("Allergen1_piso") > -1:
                         hl.addMesh(Allergen1_piso, BABYLON.Color3.Teal());
                         break;
-                    case pickResultx.pickedMesh.id.indexOf("Medical_piso") > -1:
+                    case pickResultx.pickedMesh.id.indexOf("Axis Medical_piso") > -1:
                         hl.addMesh(Medical_piso, BABYLON.Color3.Teal());
                         break;
                     case pickResultx.pickedMesh.id.indexOf("Lomb_piso") > -1:
@@ -494,8 +492,8 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                     case pickResultx.pickedMesh.id.indexOf("Candorvision_piso") > -1:
                         hl.addMesh(Candorvision_piso, BABYLON.Color3.Teal());
                         break;
-                    case pickResultx.pickedMesh.id.indexOf("Medical_piso") > -1:
-                        hl.addMesh(Medical_piso, BABYLON.Color3.Teal());
+                    case pickResultx.pickedMesh.id.indexOf("Clarion Medical_piso") > -1:
+                        hl.addMesh(CMedical_piso, BABYLON.Color3.Teal());
                         break;
                     case pickResultx.pickedMesh.id.indexOf("COS_piso") > -1:
                         hl.addMesh(COS_piso, BABYLON.Color3.Teal());
@@ -564,7 +562,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                 hl.removeMesh(Bayer_piso);
                 hl.removeMesh(BioScript_piso);
                 hl.removeMesh(Candorvision_piso);
-                hl.removeMesh(Medical_piso);
+                hl.removeMesh(CMedical_piso);
                 hl.removeMesh(COS_piso);
                 hl.removeMesh(Glaukos_piso);
                 hl.removeMesh(Innova_piso);
@@ -584,7 +582,6 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                 hl.removeMesh(TopCon_piso);
                 hl.removeMesh(Zeiss_piso);
             }));
-*/
 
             if(is_touch_device())
             {        
