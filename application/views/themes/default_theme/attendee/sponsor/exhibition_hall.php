@@ -112,6 +112,19 @@
 				transform: rotate(360deg);
 			}
 		}
+
+		.content2 {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                background: rgba(255, 255, 255, 0.4);
+                padding: 20px;
+                border: 3px solid #eee;
+                border-radius: 10px;
+                text-align:center;
+            }
 	</style>
 
 
@@ -121,6 +134,13 @@
 <div class="vertical-center" id="loadingScreen">Loading<br>
 	<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/loading.gif">
 </div>
+
+<div class="content2" id="instrucciones" style="display:none;">
+        <img class="center" src="assets/flechitas.png"><br>
+        <h2>Use your keyboard to <br>walk into space</h2>
+        <button type="button" onClick="cerrarventanas();" class="center" id="buttonx" value="entendido"><h3>Ok</h3></button> 
+</div>
+
 <canvas id="renderCanvas" touch-action="none" width="1794" height="824" style="touch-action: none; opacity: 1;" tabindex="1"></canvas>
 
 <div id="controlPanel" style="display:none;">
