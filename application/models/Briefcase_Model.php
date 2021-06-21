@@ -26,6 +26,15 @@ class Briefcase_Model extends CI_Model
 		}
 	}
 
+	public function delete($session_id)
+	{
+		if ($this->db->delete('user_agenda', array('session_id' => $session_id, 'user_id' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	function getItinerariesCount()
 	{
 		$this->db->join('sessions', 'sessions.id = user_agenda.session_id');

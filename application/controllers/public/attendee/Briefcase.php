@@ -55,6 +55,15 @@ class Briefcase extends CI_Controller
 			echo json_encode(array('status'=>'failed'));
 	}
 
+	public function delete()
+	{
+		$this->logger->log_visit("Session remove from Briefacse", $this->input->post('session_id'));
+		if ($this->briefcase->delete($this->input->post('session_id')))
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
+	}
+
 	public function getItineraries()
 	{
 		$post 				= $this->input->post();
