@@ -490,3 +490,6 @@ CREATE TABLE `user_agenda` (
     `session_id` INT NOT NULL ,
     `added_datetime` DATETIME NOT NULL ,
     PRIMARY KEY  (`id`)) ENGINE = InnoDB;
+
+
+ALTER TABLE `user` ADD `city` VARCHAR(50) NULL AFTER `disclosures`, ADD `country` VARCHAR(50) NULL AFTER `city`, ADD `rcp_number` VARCHAR(100) NULL AFTER `country`;
