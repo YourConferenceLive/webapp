@@ -119,7 +119,7 @@
                 top: 50%;
                 -webkit-transform: translate(-50%, -50%);
                 transform: translate(-50%, -50%);
-                background: rgba(255, 255, 255, 0.4);
+                background: rgba(255, 255, 255, 0.7);
                 padding: 20px;
                 border: 3px solid #eee;
                 border-radius: 10px;
