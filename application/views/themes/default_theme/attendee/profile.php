@@ -26,9 +26,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<?php if(isset($profile_data->photo)):?>
 									<img src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$profile_data->photo?>" class="img-fluid justify-content-center mt-3"  id="user-photo-preview" style="width:150px; height:150px"><br>
 									<?php else:?>
-									<div style="width: 150px ; height: 150px" class="justify-content-center mt-3 m-auto" >
-									<h1 style="position:absolute; display: block; margin-left: 10%" class=""><?=ucfirst($profile_data->surname)?></h1>
-									<img class="img-fluid" width="150px" height="150px" id="user-photo-preview"><br>
+									<div style="width: 150px ; height: 150px" class="justify-content-center mt-3 m-auto bg-secondary text-white" >
+										<h1  class="justify-content-center mt-3  position-absolute" style="transform: translate(-50%, -50%); left: 50%; top:25%"><?=ucfirst($profile_data->surname)?></h1>
+										<img class="img-fluid" width="150px" height="150px" id="user-photo-preview">
 									</div>
 									<?php endif;?>
 										<a class="btn badge badge-info" id="upload-btn" hidden>Update Photo</a>
