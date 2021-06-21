@@ -131,6 +131,12 @@
                 color:#444;
                 font-size:20px;
             }
+		.center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 75%;
+            }
 	</style>
 
 
