@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<video id="remote-video" autoplay="autoplay"></video>
 					</div>
 					<div id="myVideo" style="height: 125px;position: absolute;right: 0;bottom: 0;">
-						<video id="local-video" autoplay="autoplay"></video>
+						<video id="local-video" autoplay="autoplay" muted></video>
 					</div>
 				</div>
 			</div>
