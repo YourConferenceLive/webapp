@@ -88,7 +88,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														</div>
 
 														<div class="col-12 text-md-right text-sm-center" style="position: relative;bottom: 0;">
-															<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-danger m-1 rounded-0 text-white"><i class="fas fa-dumpster"></i> Remove</a>
+															<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-danger m-1 rounded-0 text-white"><i class="fas fa-trash"></i> Remove</a>
 														</div>
 														<agenda style="display: none;" session-id="<?=$session->id?>"><?=$session->agenda?></agenda>
 
