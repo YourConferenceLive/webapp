@@ -44,7 +44,7 @@ $ci_method = $this->router->fetch_method();
 
 				<li class="nav-item dropdown ml-5">
 					<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<?=$user['name']?>
+						<?=$user->name?>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" href="<?=$this->project_url?>/authentication/logout/<?=base64_encode('sponsor/admin')?>">Logout <i class="fas fa-sign-out-alt"></i></a>

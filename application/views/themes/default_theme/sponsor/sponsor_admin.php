@@ -421,29 +421,10 @@ if(!file_exists($cover_photo_url)){
 </div>
 
 
-<!-- Modal CALL-->
-<div class="modal fade" id="modal-call-sponsor" tabindex="-1" role="dialog" aria-labelledby="modal-schedule-meet" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingUserName"></span>...</h5>
-			</div>
-			<div class="modal-body p-0 m-0">
-				<div id="videoChatContainer" class="container-fluid text-center" style="height: 50vh;background: black;">
-
-					<div id="myVideo" style="height: 100%">
-
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button id="hangUp" type="button" class="btn btn-danger"><i class="fas fa-phone-slash"></i> Hang Up</button>
-			</div>
-		</div>
-	</div>
-</div>
-
 <script>
+
+	var current_user_id = "<?=$user->user_id?>";
+	var current_user_name = "<?=$user->name?> <?=$user->surname?>";
 	var logo = "<?=$booth->logo?>";
 	var date_now = "<?=date('Y-m-d H:i:s')?>";
 	var current_id = "<?=$this->session->userdata('sponsor_id')?>";
@@ -453,8 +434,6 @@ if(!file_exists($cover_photo_url)){
 	var sponsor_name = "<?=$booth->name?>";
 </script>
 <script>
-	console.log(booth_project_id)
-	console.log(booth_id)
 	$(document).ready(function(){
 		$('.show-attendees').on('click', function(){
 
@@ -469,7 +448,6 @@ if(!file_exists($cover_photo_url)){
 
 
 		socket.on('ycl_active_users_list', function (users) {
-			console.log(users);
 			let activeUsers = [];
 			$.each(users, function (socketId, userId) {
 				activeUsers.push(userId);
@@ -482,6 +460,7 @@ if(!file_exists($cover_photo_url)){
 			});
 		});
 		socket.emit('ycl_get_active_users_list');
+		socket.emit('ycl_active_user_in_booth', booth_id);
 
 
 		socket.on('ycl_active_user_on_booth', function (user) {
@@ -493,10 +472,28 @@ if(!file_exists($cover_photo_url)){
 
 				$('.all-users-item[user-id="'+user.user_id+'"]').remove();
 				$('#usersInThisBooth').append('' +
-						'<li class="all-users-item list-group-item" socket-id="'+user.socket_id+'" user-id="' + userHtml.attr('user-id')+ '" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
+						'<li class="all-users-item list-group-item" room-id="'+userHtml.attr('room-id')+'" socket-id="'+user.socket_id+'" user-id="'+userHtml.attr('user-id')+'" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
 						''+userHtml.html()+
 						'</li>');
 			}
+		});
+
+		socket.on('ycl_active_user_in_booth_change', function (socketId)
+		{
+
+			socket.emit('ycl_active_user_in_booth', booth_id)
+		});
+		socket.on('ycl_active_user_in_booth', function (users) {
+			$.each(users, function (socketId, userId) {
+				let userHtml = $('.all-users-item[user-id="'+userId+'"]').clone();
+
+				$('.all-users-item[user-id="'+userId+'"]').remove();
+				$('#usersInThisBooth').append('' +
+						'<li class="all-users-item list-group-item" socket-id="'+socketId+'" user-id="' + userHtml.attr('user-id')+ '" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
+						''+userHtml.html()+
+						'</li>');
+				$('.video-call[user-id="'+userId+'"]').show();
+			});
 		});
 
 	});
@@ -504,4 +501,3 @@ if(!file_exists($cover_photo_url)){
 </script>
 
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=3"></script>
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js?v=2"></script>

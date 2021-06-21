@@ -454,7 +454,7 @@ $(document).ready(function () {
 						'       <span>' + data.name + ' ' + data.surname + ' <i class="user-status-indicator fas fa-dot-circle" user-id="' + data.user_id + '" style="color: grey;"></i></span>\n' +
 						'    </div>\n' +
 						'    <div class="col-3 p-0 pl-1">\n' +
-						'    <button style="display: none;" class="btn btn-info btn-sm video-call" user-id="' + data.user_id + '" user-name="' + data.name + ' ' + data.surname + '"><i class="fas fa-video"></i></button>\n' +
+						'    <button style="display: none;" class="btn btn-info btn-sm video-call" room-id="booth_oto_vc_'+data.user_id+'" user-id="' + data.user_id + '" user-name="' + data.name + ' ' + data.surname + '"><i class="fas fa-video"></i></button>\n' +
 						'     <span class="user-info fas fa-id-card" data-user_id="' + data.user_id + '" style="font-size: 20px;cursor: pointer;position: absolute;left: 65px;top: -10px;color: #01b57a;"></span>' +
 						'    </div>\n' +
 						'   </div>\n' +

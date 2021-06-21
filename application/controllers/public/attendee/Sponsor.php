@@ -55,6 +55,7 @@ class Sponsor extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sponsor/booth", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/common/sponsor-video-chat-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
 	}

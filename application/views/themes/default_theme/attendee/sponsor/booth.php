@@ -142,7 +142,7 @@ if(!file_exists($cover_photo_url)){
 												</button>
 												<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
 													<?php foreach ($admins as $admin): ?>
-														<button class="dropdown-item video-call" user-id="<?=$admin->id?>" user-name="<?=$admin->name?> <?=$admin->surname?>"><?=$admin->name?> <?=$admin->surname?></button>
+														<button class="dropdown-item video-call" room-id="booth_oto_vc_<?=$admin->id?>" user-id="<?=$admin->id?>" user-name="<?=$admin->name?> <?=$admin->surname?>"><?=$admin->name?> <?=$admin->surname?></button>
 													<?php endforeach; ?>
 												</div>
 											</div>
@@ -227,34 +227,14 @@ if(!file_exists($cover_photo_url)){
 		</div>
 	</div>
 </div>
-<!-- Modal CALL-->
-<div class="modal fade" id="modal-call-sponsor" tabindex="-1" role="dialog" aria-labelledby="modal-schedule-meet" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingUserName"></span>...</h5>
-			</div>
-			<div class="modal-body p-0 m-0">
-				<div id="videoChatContainer" class="container-fluid text-center" style="height: 50vh;background: black;">
 
-					<div id="myVideo" style="height: 100%">
-
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button id="hangUp" type="button" class="btn btn-danger"><i class="fas fa-phone-slash"></i> Hang Up</button>
-			</div>
-		</div>
-	</div>
-</div>
 <script>
 	var logo = "<?= $data->logo ?>";
 	var date_now = "<?= date('Y-m-d H:i:s') ?>";
 
 	var current_user_id = "<?= ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']) ?>";
 	var current_booth_id= "<?= $data->id ?>";
-	var current_user_name = "<?= (isset($this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']))?$this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']:'' ?>";
+	var current_user_name = "<?=$this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']?> <?=$this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']?>";
 	var current_user_surname = "<?= (isset($this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']))?$this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']:'' ?>";
 	var current_user_fullname = current_user_name+' '+current_user_surname;
 	var company_name = "<?=$data->name?>";
@@ -262,7 +242,6 @@ if(!file_exists($cover_photo_url)){
 </script>
 
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=7"></script>
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js"></script>
 <script>
 	socket.emit('ycl_booth_visit', {'booth_id':current_booth_id, 'user_id' : user_id});
 </script>
