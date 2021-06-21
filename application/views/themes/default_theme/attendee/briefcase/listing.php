@@ -236,6 +236,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 
+<!-- DataTables  & Plugins -->
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/jszip/jszip.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
 	<script>
 		$(document).ready(function() {
 			$('#sessionCreditTable').DataTable({
@@ -271,7 +283,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		        "order": [[ 0, "ASC" ]]
 		    });
 
-			$('#sessionNotesTable, #sessionResourcesTable').DataTable({
+  			bookingsTable = $('#sessionResourcesTable').DataTable({
+    														dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+												    		buttons: [{text: 'View',
+												    				   className: 'btn btn-block btn-success',
+												    				   action: function ( e, dt, button, config ) {
+																 			window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+																	   }
+																      }],
+															'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+															bAutoWidth: false, 
+															aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '7%' }, { sWidth: '18%' }],
+															'processing': true,
+															'serverSide': true,
+															'serverMethod': 'post',
+															'ajax': {url : project_url+"/briefcase/getSessionNotes", type : 'POST'},
+															"order": [[ 0, "ASC" ]]
+														});
+
+			$('#sessionNotesTable').DataTable({
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
 				bAutoWidth: false, 
 				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '7%' }, { sWidth: '18%' }],
