@@ -130,7 +130,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</table>
 									</div>
 									<div class="tab-pane p-2<?php echo (('credits' == $active_briefcase_tab) ? ' active' : '' );?>" id="credits" role="tabpanel" aria-labelledby="credits-tab">
-										<a href="#" class="btn btn-info float-right">Get Certificate</a>
+										<a href="#" class="btn btn-info disabled float-right">Get Certificate (Will be available soon)</a>
 
 										<div class="clearfix"></div>
 
@@ -285,8 +285,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
   			bookingsTable = $('#sessionResourcesTable').DataTable({
     														dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-												    		buttons: [{text: 'View',
-												    				   className: 'btn btn-block btn-success',
+												    		buttons: [{text: 'Download COS 2021 Program',
+												    				   className: 'btn btn-block btn-info',
 												    				   action: function ( e, dt, button, config ) {
 																 			window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
 																	   }
@@ -315,7 +315,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#eposterNotesTable').DataTable({
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
 				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '7%' }, { sWidth: '6%' }, { sWidth: '18%' }],
+				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '9%' }, { sWidth: '6%' }, { sWidth: '18%' }],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
