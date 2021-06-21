@@ -100,6 +100,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 			<!-- /.row -->
 
+
+			<div class="row">
+				<div class="col-12 col-sm-6 col-md-3">
+
+					<a href="<?=$this->project_url.'/admin/logs'?>">
+						<div class="info-box">
+							<span class="info-box-icon elevation-1" style="background-color: #ff7800 !important;"><i class="fas fa-book"></i></span>
+
+							<div class="info-box-content">
+								<span class="info-box-text">Logs</span>
+								<!--								<span class="info-box-number">10</span>-->
+							</div>
+							<!-- /.info-box-content -->
+						</div>
+						<!-- /.info-box -->
+					</a>
+
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+
+
+
+
+
 			<?php if (1==2): ?>
 			<div class="row">
 				<div class="col-md-12">

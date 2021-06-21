@@ -82,6 +82,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</p>
 					</a>
 				</li>
+
+				<li class="nav-header">SYSTEM</li>
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/logs'?>" class="nav-link">
+						<i class="fas fa-book"></i>
+						<p class="text">Logs</p>
+					</a>
+				</li>
 <!--				<li class="nav-item">-->
 <!--					<a href="pages/widgets.html" class="nav-link">-->
 <!--						<i class="nav-icon fas fa-th"></i>-->
