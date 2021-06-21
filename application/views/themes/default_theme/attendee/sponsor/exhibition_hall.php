@@ -161,8 +161,8 @@
 <script src="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/loader.js"></script>
 <script>
 	$('#enterButton').on('click', function () {
-		$(this).hide();
-		$("#instrucciones").style.display = "block";
+		$(this).hide();		
 		$('#full-screen-background').hide();
+		//$("#instrucciones").style.display = "block";
 	});
 </script>
