@@ -333,12 +333,15 @@ class Users_Model extends CI_Model
 				'city' => $post['city'],
 				'country' => $post['country'],
 				'rcp_number' => $post['rcpn'],
-				'password' => password_hash($post['password'], PASSWORD_DEFAULT),
+
 				'updated_on' => date('Y-m-d H:i:s'),
 				'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
 			);
 		if($user_photo_name!==''){
 			$data['photo'] = $user_photo_name;
+		}
+		if($post['password']){
+			$data['password']= password_hash($post['password'], PASSWORD_DEFAULT);
 		}
 
 		$this->db->set($data);
