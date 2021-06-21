@@ -548,13 +548,13 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                     if(nombrecito.indexOf('Clarion Medical_pie_enter_')>-1) idx=24;
                     if(nombrecito.indexOf('Glaukos_pie_enter_')>-1) idx=35;
                     if(nombrecito.indexOf('Innova_pie_enter_26')>-1) idx=53;
-                    if(nombrecito.indexOf('Innova_pie_enter_27')>-1) idx=34;
+                    if(nombrecito.indexOf('Innova_pie_enter_27')>-1) idx=52;
                     if(nombrecito.indexOf('Innova_pie_enter_28')>-1) idx=34;
                     if(nombrecito.indexOf('Ivantis_pie_enter_')>-1) idx=63;
                     if(nombrecito.indexOf('Johnson & Johnson_pie_enter_')>-1) idx=40;
                     if(nombrecito.indexOf('Labtician_pie_enter_1')>-1) idx=33;
                     if(nombrecito.indexOf('Labtician_pie_enter_8')>-1) idx=62;
-                    if(nombrecito.indexOf('McKesson_pie_enter_')>-1) idx=35;
+                    if(nombrecito.indexOf('McKesson_pie_enter_')>-1) idx=32;
                     if(nombrecito.indexOf('MD Financial_pie_enter_')>-1) idx=31;
                     if(nombrecito.indexOf('Natus_pie_enter_')>-1) idx=30;
                     if(nombrecito.indexOf('Novartis_pie_enter_6')>-1) idx=58;
@@ -1118,6 +1118,12 @@ engine.runRenderLoop(renderFunction);
 function cerrarventana()
 {
     $('.wmBox_overlay').click();
+}
+
+var cerrarventanas=function(){
+    $("#instrucciones").fadeOut();
+    //$("#instruccionesm").fadeOut();
+    document.getElementById('renderCanvas').focus();
 }
 
 function abrirventana()
