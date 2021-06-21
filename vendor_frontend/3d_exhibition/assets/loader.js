@@ -466,7 +466,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
             actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOverTrigger, function(ev){    
                 pickResultx = scene.pick(ev.pointerX, ev.pointerY);
-                if (zoomed)
+                if (!zoomed)
                 {
                 switch (true){
                     case pickResultx.pickedMesh.id.indexOf("Aequuspharma_piso") > -1:
