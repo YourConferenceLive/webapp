@@ -163,6 +163,5 @@
 	$('#enterButton').on('click', function () {
 		$(this).hide();		
 		$('#full-screen-background').hide();		
-		$("#instrucciones").css('display', 'block');
 	});
 </script>
