@@ -9,6 +9,7 @@ class Notes_Model extends CI_Model
 		parent::__construct();
 
 		$this->load->model('Logger_Model', 'logger');
+		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 	}
 
     public function getCount($eposter_id, $user_id)
@@ -70,6 +71,119 @@ class Notes_Model extends CI_Model
 		}
 		return new stdClass();
 	}
+
+    public function getUserEpostersNotesCount($keyword)
+    {
+    	$this->db->select('notes.id');
+		$this->db->join('eposters', 'eposters.id = notes.origin_type_id');
+		$this->db->where('eposters.status', 1);
+		$this->db->where('eposters.project_id', $this->project->id);
+		$this->db->where('notes.origin_type', 'eposter');
+		$this->db->where('notes.is_deleted', 0);
+		$this->db->where('notes.status', 1);
+		$this->db->where('notes.user_id', $this->user->user_id);
+	    $this->db->group_by('notes.origin_type_id');
+		if ($keyword)
+		{
+    		$this->db->group_start();
+			$this->db->like('notes.id', $keyword);
+			$this->db->or_like('notes.note_text', $keyword);
+			$this->db->or_like('notes.created_datetime', $keyword);
+			$this->db->or_like('eposters.title', $keyword);
+    		$this->db->group_end();
+		}
+		return $this->db->get('notes')->num_rows();
+    }
+
+    public function getAllUserEpostersNotes($start, $length, $order_by, $order, $keyword)
+    {
+		$this->db->select('notes.id, notes.origin_type_id, eposters.title, eposters.type, notes.note_text, notes.created_datetime');
+		$this->db->from('notes');
+		$this->db->join('eposters', 'eposters.id = notes.origin_type_id');
+		$this->db->where('eposters.status', 1);
+		$this->db->where('eposters.project_id', $this->project->id);
+		$this->db->where('notes.user_id', $this->user->user_id);
+		$this->db->where('notes.origin_type', 'eposter');
+		$this->db->where('notes.is_deleted', 0);
+		$this->db->where('notes.status', 1);
+
+		if ($keyword)
+		{
+    		$this->db->group_start();
+			$this->db->like('notes.id', $keyword);
+			$this->db->or_like('notes.note_text', $keyword);
+			$this->db->or_like('notes.created_datetime', $keyword);
+			$this->db->or_like('eposters.title', $keyword);
+			$this->db->or_like('eposters.type', $keyword);
+    		$this->db->group_end();
+		}
+
+     	$this->db->limit($length, $start);
+	    $this->db->order_by($order_by, $order);
+	    $this->db->group_by('notes.origin_type_id');
+		$eposters = $this->db->get();
+		if ($eposters->num_rows() > 0) {
+			return $eposters->result();
+		}
+
+		return new stdClass();
+    }
+
+    public function getUserSessionsNotesCount($keyword)
+    {
+    	$this->db->select('notes.id');
+		$this->db->join('sessions', 'sessions.id = notes.origin_type_id');
+		$this->db->where('sessions.is_deleted', 0);
+		$this->db->where('sessions.project_id', $this->project->id);
+		$this->db->where('notes.origin_type', 'session');
+		$this->db->where('notes.is_deleted', 0);
+		$this->db->where('notes.status', 1);
+		$this->db->where('notes.user_id', $this->user->user_id);
+	    $this->db->group_by('notes.origin_type_id');
+		if ($keyword)
+		{
+    		$this->db->group_start();
+			$this->db->like('notes.id', $keyword);
+			$this->db->or_like('notes.note_text', $keyword);
+			$this->db->or_like('notes.created_datetime', $keyword);
+			$this->db->or_like('sessions.name', $keyword);
+    		$this->db->group_end();
+		}
+		return $this->db->get('notes')->num_rows();
+    }
+
+    public function getAllUserSessionsNotes($start, $length, $order_by, $order, $keyword)
+    {
+		$this->db->select('notes.id, notes.origin_type_id, sessions.name, notes.note_text, notes.created_datetime');
+		$this->db->from('notes');
+		$this->db->join('sessions', 'sessions.id = notes.origin_type_id');
+		$this->db->where('sessions.is_deleted', 0);
+		$this->db->where('sessions.project_id', $this->project->id);
+		$this->db->where('notes.user_id', $this->user->user_id);
+		$this->db->where('notes.origin_type', 'session');
+		$this->db->where('notes.is_deleted', 0);
+		$this->db->where('notes.status', 1);
+
+		if ($keyword)
+		{
+    		$this->db->group_start();
+			$this->db->like('notes.id', $keyword);
+			$this->db->or_like('notes.note_text', $keyword);
+			$this->db->or_like('notes.created_datetime', $keyword);
+			$this->db->or_like('sessions.name', $keyword);
+    		$this->db->group_end();
+		}
+
+     	$this->db->limit($length, $start);
+	    $this->db->order_by($order_by, $order);
+	    $this->db->group_by('notes.origin_type_id');
+		$eposters = $this->db->get();
+		if ($eposters->num_rows() > 0) {
+			return $eposters->result();
+		}
+
+		return new stdClass();
+    }
 
 	public function add()
 	{		

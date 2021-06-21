@@ -1,0 +1,37 @@
+/************* Main Page **************/
+.briefcase-container{padding-bottom: 50px;}
+.briefcase-container h1{color: #487391;}
+.briefcase-items h2, .briefcase-items h3{color: #284050;}
+.briefcase-items{background-color: #e9ecef8c;box-shadow: 0px 5px 30px 10px #aaaaaa8c;}
+.briefcase-items .container-fluid {}
+
+.briefcase-items .table, .briefcase-items a {color: #487391;}
+a.btn-info{color: #FFF;}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+	color: #487391
+}
+
+.briefcase-items table.table-bordered{
+    border: 1px solid #487391;
+}
+.briefcase-items table.table-bordered th{
+	border: 1px solid #487391;
+	border-top: 0px solid #487391;
+	border-bottom: 0px solid #487391;
+}
+
+.briefcase-items table.table-bordered td{border: 1px solid #487391;}
+
+.dataTables_length label, .dataTables_info, #itineraiesTable_filter label, .page-link {color: #284050;}
+
+.sessions-listing-item{background-color: #e9ecef8c;box-shadow: 0px 5px 30px 10px #aaaaaa8c;}
+
+.sessions-listing-item .container-fluid {min-height: 210px;}
+
+/************** View Page *************/
+#full-screen-background.briefcase-view{background-color: #e3e3e3;}
+.briefcase-view-container{height: 100vh;}
+.live-stream-container{height: 100%;background-color: black;}
+.middleText{position: absolute;width: auto;height: 50px;top: 30%;left: 45%;margin-left: -50px; /* margin is -0.5 * dimension */margin-top: -25px;color: #c6c6c6;}
+
+/* Add your custom css styles */
