@@ -24,6 +24,7 @@ class Sessions_Model extends CI_Model
 		{
 			foreach ($sessions->result() as $session)
 			{
+				$session->briefcase = $this->getUserBriefcasePerSession($session->id);
 				$session->presenters = $this->getPresentersPerSession($session->id);
 				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
 				$session->moderators = $this->getModeratorsPerSession($session->id);
@@ -103,6 +104,7 @@ class Sessions_Model extends CI_Model
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 		{
+			$sessions->result()[0]->briefcase = $this->getUserBriefcasePerSession($id);
 			$sessions->result()[0]->presenters = $this->getPresentersPerSession($id);
 			$sessions->result()[0]->keynote_speakers = $this->getKeynoteSpeakersPerSession($id);
 			$sessions->result()[0]->moderators = $this->getModeratorsPerSession($id);
@@ -157,6 +159,7 @@ class Sessions_Model extends CI_Model
 		{
 			foreach ($sessions->result() as $session)
 			{
+				$session->briefcase = $this->getUserBriefcasePerSession($session->id);
 				$session->presenters = $this->getPresentersPerSession($session->id);
 				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
 				$session->moderators = $this->getModeratorsPerSession($session->id);
@@ -475,6 +478,20 @@ class Sessions_Model extends CI_Model
 		$this->db->where('sessions.project_id', $this->project->id);
 		$this->db->group_by('user.id');
 		$this->db->order_by('user.surname', 'asc');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
+	public function getUserBriefcasePerSession($session_id)
+	{
+		$this->db->select('*');
+		$this->db->from('user_agenda');
+		$this->db->where('project_id', $this->project->id);
+		$this->db->where('session_id', $session_id);
+		$this->db->where('user_id', $this->user->user_id);
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 			return $sessions->result();

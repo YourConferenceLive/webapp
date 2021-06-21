@@ -233,8 +233,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 
 							<div class="col-12 text-md-right text-sm-center" style="position: relative;bottom: 0;">
-								<a class="agenda-btn btn btn-sm btn-primary m-1 rounded-0" session-id ="<?=$session->id?>" session-title ="<?=$session->name?>" ><i class="fas fa-clipboard-list"></i> Agenda</a>
-								<a class="btn btn-sm btn-info m-1 rounded-0"><i class="fas fa-calendar-check"></i> Add to Briefcase</a>
+								<a class="btn btn-sm btn-primary m-1 rounded-0 agenda-btn" session-id ="<?=$session->id?>" session-title ="<?=$session->name?>" ><i class="fas fa-clipboard-list"></i> Agenda</a>
+								<a class="btn btn-sm btn-success m-1 rounded-0<?php echo (($session->briefcase != new stdClass()) ? ' disabled not-allowed' : ' briefcase-btn' );?>" data-session-id ="<?=$session->id?>" data-session-title ="<?=$session->name?>"><i class="fas fa-calendar-check"></i> <?php echo (($session->briefcase != new stdClass()) ? 'Added in Briefcasea' : 'Add to Briefcase' );?></a>
 								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Join</a>
 							</div>
 							<agenda style="display: none;" session-id="<?=$session->id?>"><?=$session->agenda?></agenda>
@@ -307,6 +307,38 @@ $(function(){
 		$("#agenda-modal .modal-body").html($("agenda[session-id="+$(this).attr('session-id')+"]").html());
 		$('#agenda-modal').modal('show');
 	})
+
+	$('.briefcase-btn').on('click', function() {
+
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Adding to your briefcase...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+
+		var buttonElement = $(this);
+
+		$.ajax({type: "POST",
+				url: project_url+"/briefcase/add",
+				data: {'session_id' : $(this).data('session-id')},
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(response){
+					$(buttonElement).addClass('disabled not-allowed').removeClass('briefcase-btn').html('<i class="fas fa-calendar-check"></i> Added in Briefcase');
+					Swal.close();
+					toastr.success('Added successfully.');
+				}
+		});
+	});
 
 	$('.keynote-link').on('click', function (){
 		if($("bio[session-id="+$(this).attr('keynote-id')+"]").html() !== ''){
