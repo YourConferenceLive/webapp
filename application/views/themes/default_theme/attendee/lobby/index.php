@@ -42,18 +42,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_top.png">
 			</div>
 			<div class="menu">
-				<?php
+<?php
 				$menu=[["Agenda","Horaire","sessions/day/2021-06-24"],["ePosters","","eposters"],["Evaluation","Evaluation","evaluation"],["Exhibition","Exposition","sponsor"],["Networking Lounge","Résautage","lounge"],["Relaxation Zone","Espace bien-étre","relaxation_zone"]];
 				for($i=0; $i < count($menu); $i++){
 					?>
-					<a href="<?=base_url().$this->project->main_route?>/<?=$menu[$i][2]?>" class="circle">
+					<a href="<?=base_url().$this->project->main_route?>/<?=$menu[$i][2]?>" class="circle"<?php echo (($menu[$i][0] == 'Evaluation') ? ' target="_blank"' : '' );?>>
 						<div class="icon"></div>
 						<h3><?=$menu[$i][0]?></h3>
 						<h3><?=$menu[$i][1]?></h3>
 					</a>
-					<?php
-				}
-				?>
+<?php
+				}?>
 			</div>
 			<div class="bottom-peoples">
 				<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/peoples.png">
