@@ -162,6 +162,7 @@
 <script>
 	$('#enterButton').on('click', function () {
 		$(this).hide();
+		$("#instrucciones").style.display = "block";
 		$('#full-screen-background').hide();
 	});
 </script>

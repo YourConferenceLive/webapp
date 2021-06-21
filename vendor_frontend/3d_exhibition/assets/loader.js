@@ -7,6 +7,7 @@ var aboutPanel=document.getElementById("aboutPanel");
 var enableDebug=document.getElementById("enableDebug");
 var status=document.getElementById("status");
 var stats=document.getElementById("stats");
+var instrucciones=document.getElementById("instrucciones");
 var fullscreen=document.getElementById("fullscreen");
 var touchCamera=document.getElementById("touchCamera");
 var deviceOrientationCamera=document.getElementById("deviceOrientationCamera");
