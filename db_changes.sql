@@ -499,3 +499,9 @@ CREATE TABLE `session_types` ( `id` INT NOT NULL AUTO_INCREMENT , `type_code` VA
 ALTER TABLE `session_types` ADD UNIQUE(`type_code`);
 INSERT INTO `session_types` (`id`, `type_code`, `type_name`) VALUES (NULL, 'gs', 'General Session'), (NULL, 'zm', 'Zoom Meeting');
 ALTER TABLE `sessions` ADD `session_type` VARCHAR(10) NOT NULL DEFAULT 'gs' AFTER `track`;
+
+-- COS API
+ALTER TABLE `project` ADD `api_url` VARCHAR(255) NULL AFTER `timezone`, ADD `api_username` VARCHAR(255) NULL AFTER `api_url`, ADD `api_password` VARCHAR(255) NULL AFTER `api_username`;
+ALTER TABLE `user` ADD `name_prefix` VARCHAR(50) NULL AFTER `photo`;
+ALTER TABLE `user` ADD `membership_type` VARCHAR(10) NULL AFTER `rcp_number`;
+ALTER TABLE `user` ADD `isFromApi` BOOLEAN NOT NULL DEFAULT FALSE AFTER `membership_type`, ADD `IdFromApi` VARCHAR(255) NULL AFTER `isFromApi`;
