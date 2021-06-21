@@ -136,7 +136,7 @@
 </div>
 
 <div class="content2" id="instrucciones" style="display:none;">
-        <img class="center" src="assets/flechitas.png"><br>
+        <img class="center" src="https://dev.yourconference.live/vendor_frontend/3d_exhibition/assets/flechitas.png"><br>
         <h2>Use your keyboard to <br>walk into space</h2>
         <button type="button" onClick="cerrarventanas();" class="center" id="buttonx" value="entendido"><h3>Ok</h3></button> 
 </div>
@@ -162,7 +162,7 @@
 <script>
 	$('#enterButton').on('click', function () {
 		$(this).hide();		
-		$('#full-screen-background').hide();
-		//$("#instrucciones").style.display = "block";
+		$('#full-screen-background').hide();		
+		$("#instrucciones").css('display', 'block');
 	});
 </script>
