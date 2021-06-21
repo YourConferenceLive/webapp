@@ -96,7 +96,7 @@ $(document).ready(function () {
 		$.post(project_url + "/sponsor/admin/home/update_about_us/", {'about_us': about_us}, function (success) {
 
 			if (success == "success") {
-				toastr['success']('Sponsor name updated');
+				toastr['success']('Sponsor about updated');
 			} else {
 				toastr['error']('Unable to update about us');
 			}
