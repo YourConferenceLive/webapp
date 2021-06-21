@@ -71,6 +71,7 @@ $ci_method = $this->router->fetch_method();?>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/profile" style="color: rgb(72, 115, 145) !important;"><i class="far fa-id-card"></i> Profile</a>
+							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/briefcase" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-briefcase"></i> Briefcase</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/authentication/logout" style="color: rgb(72, 115, 145) !important;">Logout <i class="nav-icon fas fa-sign-out-alt"></i></a>
 						</div>
