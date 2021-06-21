@@ -29,15 +29,17 @@ class Home extends CI_Controller
 
 	public function index()
 	{
-		$menu_data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$menu_data['user'] = (Object) $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$data['booth'] = $this->sponsor->getBoothData($this->booth_id);
 		$data['attendees'] = $this->users->getAllAttendees();
+		$data['user'] = (Object) $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/menu-bar", $menu_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/sponsor_admin", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/common/sponsor-video-chat-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/footer")
 		;
 
