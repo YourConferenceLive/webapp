@@ -21,6 +21,8 @@ class Sponsor extends CI_Controller
 		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('attendee/Sponsor_Model', 'm_sponsor');
+		$this->load->model('sponsor/Scavenger_Hunt_Items_Model', 'hunt_items');
+
 	}
 
 	public function index()
@@ -44,10 +46,16 @@ class Sponsor extends CI_Controller
 		$data['admins'] = $this->m_sponsor->getBoothAdmins($booth_id);
 		$data['user'] = $this->user;
 
+		$this->load->model('sponsor/Scavenger_Hunt_Items_Model', 'hunt_items');
+		$hunt_item = $this->hunt_items->get_hunt_item($data["sponsor_data"][0]->id);
+		$hunt_item = $hunt_item->num_rows() > 0 ? false : true;
+		$data['hunt_item'] = $hunt_item;
+
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sponsor/booth", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/common/sponsor-video-chat-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
 	}
@@ -194,5 +202,9 @@ class Sponsor extends CI_Controller
 	public function save_fishbowl_card(){
 		$result = $this->m_sponsor->save_fishbowl_card();
 		echo json_encode($result);
+	}
+
+	public function item_found(){
+		echo  $this->hunt_items->item_found();
 	}
 }

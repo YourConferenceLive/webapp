@@ -151,16 +151,17 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 /*       RIGHT BUTTONS       */
 /*****************************/
 .tool-btns a{
-	top:60%;
+	top:63%;
 	position:fixed;
 	right:0px;
 	z-index: 1000;/*
 	transform: rotate(-90deg);*/
 	background-color: red;
-	padding:5px 8px 40px;
+	padding:5px 8px 60px;
 	height: 0px;
 	background-color: #487391;
 	color:#fff;
+	min-width: 110px;
 }
 .tool-btns.prize a{
 	top:15%;
@@ -168,13 +169,16 @@ a.eposter_view-browse:active, a.eposter_view-browse:hover {
 	padding: 5px;
 }
 .tool-btns.btn-cstm-third a{
-	top:70%;
+	top:74%;
 }
 .tool-btns.btn-cstm-fourth a{
-	top:80%;
+	top:85%;
 }
 .tool-btns.btn-cstm-first a{
-	top: 50%;
+	top: 52%;
+}
+.badge-eposter{
+	background-color: #800020;
 }
 .tool-btns a:hover{
 	text-decoration: none;

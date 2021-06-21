@@ -1,0 +1,11 @@
+.evolution-containe{padding-bottom: 50px;}
+
+.page-title{height: 80px;color:#487391;}
+
+.evaluation-description{background-color: #e9ecef8c;box-shadow: 0px 5px 30px 10px #aaaaaa8c;}
+
+.evaluation-description h4, .table {color:#487391;}
+.evaluation-description h4 {font-weight: normal;}
+
+.survey_option{width: 20px;height: 20px;cursor: pointer;}
+@media only screen and (max-width: 40em) {thead th:not(:first-child) {display: none;}td, th {display: block;clear: both;}td[data-th]:before  {content: attr(data-th);float: left;}.survey_option {float:right;}}

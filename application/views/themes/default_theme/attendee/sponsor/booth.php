@@ -3,18 +3,30 @@ defined('BASEPATH') or exit('No direct script access allowed');
 ?>
 <?php
 //print_r($sponsor_data);exit;
+
+$hunting_icon="";
 if(isset($sponsor_data) && !empty($sponsor_data)){
 	$data=$sponsor_data[0];
 }
+
+if($hunt_item){
+	$hunting_icon=$sponsor_data[0]->hunting_icon;
+}
+
+$cover_photo_url='theme_assets/booth_uploads/'.$data->cover_photo;
+
+if(!file_exists($cover_photo_url)){
+	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo;
+}
 ?>
-<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css" rel="stylesheet">
+<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css?ver=7" rel="stylesheet">
 <!-- Date Time Picker-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.css">
 
 <main role="main">
-	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/' . $data->cover_photo:'' ?> ')">
+	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/'.$cover_photo_url:'' ?> ')">
 		<div class="content">
 			<div class="middle">
 				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->tv_banner?>" id="tv_banner">
@@ -34,18 +46,18 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 				</div>
 			</div>
 			<div class="left">
-				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_banner?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_banner?>" class="wt_booth_img" data-url="<?=$data->left_banner_url?>">
 			</div>
 			<div class="right">
-				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_banner?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_banner?>" class="wt_booth_img" data-url="<?=$data->right_banner_url?>">
 			</div>
 		</div>
 		<div class="tables">
 			<div class="table_left">
-				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_table?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_table?>" class="wt_booth_img" data-url="<?=$data->left_table_url?>">
 			</div>
 			<div class="table_right">
-				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_table?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_table?>" class="wt_booth_img" data-url="<?=$data->right_table_url?>">
 			</div>
 		</div>
 	</div>
@@ -130,7 +142,7 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 												</button>
 												<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
 													<?php foreach ($admins as $admin): ?>
-														<button class="dropdown-item video-call" user-id="<?=$admin->id?>" user-name="<?=$admin->name?> <?=$admin->surname?>"><?=$admin->name?> <?=$admin->surname?></button>
+														<button class="dropdown-item video-call" room-id="booth_oto_vc_<?=$admin->id?>" user-id="<?=$admin->id?>" user-name="<?=$admin->name?> <?=$admin->surname?>"><?=$admin->name?> <?=$admin->surname?></button>
 													<?php endforeach; ?>
 												</div>
 											</div>
@@ -215,41 +227,21 @@ if(isset($sponsor_data) && !empty($sponsor_data)){
 		</div>
 	</div>
 </div>
-<!-- Modal CALL-->
-<div class="modal fade" id="modal-call-sponsor" tabindex="-1" role="dialog" aria-labelledby="modal-schedule-meet" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingUserName"></span>...</h5>
-			</div>
-			<div class="modal-body p-0 m-0">
-				<div id="videoChatContainer" class="container-fluid text-center" style="height: 50vh;background: black;">
 
-					<div id="myVideo" style="height: 100%">
-
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button id="hangUp" type="button" class="btn btn-danger"><i class="fas fa-phone-slash"></i> Hang Up</button>
-			</div>
-		</div>
-	</div>
-</div>
 <script>
 	var logo = "<?= $data->logo ?>";
 	var date_now = "<?= date('Y-m-d H:i:s') ?>";
 
 	var current_user_id = "<?= ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']) ?>";
 	var current_booth_id= "<?= $data->id ?>";
-	var current_user_name = "<?= (isset($this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']))?$this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']:'' ?>";
+	var current_user_name = "<?=$this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']?> <?=$this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']?>";
 	var current_user_surname = "<?= (isset($this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']))?$this->session->userdata('project_sessions')["project_{$this->project->id}"]['surname']:'' ?>";
 	var current_user_fullname = current_user_name+' '+current_user_surname;
 	var company_name = "<?=$data->name?>";
+	var hunting_icon = "<?=$hunting_icon?>";
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js"></script>
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=7"></script>
 <script>
 	socket.emit('ycl_booth_visit', {'booth_id':current_booth_id, 'user_id' : user_id});
 </script>

@@ -125,6 +125,7 @@ class Users_Model extends CI_Model
 
 
 		$data = array(
+			'email' => $post['email'],
 			'name' => $post['first_name'],
 			'surname' => $post['surname'],
 			'bio' => $post['bio'],
@@ -267,6 +268,35 @@ class Users_Model extends CI_Model
 		$users = $this->db->get();
 		if ($users->num_rows() > 0)
 			return $users->result();
+
+		return new stdClass();
+	}
+
+	public function getMyAgenda()
+	{
+		$user_id = $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'];
+
+		$this->db
+			->select('sessions.*')
+			->from('user_agenda')
+			->where('user_agenda.user_id', $user_id)
+			->where('user_agenda.project_id', $this->project->id)
+			->join('sessions', 'sessions.id = user_agenda.session_id')
+			->order_by('start_date_time', 'ASC');
+
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+		{
+			$this->load->model('Sessions_Model', 'session_m');
+			foreach ($sessions->result() as $session)
+			{
+				$session->presenters = $this->session_m->getPresentersPerSession($session->id);
+				$session->keynote_speakers = $this->session_m->getKeynoteSpeakersPerSession($session->id);
+				$session->moderators = $this->session_m->getModeratorsPerSession($session->id);
+			}
+
+			return $sessions->result();
+		}
 
 		return new stdClass();
 	}

@@ -54,7 +54,7 @@ class Eposters_Model extends CI_Model
 			$this->db->where('e.id IN ('.$eposter_ids.')');
 		}
 
-		$this->db->select('e.id, e.track_id, et.track, e.control_number, e.title, e.type, e.prize, e.eposter, e.video_url');
+		$this->db->select('e.id, e.track_id, et.track, e.control_number, e.credits, e.title, e.type, e.prize, e.eposter, e.video_url');
 
 		$this->db->from('eposters e');
 		$this->db->join('eposter_tracks et', 'et.id=e.track_id');
@@ -95,10 +95,12 @@ class Eposters_Model extends CI_Model
 
 	public function getAuthorsPerEposter($eposter_id)
 	{
-		$this->db->select('u.id, CONCAT_WS(" ", u.credentials, u.name, u.surname) AS author, email, ea.contact');
+		$this->db->distinct('u.id');
+		$this->db->select('u.id, CONCAT_WS(" ", u.name, u.surname) AS author, u.credentials, email, ea.contact');
 		$this->db->from('eposter_authors ea');
 		$this->db->join('user u', 'u.id=ea.user_id');
 		$this->db->where('ea.eposter_id', $eposter_id);
+		$this->db->order_by('u.surname', 'ASC');
 		$authors = $this->db->get();
 		if ($authors->num_rows() > 0)
 			return $authors->result();
@@ -109,10 +111,11 @@ class Eposters_Model extends CI_Model
 	public function getAllAuthors()
 	{
 		$this->db->distinct('u.id');
-		$this->db->select('u.id, CONCAT_WS(" ", u.credentials, u.name, u.surname) AS author');
+		$this->db->select('u.id, CONCAT_WS(" ", u.name, u.surname) AS author, u.credentials');
 		$this->db->from('user u');
 		$this->db->join('eposter_authors ea', 'u.id=ea.user_id');
 		$this->db->where(array('u.active' => 1));
+		$this->db->order_by('u.surname', 'ASC');
 		$tracks = $this->db->get();
 		if ($tracks->num_rows() > 0)
 			return $tracks->result();
@@ -122,9 +125,13 @@ class Eposters_Model extends CI_Model
 
 	public function getAllTracks()
 	{
-		$this->db->select('*');
+		$this->db->distinct('eposter_tracks.id');
+		$this->db->select('eposter_tracks.id, eposter_tracks.track');
 		$this->db->from('eposter_tracks');
-		$this->db->where(array('project_id' => $this->project->id, 'status' => 1));
+		$this->db->join('eposters', 'eposter_tracks.id=eposters.track_id');
+		$this->db->where(array('eposter_tracks.project_id' => $this->project->id, 
+							   'eposter_tracks.status' => 1, 
+							   'eposters.status' => 1));
 		$tracks = $this->db->get();
 		if ($tracks->num_rows() > 0)
 			return $tracks->result();
@@ -144,6 +151,7 @@ class Eposters_Model extends CI_Model
 
 		$this->db->from('eposters');
 		$this->db->where('status', 1);
+		$this->db->where('eposter IS NOT NULL', null, false);
 		$this->db->where('project_id', $this->project->id);
 		$where 			= $this->db->get_compiled_select();
 

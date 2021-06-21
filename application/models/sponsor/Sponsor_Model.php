@@ -89,8 +89,9 @@ class Sponsor_model extends CI_Model
 	function change_booth_url()
 	{
 		$current_booth_id=$this->input->post('current_booth_id');
-		$tv_url=$this->input->post('tv_url');
-		$this->db->update('sponsor_booth', array('main_video_url' => $tv_url), array('id' => $current_booth_id));
+		$value=$this->input->post('value');
+		$type=$this->input->post('type');
+		$this->db->update('sponsor_booth', array($type => $value,"video_position"=>"1"), array('id' => $current_booth_id));
 	}
 
 

@@ -43,6 +43,7 @@ class Home extends CI_Controller
 
 	}
 
+
 	public function upload_booth_photos(){
 		echo  $this->sponsor->upload_booth_photos();
 	}

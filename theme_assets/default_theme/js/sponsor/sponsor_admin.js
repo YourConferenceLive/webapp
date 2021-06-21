@@ -22,10 +22,13 @@ $(document).ready(function () {
 		var file_data = $("#cover-upload").prop("files")[0];
 		var form_data = new FormData();
 
-		form_data.append("cover", file_data);
+		form_data.append("file",file_data)
+		form_data.append("project_id",booth_project_id)
+		form_data.append("current_booth_id",booth_id)
+		form_data.append("type","cover_photo")
 
 		$.ajax({
-			url: project_url + "/sponsor/admin/home/upload_cover/",
+			url: project_url + "/sponsor/admin/home/upload_booth_photos/",
 			dataType: 'text',
 			cache: false,
 			contentType: false,
@@ -33,12 +36,8 @@ $(document).ready(function () {
 			data: form_data,
 			type: 'post',
 			success: function (cover) {
-
-				var version = Math.floor(Math.random() * 10000) + 1;
-				$('#cover_photo').css('background-image', '');
-				$('#cover_photo').css('background-image', 'url(' + ycl_root + "/cms_uploads/projects/" + project_id + "/sponsor_assets/uploads/cover_photo/" + cover + '?v=' + version + ')');
+				$('#cover_photo').css('background-image', 'url(' + URL.createObjectURL(file_data)+')');
 				toastr["success"]("Cover updated!")
-
 			},
 
 		});
@@ -287,13 +286,15 @@ $(document).ready(function () {
 
 	});
 
-	$('.save_tv_url').on('click', function () {
-		var tv_url=$("#tv_url");
-		console.log(tv_url.val());
+	$('.save_booth_url').on('click', function () {
+		var $parent=$(this).parent();
+		var value=$parent.find("input").val();
+		var type=$parent.find("input").attr("data-type");
 		$.ajax({
 			url: project_url + "/sponsor/admin/home/change_booth_url/",
 			data: {
-				tv_url:tv_url.val(),
+				value:value,
+				type:type,
 				current_booth_id:booth_id
 			},
 			type: 'post',
@@ -453,7 +454,7 @@ $(document).ready(function () {
 						'       <span>' + data.name + ' ' + data.surname + ' <i class="user-status-indicator fas fa-dot-circle" user-id="' + data.user_id + '" style="color: grey;"></i></span>\n' +
 						'    </div>\n' +
 						'    <div class="col-3 p-0 pl-1">\n' +
-						'    <button style="display: none;" class="btn btn-info btn-sm video-call" user-id="' + data.user_id + '" user-name="' + data.name + ' ' + data.surname + '"><i class="fas fa-video"></i></button>\n' +
+						'    <button style="display: none;" class="btn btn-info btn-sm video-call" room-id="booth_oto_vc_'+data.user_id+'" user-id="' + data.user_id + '" user-name="' + data.name + ' ' + data.surname + '"><i class="fas fa-video"></i></button>\n' +
 						'     <span class="user-info fas fa-id-card" data-user_id="' + data.user_id + '" style="font-size: 20px;cursor: pointer;position: absolute;left: 65px;top: -10px;color: #01b57a;"></span>' +
 						'    </div>\n' +
 						'   </div>\n' +
@@ -490,7 +491,7 @@ $(document).ready(function () {
 		var chatting_to = $(this).attr('data-chatting_to');
 
 		$('.attendee-list-body .all-users-item').css('background-color', 'white');
-		$(this).css('background-color', 'gray');
+		$(this).css('background-color', '#c6c6c6');
 		$('.sponsor-chat-header').html('<div class="text-center">' + chatting_to + '<span class="float-right btn  text-danger pt-0" id="close_chat"><i class="fas fa-times"></i></span></div>').attr('data-to_id', chat_from_id);
 		$('.sponsor-chat-body').html('');
 
@@ -553,7 +554,8 @@ $(document).ready(function () {
 				$.each(datas.result, function (index, data) {
 
 					$('#modal-user-info .modal-title').html('<img class=" btn p-0 " src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%">' + data.name + ' ' + data.surname);
-					$('#modal-user-info .modal-body').html('<span class="far fa-envelope text-primary "></span> ' + data.email);
+					//$('#modal-user-info .modal-body').html('<span class="far fa-envelope text-primary "></span> ' + data.email);
+					$('#modal-user-info .modal-body').html('');
 					swal.close();
 				});
 				$('#modal-user-info').modal('show');

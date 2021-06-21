@@ -21,8 +21,8 @@ class Evaluation extends CI_Controller
 
 		// ToDo: If already submitted, then show Thank you message (confirm with Shannon)
 
-		$data['project'] = $this->project;
-		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$data['project'] 	= $this->project;
+		$data['user'] 		= $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$data['evaluation'] = $this->eval_model->get_evaluation($id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)

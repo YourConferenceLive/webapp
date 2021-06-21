@@ -26,7 +26,11 @@
 
 							<div class="form-group">
 								<label>Password</label>
-								<input name="password" id="password" class="form-control" type="text" placeholder="User's password">
+								<input name="password" id="password" class="form-control mb-2" type="text" placeholder="User's password">
+								<small class="mt-2">
+									Passwords are encrypted and cannot be displayed or updated in cleartext, you can only
+									<button type="button" id="reset-pass-update-modal" class="reset-user-pass-btn btn btn-xs btn-success text-white ml-2 mr-2" user-id="" user-name=""><i class="fas fa-lock-open"></i> Reset</button>
+									them.</small>
 							</div>
 
 						</div>
@@ -287,5 +291,8 @@
 		$(this).next('.custom-file-label').html(fileName);
 	});
 
+	$('#addUserForm').on('click', '.reset-user-pass-btn', function () {
+		resetUserPassword($(this).attr('user-id'), $(this).attr('user-name'));
+	});
 
 </script>

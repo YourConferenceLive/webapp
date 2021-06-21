@@ -71,6 +71,10 @@
 									<a class="nav-link" id="presentersTab" data-toggle="pill" href="#presentersTabContents" role="tab" aria-controls="presentersTabContents" aria-selected="false"><i class="fas fa-user-friends"></i> Presenters</a>
 								</li>
 
+								<li class="nav-item">
+									<a class="nav-link" id="invisibleModeratorsTab" data-toggle="pill" href="#invisibleModeratorsTabContents" role="tab" aria-controls="invisibleModeratorsTabContents" aria-selected="false"><i class="fas fa-user-secret"></i> Invisible Moderators</a>
+								</li>
+
 							</ul>
 						</div>
 						<div class="card-body">
@@ -97,6 +101,11 @@
 												<?php endforeach; ?>
 											<?php endif; ?>
 										</select>
+									</div>
+
+									<div class="form-group">
+										<label for="sessionCredits">Credits</label>
+										<input type="number" class="form-control" id="sessionCredits" name="sessionCredits" placeholder="How much credit user will receive by attending this session? (default:0 | min:0 | max:20)" min="0" max="20" >
 									</div>
 
 									<div class="form-group">
@@ -211,6 +220,20 @@
 									</div>
 								</div>
 
+								<div class="tab-pane fade" id="invisibleModeratorsTabContents" role="tabpanel" aria-labelledby="invisibleModeratorsTab">
+									<div class="form-group">
+										<label>Select invisible moderators from the box on the left</label><br>
+										<label><small>(You must add moderators with <badge id="moderatorBadge" class="badge badge-primary mr-1" style="background-color:#228893;"><i class="fas fa-id-card"></i> Moderator</badge> privilege in <a class="btn btn-xs btn-secondary ml-1 mr-1" href="<?=$this->project_url?>/admin/users"><i class="fas fa-users"></i> Users</a> list in order to list them here)</small></label>
+										<select box-id="sessionInvisibleModerators" multiple="multiple" size="10" name="sessionInvisibleModerators[]" title="sessionInvisibleModerators[]">
+											<?php if (isset($moderators)): ?>
+												<?php foreach ($moderators as $moderator): ?>
+													<option value="<?=$moderator->id?>"><?=$moderator->name?> <?=$moderator->surname?> (<?=$moderator->email?>)</option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
+									</div>
+								</div>
+
 							</div>
 						<!-- /.card -->
 					</div>
@@ -295,6 +318,10 @@
 		$('select[name="sessionPresenters[]"]').bootstrapDualListbox({
 			selectorMinimalHeight : 300
 		});
+
+		$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox({
+			selectorMinimalHeight : 300
+		});
 	});
 
 	$('#logo, #banner').on('change',function(){
@@ -320,6 +347,12 @@
 		if($('input[name="endDateTime"]').val() == '')
 		{
 			toastr.warning('Please select end date and time!')
+			return false;
+		}
+
+		if(!$.isNumeric($('input[name="sessionCredits"]').val()))
+		{
+			toastr.warning('Credit must be a positive number!')
 			return false;
 		}
 

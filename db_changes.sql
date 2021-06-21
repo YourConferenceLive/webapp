@@ -408,7 +408,7 @@ ADD COLUMN `right_table` TEXT NULL AFTER `left_table`;
 ALTER TABLE `user` ADD `bio` TEXT NULL DEFAULT NULL AFTER `credentials`;
 #
 
--- Imran Tariq 
+-- Imran Tariq
 -- Table structure for table `notes`
 -- 18th Jun 2021
 
@@ -426,3 +426,67 @@ CREATE TABLE IF NOT EXISTS `notes` (
   `updated_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Athul - June 18th 2021
+ALTER TABLE `session_moderators` ADD `is_invisible` BOOLEAN NOT NULL DEFAULT FALSE AFTER `session_id`;
+ALTER TABLE `sessions` ADD `is_deleted` BOOLEAN NOT NULL DEFAULT FALSE AFTER `updated_on`;
+
+
+ALTER TABLE `sponsor_booth`
+    ADD COLUMN `left_banner_url` TEXT NULL AFTER `right_table`,
+ADD COLUMN `right_banner_url` TEXT NULL AFTER `left_banner_url`,
+ADD COLUMN `left_table_url` TEXT NULL AFTER `right_banner_url`,
+ADD COLUMN `right_table_url` TEXT NULL AFTER `left_table_url`;
+
+
+-- Athul - June 19th 2021
+ALTER TABLE `sessions` ADD `credits` FLOAT NOT NULL DEFAULT '0' AFTER `track`;
+
+-- Imran Tariq
+-- Evolution page data
+-- 20th June, 2021
+UPDATE `evaluation` SET `name` = '2021 COS Annual Meeting',`title` = 'Evaluation  / <span style=\"color: #284050;\">  Évaluation </span>',`description` = 'Thank you for attending the 2021 COS Annual Meeting and Exhibition. We look forward to your feedback on this educational event. <br> <span style=\"color: #284050;\">Merci d’avoir assisté au  Congrès annuel et exposition 2021 de la SCO. Nous avons hâte de recevoir vos commentaires au sujet de cet événement éducatif.</span>',`instruction` = 'Please consider the meeting’s learning objectives and reflect upon your learning. <br> <span style=\"color: #284050\">  En regard desobjectifs d’apprentissage de la réunion, veuillez réfléchir aux connaissances que vous avez acquises. <br> </span> <br>Rank by the following scale: | <span style=\"color: #284050\"> Veuillez coter à l’aide de l’échelle suivante: </span><br><br>Strongly disagree | <span style=\"color: #284050\"> Fortement en désaccord </span> <br>Disagree |   <span style=\"color: #284050\"> En désaccord </span> <br>Neutral |  <span style=\"color: #284050\"> Neutre </span> <br>Agree |  <span style=\"color: #284050\"> D’accord </span><br> Strongly agree | <span style=\"color: #284050\"> Tout à fait d’accord </span><br>',`confirm_title` = 'Submit Evaluation <br><span style=\'color: #284050\'>Soumettre une évaluation</span>',`confirm_message` = 'You can update this evaluation by evaluating again <br> <span style=\'color:#284050\'>Vous pouvez mettre à jour cette évaluation en évaluant à nouveau</span>',`success_title` = 'Evaluation Successfully Saved!<br> <span style=\'color #284050\'>Évaluation enregistrée avec succès!</span>',`success_message` = '<p style=\'word-wrap: normal ; text-dark; font-size:14px\'>Thank you for participating in this evaluation and in our virtual meeting. We look forward to seeing you in Halifax, Nova Scotia June 9 – 12 for the 2022 COS Annual Meeting and Exhibition. <br><span style=\'color: #284050\'>Merci d’avoir participé à notre assemblée virtuelle. Au plaisir de vous voir à Halifax (N.-É.), du 9 au 12 juin, pour le Congrès annuel et exposition 2022 de la SCO.</span></p>',`date_created` = NULL WHERE `evaluation`.`id` = 1;
+
+
+ALTER TABLE `sponsor_booth`
+    ADD COLUMN `hunting_icon` INT NULL AFTER `category_id`;
+
+CREATE TABLE `scavenger_hunt_items` (
+`id` INT NOT NULL AUTO_INCREMENT,
+`user_id` INT NULL,
+`booth_id` INT NULL,
+`icon_name` VARCHAR(45) NULL,
+`date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (`id`));
+
+-- Imran Tariq
+-- Table structure for table `user_credits`
+-- 20th June, 2021
+DROP TABLE IF EXISTS `user_credits`;
+CREATE TABLE IF NOT EXISTS `user_credits` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `origin_type` enum('eposter','session') NOT NULL DEFAULT 'eposter',
+  `origin_type_id` int(11) NOT NULL COMMENT 'session_id / eposter_id',
+  `user_id` int(11) NOT NULL,
+  `credit` float(3,2) NOT NULL,
+  `claimed_datetime` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `project_id` (`origin_type`,`origin_type_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ePoster credit field
+-- 20th June, 2021
+ALTER TABLE `eposters` ADD `credits` FLOAT(3,2) NOT NULL DEFAULT '0.5' AFTER `track_id`;
+
+ALTER TABLE `eposters` CHANGE `credits` `credits` FLOAT(3,2) NOT NULL;
+
+
+-- My Agenda by Athul
+-- 20th June 2021
+CREATE TABLE `user_agenda` (
+    `id` INT NOT NULL AUTO_INCREMENT ,
+    `user_id` INT NOT NULL ,
+    `project_id` INT NOT NULL ,
+    `session_id` INT NOT NULL ,
+    `added_datetime` DATETIME NOT NULL ,
+    PRIMARY KEY  (`id`)) ENGINE = InnoDB;

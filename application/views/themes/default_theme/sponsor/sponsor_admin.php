@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //exit;
 ?>
 
-<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=3" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=4" rel="stylesheet">
 
 <!-- Full Calendar-->
 <link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.css">
@@ -18,8 +18,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+<?php
+$cover_photo_url='theme_assets/booth_uploads/'.$booth->cover_photo;
+
+if(!file_exists($cover_photo_url)){
+	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$booth->cover_photo;
+}
+
+?>
+
 <div class="container-fluid p-0 mt-5">
-	<div class="jumbotron rounded-0" id="cover_photo" style="background-image: url('<?= (isset($booth->cover_photo) && !empty($booth->cover_photo))? ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$booth->cover_photo:''?>')">
+	<div class="jumbotron rounded-0" id="cover_photo" style="background-image: url('<?= (isset($booth->cover_photo) && !empty($booth->cover_photo))? ycl_root.'/'.$cover_photo_url:''?>')">
 		<div class="">
 			<input type="file" name="cover_upload " id="cover-upload" class="cover-upload" accept=".jpg,.png,.jpeg" style="display: none">
 			<span class="btn badge badge-primary float-right btn-cover"  ><i class="fa fa-upload" aria-hidden="true" ></i> upload cover</span>
@@ -29,8 +38,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="middle">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->tv_banner?>" id="tv_banner">
 					<div class="change_tv_url">
-						<input type="text" id="tv_url" value='<?=$booth->main_video_url?>'/>
-						<input type="button" value="Save" class="save_tv_url">
+						<input type="text" data-type="main_video_url" class="url" value='<?=$booth->main_video_url?>' placeholder="url"/>
+						<input type="button" value="Save" class="save_booth_url">
 					</div>
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="tv_banner" />
 					<?php if (isset($booth->main_video_url) && !empty($booth->main_video_url) && $booth->video_position == '1') {
@@ -51,20 +60,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="left">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_banner?>" id="left_banner">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_banner" />
+					<div class="update_image_url">
+						<input type="text" data-type="left_banner_url" class="url" value='<?=$booth->left_banner_url?>' placeholder="image link"/>
+						<input type="button" value="Save" class="save_booth_url">
+					</div>
 				</div>
 				<div class="right">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_banner?>" id="right_banner">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_banner" />
+					<div class="update_image_url">
+						<input type="text" data-type="right_banner_url" class="url" value='<?=$booth->right_banner_url?>' placeholder="image link"/>
+						<input type="button" value="Save" class="save_booth_url">
+					</div>
 				</div>
 			</div>
 			<div class="tables">
 				<div class="table_left">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_table?>" id="left_table">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_table" />
+					<div class="update_image_url">
+						<input type="text" data-type="left_table_url" class="url" value='<?=$booth->left_table_url?>' placeholder="image link"/>
+						<input type="button" value="Save" class="save_booth_url">
+					</div>
 				</div>
 				<div class="table_right">
 					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_table?>" id="right_table">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_table" />
+					<div class="update_image_url">
+						<input type="text" data-type="right_table_url" class="url" value='<?=$booth->right_table_url?>' placeholder="image link"/>
+						<input type="button" value="Save" class="save_booth_url">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -396,29 +421,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 
 
-<!-- Modal CALL-->
-<div class="modal fade" id="modal-call-sponsor" tabindex="-1" role="dialog" aria-labelledby="modal-schedule-meet" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="modal-schedule-meet">Calling <span id="callingUserName"></span>...</h5>
-			</div>
-			<div class="modal-body p-0 m-0">
-				<div id="videoChatContainer" class="container-fluid text-center" style="height: 50vh;background: black;">
-
-					<div id="myVideo" style="height: 100%">
-
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button id="hangUp" type="button" class="btn btn-danger"><i class="fas fa-phone-slash"></i> Hang Up</button>
-			</div>
-		</div>
-	</div>
-</div>
-
 <script>
+
+	var current_user_id = "<?=$user->user_id?>";
+	var current_user_name = "<?=$user->name?> <?=$user->surname?>";
 	var logo = "<?=$booth->logo?>";
 	var date_now = "<?=date('Y-m-d H:i:s')?>";
 	var current_id = "<?=$this->session->userdata('sponsor_id')?>";
@@ -428,8 +434,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	var sponsor_name = "<?=$booth->name?>";
 </script>
 <script>
-	console.log(booth_project_id)
-	console.log(booth_id)
 	$(document).ready(function(){
 		$('.show-attendees').on('click', function(){
 
@@ -444,7 +448,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 		socket.on('ycl_active_users_list', function (users) {
-			console.log(users);
 			let activeUsers = [];
 			$.each(users, function (socketId, userId) {
 				activeUsers.push(userId);
@@ -457,6 +460,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 		});
 		socket.emit('ycl_get_active_users_list');
+		socket.emit('ycl_active_user_in_booth', booth_id);
 
 
 		socket.on('ycl_active_user_on_booth', function (user) {
@@ -468,15 +472,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				$('.all-users-item[user-id="'+user.user_id+'"]').remove();
 				$('#usersInThisBooth').append('' +
-						'<li class="all-users-item list-group-item" socket-id="'+user.socket_id+'" user-id="' + userHtml.attr('user-id')+ '" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
+						'<li class="all-users-item list-group-item" room-id="'+userHtml.attr('room-id')+'" socket-id="'+user.socket_id+'" user-id="'+userHtml.attr('user-id')+'" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
 						''+userHtml.html()+
 						'</li>');
 			}
+		});
+
+		socket.on('ycl_active_user_in_booth_change', function (socketId)
+		{
+
+			socket.emit('ycl_active_user_in_booth', booth_id)
+		});
+		socket.on('ycl_active_user_in_booth', function (users) {
+			$.each(users, function (socketId, userId) {
+				let userHtml = $('.all-users-item[user-id="'+userId+'"]').clone();
+
+				$('.all-users-item[user-id="'+userId+'"]').remove();
+				$('#usersInThisBooth').append('' +
+						'<li class="all-users-item list-group-item" socket-id="'+socketId+'" user-id="' + userHtml.attr('user-id')+ '" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
+						''+userHtml.html()+
+						'</li>');
+				$('.video-call[user-id="'+userId+'"]').show();
+			});
 		});
 
 	});
 
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=2"></script>
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/video-chat.js?v=2"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=3"></script>

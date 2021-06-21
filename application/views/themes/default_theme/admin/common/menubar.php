@@ -24,6 +24,13 @@ $ci_method = $this->router->fetch_method();
 
 	<!-- Right navbar links -->
 	<ul class="navbar-nav ml-auto">
+
+		<li class="nav-item">
+			<a id="admin_timer" class="nav-link disabled" style="display: none;color: rgb(255, 255, 255);">
+				Starts In: __ __
+			</a>
+		</li>
+
 		<!-- Navbar Search -->
 		<li class="nav-item">
 			<a class="nav-link" data-widget="navbar-search" href="#" role="button">
