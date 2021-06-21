@@ -37,7 +37,7 @@ class Users_Model extends CI_Model
 
 	public function getById($id)
 	{
-		$this->db->select('id, name, surname, email, active, bio, disclosures, photo');
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, credentials');
 		$this->db->from('user');
 		$this->db->where('id', $id);
 		$user = $this->db->get();
@@ -106,7 +106,6 @@ class Users_Model extends CI_Model
 	{
 		$post = $this->input->post();
 		$user_photo_name = '';
-
 		if (!isset($post['userId']) || $post['userId'] == 0)
 			return array('status' => 'failed', 'msg'=>'No User(ID) selected', 'technical_data'=>'');
 
@@ -302,5 +301,74 @@ class Users_Model extends CI_Model
 	}
 
 
+	public function update_profile_attendee()
+	{
 
+		$post = $this->input->post();
+		$user_photo_name = '';
+		if (!isset($post['userId']) || $post['userId'] == 0)
+			return array('status' => 'failed', 'msg'=>'No User(ID) selected', 'technical_data'=>'');
+
+		// Upload files if set
+
+		if (isset($_FILES['user-photo']) && $_FILES['user-photo']['name'] !== '' && !empty( $_FILES['user-photo']['name'] ))
+		{
+
+			if($_FILES['user-photo']['size'] /1000  > 3000 ){
+				return false;
+			}
+
+			$user_photo_name = rand().'_'.str_replace(' ', '_', $_FILES['user-photo']['name']);
+			$destination = FCPATH.'cms_uploads'.DIRECTORY_SEPARATOR.'user_photo'.DIRECTORY_SEPARATOR.'profile_pictures'.DIRECTORY_SEPARATOR.$user_photo_name;
+
+			$profile_picture = $this->compressImage($_FILES['user-photo']['tmp_name'], $destination, 60 );
+
+		}
+			$data = array(
+				'email' => $post['email'],
+				'name' => $post['first_name'],
+				'surname' => $post['surname'],
+				'bio' => $post['bio'],
+				'disclosures' => $post['disclosure'],
+				'city' => $post['city'],
+				'country' => $post['country'],
+				'rcp_number' => $post['rcpn'],
+				'password' => password_hash($post['password'], PASSWORD_DEFAULT),
+				'updated_on' => date('Y-m-d H:i:s'),
+				'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
+			);
+		if($user_photo_name!==''){
+			$data['photo'] = $user_photo_name;
+		}
+
+		$this->db->set($data);
+		$this->db->where('id', $post['userId']);
+		$this->db->update('user');
+
+		if ($this->db->affected_rows() > 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	private function compressImage($source, $destination, $quality)
+	{
+		$info = getimagesize($source);
+
+		if ($info['mime'] == 'image/jpeg')
+			$image = imagecreatefromjpeg($source);
+
+		elseif ($info['mime'] == 'image/gif')
+			$image = imagecreatefromgif($source);
+
+		elseif ($info['mime'] == 'image/png')
+			$image = imagecreatefrompng($source);
+
+//		header('Content-Type: image/jpeg');
+		imagejpeg($image, $destination, $quality);
+
+//		return imagejpeg($image);
+	}
 }
