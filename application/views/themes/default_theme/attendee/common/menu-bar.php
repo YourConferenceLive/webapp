@@ -42,24 +42,26 @@ $ci_method = $this->router->fetch_method();?>
 
 					<li class="nav-item dropdown">
 						<a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">2</span>
+							<span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">0</span>
 							<i class="fas fa-envelope" style="color: #487391;"></i>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="#">
-								<img class="person-icon-small" src="https://franchisematch.com/wp-content/uploads/2015/02/john-doe-300x300.jpg">
-								<span>John Doe</span><br>
-								<small style="margin-left: 30px;">Sample message...</small>
-							</a>
+							<span class="ml-2">No new messages...</span>
+<!--							<a class="dropdown-item" href="#">-->
+<!--								<img class="person-icon-small" src="https://franchisematch.com/wp-content/uploads/2015/02/john-doe-300x300.jpg">-->
+<!--								<span>John Doe</span><br>-->
+<!--								<small style="margin-left: 30px;">Sample message...</small>-->
+<!--							</a>-->
+<!--							<div class="dropdown-divider"></div>-->
+<!---->
+<!--							<a class="dropdown-item" href="#">-->
+<!--								<img class="person-icon-small" src="https://fwcdn.pl/ppo/01/59/159/449673.2.jpg">-->
+<!--								<span>Daniel Day-Lewis</span><br>-->
+<!--								<small style="margin-left: 30px;">Sample message 2...</small>-->
+<!--							</a>-->
+
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">
-								<!-- <img class="person-icon-small" src="--><?//=ycl_root?><!--/ycl_assets/images/person-icon.png">-->
-								<img class="person-icon-small" src="https://fwcdn.pl/ppo/01/59/159/449673.2.jpg">
-								<span>Daniel Day-Lewis</span><br>
-								<small style="margin-left: 30px;">Sample message 2...</small>
-							</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#"><strong>See all messages</strong></a>
+							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/lounge"><strong>See all messages</strong></a>
 						</div>
 					</li>
 
