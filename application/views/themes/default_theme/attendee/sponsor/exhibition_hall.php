@@ -125,6 +125,12 @@
                 border-radius: 10px;
                 text-align:center;
             }
+		#buttonx 
+            {
+                border-radius: 15px ;
+                color:#444;
+                font-size:20px;
+            }
 	</style>
 
 

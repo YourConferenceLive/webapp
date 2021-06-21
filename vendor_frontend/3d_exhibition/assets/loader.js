@@ -402,6 +402,8 @@ var loadScene=async function(name,incremental,sceneLocation,then)
             var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
             advancedTexture.idealWidth = 600;
 
+            instrucciones.style.display = "block";
+
             if(is_touch_device())
             {        
             
