@@ -434,6 +434,36 @@ var loadScene=async function(name,incremental,sceneLocation,then)
             var TopCon_piso = scene.getMeshByName("TopCon_piso");
             var Zeiss_piso = scene.getMeshByName("Zeiss_piso");
 
+            let actionManager = new BABYLON.ActionManager(scene);
+
+            Aequuspharma_piso.actionManager = actionManager;
+            Alcon_piso.actionManager = actionManager;
+            Allergen1_piso.actionManager = actionManager;
+            Medical_piso.actionManager = actionManager;
+            Lomb_piso.actionManager = actionManager;
+            Bayer_piso.actionManager = actionManager;
+            BioScript_piso.actionManager = actionManager;
+            Candorvision_piso.actionManager = actionManager;
+            Medical_piso.actionManager = actionManager;
+            COS_piso.actionManager = actionManager;
+            Glaukos_piso.actionManager = actionManager;
+            Innova_piso.actionManager = actionManager;
+            Ivantis_piso.actionManager = actionManager;
+            Johnson_piso.actionManager = actionManager;
+            Labtician_piso.actionManager = actionManager;
+            McKesson_piso.actionManager = actionManager;
+            Financial_piso.actionManager = actionManager;
+            Natus_piso.actionManager = actionManager;
+            Novartis_piso.actionManager = actionManager;
+            Oculus_piso.actionManager = actionManager;
+            Surgical_piso.actionManager = actionManager;
+            Roche_piso.actionManager = actionManager;
+            Sacor_piso.actionManager = actionManager;
+            Santen_piso.actionManager = actionManager;
+            Pharmaceuticals_piso.actionManager = actionManager;
+            TopCon_piso.actionManager = actionManager;
+            Zeiss_piso.actionManager = actionManager;
+
             var hl = new BABYLON.HighlightLayer("hl1", scene);
 
             actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOverTrigger, function(ev){    
