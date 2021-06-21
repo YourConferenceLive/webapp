@@ -46,10 +46,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<main role="main" class="mx-lg-5 mx-md-0">
 		<div class="container-fluid mb-5" >
 			<div class="row">
+				<div class="col">
+					<div class="text-center btn card " style="height: 80px;color:#487391;">	<h1><?=$evaluation->title?></span></h1></div>
+				</div>
+			</div>
+			<div class="row">
 				<div class="col-md-12 text-center mx-lg-5">
-					<div>
-						<h1><?=$evaluation->title?></span></h1>
-					</div>
 					<div class="mt-5 text-justify mx-lg-5">
 						<h5>
 							<?=$evaluation->description?>
@@ -84,9 +86,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								if($question->question_type == 'radio_opt'){
 									?>
 										<tr>
-										<td class="text-justify <?=($question->is_subquestion)?'pl-5':''?>">
+										<td class="text-justify question <?=($question->is_subquestion)?'pl-5':''?>" id="<?=$question->is_required?'required':''?>">
 											<?=$question->name?><br>
-											<span style="color: #4773C5"><?= $question->translation ?></span>
+											<span style="color: #1AB6CF"><?= $question->translation ?></span>
 										</td>
 											<td class="text-center align-middle "  data-th="Strongly Disagree">	<input value="1" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='1')?'checked':'':''?>  class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" data-question_title="<?=$question->name?>" type="radio" data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>" name="answer[<?=$question->id?>]" > </td>
 											<td class="text-center align-middle "  data-th="Disagree ">			<input value="2" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='2')?'checked':'':''?>   class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>" data-question_title="<?=$question->name?>" type="radio"  data-input_type="<?=$question->question_type?>" id="question_<?=$question->id?>" name="answer[<?=$question->id?>]" > </td>
@@ -98,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								}if ($question->question_type == null || $question->question_type == ''	){
 									?>
 										<tr>
-											<td colspan="6"><?=$question->name?><br><span style="color: #4773C5"><?= $question->translation ?></span></td>
+											<td colspan="6" class="question" id="<?=$question->is_required?'required':''?>"><?=$question->name?><br><span style="color: #1AB6CF"><?= $question->translation ?></span></td>
 											<td><input type="text" value="" name="answer[<?=$question->id?>]" hidden></td>
 										</tr>
 									<?php
@@ -106,8 +108,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								if($question->question_type == 'text_input'){
 									?>
 									<tr>
-									<td class="text-justify">
-										<?=$question->name?><br><span style="color: #4773C5"><?=$question->translation?></span>
+									<td class="text-justify question " id="<?=$question->is_required?'required':''?>">
+										<?=$question->name?><br><span style="color: #1AB6CF"><?=$question->translation?></span>
 									</td>
 									<td colspan="5"><textarea class="w-100 form-control shadow-none border-info <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  rows="3" name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  data-question_title="<?=$question->name?>" id="question_<?=$question->id?>" ><?=(isset($question->answer) && !empty($question->answer))?$question->answer:''?></textarea></td>
 									</tr>
@@ -116,8 +118,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								if($question->question_type == 'yes_no'){
 									?>
 									<tr>
-										<td class="text-justify">
-											<?=$question->name?><br><span style="color: #4773C5"><?=$question->translation?></span>
+										<td class="text-justify question " id="<?=$question->is_required?'required':''?>">
+											<?=$question->name?><br><span style="color: #1AB6CF"><?=$question->translation?></span>
 										</td>
 										<td colspan="3" class="text-center align-middle " > <lable>Yes </lable><input type="radio" value="yes" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='yes')?'checked':'':''?>  class="survey_option  <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  data-question_title="<?=$question->name?>" id="question_<?=$question->id?>" ></td>
 										<td colspan="2" class="text-center align-middle " > <lable>No </lable><input type="radio" value="no" <?=(isset($question->answer) && !empty($question->answer))?($question->answer=='no')?'checked':'':''?>  class="survey_option <?=$question->is_required?'required':''?>" data-question_id="<?=$question->id?>"  name="answer[<?=$question->id?>]" data-input_type="<?=$question->question_type?>"  data-question_title="<?=$question->name?>" id="question_<?=$question->id?>" ></td>
@@ -198,6 +200,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 			})
 		}
+
+		$('.question#required').prepend('<i class="text-danger">*</i>')
+		$('.question').not('#required').prepend('<i class="ml-2"></i>')
+
 	});
 
 </script>
