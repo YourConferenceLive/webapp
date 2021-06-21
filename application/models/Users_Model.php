@@ -340,7 +340,7 @@ class Users_Model extends CI_Model
 		if($user_photo_name!==''){
 			$data['photo'] = $user_photo_name;
 		}
-		if($post['password']){
+		if($post['password'] && $post['password'] !== ''){
 			$data['password']= password_hash($post['password'], PASSWORD_DEFAULT);
 		}
 
