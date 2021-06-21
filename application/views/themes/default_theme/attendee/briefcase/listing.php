@@ -31,8 +31,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="tab-content">
 									<div class="tab-pane p-2<?php echo (('itinerary' == $active_briefcase_tab) ? ' active' : '' );?>" id="itinerary" role="tabpanel" aria-labelledby="itinerary-tab">
 										<div class="text-center btn card mb-2 page-title"><h2 class="mb-0">My Agenda</h2></div>
-										<!-- /********************************************/ -->
 <?php
+									if ($sessions != new stdClass()) :
 										foreach ($sessions as $session):?>
 										<!-- Session Listing Item -->
 										<div class="sessions-listing-item pb-3">
@@ -56,39 +56,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 															<div class="clearfix"></div>
 															<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="p-0 mt-1" style="color:#487391"><?=$session->name?></a></h4>
 															<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color: #284050;"><?=$session->other_language_name?></a></h4>
-															<p><?php if($session->moderators != new stdClass()):?>
+															<p>
+<?php
+																if($session->moderators != new stdClass()):?>
 																<span>Moderator:</span>
-																<?php foreach ($session->moderators as $index=> $moderator):?>
+<?php
+																	foreach ($session->moderators as $index=> $moderator):?>
 																	<?=(isset($index) && ($index >= 1))?',':''?>
 																	<?=$moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?' '.$moderator->credentials:'')?>
-																<?php endforeach; ?><br>
-																<?php endif;?>
-
-																<?php if($session->keynote_speakers != new stdClass()):?>
+<?php
+																	endforeach;?><br>
+<?php
+																endif;
+																if($session->keynote_speakers != new stdClass()):?>
 																<span>Keynote:</span>
-																<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
+<?php
+																	foreach ($session->keynote_speakers as $index=> $keynote):?>
 																	<?=(isset($index) && ($index >= 1))?',':''?>
 																	<a style="cursor: pointer" class="keynote-link" keynote-id="<?=$keynote->id?>" speaker-name="<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>">
 																		<?=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>
 																	</a>
 																		<bio style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->bio?></bio>
 																		<disclosure style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->disclosures?></disclosure>
-																<?php endforeach; ?><br>
-																<?php endif; ?>
-																<?php if($session->presenters != new stdClass()):?>
+<?php
+																	endforeach;?><br>
+<?php
+																endif;
+
+																if($session->presenters != new stdClass()):?>
 																<span>Speakers:</span>
 <?php
 																	foreach ($session->presenters as $index=>$presenter):
 																		echo ((isset($index) && ($index>=1))?", ":'').trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?' '.trim($presenter->credentials):'');
 																	endforeach;?><br>
-																<?php endif; ?>
+<?php
+																endif; ?>
 															</p>
 															<hr>
 															<p><?=$session->description?></p>
 														</div>
 
 														<div class="col-12 text-md-right text-sm-center" style="position: relative;bottom: 0;">
-															<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-danger m-1 rounded-0 text-white"><i class="fas fa-trash"></i> Remove</a>
+															<a class="btn btn-sm btn-danger m-1 rounded-0 text-white remove-briefcase-btn" data-session-id ="<?=$session->id?>"><i class="fas fa-trash"></i> Remove</a>
 														</div>
 														<agenda style="display: none;" session-id="<?=$session->id?>"><?=$session->agenda?></agenda>
 
@@ -96,9 +105,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												</div>
 											</div>
 										</div>
+										<!-- End Session Listing Item -->
 <?php
-										endforeach; ?>
-										<!-- /********************************************/ -->
+										endforeach;
+									else :?>
+
+										<div class="alert alert-danger" role="alert">
+										  Nothing in your agenda.
+										</div>
+<?php
+									endif;?>
 									</div>
 									<div class="tab-pane p-2<?php echo (('resources' == $active_briefcase_tab) ? ' active' : '' );?>" id="resources" role="tabpanel" aria-labelledby="resources-tab">
 										<div class="text-center btn card mb-2 page-title"><h2 class="mb-0">Resources</h2></div>
@@ -279,6 +295,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('.view-notes').click(function(e) {
 				alert('Here is now');
+			});
+
+			$('.remove-briefcase-btn').on('click', function() {
+				Swal.fire({
+					title: 'Please Wait',
+					text: 'Removing from your briefcase...',
+					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+					imageAlt: 'Loading...',
+					showCancelButton: false,
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
+
+				var buttonElement = $(this);
+
+				$.ajax({type: "POST",
+						url: project_url+"/briefcase/delete",
+						data: {'session_id' : $(this).data('session-id')},
+						error: function(jqXHR, textStatus, errorMessage)
+						{
+							Swal.close();
+							toastr.error(errorMessage);
+						},
+						success: function(response){
+							$(buttonElement).parent().parent().parent().parent().parent().hide('slow').remove();
+							Swal.close();
+							toastr.success('Removed successfully.');
+						}
+				});
 			});
 		});
 	</script>

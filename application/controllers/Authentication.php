@@ -73,8 +73,164 @@ class Authentication extends CI_Controller {
 			}
 
 		}else{
-			// Errors are added to log record in the model
-			$response = array('status'=>'error', 'msg'=>$verification['msg']);
+
+			$api_config = array(
+				'api_url' => $this->project->api_url,
+				'api_username' => $this->project->api_username,
+				'api_password' => $this->project->api_password
+			);
+
+			if ($this->project->api_url == null)
+			{
+				$response = array('status'=>'error', 'msg'=>"Authentication API is not configured");
+				echo json_encode($response);
+				return false;
+			}
+
+
+			$this->load->library('cosapi', $api_config);
+
+			$user_from_cos = $this->cosapi->getUserByEmail($username);
+
+			if (!isset($user_from_cos->Count) || $user_from_cos->Count < 1)
+			{
+				$response = array('status'=>'error', 'msg'=>"We couldn't find you in the COS database.");
+				echo json_encode($response);
+				return false;
+			}
+
+			$user_from_cos = (array) $user_from_cos;
+			$user_from_cos = (array) $user_from_cos['Items'];
+			$user_from_cos = (array) $user_from_cos['$values'];
+			$user_from_cos = (array) $user_from_cos[0];
+
+			$isAttendee = 0;
+			$isExhibitor = 0;
+			$membership_info = $this->cosapi->getMembershipType($user_from_cos['PartyId']);
+
+			$cos21VirtualRegCheck = $this->cosapi->cos21VirtualRegCheck($user_from_cos['PartyId']);
+			if (!isset($cos21VirtualRegCheck->Count) || $cos21VirtualRegCheck->Count < 1)
+			{
+				if ($membership_info == 'IR')
+				{
+					$cosRepReg2021RegCheck = $this->cosapi->cosRepReg2021RegCheck($user_from_cos['PartyId']);
+					if (!isset($cosRepReg2021RegCheck->Count) || $cosRepReg2021RegCheck->Count < 1)
+					{
+						$response = array('status'=>'error', 'msg'=>"You are not registered for the COS Virtual Event 2021.");
+						echo json_encode($response);
+						return false;
+					}else{
+						$isExhibitor = 1;
+					}
+				}
+
+			}else{
+				$isAttendee = 1;
+
+				if ($membership_info == 'IR')
+				{
+					$cosRepReg2021RegCheck = $this->cosapi->cosRepReg2021RegCheck($user_from_cos['PartyId']);
+					if (!isset($cosRepReg2021RegCheck->Count) || $cosRepReg2021RegCheck->Count < 1)
+					{
+						$isExhibitor = 0;
+					}else{
+						$isExhibitor = 1;
+					}
+				}
+			}
+
+			if ($password != 'COS2021')
+			{
+				$response = array('status'=>'error', 'msg'=>"Incorrect password.");
+				echo json_encode($response);
+				return;
+			}
+
+
+			$address_data = (array) $user_from_cos['Addresses'];
+			$address_data = (array) $address_data['$values'];
+			$address_data = (array) $address_data[0];
+			$address_data = (array) $address_data['Address'];
+
+			$email = (array) $user_from_cos['Emails'];
+			$email = (array) $email['$values'];
+			$email = (array) $email[0];
+			$email = $email['Address'];
+
+			$user_data = array(
+				'isFromApi' => 1,
+				'IdFromApi' => $user_from_cos['PartyId'],
+				'email' => $email,
+				'password' => password_hash('COS2021', PASSWORD_DEFAULT),
+				'name' => $user_from_cos['PersonName']->FirstName,
+				'surname' => $user_from_cos['PersonName']->LastName,
+				'name_prefix' => $user_from_cos['PersonName']->NamePrefix,
+				'credentials' => $user_from_cos['PersonName']->Designation,
+				'city' => $address_data['CityName'],
+				'country' => $address_data['CountryName'],
+				'membership_type' => $membership_info,
+				'created_on' => date('Y-m-d H:i:s'),
+				'created_by' => 0,
+			);
+
+			$this->db->insert('user', $user_data);
+
+			if ($this->db->affected_rows() > 0) {
+
+				$project_id = $this->project->id;
+				$user_id = $this->db->insert_id();
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$project_id, 'level'=>'attendee'));
+
+
+				/********** Login API user *********/
+				$current_project_sessions = $this->session->userdata('project_sessions');
+
+				$current_project_sessions["project_$project_id"] = array(
+					'user_id' => $user_id,
+					'name' => $user_data['name'],
+					'surname' => $user_data['surname'],
+					'email' => $user_data['email'],
+					'photo' => '',
+					'is_attendee' => $isAttendee,
+					'is_moderator' => 0,
+					'is_presenter' => 0,
+					'is_admin' => 0,
+					'is_exhibitor' => $isExhibitor
+				);
+
+				if ($isExhibitor)
+					$current_project_sessions["project_$project_id"]['exhibitor_booth_id'] = $this->auth->getBoothByUser($user_id);
+
+				if
+				(
+					$isExhibitor &&
+					$current_project_sessions["project_$project_id"]['exhibitor_booth_id'] == null
+				)
+				{
+					$this->logger->add($project_id, $user_id, 'Booth management access denied', "Not assigned to any booths");
+					$response = array('status'=>'error', 'msg'=>"You are registered as an exhibitor but no booth is assigned to you yet.");
+					echo json_encode($response);
+					return;
+				}
+
+				$this->session->set_userdata(array('project_sessions' => $current_project_sessions));
+
+				$this->logger->add($project_id, $user_id, 'Logged-in');
+				/******************* ./ Login API User *********************/
+
+
+				// Errors are added to log record in the model
+				$response = array('status'=>'success', 'msg'=>'Login successful, we are redirecting you.');
+				echo json_encode($response);
+				return false;
+
+			}else{
+				// Errors are added to log record in the model
+				$response = array('status'=>'error', 'msg'=>'Unable to create an account for you');
+				echo json_encode($response);
+				return false;
+			}
+
 		}
 
 		echo json_encode($response);
