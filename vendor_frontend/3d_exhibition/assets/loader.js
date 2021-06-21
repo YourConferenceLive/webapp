@@ -466,7 +466,8 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
             actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOverTrigger, function(ev){    
                 pickResultx = scene.pick(ev.pointerX, ev.pointerY);
-                
+                if (zoomed)
+                {
                 switch (true){
                     case pickResultx.pickedMesh.id.indexOf("Aequuspharma_piso") > -1:
                         hl.addMesh(Aequuspharma_piso, BABYLON.Color3.Teal());
@@ -550,6 +551,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                         hl.addMesh(Zeiss_piso, BABYLON.Color3.Teal());
                         break;
 
+                    }
                 }
             }));
 
