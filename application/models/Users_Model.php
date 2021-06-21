@@ -382,4 +382,37 @@ class Users_Model extends CI_Model
 
 //		return imagejpeg($image);
 	}
+
+	public function getExhibitorsWithoutBooth()
+	{
+		$exhibitor_ids = $this->db
+			->select('user_id')
+			->where('project_id', $this->project->id)
+			->where('level', 'exhibitor')
+			->group_by('user_id')
+			->get_compiled_select('user_project_access', true);
+
+		$exhibitors_who_have_booths = $this->db
+			->select('user_id')
+			->group_by('user_id')
+			->get_compiled_select('sponsor_booth_admin', true);
+
+
+
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type');
+		$this->db->from('user');
+		$this->db->where('id IN ('.$exhibitor_ids.')');
+		$this->db->where('id NOT IN ('.$exhibitors_who_have_booths.')');
+		$this->db->order_by("id", "desc");
+		$users = $this->db->get();
+		if ($users->num_rows() > 0)
+		{
+			foreach ($users->result() as $user)
+				$user->accesses = $this->getProjectAccesses($user->id);
+
+			return $users->result();
+		}
+
+		return new stdClass();
+	}
 }
