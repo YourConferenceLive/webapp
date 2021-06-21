@@ -493,3 +493,9 @@ CREATE TABLE `user_agenda` (
 
 
 ALTER TABLE `user` ADD `city` VARCHAR(50) NULL AFTER `disclosures`, ADD `country` VARCHAR(50) NULL AFTER `city`, ADD `rcp_number` VARCHAR(100) NULL AFTER `country`;
+
+-- Session types
+CREATE TABLE `session_types` ( `id` INT NOT NULL AUTO_INCREMENT , `type_code` VARCHAR(10) NOT NULL , `type_name` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `session_types` ADD UNIQUE(`type_code`);
+INSERT INTO `session_types` (`id`, `type_code`, `type_name`) VALUES (NULL, 'gs', 'General Session'), (NULL, 'zm', 'Zoom Meeting');
+ALTER TABLE `sessions` ADD `session_type` VARCHAR(10) NOT NULL DEFAULT 'gs' AFTER `track`;

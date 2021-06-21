@@ -74,7 +74,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 								<!-- Conversations are loaded here -->
 								<div id="hostChatDiv" class="direct-chat-messages" style="height: 100% !important;">
-									<!-- Automatically filled by the JS:loadAllHostChats() (theme_assets/{theme_name}/js/presenter/sessions/host_chat.js) -->
+									<!-- Automatically filled by the JS:loadAllHostChats() (theme_assets/{theme_name}/js/common/sessions/host_chat.js) -->
 								</div>
 
 
