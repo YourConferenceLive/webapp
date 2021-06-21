@@ -15,6 +15,8 @@ class Sponsor_model extends CI_Model
 	{
 		parent::__construct();
 
+		$this->user_id = ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']);
+
 		$this->load->model('Logger_Model', 'logger');
 	}
 
@@ -250,11 +252,12 @@ class Sponsor_model extends CI_Model
 
 		$this->db->select('*')
 			->from('user u')
-			->join('user_project_access upa','upa.user_id = u.id','right')
-			->where('u.id!=',$this->sponsor_id)
-			->where('upa.project_id',$this->project->id)
+			->join('user_project_access upa','upa.user_id = u.id')
+			->where('u.id !=', $this->user_id)
+			->where('upa.project_id', $this->project->id)
+			->where('upa.level', 'attendee')
 			->order_by('u.name')
-			->group_by('u.name');
+			->group_by('u.id');
 
 		$result = $this->db->get();
 		if ($result->num_rows() > 0) {
