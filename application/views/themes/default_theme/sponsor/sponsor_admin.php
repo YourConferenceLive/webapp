@@ -463,27 +463,16 @@ if(!file_exists($cover_photo_url)){
 		socket.emit('ycl_active_user_in_booth', booth_id);
 
 
-		socket.on('ycl_active_user_on_booth', function (user) {
-			if (user.booth_id == current_booth_id && user_id != '')
-			{
-				$('.video-call[user-id="'+user.user_id+'"]').show();
-
-				let userHtml = $('.all-users-item[user-id="'+user.user_id+'"]').clone();
-
-				$('.all-users-item[user-id="'+user.user_id+'"]').remove();
-				$('#usersInThisBooth').append('' +
-						'<li class="all-users-item list-group-item" room-id="'+userHtml.attr('room-id')+'" socket-id="'+user.socket_id+'" user-id="'+userHtml.attr('user-id')+'" active-status="0" style="cursor: pointer;" data-list_id = "' + userHtml.attr('data-list_id') + '" data-chatting_to ="' + userHtml.attr('data-chatting_to') + '" data-to_id="' + userHtml.attr('data-to_id') + '">' +
-						''+userHtml.html()+
-						'</li>');
-			}
-		});
 
 		socket.on('ycl_active_user_in_booth_change', function (socketId)
 		{
-
 			socket.emit('ycl_active_user_in_booth', booth_id)
 		});
 		socket.on('ycl_active_user_in_booth', function (users) {
+
+			if (Object.keys(users).length === 0)
+				return false;
+
 			$.each(users, function (socketId, userId) {
 				let userHtml = $('.all-users-item[user-id="'+userId+'"]').clone();
 

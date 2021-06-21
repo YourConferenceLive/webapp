@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="hangUp" type="button" class="btn btn-danger"><i class="fas fa-phone-slash"></i> Hang Up</button>
+				<button id="hangUp" type="button" class="btn btn-danger"><i class="fas fa-phone-slash"></i> Hangup</button>
 			</div>
 		</div>
 	</div>
@@ -42,8 +42,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<h5 class="modal-title" id="modal-schedule-meet"><span id="incomingCallFromUserName"></span></h5>
 			</div>
 			<div class="modal-body text-center">
-				<button id="acceptVideoCall" class="btn btn-success">Accept</button>
-				<button id="rejectVideoCall" class="btn btn-danger">Reject</button>
+				<button id="acceptVideoCall" class="btn btn-success"><i class="fas fa-phone-alt"></i> Accept</button>
+				<button id="rejectVideoCall" class="btn btn-danger">Reject <i class="fas fa-phone-slash"></i></button>
 			</div>
 			<div class="modal-footer">
 			</div>

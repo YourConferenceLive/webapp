@@ -49,8 +49,48 @@ $(function ()
 		callingUserName = $(this).attr('user-name');
 		let roomId = $(this).attr('room-id');
 
+		$('#hangUp').attr('user-id', callingUserId);
+		$('#hangUp').attr('user-name', callingUserName);
+		$('#hangUp').attr('room-id', roomId);
+
 		joinRoom(roomId)
 
+	});
+
+	$('#hangUp').on('click', function () {
+
+		callingUserId = $(this).attr('user-id');
+		callingUserName = $(this).attr('user-name');
+		let roomId = $(this).attr('room-id');
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "You are about to disconnect this call",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, hangup!'
+		}).then((result) => {
+			if (result.isConfirmed) {
+
+				socket.emit('ycl_oto_vc_hangup', {roomId:roomId, fromId:current_user_id, fromName:current_user_name, toId:callingUserId, toName:callingUserName});
+
+				// Code for removing streams
+				localStream.getTracks().forEach(function(track) {
+					track.stop();
+				});
+				document.getElementById('remote-video').srcObject = null;
+
+				$('#modal-call-sponsor').modal('hide');
+
+				Swal.fire(
+					'Disconnected!',
+					'You hangup the call.',
+					'success'
+				)
+			}
+		})
 	});
 
 });
@@ -63,9 +103,6 @@ $(function ()
 // SOCKET EVENT CALLBACKS =====================================================
 socket.on('ycl_oto_vc_ring', (data) => {
 
-	console.log(data);
-	console.log(current_user_id);
-
 	if (data.toId == current_user_id)
 	{
 		$('#incomingCallFromUserName').text(data.fromName+' is calling you...');
@@ -76,11 +113,68 @@ socket.on('ycl_oto_vc_ring', (data) => {
 			callingUserName = data.fromName;
 			let roomId = data.roomId;
 
+			$('#hangUp').attr('user-id', callingUserId);
+			$('#hangUp').attr('user-name', callingUserName);
+			$('#hangUp').attr('room-id', roomId);
+
 			isEngaged = true;
 
 			$('#modal-call-notification').modal('hide');
 			joinRoom(roomId);
 		});
+
+		$('#rejectVideoCall').on('click', function () {
+			callingUserId = data.fromId;
+			callingUserName = data.fromName;
+			let roomId = data.roomId;
+
+			socket.emit('ycl_oto_vc_reject', {roomId:roomId, fromId:current_user_id, fromName:current_user_name, toId:callingUserId, toName:callingUserName});
+
+			isEngaged = false;
+
+			$('#modal-call-notification').modal('hide');
+		});
+	}
+});
+
+socket.on('ycl_oto_vc_hangup', (data) => {
+
+	if (data.toId == current_user_id)
+	{
+		socket.emit('ycl_oto_vc_leave', data.roomId);
+
+		// Code to handle hangup
+		localStream.getTracks().forEach(function(track) {
+			track.stop();
+		});
+		document.getElementById('remote-video').srcObject = null;
+
+		$('#modal-call-sponsor').modal('hide');
+		Swal.fire(
+			'Call disconnected!',
+			data.fromName+' hangup',
+			'warning'
+		)
+
+	}
+});
+
+socket.on('ycl_oto_vc_reject', (data) => {
+	if (data.toId == current_user_id)
+	{
+		// Code to handle hangup
+		localStream.getTracks().forEach(function(track) {
+			track.stop();
+		});
+		document.getElementById('remote-video').srcObject = null;
+
+		$('#modal-call-sponsor').modal('hide');
+		Swal.fire(
+			'Call rejected!',
+			data.fromName+' rejected your call',
+			'warning'
+		)
+
 	}
 });
 
@@ -102,7 +196,11 @@ socket.on('ycl_oto_vc_room_joined', async () => {
 socket.on('ycl_oto_vc_full_room', () => {
 	console.log('Socket event callback: full_room')
 
-	alert(callingUserName+' is busy, please try again later')
+	Swal.fire(
+		'Busy',
+		callingUserName+' is busy, please try again later',
+		'warning'
+	);
 })
 
 // FUNCTIONS ==================================================================
@@ -132,7 +230,7 @@ async function setLocalStream(mediaConstraints) {
 	localStream = stream
 	document.getElementById('local-video').srcObject = stream
 
-	$('#callingUserName').text("Connecting"+ callingUserName+'...');
+	$('#callingUserName').text("Connecting "+ callingUserName+'...');
 	$('#modal-call-sponsor').modal({ backdrop: 'static', keyboard: false });
 }
 
