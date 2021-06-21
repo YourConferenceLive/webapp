@@ -82,6 +82,8 @@ $(function ()
 				});
 				document.getElementById('remote-video').srcObject = null;
 
+				isEngaged = false;
+
 				$('#modal-call-sponsor').modal('hide');
 
 				Swal.fire(
@@ -148,6 +150,7 @@ socket.on('ycl_oto_vc_hangup', (data) => {
 			track.stop();
 		});
 		document.getElementById('remote-video').srcObject = null;
+		isEngaged = false;
 
 		$('#modal-call-sponsor').modal('hide');
 		Swal.fire(
@@ -167,6 +170,10 @@ socket.on('ycl_oto_vc_reject', (data) => {
 			track.stop();
 		});
 		document.getElementById('remote-video').srcObject = null;
+
+		socket.emit('ycl_oto_vc_leave', data.roomId);
+
+		isEngaged = false;
 
 		$('#modal-call-sponsor').modal('hide');
 		Swal.fire(
@@ -195,6 +202,9 @@ socket.on('ycl_oto_vc_room_joined', async () => {
 
 socket.on('ycl_oto_vc_full_room', () => {
 	console.log('Socket event callback: full_room')
+
+	if(isEngaged)
+		return false;
 
 	Swal.fire(
 		'Busy',
