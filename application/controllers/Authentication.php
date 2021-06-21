@@ -88,7 +88,7 @@ class Authentication extends CI_Controller {
 			}
 
 
-			$this->load->library('cosapi', $api_config);
+			$this->load->library('CosApi', $api_config);
 
 			$user_from_cos = $this->cosapi->getUserByEmail($username);
 
