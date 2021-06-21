@@ -146,6 +146,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#reset-pass-update-modal').attr('user-id', user.id);
 				$('#reset-pass-update-modal').attr('user-name', user.name);
 
+				$('#idFromApi').val(user.idFromApi);
+				$('#membership_type').val(user.membership_type);
+
+				$('#name_prefix').val(user.name_prefix);
+				$('#credentials').val(user.credentials);
 				$('#first_name').val(user.name);
 				$('#surname').val(user.surname);
 

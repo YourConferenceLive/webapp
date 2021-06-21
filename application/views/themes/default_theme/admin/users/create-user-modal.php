@@ -38,6 +38,22 @@
 
 					<div class="card">
 						<div class="card-header">
+							<i class="far fa-address-card"></i> COS Membership
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								<label>COS Party ID</label>
+								<input name="idFromApi" id="idFromApi" class="form-control" type="text" placeholder="User's ID in COS database">
+							</div>
+							<div class="form-group">
+								<label>Membership Type</label>
+								<input name="membership_type" id="membership_type" class="form-control" type="text" placeholder="User's membership type">
+							</div>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-header">
 							<i class="far fa-address-card"></i> Profile Details
 						</div>
 						<div class="card-body">
@@ -50,6 +66,17 @@
 								</div>
 							</div>
 							<img class="image-preview" id="user-photo-preview" src="" style="display: none;" width="75px">
+
+
+							<div class="form-group">
+								<label>Name Prefix</label>
+								<input name="name_prefix" id="name_prefix" class="form-control" type="text" placeholder="User's name prefix">
+							</div>
+
+							<div class="form-group">
+								<label>Credentials</label>
+								<input name="credentials" id="credentials" class="form-control" type="text" placeholder="User's credentials">
+							</div>
 
 							<div class="form-group">
 								<label>First name</label>
