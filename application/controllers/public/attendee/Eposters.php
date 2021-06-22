@@ -124,6 +124,7 @@ class Eposters extends CI_Controller
 	public function notes($eposter_id, $page)
 	{
 		$data['notes']['user']		= $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$data['notes']['eposter']	= $this->eposter->getById($eposter_id);
 		$data['notes_count']		= $this->note->getCount($eposter_id, $data['notes']['user']['user_id']);
 		$page--;
 		$offset 					= (($page)*$this->notesPerPage);

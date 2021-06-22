@@ -286,6 +286,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						jsonObj = JSON.parse(response);
 						// console.log(jsonObj);
 						// Add response in Modal body
+
+						$('.modal-title').html( jsonObj.eposter.title + ' Notes');
+
 						if (jsonObj.total) {
 							$('.count_note strong').text(jsonObj.total);
 							var previousHTML = $('#notes_list_container').html();
@@ -303,6 +306,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 							if (previousHTML == '')
 								iHTML += '</ul>';
+
 
 							$('#notesModal .modal-footer').html('<button' + (((parseInt(note_page)+parseInt(1)) <= Math.ceil(parseInt(jsonObj.total)/parseInt(notes_per_page))) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes('+eposter_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
 
