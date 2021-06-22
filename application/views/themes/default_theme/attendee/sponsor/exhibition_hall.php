@@ -155,12 +155,12 @@
 <div id="bg"></div>
 
 <div class="content2" id="instrucciones" style="display:none;">
-        <img class="center" src="https://dev.yourconference.live/vendor_frontend/3d_exhibition/assets/flechitas.png"><br>
+        <img class="center" src="https://yourconference.live/vendor_frontend/3d_exhibition/assets/flechitas.png"><br>
         <!--h2>Use your keyboard to <br>walk into space</h2-->
         <button type="button" onClick="cerrarventanas();" class="center" id="buttonx" value="entendido"><h3>Ok</h3></button>
 </div>
 
-<canvas id="renderCanvas" touch-action="none" width="1794" height="824" style="touch-action: none; opacity: 1;" tabindex="1"></canvas>
+<canvas id="renderCanvas" touch-action="none" style="touch-action: none; opacity: 1;width:100%; height:calc(100% - 67px);z-index: 0;" tabindex="1"></canvas>
 
 <div id="controlPanel" style="display:none;">
 	<div id="controlsZone">
