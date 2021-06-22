@@ -7,6 +7,7 @@ redirect 301 /Peco/ https://yourconference.live/PECO/
 redirect 301 /jfs https://yourconference.live/JFS/
 redirect 301 /Jfs https://yourconference.live/JFS/
 redirect 301 /gme https://yourconference.live/GME/
+redirect 301 /COS https://yourconference.live/COS/
 
 RewriteEngine On
 
