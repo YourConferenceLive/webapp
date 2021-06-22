@@ -505,3 +505,4 @@ ALTER TABLE `project` ADD `api_url` VARCHAR(255) NULL AFTER `timezone`, ADD `api
 ALTER TABLE `user` ADD `name_prefix` VARCHAR(50) NULL AFTER `photo`;
 ALTER TABLE `user` ADD `membership_type` VARCHAR(10) NULL AFTER `rcp_number`;
 ALTER TABLE `user` ADD `isFromApi` BOOLEAN NOT NULL DEFAULT FALSE AFTER `membership_type`, ADD `IdFromApi` VARCHAR(255) NULL AFTER `isFromApi`;
+ALTER TABLE `user` ADD `membership_sub_type` VARCHAR(50) NULL AFTER `membership_type`;

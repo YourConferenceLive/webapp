@@ -108,6 +108,12 @@ class Authentication extends CI_Controller {
 			$isExhibitor = 0;
 			$membership_info = $this->cosapi->getMembershipType($user_from_cos['PartyId']);
 
+			$membership_sub_info = NULL;
+			if ($membership_info == 'C') // "Contact" type members will have a Sub Category
+			{
+				$membership_sub_info = $this->cosapi->getMembershipSubType($user_from_cos['PartyId']);
+			}
+
 			$cos21VirtualRegCheck = $this->cosapi->cos21VirtualRegCheck($user_from_cos['PartyId']);
 			if (!isset($cos21VirtualRegCheck->Count) || $cos21VirtualRegCheck->Count < 1)
 			{
@@ -169,6 +175,7 @@ class Authentication extends CI_Controller {
 				'city' => $address_data['CityName'],
 				'country' => $address_data['CountryName'],
 				'membership_type' => $membership_info,
+				'membership_sub_type' => $membership_sub_info,
 				'created_on' => date('Y-m-d H:i:s'),
 				'created_by' => 0,
 			);
