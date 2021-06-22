@@ -231,24 +231,92 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 
-	<!-- DataTables  & Plugins -->
+	<!-- DataTables & Plugins -->
 	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 
-<!-- DataTables  & Plugins -->
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/jszip/jszip.min.js"></script>
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/jszip/jszip.min.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 	<script>
+	let note_page = 1;
+	let notes_per_page = parseInt(<?=$notes_per_page;?>);
+
+	function showNotes(eposter_id, note_page) {
+		$('#addUserNotes input[name="entity_type_id"]').val(eposter_id);
+		loadNotes(eposter_id, note_page)
+		$('#notes_list_container').html('');
+		$('#notesModal').modal('show');
+	}
+
+		function showMoreNotes(eposter_id, note_page) {
+			note_page = note_page+1;
+			loadNotes(eposter_id, note_page);
+			$('#notes_list_container').html('');
+			$('#notesModal').modal('show');
+		}
+
+		function loadNotes(eposter_id, note_page) {
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Loading notes...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			$.ajax({
+					type: "GET",
+					url: project_url+"/eposters/notes/"+eposter_id+'/'+note_page,
+					data: '',
+					success: function(response){
+						Swal.close();
+						jsonObj = JSON.parse(response);
+						// console.log(jsonObj);
+						// Add response in Modal body
+						if (jsonObj.total) {
+							$('.count_note strong').text(jsonObj.total);
+							var previousHTML = $('#notes_list_container').html();
+							var iHTML = '';
+							if (previousHTML == '')
+								iHTML += '<ul id="list_note" class="col-md-12">';
+
+							for (let x in jsonObj.data) {
+								let note_id 	= jsonObj.data[x].id;
+								let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+								let datetime 	= jsonObj.data[x].time;
+
+								iHTML += '<!-- Start List Note ' + (x) +' --><li class="box_result row"><div class="result_note col-md-12"><p>'+note+'</p><div class="tools_note"><span>'+datetime+'</span></div></div></li>';
+							}
+
+							if (previousHTML == '')
+								iHTML += '</ul>';
+
+							$('#notesModal .modal-footer').html('<button' + (((parseInt(note_page)+parseInt(1)) <= Math.ceil(parseInt(jsonObj.total)/parseInt(notes_per_page))) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes('+eposter_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
+
+							if (previousHTML == '') {
+								$('#notes_list_container').html(iHTML);
+							} else {
+								$('#list_note').append(iHTML);
+							}
+						} else {
+							$('.count_note strong').text('No ');
+						}
+					}
+				});
+		}
 		$(document).ready(function() {
 			$('#sessionCreditTable').DataTable({
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
@@ -314,18 +382,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#eposterNotesTable').DataTable({
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+				"columns": [
+				    { "data": "id", "name": "id"},
+				    { "data": "eposter_name", "name": "eposter_name"},
+				    { "data": "eposter_type", "name": "eposter_type",},
+				    { "data": "action_link", "name": "action_link",
+				        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+				            if(oData.eposter_id) {
+				                $(nTd).html('<a href="javascript:void(0);" onclick="showNotes('+oData.eposter_id+', \''+note_page+'\');" data-action-type="notes" data-eposter-id="'+oData.eposter_id+'" class="eposter-notes" data-toggle="tooltip" data-placement="left" data-original-title="View Notes"><i class="fas fa-clipboard fa-fw"></i> View</a>');
+				            }
+				        }
+				    },
+				    { "data": "added_on", "name": "added_on"},
+				],
 				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '9%' }, { sWidth: '6%' }, { sWidth: '18%' }],
+				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '9%' }, { sWidth: '6%' }, { sWidth: '28%' }],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
 				'ajax': {url : project_url+"/briefcase/getEposterNotes", type : 'POST'},
 		        "order": [[ 0, "ASC" ]]
 		    });
-
-			$('.view-notes').click(function(e) {
-				alert('Here is now');
-			});
 
 			$('.remove-briefcase-btn').on('click', function() {
 				Swal.fire({
