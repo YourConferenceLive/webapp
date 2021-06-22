@@ -404,6 +404,187 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
             instrucciones.style.display = "block";
 
+            var Aequuspharma_piso = scene.getMeshByName("Aequuspharma_piso");
+            var Alcon_piso = scene.getMeshByName("Alcon_piso");
+            var Allergen1_piso = scene.getMeshByName("Allergen1_piso");
+            var Medical_piso = scene.getMeshByName("Axis Medical_piso");
+            var Lomb_piso = scene.getMeshByName("Bausch & Lomb_piso");
+            var Bayer_piso = scene.getMeshByName("Bayer_piso");
+            var BioScript_piso = scene.getMeshByName("BioScript_piso");
+            var Candorvision_piso = scene.getMeshByName("Candorvision_piso");
+            var CMedical_piso = scene.getMeshByName("Clarion Medical_piso");
+            var COS_piso = scene.getMeshByName("COS_piso");
+            var Glaukos_piso = scene.getMeshByName("Glaukos_piso");
+            var Innova_piso = scene.getMeshByName("Innova_piso");
+            var Ivantis_piso = scene.getMeshByName("Ivantis_piso");
+            var Johnson_piso = scene.getMeshByName("Johnson & Johnson_piso");
+            var Labtician_piso = scene.getMeshByName("Labtician_piso");
+            var McKesson_piso = scene.getMeshByName("McKesson_piso");
+            var Financial_piso = scene.getMeshByName("MD Financial_piso");
+            var Natus_piso = scene.getMeshByName("Natus_piso");
+            var Novartis_piso = scene.getMeshByName("Novartis_piso");
+            var Oculus_piso = scene.getMeshByName("Oculus_piso");
+            var Surgical_piso = scene.getMeshByName("Pacific Surgical_piso");
+            var Roche_piso = scene.getMeshByName("Roche_piso");
+            var Sacor_piso = scene.getMeshByName("Sacor_piso");
+            var Santen_piso = scene.getMeshByName("Santen_piso");
+            var Pharmaceuticals_piso = scene.getMeshByName("Seaford Pharmaceuticals_piso");
+            var TopCon_piso = scene.getMeshByName("TopCon_piso");
+            var Zeiss_piso = scene.getMeshByName("Zeiss_piso");
+
+            let actionManager = new BABYLON.ActionManager(scene);
+
+            Aequuspharma_piso.actionManager = actionManager;
+            Alcon_piso.actionManager = actionManager;
+            Allergen1_piso.actionManager = actionManager;
+            Medical_piso.actionManager = actionManager;
+            Lomb_piso.actionManager = actionManager;
+            Bayer_piso.actionManager = actionManager;
+            BioScript_piso.actionManager = actionManager;
+            Candorvision_piso.actionManager = actionManager;
+            CMedical_piso.actionManager = actionManager;
+            COS_piso.actionManager = actionManager;
+            Glaukos_piso.actionManager = actionManager;
+            Innova_piso.actionManager = actionManager;
+            Ivantis_piso.actionManager = actionManager;
+            Johnson_piso.actionManager = actionManager;
+            Labtician_piso.actionManager = actionManager;
+            McKesson_piso.actionManager = actionManager;
+            Financial_piso.actionManager = actionManager;
+            Natus_piso.actionManager = actionManager;
+            Novartis_piso.actionManager = actionManager;
+            Oculus_piso.actionManager = actionManager;
+            Surgical_piso.actionManager = actionManager;
+            Roche_piso.actionManager = actionManager;
+            Sacor_piso.actionManager = actionManager;
+            Santen_piso.actionManager = actionManager;
+            Pharmaceuticals_piso.actionManager = actionManager;
+            TopCon_piso.actionManager = actionManager;
+            Zeiss_piso.actionManager = actionManager;
+
+            var hl = new BABYLON.HighlightLayer("hl1", scene);
+
+            actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOverTrigger, function(ev){    
+                pickResultx = scene.pick(ev.pointerX, ev.pointerY);
+                if (!zoomed)
+                {
+                switch (true){
+                    case pickResultx.pickedMesh.id.indexOf("Aequuspharma_piso") > -1:
+                        hl.addMesh(Aequuspharma_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Alcon_piso") > -1:
+                        hl.addMesh(Alcon_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Allergen1_piso") > -1:
+                        hl.addMesh(Allergen1_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Axis Medical_piso") > -1:
+                        hl.addMesh(Medical_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Lomb_piso") > -1:
+                        hl.addMesh(Lomb_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Bayer_piso") > -1:
+                        hl.addMesh(Bayer_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("BioScript_piso") > -1:
+                        hl.addMesh(BioScript_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Candorvision_piso") > -1:
+                        hl.addMesh(Candorvision_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Clarion Medical_piso") > -1:
+                        hl.addMesh(CMedical_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("COS_piso") > -1:
+                        hl.addMesh(COS_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Glaukos_piso") > -1:
+                        hl.addMesh(Glaukos_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Innova_piso") > -1:
+                        hl.addMesh(Innova_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Ivantis_piso") > -1:
+                        hl.addMesh(Ivantis_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Johnson_piso") > -1:
+                        hl.addMesh(Johnson_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Labtician_piso") > -1:
+                        hl.addMesh(Labtician_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("McKesson_piso") > -1:
+                        hl.addMesh(McKesson_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Financial_piso") > -1:
+                        hl.addMesh(Financial_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Natus_piso") > -1:
+                        hl.addMesh(Natus_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Novartis_piso") > -1:
+                        hl.addMesh(Novartis_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Oculus_piso") > -1:
+                        hl.addMesh(Oculus_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Surgical_piso") > -1:
+                        hl.addMesh(Surgical_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Roche_piso") > -1:
+                        hl.addMesh(Roche_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Sacor_piso") > -1:
+                        hl.addMesh(Sacor_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Santen_piso") > -1:
+                        hl.addMesh(Santen_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Pharmaceuticals_piso") > -1:
+                        hl.addMesh(Pharmaceuticals_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("TopCon_piso") > -1:
+                        hl.addMesh(TopCon_piso, BABYLON.Color3.Teal());
+                        break;
+                    case pickResultx.pickedMesh.id.indexOf("Zeiss_piso") > -1:
+                        hl.addMesh(Zeiss_piso, BABYLON.Color3.Teal());
+                        break;
+
+                    }
+                }
+            }));
+
+            actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOutTrigger, function(ev){
+                hl.removeMesh(Aequuspharma_piso);
+                hl.removeMesh(Alcon_piso);
+                hl.removeMesh(Allergen1_piso);
+                hl.removeMesh(Medical_piso);
+                hl.removeMesh(Lomb_piso);
+                hl.removeMesh(Bayer_piso);
+                hl.removeMesh(BioScript_piso);
+                hl.removeMesh(Candorvision_piso);
+                hl.removeMesh(CMedical_piso);
+                hl.removeMesh(COS_piso);
+                hl.removeMesh(Glaukos_piso);
+                hl.removeMesh(Innova_piso);
+                hl.removeMesh(Ivantis_piso);
+                hl.removeMesh(Johnson_piso);
+                hl.removeMesh(Labtician_piso);
+                hl.removeMesh(McKesson_piso);
+                hl.removeMesh(Financial_piso);
+                hl.removeMesh(Natus_piso);
+                hl.removeMesh(Novartis_piso);
+                hl.removeMesh(Oculus_piso);
+                hl.removeMesh(Surgical_piso);
+                hl.removeMesh(Roche_piso);
+                hl.removeMesh(Sacor_piso);
+                hl.removeMesh(Santen_piso);
+                hl.removeMesh(Pharmaceuticals_piso);
+                hl.removeMesh(TopCon_piso);
+                hl.removeMesh(Zeiss_piso);
+            }));
+
             if(is_touch_device())
             {        
             
@@ -567,7 +748,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                     if(nombrecito.indexOf('Novartis_pie_enter_20')>-1) idx=49;
                     if(nombrecito.indexOf('Oculus_pie_enter_')>-1) idx=59;
                     if(nombrecito.indexOf('Pacific Surgical_pie_enter_')>-1) idx=42;
-                    if(nombrecito.indexOf('Roche_pie_enter_')>-1) idx=0;
+                    if(nombrecito.indexOf('Roche_pie_enter_')>-1) idx=64;
                     if(nombrecito.indexOf('Sacor_pie_enter_')>-1) idx=29;
                     if(nombrecito.indexOf('Santen_pie_enter_')>-1) idx=45;
                     if(nombrecito.indexOf('Seaford Pharmaceuticals_pie_enter_')>-1) idx=28;
@@ -1480,7 +1661,7 @@ else
             {
                 option.selected=true;
             }
-            camerasList.appendChild(option);
+            //camerasList.appendChild(option);
         }
     })
 }

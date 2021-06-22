@@ -12,6 +12,29 @@ class Briefcase_Model extends CI_Model
 		$this->load->model('Sessions_Model');
 	}
 
+	public function add($session_id)
+	{
+		$data = array('project_id' 		=> $this->project->id,
+					  'user_id' 		=> $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
+					  'session_id' 		=> strip_tags($session_id),
+					  'added_datetime' 	=> date('Y-m-d H:i:s'));
+
+		if ($this->db->insert('user_agenda', $data)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function delete($session_id)
+	{
+		if ($this->db->delete('user_agenda', array('session_id' => $session_id, 'user_id' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	function getItinerariesCount()
 	{
 		$this->db->join('sessions', 'sessions.id = user_agenda.session_id');
@@ -38,6 +61,7 @@ class Briefcase_Model extends CI_Model
 		$this->db->where('user_agenda.project_id', $this->project->id);
 		$this->db->order_by('sessions.start_date_time', 'ASC');$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
+		
 		{
 			foreach ($sessions->result() as $session)
 			{

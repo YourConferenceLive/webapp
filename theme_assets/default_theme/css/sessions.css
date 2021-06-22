@@ -14,6 +14,11 @@
 	min-height: 210px;
 }
 
+.btn.not-allowed
+{
+  cursor: not-allowed !important;
+}
+
 /************** Join Page *************/
 #full-screen-background.sessions-join
 {

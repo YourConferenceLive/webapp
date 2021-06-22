@@ -138,6 +138,10 @@
                 margin-right: auto;
                 width: 75%;
             }
+
+		#mainMenu{
+			z-index: 100;
+		}
 	</style>
 
 

@@ -2,6 +2,12 @@
 # htaccess file
 # created by Athul AK
 
+redirect 301 /peco/ https://yourconference.live/PECO/
+redirect 301 /Peco/ https://yourconference.live/PECO/
+redirect 301 /jfs https://yourconference.live/JFS/
+redirect 301 /Jfs https://yourconference.live/JFS/
+redirect 301 /gme https://yourconference.live/GME/
+
 RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f

@@ -19,7 +19,7 @@ class Users_Model extends CI_Model
 			->group_by('user_id')
 			->get_compiled_select('user_project_access', true);
 
-		$this->db->select('id, name, surname, email, active');
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
 		$this->db->from('user');
 		$this->db->where('id IN ('.$user_ids.')');
 		$this->db->order_by("id", "desc");
@@ -37,7 +37,7 @@ class Users_Model extends CI_Model
 
 	public function getById($id)
 	{
-		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, credentials');
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
 		$this->db->from('user');
 		$this->db->where('id', $id);
 		$user = $this->db->get();
@@ -74,6 +74,11 @@ class Users_Model extends CI_Model
 			'password' => password_hash($post['password'], PASSWORD_DEFAULT),
 			'bio' => $post['bio'],
 			'disclosures' => $post['disclosure'],
+			'credentials' => $post['credentials'],
+			'name_prefix' => $post['name_prefix'],
+			'idFromApi' => $post['idFromApi'],
+			'membership_type' => $post['membership_type'],
+			'membership_sub_type' => $post['membership_sub_type'],
 			'photo' => $user_photo_name,
 			'created_on' => date('Y-m-d H:i:s'),
 			'created_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
@@ -129,6 +134,11 @@ class Users_Model extends CI_Model
 			'surname' => $post['surname'],
 			'bio' => $post['bio'],
 			'disclosures' => $post['disclosure'],
+			'credentials' => $post['credentials'],
+			'name_prefix' => $post['name_prefix'],
+			'idFromApi' => $post['idFromApi'],
+			'membership_type' => $post['membership_type'],
+			'membership_type' => $post['membership_sub_type'],
 			'photo' => $user_photo_name,
 			'updated_on' => date('Y-m-d H:i:s'),
 			'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
@@ -328,17 +338,20 @@ class Users_Model extends CI_Model
 				'email' => $post['email'],
 				'name' => $post['first_name'],
 				'surname' => $post['surname'],
-				'bio' => $post['bio'],
-				'disclosures' => $post['disclosure'],
+				//'bio' => $post['bio'],
+				//'disclosures' => $post['disclosure'],
 				'city' => $post['city'],
 				'country' => $post['country'],
 				'rcp_number' => $post['rcpn'],
-				'password' => password_hash($post['password'], PASSWORD_DEFAULT),
+
 				'updated_on' => date('Y-m-d H:i:s'),
 				'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
 			);
 		if($user_photo_name!==''){
 			$data['photo'] = $user_photo_name;
+		}
+		if($post['password'] && $post['password'] !== ''){
+			$data['password']= password_hash($post['password'], PASSWORD_DEFAULT);
 		}
 
 		$this->db->set($data);
@@ -370,5 +383,38 @@ class Users_Model extends CI_Model
 		imagejpeg($image, $destination, $quality);
 
 //		return imagejpeg($image);
+	}
+
+	public function getExhibitorsWithoutBooth()
+	{
+		$exhibitor_ids = $this->db
+			->select('user_id')
+			->where('project_id', $this->project->id)
+			->where('level', 'exhibitor')
+			->group_by('user_id')
+			->get_compiled_select('user_project_access', true);
+
+		$exhibitors_who_have_booths = $this->db
+			->select('user_id')
+			->group_by('user_id')
+			->get_compiled_select('sponsor_booth_admin', true);
+
+
+
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type');
+		$this->db->from('user');
+		$this->db->where('id IN ('.$exhibitor_ids.')');
+		$this->db->where('id NOT IN ('.$exhibitors_who_have_booths.')');
+		$this->db->order_by("id", "desc");
+		$users = $this->db->get();
+		if ($users->num_rows() > 0)
+		{
+			foreach ($users->result() as $user)
+				$user->accesses = $this->getProjectAccesses($user->id);
+
+			return $users->result();
+		}
+
+		return new stdClass();
 	}
 }

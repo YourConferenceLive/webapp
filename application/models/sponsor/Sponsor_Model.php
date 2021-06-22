@@ -16,6 +16,8 @@ class Sponsor_model extends CI_Model
 		parent::__construct();
 
 		$this->user_id = ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']);
+		$this->booth_id = $_SESSION['project_sessions']["project_{$this->project->id}"]['exhibitor_booth_id'];
+		$this->user_id = ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']);
 
 		$this->load->model('Logger_Model', 'logger');
 	}
@@ -149,7 +151,9 @@ class Sponsor_model extends CI_Model
 	function update_about_us()
 	{
 		$post = $this->input->post();
+
 		if (isset($post['about_us'])) {
+
 			$this->db->where('id', $this->booth_id);
 			$this->db->update('sponsor_booth', array('about_us' => $post['about_us']));
 			return 'success';

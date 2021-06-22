@@ -86,4 +86,20 @@ class Users extends CI_Controller
 		else
 			echo json_encode(array('status'=>'failed'));
 	}
+
+	public function exhibitorsWithoutBooth()
+	{
+		$sidebar_data['user'] = $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/users/exhibitors_without_booth")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/users/create-user-modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function getAllExhibitorsWithoutBoothJson(){echo json_encode($this->users->getExhibitorsWithoutBooth());}
 }

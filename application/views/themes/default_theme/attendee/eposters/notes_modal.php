@@ -6,10 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="modal-dialog" role="document" style="overflow-y: initial !important">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="notesModalLabel"><i class="fas fa-pen"></i> <?php echo $user['name'].' '.$user['surname'].'\'s';?> Notes</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<p class="modal-title text-justify" id="notesModalLabel">Notes</p>
 					</div>
 					<div class="modal-body" style="height: 65vh;overflow-y: auto;">
 						<div class="row">
