@@ -27,7 +27,7 @@ if(!file_exists($cover_photo_url)){
 
 ?>
 
-<div class="container-fluid p-0 mt-5">
+<div class="container-fluid p-0 mt-5 template<?=$booth->template?>">
 	<div class="jumbotron rounded-0" id="cover_photo" style="background-image: url('<?= (isset($booth->cover_photo) && !empty($booth->cover_photo))? ycl_root.'/'.$cover_photo_url:''?>')">
 		<div class="">
 			<input type="file" name="cover_upload " id="cover-upload" class="cover-upload" accept=".jpg,.png,.jpeg" style="display: none">

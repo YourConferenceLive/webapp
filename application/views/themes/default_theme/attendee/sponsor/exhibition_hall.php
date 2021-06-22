@@ -16,6 +16,7 @@
 
 	<link rel="stylesheet" href="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/index.css">
 	<link rel="stylesheet" href="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/main.css">
+	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/exhibition_hall.css?v=<?=rand()?>" rel="stylesheet">
 	<script src="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/pep.min.js"></script>
 	<style>
 		[touch-action="none"]{ -ms-touch-action: none; touch-action: none; touch-action-delay: none; }
@@ -125,7 +126,7 @@
                 border-radius: 10px;
                 text-align:center;
             }
-		#buttonx 
+		#buttonx
             {
                 border-radius: 15px ;
                 color:#444;
@@ -142,15 +143,17 @@
 
 <button id="enterButton" class="btn btn-primary xy-center">ENTER</button>
 <img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/exhibition_landing.jpeg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">
+<!--<img id="full-screen-background" src="https://dev.yourconference.live/cms_uploads/projects/3/other_images/exhibition_landing.jpeg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">-->
 
 <div class="vertical-center" id="loadingScreen">Loading<br>
 	<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/loading.gif">
 </div>
+<div id="bg"></div>
 
 <div class="content2" id="instrucciones" style="display:none;">
         <img class="center" src="https://dev.yourconference.live/vendor_frontend/3d_exhibition/assets/flechitas.png"><br>
         <!--h2>Use your keyboard to <br>walk into space</h2-->
-        <button type="button" onClick="cerrarventanas();" class="center" id="buttonx" value="entendido"><h3>Ok</h3></button> 
+        <button type="button" onClick="cerrarventanas();" class="center" id="buttonx" value="entendido"><h3>Ok</h3></button>
 </div>
 
 <canvas id="renderCanvas" touch-action="none" width="1794" height="824" style="touch-action: none; opacity: 1;" tabindex="1"></canvas>
@@ -173,7 +176,8 @@
 <script src="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/loader.js"></script>
 <script>
 	$('#enterButton').on('click', function () {
-		$(this).hide();		
-		$('#full-screen-background').hide();		
+		$(this).hide();
+		$('#full-screen-background').hide();
+		$("#bg").remove();
 	});
 </script>

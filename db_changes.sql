@@ -499,3 +499,9 @@ CREATE TABLE `session_types` ( `id` INT NOT NULL AUTO_INCREMENT , `type_code` VA
 ALTER TABLE `session_types` ADD UNIQUE(`type_code`);
 INSERT INTO `session_types` (`id`, `type_code`, `type_name`) VALUES (NULL, 'gs', 'General Session'), (NULL, 'zm', 'Zoom Meeting');
 ALTER TABLE `sessions` ADD `session_type` VARCHAR(10) NOT NULL DEFAULT 'gs' AFTER `track`;
+
+
+ALTER TABLE `sponsor_booth`
+ADD COLUMN `show_group_chat` INT NULL DEFAULT 1 AFTER `right_table_url`;
+ALTER TABLE `sponsor_booth`
+ADD COLUMN `template` INT NULL DEFAULT 1 AFTER `show_group_chat`;
