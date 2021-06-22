@@ -53,6 +53,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>First Name</th>
 									<th>Surname</th>
 									<th>Email</th>
+									<th>Memb Type</th>
+									<th>Memb Sub Type</th>
 									<th>Accesses</th>
 									<th>Actions</th>
 								</tr>
@@ -148,6 +150,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				$('#idFromApi').val(user.idFromApi);
 				$('#membership_type').val(user.membership_type);
+				$('#membership_sub_type').val(user.membership_sub_type);
 
 				$('#name_prefix').val(user.name_prefix);
 				$('#credentials').val(user.credentials);
@@ -281,6 +284,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'	</td>' +
 						'	<td>' +
 						'		'+user.email+
+						'	</td>' +
+						'	<td>' +
+						'		'+user.membership_type+
+						'	</td>' +
+						'	<td>' +
+						'		'+user.membership_sub_type+
 						'	</td>' +
 						'	<td>' +
 						'		'+accessList+

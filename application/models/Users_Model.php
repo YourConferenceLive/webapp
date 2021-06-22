@@ -19,7 +19,7 @@ class Users_Model extends CI_Model
 			->group_by('user_id')
 			->get_compiled_select('user_project_access', true);
 
-		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type');
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
 		$this->db->from('user');
 		$this->db->where('id IN ('.$user_ids.')');
 		$this->db->order_by("id", "desc");
@@ -37,7 +37,7 @@ class Users_Model extends CI_Model
 
 	public function getById($id)
 	{
-		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type');
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
 		$this->db->from('user');
 		$this->db->where('id', $id);
 		$user = $this->db->get();
@@ -78,6 +78,7 @@ class Users_Model extends CI_Model
 			'name_prefix' => $post['name_prefix'],
 			'idFromApi' => $post['idFromApi'],
 			'membership_type' => $post['membership_type'],
+			'membership_sub_type' => $post['membership_sub_type'],
 			'photo' => $user_photo_name,
 			'created_on' => date('Y-m-d H:i:s'),
 			'created_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
@@ -137,6 +138,7 @@ class Users_Model extends CI_Model
 			'name_prefix' => $post['name_prefix'],
 			'idFromApi' => $post['idFromApi'],
 			'membership_type' => $post['membership_type'],
+			'membership_type' => $post['membership_sub_type'],
 			'photo' => $user_photo_name,
 			'updated_on' => date('Y-m-d H:i:s'),
 			'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
