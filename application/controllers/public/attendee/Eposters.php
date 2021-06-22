@@ -88,6 +88,7 @@ class Eposters extends CI_Controller
 		$data['previous'] 			= $this->eposter->getEposterID($eposter_id, 'previous');
 		$data['comments_per_page']	= $this->commentsPerPage;
 		$data['notes_per_page']		= $this->notesPerPage;
+		$data['entitiy_type']		= 'eposter';
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
@@ -112,25 +113,26 @@ class Eposters extends CI_Controller
 			echo json_encode(array('status'=>'failed'));
 	}
 
-	public function add_notes()
+	public function add_notes($entitiy_type = 'eposter')
 	{
-		$this->logger->log_visit("Note added on ePoster", $this->input->post('entity_type_id'));
-		if ($this->note->add())
+		$this->logger->log_visit("Note added on ".$this->input->post('entity_type'), $this->input->post('entity_type_id'));
+		if ($this->note->add($entitiy_type))
 			echo json_encode(array('status'=>'success'));
 		else
 			echo json_encode(array('status'=>'failed'));
 	}
 
-	public function notes($eposter_id, $page)
+	public function notes($entitiy_type, $eposter_id, $page)
 	{
-		$data['notes']['user']		= $_SESSION['project_sessions']["project_{$this->project->id}"];
-		$data['notes']['eposter']	= $this->eposter->getById($eposter_id);
-		$data['notes_count']		= $this->note->getCount($eposter_id, $data['notes']['user']['user_id']);
+		$data['notes']['user']			= $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$data['notes']['eposter']		= $this->eposter->getById($eposter_id);
+		$data['notes_count']			= $this->note->getCount($eposter_id, $data['notes']['user']['user_id']);
 		$page--;
-		$offset 					= (($page)*$this->notesPerPage);
+		$offset 						= (($page)*$this->notesPerPage);
 
-		$data['notes']['total'] 	= $data['notes_count'];
-		$data['notes']['data'] 		= $this->note->getAll($eposter_id, $data['notes']['user']['user_id'], $this->notesPerPage, $offset);
+		$data['notes']['entitiy_type'] 	= $entitiy_type;
+		$data['notes']['total'] 		= $data['notes_count'];
+		$data['notes']['data'] 			= $this->note->getAll($eposter_id, $data['notes']['user']['user_id'], $this->notesPerPage, $offset);
 
 		echo json_encode($data['notes']);
 		exit;

@@ -25,6 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="box_note col-md-12">
 												<form id="addUserNotes">
 													<input type="hidden" name="entity_type_id" id="entity_type_id" value="<?php echo $eposter->id;?>">
+													<input type="hidden" name="entity_type" id="entity_type" value="<?php echo (($entitiy_type) ? $entitiy_type : 'session' );?>">
 													<textarea class="form-control" name="notes" id="notes" placeholder="Add a note..."></textarea>
 								  					<div class="box_post">
 														<div class="pull-right">
@@ -74,13 +75,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					},
 					success: function(data)
 					{
-						Swal.close();
+						// Swal.close();
 
 						data = JSON.parse(data);
 
 						if (data.status == 'success') {
 							$('#notes_list_container').html('');
-							loadNotes(formData.get('entity_type_id'), note_page);
+							$('textarea[name="notes"]').val('');
+							loadNotes(formData.get('entity_type'), formData.get('entity_type_id'), note_page);
 							toastr.success('Note added.');
 							$('#notes').val('');
 						}else{

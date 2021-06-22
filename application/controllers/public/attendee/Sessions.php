@@ -57,7 +57,6 @@ class Sessions extends CI_Controller
 
 	public function view($session_id)
 	{
-
 		$this->logger->log_visit("Session View", $session_id);
 
 		$data['user'] = $this->user;
