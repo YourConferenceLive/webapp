@@ -165,12 +165,40 @@ if(!file_exists($cover_photo_url)){
 										</div>
 									</div>
 									<div class="form-group  float-md-right mx-sm-auto mr-m-2  w-100">
+										<label class="sr-only" for="twitter"  ></label>
+										<div class="input-group ">
+											<div class="input-group-prepend w-100">
+												<div class="input-group-text py-0 bg-light w-100">
+													<a target="_blank" class="btn p-0"><i class="fab fa-twitter fa-2x  m-0"></i></a>
+													<input type="text" id="twitter" disabled class="form-control shadow-none" placeholder="twitter_id" value="<?=(isset($booth->twitter_link2) && !empty($booth->twitter_link2))?$booth->twitter_link2:''?>">
+												</div>
+												<div class="input-group-text btn bg-light btn-save-twitter" hidden>
+													<i class="far fa-edit text-secondary"  aria-hidden="true">save</i>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group  float-md-right mx-sm-auto mr-m-2  w-100">
 										<label class="sr-only " for="facebook" ></label>
 										<div class="input-group">
 											<div class="input-group-prepend w-100">
 												<div class="input-group-text py-0 bg-light w-100">
 													<a target="_blank" class="btn p-0"><i class="fab fa-facebook fa-2x  m-0"></i></a>
 													<input type="text" id="facebook" disabled class="form-control shadow-none" placeholder="facebook_id" value="<?=(isset($booth->facebook_link) && !empty($booth->facebook_link))?$booth->facebook_link:''?>">
+												</div>
+												<div class="input-group-text btn bg-light btn-save-facebook" hidden>
+													<i class="far fa-edit  text-secondary"  aria-hidden="true">save</i>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group  float-md-right mx-sm-auto mr-m-2  w-100">
+										<label class="sr-only " for="facebook" ></label>
+										<div class="input-group">
+											<div class="input-group-prepend w-100">
+												<div class="input-group-text py-0 bg-light w-100">
+													<a target="_blank" class="btn p-0"><i class="fab fa-facebook fa-2x  m-0"></i></a>
+													<input type="text" id="facebook" disabled class="form-control shadow-none" placeholder="facebook_id" value="<?=(isset($booth->facebook_link2) && !empty($booth->facebook_link2))?$booth->facebook_link2:''?>">
 												</div>
 												<div class="input-group-text btn bg-light btn-save-facebook" hidden>
 													<i class="far fa-edit  text-secondary"  aria-hidden="true">save</i>
