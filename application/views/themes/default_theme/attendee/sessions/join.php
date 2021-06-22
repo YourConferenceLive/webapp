@@ -30,31 +30,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 					</div>
 				</div>
-				<div class="col-4">
+				<div class="col-4 mt-5" >
 					<p>
-					<?php if($session->moderators != new stdClass()):?>
-						<span>Moderator:</span>
-						<?php foreach ($session->moderators as $index=> $moderator):?>
-							<?=(isset($index) && ($index >= 1))?', ':''?>
-							<?= $moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?', '.$moderator->credentials:'')?>
-						<?php endforeach; ?><br>
-					<?php endif;?>
+						<?php if($session->moderators != new stdClass()):?>
+							<span><strong>Moderator:</strong> </span>
+							<?php foreach ($session->moderators as $index=> $moderator):?>
+								<?=(isset($index) && ($index >= 1))?',':''?>
+								<?=$moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?' '.$moderator->credentials:'')?>
+							<?php endforeach; ?><br>
+						<?php endif;?>
 
-					<?php if($session->keynote_speakers != new stdClass()):?>
-						<span>Keynote:</span>
-						<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
-							<?=(isset($index) && ($index >= 1))?', ':''?>
-								<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'')?>
-						<?php endforeach; ?><br>
-					<?php endif; ?>
-
-					<?php if($session->presenters != new stdClass()):?>
-						<span>Speakers:</span>
-						<?php foreach ($session->presenters as $index=> $presenter):?>
-							<?=(isset($index) && ($index >=1))?', ':''?>
-							<?= $presenter->name." ".$presenter->surname.(!empty($presenter->credentials)?', '.$presenter->credentials:'')?>
-						<?php endforeach;?><br>
-					<?php endif; ?>
+						<?php if($session->keynote_speakers != new stdClass()):?>
+							<span><strong>Keynote:</strong></span>
+							<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
+								<?=(isset($index) && ($index >= 1))?',':''?>
+								<a style="cursor: pointer" class="keynote-link" keynote-id="<?=$keynote->id?>" keynote-photo="<?=$keynote->photo?>" speaker-name="<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>">
+									<?=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>
+								</a>
+								<bio style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->bio?></bio>
+								<disclosure style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->disclosures?></disclosure>
+							<?php endforeach; ?><br>
+						<?php endif; ?>
+						<?php if($session->presenters != new stdClass()):?>
+							<span><strong>Speakers:</strong></span>
+							<?php
+							foreach ($session->presenters as $index=>$presenter):
+								echo ((isset($index) && ($index>=1))?", ":'').trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?' '.trim($presenter->credentials):'');
+							endforeach;?><br>
+						<?php endif; ?>
 					</p>
 
 				</div>
