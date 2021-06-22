@@ -26,7 +26,7 @@ class Briefcase extends CI_Controller
 
 	public function index()
 	{
-		$this->logger->log_visit("Briefcase Listing", $this->user->user_id);
+		$this->logger->log_visit("Briefcase Listing", $this->user['user_id']);
 		$data['user'] 					= $this->user;
 		$data['active_briefcase_tab'] 	= 'agenda';
 		$data['active_credit_tab'] 		= 'session-credits';

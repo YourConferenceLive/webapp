@@ -61,34 +61,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				let formData = new FormData(document.getElementById('addUserNotes'));
 
-				$.ajax({
-					type: "POST",
-					url: project_url+"/eposters/add_notes",
-					data: formData,
-					processData: false,
-					contentType: false,
-					error: function(jqXHR, textStatus, errorMessage)
-					{
-						Swal.close();
-						toastr.error(errorMessage);
-						//console.log(errorMessage); // Optional
-					},
-					success: function(data)
-					{
-						// Swal.close();
+				$.ajax({type: "POST",
+						url: project_url+"/eposters/add_notes",
+						data: formData,
+						processData: false,
+						contentType: false,
+						error: function(jqXHR, textStatus, errorMessage) {
+							Swal.close();
+							toastr.error(errorMessage);
+						},
+						success: function(data) {
+							data = JSON.parse(data);
 
-						data = JSON.parse(data);
-
-						if (data.status == 'success') {
-							$('#notes_list_container').html('');
-							$('textarea[name="notes"]').val('');
-							loadNotes(formData.get('entity_type'), formData.get('entity_type_id'), note_page);
-							toastr.success('Note added.');
-							$('#notes').val('');
-						}else{
-							toastr.error("Error");
+							if (data.status == 'success') {
+								$('#notes_list_container').html('');
+								$('textarea[name="notes"]').val('');
+								loadNotes(formData.get('entity_type'), formData.get('entity_type_id'), note_page);
+								toastr.success('Note added.');
+								$('#notes').val('');
+							}else{
+								toastr.error("Error");
+							}
 						}
-					}
 				});
 			});
 		</script>

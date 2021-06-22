@@ -192,10 +192,6 @@ class Notes_Model extends CI_Model
 	public function add($entity_type)
 	{
 		$post = $this->input->post();
-		// echo '<pre>';
-		// print_r($post);
-		// echo '</pre>';
-		// exit;
 		if ($post['notes'] != '' && $entity_type != '' && $post['entity_type_id'] != '' && $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] != '') {
 			$data = array('project_id' 		=> $this->project->id,
 						  'origin_type' 	=> strip_tags($entity_type),

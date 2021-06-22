@@ -130,10 +130,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</table>
 									</div>
 									<div class="tab-pane p-2<?php echo (('credits' == $active_briefcase_tab) ? ' active' : '' );?>" id="credits" role="tabpanel" aria-labelledby="credits-tab">
-										<a href="#" class="btn btn-info disabled float-right">Get Certificate (Will be available soon)</a>
-
-										<div class="clearfix"></div>
-
 										<!-- Credit tabs -->
 										<ul class="nav nav-tabs" id="credit-tabs" role="tablist">
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('session-credits' == $active_credit_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="session-credits-tab" data-toggle="tab" href="#session-credits" role="tab" aria-controls="session-credits">General Sessions</a></li>
@@ -323,6 +319,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$(document).ready(function() {
 			$('#sessionCreditTable').DataTable({
+				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			   	buttons: [{text: 'Get Certificate (Will be available soon)',
+		   	   	className: 'btn btn-info disabled',
+		   			action: function ( e, dt, button, config ) {
+	 					// window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+		   			}
+	      		}],
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
 				bAutoWidth: false, 
 				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '8%' }, { sWidth: '18%' }],
@@ -333,18 +336,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		        "order": [[ 0, "ASC" ]]
 		    });
 
-			$('#stcCreditTable').DataTable({
-				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
-				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '8%' }, { sWidth: '18%' }],
-				'processing': true,
-				'serverSide': true,
-				'serverMethod': 'post',
-				'ajax': {url : project_url+"/briefcase/getSessionCredits/zm", type : 'POST'},
-		        "order": [[ 0, "ASC" ]]
-		    });
 
 			$('#eposterCreditTable').DataTable({
+				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			   	buttons: [{text: 'Get Certificate (Will be available soon)',
+		   	   	className: 'btn btn-info disabled',
+		   			action: function ( e, dt, button, config ) {
+	 					// window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+		   			}
+	      		}],
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
 				bAutoWidth: false, 
 				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '8%' }, { sWidth: '7%' }, { sWidth: '18%' }],
@@ -352,6 +352,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'serverSide': true,
 				'serverMethod': 'post',
 				'ajax': {url : project_url+"/briefcase/getEposterCredits", type : 'POST'},
+		        "order": [[ 0, "ASC" ]]
+		    });
+
+			$('#stcCreditTable').DataTable({
+				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			   	buttons: [{text: 'Get Certificate (Will be available soon)',
+		   	   	className: 'btn btn-info disabled',
+		   			action: function ( e, dt, button, config ) {
+	 					// window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+		   			}
+	      		}],
+				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+				bAutoWidth: false, 
+				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '8%' }, { sWidth: '18%' }],
+				'processing': true,
+				'serverSide': true,
+				'serverMethod': 'post',
+				'ajax': {url : project_url+"/briefcase/getSessionCredits/zm", type : 'POST'},
 		        "order": [[ 0, "ASC" ]]
 		    });
 

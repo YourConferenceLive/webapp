@@ -101,6 +101,7 @@ class Eposters extends CI_Controller
 	public function add_credits()
 	{
 		$this->logger->log_visit("Credits added on ePoster", $this->input->post('entity_type_id'));
+
 		$this->load->model('Credits_Model', 'credit');
 
 		$origin_type 				= $this->input->post('origin_type');
@@ -116,6 +117,7 @@ class Eposters extends CI_Controller
 	public function add_notes($entitiy_type = 'eposter')
 	{
 		$this->logger->log_visit("Note added on ".$this->input->post('entity_type'), $this->input->post('entity_type_id'));
+
 		if ($this->note->add($entitiy_type))
 			echo json_encode(array('status'=>'success'));
 		else
@@ -124,6 +126,8 @@ class Eposters extends CI_Controller
 
 	public function notes($entitiy_type, $eposter_id, $page)
 	{
+		$this->logger->log_visit("View ".$entitiy_type." notes", $eposter_id);
+
 		$data['notes']['user']			= $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$data['notes']['eposter']		= $this->eposter->getById($eposter_id);
 		$data['notes_count']			= $this->note->getCount($eposter_id, $data['notes']['user']['user_id']);
@@ -141,6 +145,7 @@ class Eposters extends CI_Controller
 	public function post_comments()
 	{
 		$this->logger->log_visit("Commented on ePoster", $this->input->post('eposter_id'));
+
 		if ($this->comment->postComments())
 			echo json_encode(array('status'=>'success'));
 		else
@@ -149,6 +154,8 @@ class Eposters extends CI_Controller
 
 	public function comments($eposter_id, $page)
 	{
+		$this->logger->log_visit("View comments", $eposter_id);
+
 		$data['comments_count']		= $this->comment->getCount($eposter_id);
 		$page--;
 		$offset 					= (($page)*$this->commentsPerPage);
