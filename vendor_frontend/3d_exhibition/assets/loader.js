@@ -20,7 +20,7 @@ var toggleFxaa=document.getElementById("toggleFxaa");
 var toggleBandW=document.getElementById("toggleBandW");
 var toggleSepia=document.getElementById("toggleSepia");
 var sceneChecked;
-var sceneLocation="/vendor_frontend/3d_exhibition/scene/";    
+var sceneLocation=ycl_root+"/vendor_frontend/3d_exhibition/scene/";
 var zoomed=false;
 
 //var engine=new BABYLON.Engine(canvas,true,{preserveDrawingBuffer:true});
