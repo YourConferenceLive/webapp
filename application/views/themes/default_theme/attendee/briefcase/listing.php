@@ -273,14 +273,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				allowOutsideClick: false
 			});
 
-			$.ajax({
-					type: "GET",
+			$.ajax({type: "GET",
 					url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
 					data: '',
 					success: function(response){
 						Swal.close();
 						jsonObj = JSON.parse(response);
-						// console.log(jsonObj);
 						// Add response in Modal body
 
 						$('.modal-title').html( jsonObj.eposter.title + ' Notes');
@@ -336,7 +334,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		        "order": [[ 0, "ASC" ]]
 		    });
 
-
+			//ePoster Credit Table
 			$('#eposterCreditTable').DataTable({
 				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			   	buttons: [{text: 'Get Certificate (Will be available soon)',
@@ -428,20 +426,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#eposterNotesTable').DataTable({
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
 				"columns": [
-				    { "data": "id", "name": "id"},
+				    { "data": "id", "name": "id", "width": "2%"},
 				    { "data": "eposter_name", "name": "eposter_name"},
-				    { "data": "eposter_type", "name": "eposter_type",},
-				    { "data": "action_link", "name": "action_link",
+				    { "data": "eposter_type", "name": "eposter_type", "width": "12%"},
+				    { "data": "action_link", "name": "action_link", "width": "6%",
 				        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
 				            if(oData.eposter_id) {
 				                $(nTd).html('<a href="javascript:void(0);" onclick="showNotes(\'eposter\', '+oData.eposter_id+', \''+note_page+'\');" data-action-type="notes" data-eposter-id="'+oData.eposter_id+'" class="eposter-notes" data-toggle="tooltip" data-placement="left" data-original-title="View Notes"><i class="fas fa-clipboard fa-fw"></i> View</a>');
 				            }
 				        }
 				    },
-				    { "data": "added_on", "name": "added_on"},
+				    { "data": "added_on", "name": "added_on", "width": "16%"},
 				],
 				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '9%' }, { sWidth: '6%' }, { sWidth: '28%' }],
+				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '20%' }, { sWidth: '6%' }, { sWidth: 'auto' }],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
