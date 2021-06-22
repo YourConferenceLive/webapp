@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //exit;
 ?>
 
-<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=4" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=5" rel="stylesheet">
 
 <!-- Full Calendar-->
 <link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.css">
