@@ -8,7 +8,7 @@ class Login extends CI_Controller
 	{
 		parent::__construct();
 
-		if (ycl_env == "development")
+		if (ycl_env == "testing")
 			redirect('https://yourconference.live/COS/');
 
 		if (isset($_SESSION['project_sessions']["project_{$this->project->id}"]) && $_SESSION['project_sessions']["project_{$this->project->id}"]['is_attendee'] == 1)
