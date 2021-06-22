@@ -250,6 +250,31 @@
 	</div>
 </div>
 
+<!-- PDF selection Modal -->
+<div class="modal fade" id="SN_PdfSelectionModal" tabindex="-1" role="dialog" aria-labelledby="SN_PdfSelectionModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="SN_PdfSelectionModalLabel">Choose PDF File</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="input-group">
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" id="sn_pdf_input" accept="application/pdf">
+						<label class="custom-file-label" for="sn_pdf_input">Choose file</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 
 	$(function () {
@@ -263,6 +288,7 @@
 		$('#sessionDescription')
 				.summernote
 				({
+					dialogsInBody: true,
 					placeholder: $('#sessionDescription').attr('placeholder'),
 					height: 200,
 					toolbar:
@@ -280,9 +306,58 @@
 					fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
 				});
 
+
+		let pdfButton = function (context) {
+			let ui = $.summernote.ui;
+
+			// create button
+			let button = ui.button({
+				contents: '<i class="fas fa-file-pdf"></i>',
+				tooltip: 'PDF',
+				click: function () {
+
+					$('#SN_PdfSelectionModal').modal('show');
+
+					$("#sn_pdf_input").change(function (){
+						//Read File
+						var selectedFile = document.getElementById("sn_pdf_input").files;
+						//Check File is not Empty
+						if (selectedFile.length > 0) {
+							// Select the very first file from list
+							var fileToLoad = selectedFile[0];
+							// FileReader function for read the file.
+							var fileReader = new FileReader();
+							var base64;
+							// Onload of file read the file content
+							fileReader.onload = function (fileLoadedEvent) {
+								base64 = fileLoadedEvent.target.result;
+								// Print data in console
+								//console.log(base64);
+
+								let pdfObjectTag = '' +
+										'<object data="'+base64+'" type="application/pdf" width="100%" height="100%">' +
+											'<strong>PDF file is not supported by your browser or PDF file is invalid</strong>' +
+										'</object>';
+
+								context.invoke('code', pdfObjectTag);
+								$('#SN_PdfSelectionModal').modal('hide');
+
+							};
+							fileReader.readAsDataURL(fileToLoad);
+						}else{
+							console.log('No file found!');
+						}
+					});
+
+				}
+			});
+
+			return button.render();   // return button as jquery object
+		}
 		$('#sessionAgenda')
 				.summernote
 				({
+					dialogsInBody: true,
 					placeholder: $('#sessionAgenda').attr('placeholder'),
 					height: 400,
 					toolbar:
@@ -294,10 +369,13 @@
 								["color", ["color"]],
 								["paragraph", ["ul", "ol", "paragraph", "height"]],
 								["table", ["table"]],
-								["insert", ["link", "resizedDataImage", "picture", "video"]],
+								["insert", ["link", "resizedDataImage", "picture", "video", "pdf"]],
 								["view", ["codeview"] ]
 							],
-					fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
+					buttons: {
+						pdf: pdfButton
+					},
+					fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150'],
 				});
 
 		$('#startDateTime, #endDateTime').datetimepicker(

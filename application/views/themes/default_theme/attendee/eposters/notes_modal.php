@@ -25,6 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="box_note col-md-12">
 												<form id="addUserNotes">
 													<input type="hidden" name="entity_type_id" id="entity_type_id" value="<?php echo $eposter->id;?>">
+													<input type="hidden" name="entity_type" id="entity_type" value="<?php echo (($entitiy_type) ? $entitiy_type : 'session' );?>">
 													<textarea class="form-control" name="notes" id="notes" placeholder="Add a note..."></textarea>
 								  					<div class="box_post">
 														<div class="pull-right">
@@ -60,33 +61,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				let formData = new FormData(document.getElementById('addUserNotes'));
 
-				$.ajax({
-					type: "POST",
-					url: project_url+"/eposters/add_notes",
-					data: formData,
-					processData: false,
-					contentType: false,
-					error: function(jqXHR, textStatus, errorMessage)
-					{
-						Swal.close();
-						toastr.error(errorMessage);
-						//console.log(errorMessage); // Optional
-					},
-					success: function(data)
-					{
-						Swal.close();
+				$.ajax({type: "POST",
+						url: project_url+"/eposters/add_notes",
+						data: formData,
+						processData: false,
+						contentType: false,
+						error: function(jqXHR, textStatus, errorMessage) {
+							Swal.close();
+							toastr.error(errorMessage);
+						},
+						success: function(data) {
+							data = JSON.parse(data);
 
-						data = JSON.parse(data);
-
-						if (data.status == 'success') {
-							$('#notes_list_container').html('');
-							loadNotes(formData.get('entity_type_id'), note_page);
-							toastr.success('Note added.');
-							$('#notes').val('');
-						}else{
-							toastr.error("Error");
+							if (data.status == 'success') {
+								$('#notes_list_container').html('');
+								$('textarea[name="notes"]').val('');
+								loadNotes(formData.get('entity_type'), formData.get('entity_type_id'), note_page);
+								toastr.success('Note added.');
+								$('#notes').val('');
+							}else{
+								toastr.error("Error");
+							}
 						}
-					}
 				});
 			});
 		</script>

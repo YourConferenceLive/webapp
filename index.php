@@ -90,6 +90,13 @@ define('ycl_root', rtrim(ycl_base_url, '/'));
 	//define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 	define('ENVIRONMENT', ycl_env);
 
+	if (ENVIRONMENT == 'production' && strpos($_SERVER['HTTP_HOST'], "www.") === false)
+	{
+		header('Location: '.
+			(@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://').
+			'www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+	}
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

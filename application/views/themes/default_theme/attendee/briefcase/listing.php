@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="col-md-12 p-3">
 								<!-- Briefcase tabs -->
 								<ul class="nav nav-tabs" id="briefcase-tabs" role="tablist">
-									<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('itinerary' == $active_briefcase_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="itinerary-tab" data-toggle="tab" href="#itinerary" role="tab" aria-controls="itinerary">My Agenda</a></li>
+									<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('agenda' == $active_briefcase_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="agenda-tab" data-toggle="tab" href="#agenda" role="tab" aria-controls="agenda">My Agenda</a></li>
 									<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('resources' == $active_briefcase_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="resources-tab" data-toggle="tab" href="#resources" role="tab" aria-controls="resources">Resources</a></li>
 									<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('credits' == $active_briefcase_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="credits-tab" data-toggle="tab" href="#credits" role="tab" aria-controls="credits">Credits</a></li>
 									<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('notes' == $active_briefcase_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes">Notes</a></li>
@@ -29,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 								<!-- Tab panes -->
 								<div class="tab-content">
-									<div class="tab-pane p-2<?php echo (('itinerary' == $active_briefcase_tab) ? ' active' : '' );?>" id="itinerary" role="tabpanel" aria-labelledby="itinerary-tab">
+									<div class="tab-pane p-2<?php echo (('agenda' == $active_briefcase_tab) ? ' active' : '' );?>" id="agenda" role="tabpanel" aria-labelledby="agenda-tab">
 										<div class="text-center btn card mb-2 page-title"><h2 class="mb-0">My Agenda</h2></div>
 <?php
 									if ($sessions != new stdClass()) :
@@ -130,10 +130,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</table>
 									</div>
 									<div class="tab-pane p-2<?php echo (('credits' == $active_briefcase_tab) ? ' active' : '' );?>" id="credits" role="tabpanel" aria-labelledby="credits-tab">
-										<a href="#" class="btn btn-info disabled float-right">Get Certificate (Will be available soon)</a>
-
-										<div class="clearfix"></div>
-
 										<!-- Credit tabs -->
 										<ul class="nav nav-tabs" id="credit-tabs" role="tablist">
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('session-credits' == $active_credit_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="session-credits-tab" data-toggle="tab" href="#session-credits" role="tab" aria-controls="session-credits">General Sessions</a></li>
@@ -248,24 +244,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 	<script>
-	let note_page = 1;
-	let notes_per_page = parseInt(<?=$notes_per_page;?>);
+		let note_page = 1;
+		let notes_per_page = parseInt(<?=$notes_per_page;?>);
 
-	function showNotes(eposter_id, note_page) {
-		$('#addUserNotes input[name="entity_type_id"]').val(eposter_id);
-		loadNotes(eposter_id, note_page)
-		$('#notes_list_container').html('');
-		$('#notesModal').modal('show');
-	}
-
-		function showMoreNotes(eposter_id, note_page) {
-			note_page = note_page+1;
-			loadNotes(eposter_id, note_page);
+		function showNotes(entity_type, entity_type_id, note_page) {
+			$('#addUserNotes input[name="entity_type"]').val(entity_type);
+			$('#addUserNotes input[name="entity_type_id"]').val(entity_type_id);
+			loadNotes(entity_type, entity_type_id, note_page)
 			$('#notes_list_container').html('');
 			$('#notesModal').modal('show');
 		}
 
-		function loadNotes(eposter_id, note_page) {
+		function showMoreNotes(entity_type, entity_type_id, note_page) {
+			note_page = note_page+1;
+			loadNotes(entity_type, entity_type_id, note_page);
+		}
+
+		function loadNotes(entity_type, entity_type_id, note_page) {
+			console.log('Note Page : ' + note_page);
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading notes...',
@@ -277,14 +273,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				allowOutsideClick: false
 			});
 
-			$.ajax({
-					type: "GET",
-					url: project_url+"/eposters/notes/"+eposter_id+'/'+note_page,
+			$.ajax({type: "GET",
+					url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
 					data: '',
 					success: function(response){
 						Swal.close();
 						jsonObj = JSON.parse(response);
-						// console.log(jsonObj);
 						// Add response in Modal body
 
 						$('.modal-title').html( jsonObj.eposter.title + ' Notes');
@@ -307,8 +301,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							if (previousHTML == '')
 								iHTML += '</ul>';
 
-
-							$('#notesModal .modal-footer').html('<button' + (((parseInt(note_page)+parseInt(1)) <= Math.ceil(parseInt(jsonObj.total)/parseInt(notes_per_page))) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes('+eposter_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
+							$('#notesModal .modal-footer').html('<button' + (((parseInt(note_page)+parseInt(1)) <= Math.ceil(parseInt(jsonObj.total)/parseInt(notes_per_page))) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes(\''+entity_type+'\', '+entity_type_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
 
 							if (previousHTML == '') {
 								$('#notes_list_container').html(iHTML);
@@ -321,8 +314,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					}
 				});
 		}
+
 		$(document).ready(function() {
 			$('#sessionCreditTable').DataTable({
+				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			   	buttons: [{text: 'Get Certificate (Will be available soon)',
+		   	   	className: 'btn btn-info disabled',
+		   			action: function ( e, dt, button, config ) {
+	 					// window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+		   			}
+	      		}],
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
 				bAutoWidth: false, 
 				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '8%' }, { sWidth: '18%' }],
@@ -333,18 +334,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		        "order": [[ 0, "ASC" ]]
 		    });
 
-			$('#stcCreditTable').DataTable({
-				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
-				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '8%' }, { sWidth: '18%' }],
-				'processing': true,
-				'serverSide': true,
-				'serverMethod': 'post',
-				'ajax': {url : project_url+"/briefcase/getSessionCredits/zm", type : 'POST'},
-		        "order": [[ 0, "ASC" ]]
-		    });
-
+			//ePoster Credit Table
 			$('#eposterCreditTable').DataTable({
+				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			   	buttons: [{text: 'Get Certificate (Will be available soon)',
+		   	   	className: 'btn btn-info disabled',
+		   			action: function ( e, dt, button, config ) {
+	 					// window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+		   			}
+	      		}],
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
 				bAutoWidth: false, 
 				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '8%' }, { sWidth: '7%' }, { sWidth: '18%' }],
@@ -355,26 +353,67 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		        "order": [[ 0, "ASC" ]]
 		    });
 
-  			bookingsTable = $('#sessionResourcesTable').DataTable({
-    														dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-												    		buttons: [{text: 'Download COS 2021 Program',
-												    				   className: 'btn btn-block btn-info',
-												    				   action: function ( e, dt, button, config ) {
-																 			window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
-																	   }
-																      }],
-															'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
-															bAutoWidth: false, 
-															aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '7%' }, { sWidth: '18%' }],
-															'processing': true,
-															'serverSide': true,
-															'serverMethod': 'post',
-															'ajax': {url : project_url+"/briefcase/getSessionNotes", type : 'POST'},
-															"order": [[ 0, "ASC" ]]
-														});
+			$('#stcCreditTable').DataTable({
+				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			   	buttons: [{text: 'Get Certificate (Will be available soon)',
+		   	   	className: 'btn btn-info disabled',
+		   			action: function ( e, dt, button, config ) {
+	 					// window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+		   			}
+	      		}],
+				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+				bAutoWidth: false, 
+				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '8%' }, { sWidth: '18%' }],
+				'processing': true,
+				'serverSide': true,
+				'serverMethod': 'post',
+				'ajax': {url : project_url+"/briefcase/getSessionCredits/zm", type : 'POST'},
+		        "order": [[ 0, "ASC" ]]
+		    });
+
+		    $('#sessionResourcesTable').DataTable({dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+						    					   buttons: [{text: 'Download COS 2021 Program',
+						    				   	   className: 'btn btn-block btn-info',
+						    				   			action: function ( e, dt, button, config ) {
+										 					window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+											   			}
+										      		}],
+													"columns": [
+													    { "data": "id", "name": "id"},
+													    { "data": "session_title", "name": "session_title"},
+													    { "data": "action_link", "name": "action_link",
+													        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+													            if(oData.session_id) {
+													                $(nTd).html('<a href="javascript:void(0);" onclick="showNotes(\'session\', '+oData.session_id+', \''+note_page+'\');" data-action-type="notes" data-eposter-id="'+oData.session_id+'" class="eposter-notes" data-toggle="tooltip" data-placement="left" data-original-title="View Notes"><i class="fas fa-clipboard fa-fw"></i> View</a>');
+													            }
+													        }
+													    },
+													    { "data": "added_on", "name": "added_on"},
+													],
+										      		'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+										      		bAutoWidth: false, 
+										      		aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '7%' }, { sWidth: '18%' }],
+										      		'processing': true,
+										      		'serverSide': true,
+										      		'serverMethod': 'post',
+										      		'ajax': {url : project_url+"/briefcase/getSessionNotes", type : 'POST'},
+										      		"order": [[ 0, "ASC" ]]
+										      	  });
 
 			$('#sessionNotesTable').DataTable({
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+				"columns": [
+				    { "data": "id", "name": "id"},
+				    { "data": "session_title", "name": "session_title"},
+				    { "data": "action_link", "name": "action_link",
+				        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+				            if(oData.session_id) {
+				                $(nTd).html('<a href="javascript:void(0);" onclick="showNotes(\'session\', '+oData.session_id+', \''+note_page+'\');" data-action-type="notes" data-eposter-id="'+oData.session_id+'" class="eposter-notes" data-toggle="tooltip" data-placement="left" data-original-title="View Notes"><i class="fas fa-clipboard fa-fw"></i> View</a>');
+				            }
+				        }
+				    },
+				    { "data": "added_on", "name": "added_on"},
+				],
 				bAutoWidth: false, 
 				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '7%' }, { sWidth: '18%' }],
 				'processing': true,
@@ -387,20 +426,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#eposterNotesTable').DataTable({
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
 				"columns": [
-				    { "data": "id", "name": "id"},
+				    { "data": "id", "name": "id", "width": "2%"},
 				    { "data": "eposter_name", "name": "eposter_name"},
-				    { "data": "eposter_type", "name": "eposter_type",},
-				    { "data": "action_link", "name": "action_link",
+				    { "data": "eposter_type", "name": "eposter_type", "width": "12%"},
+				    { "data": "action_link", "name": "action_link", "width": "6%",
 				        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
 				            if(oData.eposter_id) {
-				                $(nTd).html('<a href="javascript:void(0);" onclick="showNotes('+oData.eposter_id+', \''+note_page+'\');" data-action-type="notes" data-eposter-id="'+oData.eposter_id+'" class="eposter-notes" data-toggle="tooltip" data-placement="left" data-original-title="View Notes"><i class="fas fa-clipboard fa-fw"></i> View</a>');
+				                $(nTd).html('<a href="javascript:void(0);" onclick="showNotes(\'eposter\', '+oData.eposter_id+', \''+note_page+'\');" data-action-type="notes" data-eposter-id="'+oData.eposter_id+'" class="eposter-notes" data-toggle="tooltip" data-placement="left" data-original-title="View Notes"><i class="fas fa-clipboard fa-fw"></i> View</a>');
 				            }
 				        }
 				    },
-				    { "data": "added_on", "name": "added_on"},
+				    { "data": "added_on", "name": "added_on", "width": "16%"},
 				],
 				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '9%' }, { sWidth: '6%' }, { sWidth: '28%' }],
+				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '20%' }, { sWidth: '6%' }, { sWidth: 'auto' }],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',

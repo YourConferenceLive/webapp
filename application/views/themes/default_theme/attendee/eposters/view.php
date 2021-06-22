@@ -28,6 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		<div class="row">
     		<div class="col-auto my-1 mx-auto">
 <?php
+				// echo $eposter->title.'<br>'.$eposter->eposter.'<br>'.$eposter->id.'_'.substr(str_replace(array(' ', ' - ', '-', ':', '.', ',', '(', ')', '\'', 'è'), array('_', ''), strtolower( $eposter->title)), 0, 142).'<br>';
 				if ($eposter->type == 'eposter') :?>
 				<button type="button" class="btn btn-info btn-sm" id="enlargeable">View Full Screen</button>
 <?php
@@ -149,21 +150,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('.comments, .take-notes').click(function(e) {
 
 					var action_type = $(this).data('action-type');
-					var eposter_id 	= $(this).data('eposter-id');
+					var entity_type_id 	= $(this).data('eposter-id');
 
 					if (action_type == 'notes') {
-						loadNotes(eposter_id, note_page);
+						$('#addUserNotes input[name="entity_type"]').val(action_type);
+						$('#addUserNotes input[name="entity_type_id"]').val(entity_type_id);
+						loadNotes(action_type, entity_type_id, note_page);
 						$('#notes_list_container').html('');
 						$('#notesModal').modal('show');
 					} else {
-						loadComments(eposter_id, comment_page);
+						loadComments(entity_type_id, comment_page);
 						$('#comments_list_container').html('');
 						$('#commentsModal').modal('show');
 					}
 				});
 			});
 
-			function loadNotes(eposter_id, note_page) {
+			function loadNotes(entity_type, entity_type_id, note_page) {
 				Swal.fire({
 					title: 'Please Wait',
 					text: 'Loading notes...',
@@ -177,7 +180,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 				$.ajax({
 						type: "GET",
-						url: project_url+"/eposters/notes/"+eposter_id+'/'+note_page,
+						url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
 						data: '',
 						success: function(response){
 							Swal.close();
@@ -204,8 +207,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 								if (previousHTML == '')
 									iHTML += '</ul>';
 
-
-								$('#notesModal .modal-footer').html('<button' + (((note_page+1) <= Math.ceil(jsonObj.total/notes_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes('+eposter_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
+								$('#notesModal .modal-footer').html('<button' + (((note_page+1) <= Math.ceil(jsonObj.total/notes_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes(\''+entity_type+'\', '+entity_type_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
 
 								if (previousHTML == '') {
 									$('#notes_list_container').html(iHTML);
@@ -276,9 +278,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					});
 			}
 
-			function showMoreNotes(eposter_id, note_page) {
+			function showMoreNotes(entity_type, entity_type_id, note_page) {
 				note_page = note_page+1;
-				loadNotes(eposter_id, note_page);
+				loadNotes(entity_type, entity_type_id, note_page);
 			}
 
 			function showMoreComments(eposter_id, comment_page) {
