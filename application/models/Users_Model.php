@@ -417,4 +417,15 @@ class Users_Model extends CI_Model
 
 		return new stdClass();
 	}
+
+	public function getIdByApiId($api_id)
+	{
+		$this->db->select('id');
+		$this->db->from('user');
+		$this->db->where('IdFromApi', $api_id);
+		$user = $this->db->get();
+		if ($user->num_rows() > 0)
+			return $user->result()[0]->id;
+		return 0;
+	}
 }

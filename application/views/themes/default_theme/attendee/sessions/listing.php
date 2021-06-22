@@ -202,7 +202,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<p>
 
 									<?php if($session->moderators != new stdClass()):?>
-									<span>Moderator:</span>
+										<span><strong>Moderator:</strong></span>
 									<?php foreach ($session->moderators as $index=> $moderator):?>
 										<?=(isset($index) && ($index >= 1))?',':''?>
 										<?=$moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?' '.$moderator->credentials:'')?>
@@ -210,10 +210,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<?php endif;?>
 
 									<?php if($session->keynote_speakers != new stdClass()):?>
-									<span>Keynote:</span>
+										<span><strong>Keynote:</strong></span>
 									<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
 										<?=(isset($index) && ($index >= 1))?',':''?>
-										<a style="cursor: pointer" class="keynote-link" keynote-id="<?=$keynote->id?>" speaker-name="<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>">
+										<a style="cursor: pointer" class="keynote-link" keynote-id="<?=$keynote->id?>" keynote-photo="<?=$keynote->photo?>" speaker-name="<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>">
 											<?=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>
 										</a>
 											<bio style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->bio?></bio>
@@ -221,7 +221,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<?php endforeach; ?><br>
 									<?php endif; ?>
 									<?php if($session->presenters != new stdClass()):?>
-									<span>Speakers:</span>
+										<span><strong>Speakers:</strong></span>
 <?php
 										foreach ($session->presenters as $index=>$presenter):
 											echo ((isset($index) && ($index>=1))?", ":'').trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?' '.trim($presenter->credentials):'');
@@ -261,37 +261,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 			<div class="modal-body">
 
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary " data-dismiss="modal" >Close</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- User Bio Modal -->
-<div class="modal fade" id="speaker-modal" tabindex="-1" aria-labelledby="speaker-modal" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="modal-title" id="bio-modal-label ">
-					<h3 id="speaker-modal-speaker-name" class="ml-4" style="color:#487391; font-weight: 650">Speaker Name</h3>
-				</div>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class=" mb-3">
-					<span class="bio-body text-left ">
-
-					</span>
-				</div>
-				<div>
-					<span class="disclosure-body text-left">
-
-					</span>
-				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary " data-dismiss="modal" >Close</button>
@@ -340,20 +309,7 @@ $(function(){
 		});
 	});
 
-	$('.keynote-link').on('click', function (){
-		if($("bio[session-id="+$(this).attr('keynote-id')+"]").html() !== ''){
-			$("#speaker-modal .modal-body .bio-body").html('<h5 class="text-center">Biography:</h5>' + $("bio[session-id="+$(this).attr('keynote-id')+"]").html());
-		}else{
-			$("#speaker-modal .modal-body .bio-body").html('');
-		}
-		if($("disclosure[session-id="+$(this).attr('keynote-id')+"]").html() !== '') {
-			$("#speaker-modal .modal-body .disclosure-body").html('<h5 class="text-center">Disclosures:</h5>' + $("disclosure[session-id=" + $(this).attr('keynote-id') + "]").html());
-		}else{
-			$("#speaker-modal .modal-body .disclosure-body").html('');
-		}
-		$('#speaker-modal-speaker-name').text($(this).attr('speaker-name'));
-		$("#speaker-modal ").modal('show');
-	});
+
 
 	$("#frm-search").submit(function( event ) {
 		event.preventDefault();
