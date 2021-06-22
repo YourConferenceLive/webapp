@@ -27,6 +27,8 @@ class Authentication extends CI_Controller {
 			{
 				if (in_array($access_level, $verification['user']->access_levels))
 				{
+					$this->updateProfileFromCos($username);
+
 					$current_project_sessions = $this->session->userdata('project_sessions');
 
 					$current_project_sessions["project_$project_id"] = array(
@@ -254,5 +256,71 @@ class Authentication extends CI_Controller {
 		unset($_SESSION['project_sessions']["project_{$project_id}"]);
 		$this->logger->add($project_id, $user_id, 'Logged-out');
 		redirect(base_url().$this->project->main_route.'/'.$where);
+	}
+
+	public function updateProfileFromCos($username)
+	{
+		$api_config = array(
+			'api_url' => $this->project->api_url,
+			'api_username' => $this->project->api_username,
+			'api_password' => $this->project->api_password
+		);
+
+		if ($this->project->api_url == null)
+		{
+			return array('status'=>'error', 'msg'=>"Authentication API is not configured");
+		}
+
+
+		$this->load->library('CosApi', $api_config);
+
+		$user_from_cos = $this->cosapi->getUserByEmail($username);
+
+		if (!isset($user_from_cos->Count) || $user_from_cos->Count < 1)
+		{
+			return array('status'=>'error', 'msg'=>"We couldn't find you in the COS database.");
+		}
+
+		$user_from_cos = (array) $user_from_cos;
+		$user_from_cos = (array) $user_from_cos['Items'];
+		$user_from_cos = (array) $user_from_cos['$values'];
+		$user_from_cos = (array) $user_from_cos[0];
+
+		$membership_info = $this->cosapi->getMembershipType($user_from_cos['PartyId']);
+
+		$membership_sub_info = NULL;
+		if ($membership_info == 'C') // "Contact" type members will have a Sub Category
+		{
+			$membership_sub_info = $this->cosapi->getMembershipSubType($user_from_cos['PartyId']);
+		}
+
+		$address_data = (array) $user_from_cos['Addresses'];
+		$address_data = (array) $address_data['$values'];
+		$address_data = (array) $address_data[0];
+		$address_data = (array) $address_data['Address'];
+
+		$email = (array) $user_from_cos['Emails'];
+		$email = (array) $email['$values'];
+		$email = (array) $email[0];
+		$email = $email['Address'];
+
+		$user_data = array(
+			'name' => $user_from_cos['PersonName']->FirstName,
+			'surname' => $user_from_cos['PersonName']->LastName,
+			'name_prefix' => $user_from_cos['PersonName']->NamePrefix,
+			'credentials' => $user_from_cos['PersonName']->Designation,
+			'city' => $address_data['CityName'],
+			'country' => $address_data['CountryName'],
+			'membership_type' => $membership_info,
+			'membership_sub_type' => $membership_sub_info,
+			'updated_on' => date('Y-m-d H:i:s'),
+			'updated_by' => 0,
+		);
+
+		$this->db->set($user_data);
+		$this->db->where('IdFromApi', $user_from_cos['PartyId']);
+		$this->db->update('user');
+
+		return true;
 	}
 }
