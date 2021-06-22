@@ -32,7 +32,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<button id="login-btn" class="btn btn-lg btn-primary btn-block" type="button">Login</button>
 
-<!--	<p class="mt-5 mb-3 text-muted">Don't have an account? <a href="--><?//=base_url()?><!----><?//=$this->project->main_route?><!--/register">Register</a></p>-->
 </form>
 </body>
 
