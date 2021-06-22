@@ -1,0 +1,121 @@
+<?php
+defined('ycl_config') OR exit('No direct script access allowed');
+
+# Your Conference Live
+# Configuration file
+
+# Created by Athul AK
+
+/*
+ * Prefix all config variables with ycl_
+ */
+
+
+/*
+ *---------------------------------------------------------------
+ * APPLICATION ENVIRONMENT
+ *---------------------------------------------------------------
+ *
+ * You can load different configurations depending on your
+ * current environment. Setting the environment also influences
+ * things like logging and error reporting.
+ *
+ * This can be set to anything, but default usage is:
+ *
+ *     development
+ *     testing
+ *     production
+ *
+ * NOTE: If you set yc_env different than these, also change it accordingly in index.php in root directory
+ */
+
+define('ycl_env', 'development');
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Base Site URL
+|--------------------------------------------------------------------------
+|
+| URL to Your Conference Live root. Typically this will be your base URL,
+| WITH a trailing slash:
+|
+|	https://yourconference.live/
+|
+| WARNING: You MUST set this value!
+|
+| If it is not set, then CodeIgniter will try guess the protocol and path
+| your installation, but due to security concerns the hostname will be set
+| to $_SERVER['SERVER_ADDR'] if available, or localhost otherwise.
+| The auto-detection mechanism exists only for convenience during
+| development and MUST NOT be used in production!
+|
+*/
+
+define('ycl_base_url', 'https://localhost/yourconference.live/');
+
+
+
+
+/*
+| -------------------------------------------------------------------
+| DATABASE CONNECTIVITY SETTINGS
+| -------------------------------------------------------------------
+| This will contain the settings needed to access your database.
+|
+| -------------------------------------------------------------------
+| EXPLANATION OF VARIABLES
+| -------------------------------------------------------------------
+|
+|	['ycl_db_hostname'] The hostname of your database server.
+|	['ycl_db_username'] The username used to connect to the database
+|	['ycl_db_password'] The password used to connect to the database
+|	['ycl_db_database'] The name of the database you want to connect to
+*/
+
+define('ycl_db_hostname', '127.0.0.1');
+
+define('ycl_db_username', 'root');
+
+define('ycl_db_password', '');
+
+define('ycl_db_database', 'your_conference_live');
+
+
+/*
+|--------------------------------------------------------------------------
+| Encryption Key
+|--------------------------------------------------------------------------
+|
+| If you use the Encryption class, you must set an encryption key.
+| See the user guide for more info.
+|
+| https://codeigniter.com/user_guide/libraries/encryption.html
+|
+*/
+define('encryption_key', 'mYq3t6v9y$B&E)H@McQfTjWnZr4u7x!z');
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Socket IO Server URL
+|--------------------------------------------------------------------------
+|
+| You need to set socket server URL for the real-time features to function
+| Contact the lead developer for existing Socket IO app details.
+ */
+define('ycl_socket_server', 'https://socket.yourconference.live');
+
+
+/*
+|--------------------------------------------------------------------------
+| Sessions Directory
+|--------------------------------------------------------------------------
+|
+| You need to set socket server URL for the real-time features to function
+| Contact the lead developer for existing Socket IO app details.
+ */
+//define('ycl_sessions_dir', '/tmp/');

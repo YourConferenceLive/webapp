@@ -7,6 +7,7 @@ class Briefcase extends CI_Controller
 	 * @var mixed
 	 */
 	private $user;
+	private $notesPerPage = 10;
 
 	public function __construct()
 	{
@@ -31,19 +32,39 @@ class Briefcase extends CI_Controller
 		$data['active_briefcase_tab'] 	= 'itinerary';
 		$data['active_credit_tab'] 		= 'session-credits';
 		$data['active_note_tab']		= 'eposter-notes';
+		$data['notes_per_page']			= $this->notesPerPage;
+
+		//Default value for ePoster Notes Modal
+		$data['eposter']				= new stdClass();
+		$data['eposter']->id 			= null;
 
 		$data['sessions'] 				= $this->briefcase->getAgenda();
-		// echo '<pre>';
-		// print_r($query);
-		// echo '</pre>';
-		// exit;
+
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/briefcase/listing", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/briefcase/view_note_modal", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/eposters/notes_modal", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
+	}
+
+	public function add()
+	{
+		$this->logger->log_visit("Session added in Briefacse", $this->input->post('session_id'));
+		if ($this->briefcase->add($this->input->post('session_id')))
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
+	}
+
+	public function delete()
+	{
+		$this->logger->log_visit("Session remove from Briefacse", $this->input->post('session_id'));
+		if ($this->briefcase->delete($this->input->post('session_id')))
+			echo json_encode(array('status'=>'success'));
+		else
+			echo json_encode(array('status'=>'failed'));
 	}
 
 	public function getItineraries()
@@ -162,7 +183,12 @@ class Briefcase extends CI_Controller
 		$table_count 		= 1;
 
 		foreach($query as $r) {
-			$data[] = array($table_count++, $r->title, str_replace(array('eposter', 'surgical_video'), array('ePoster', 'Surgical Video'), $r->type), 'View', $r->created_datetime);
+			$data[] = array('id' 			=> $table_count++,
+							'eposter_id' 	=> $r->origin_type_id,
+							'eposter_name' 	=> $r->title,
+							'eposter_type'	=> str_replace(array('eposter', 'surgical_video'), array('ePoster', 'Surgical Video'), $r->type),
+							'action_link' 	=> 'View',
+							'added_on' 		=> $r->created_datetime);
 		}
 
 		$result 	= array("draw" 				=> $draw,

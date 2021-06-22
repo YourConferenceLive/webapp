@@ -501,7 +501,16 @@ INSERT INTO `session_types` (`id`, `type_code`, `type_name`) VALUES (NULL, 'gs',
 ALTER TABLE `sessions` ADD `session_type` VARCHAR(10) NOT NULL DEFAULT 'gs' AFTER `track`;
 
 
+
 ALTER TABLE `sponsor_booth`
 ADD COLUMN `show_group_chat` INT NULL DEFAULT 1 AFTER `right_table_url`;
 ALTER TABLE `sponsor_booth`
 ADD COLUMN `template` INT NULL DEFAULT 1 AFTER `show_group_chat`;
+
+-- COS API
+ALTER TABLE `project` ADD `api_url` VARCHAR(255) NULL AFTER `timezone`, ADD `api_username` VARCHAR(255) NULL AFTER `api_url`, ADD `api_password` VARCHAR(255) NULL AFTER `api_username`;
+ALTER TABLE `user` ADD `name_prefix` VARCHAR(50) NULL AFTER `photo`;
+ALTER TABLE `user` ADD `membership_type` VARCHAR(10) NULL AFTER `rcp_number`;
+ALTER TABLE `user` ADD `isFromApi` BOOLEAN NOT NULL DEFAULT FALSE AFTER `membership_type`, ADD `IdFromApi` VARCHAR(255) NULL AFTER `isFromApi`;
+ALTER TABLE `user` ADD `membership_sub_type` VARCHAR(50) NULL AFTER `membership_type`;
+
