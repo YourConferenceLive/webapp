@@ -31,22 +31,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<img class="img-fluid" width="150px" height="150px" id="user-photo-preview">
 									</div>
 									<?php endif;?>
-										<a class="btn badge badge-info" id="upload-btn" hidden>Update Photo</a>
+										<a class="btn badge badge-info" id="upload-btn">Update Photo</a>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-12 text-center mt-3 text-left" >
-									<h6 class="text-left">BIOGRAPHY</h6>
-									<textarea class="form-control" name="bio" rows="4" id="bio" readonly><?=$profile_data->bio?></textarea>
-
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12 text-center mt-2">
-									<h6 class="text-left">DISCLOSURES</h6>
-									<textarea class="form-control" name="disclosure" rows="4" id="disclosure" readonly><?=$profile_data->disclosures?></textarea>
-								</div>
-							</div>
+<!--							<div class="row">-->
+<!--								<div class="col-md-12 text-center mt-3 text-left" >-->
+<!--									<h6 class="text-left">BIOGRAPHY</h6>-->
+<!--									<textarea class="form-control" name="bio" rows="4" id="bio" readonly>--><?//=$profile_data->bio?><!--</textarea>-->
+<!---->
+<!--								</div>-->
+<!--							</div>-->
+<!--							<div class="row">-->
+<!--								<div class="col-md-12 text-center mt-2">-->
+<!--									<h6 class="text-left">DISCLOSURES</h6>-->
+<!--									<textarea class="form-control" name="disclosure" rows="4" id="disclosure" readonly>--><?//=$profile_data->disclosures?><!--</textarea>-->
+<!--								</div>-->
+<!--							</div>-->
 						</div>
 					</div>
 				</div>
@@ -56,37 +56,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="card"  style="min-height: 400px">
 								<div class="card-header">
 									<h6>Personal Information <i class="fas fa-id-card"></i>
-										<span class="float-right btn btn-success btn-sm ml-2 save-btn"><i class="far fa-check-circle"></i> Save</span>
-										<span class="float-right btn btn-info btn-sm edit-btn"><i class="far fa-edit"></i> Edit</span></h6>
+<!--										<span class="float-right btn btn-success btn-sm ml-2 save-btn"><i class="far fa-check-circle"></i> Save</span>-->
+<!--										<span class="float-right btn btn-info btn-sm edit-btn"><i class="far fa-edit"></i> Edit</span></h6>-->
 								</div>
 								<div class="card-body">
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="first_name">First Name</label>
-												<input type="text" class="form-control" id="first_name" name="first_name" readonly value="<?=$profile_data->name?>">
+												<input type="text" class="form-control" id="first_name" name="first_name" value="<?=$profile_data->name?>">
 											</div>
 											<div class="form-group">
 												<label for="surname">Last Name</label>
-												<input type="text" class="form-control" id="surname" name="surname" readonly value="<?=$profile_data->surname?>">
+												<input type="text" class="form-control" id="surname" name="surname" value="<?=$profile_data->surname?>">
 											</div>
 											<div class="form-group">
 												<label for="degree">Degree</label>
-												<input type="text" class="form-control" id="degree" name="degree" readonly value="<?=$profile_data->credentials?>">
+												<input type="text" class="form-control" id="degree" name="degree" value="<?=$profile_data->credentials?>">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="rcpn">Royal College of Physicians Number</label>
-												<input type="text" class="form-control" id="rcpn" name="rcpn" readonly  value="<?=$profile_data->rcp_number?>">
+												<input type="text" class="form-control" id="rcpn" name="rcpn"  value="<?=$profile_data->rcp_number?>">
 											</div>
 											<div class="form-group">
 												<label for="city">City</label>
-												<input type="text" class="form-control" id="city" name="city" readonly value="<?=$profile_data->city?>">
+												<input type="text" class="form-control" id="city" name="city" value="<?=$profile_data->city?>">
 											</div>
 											<div class="form-group">
 												<label for="country">Country</label>
-												<input type="text" class="form-control" id="country" name="country" readonly value="<?=$profile_data->country?>">
+												<input type="text" class="form-control" id="country" name="country" value="<?=$profile_data->country?>">
 											</div>
 										</div>
 									</div>
@@ -111,22 +111,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<div class="input-group-prepend">
 													<label class="input-group-text mb-3" for="email" >Email</label>
 												</div>
-												<input type="text" class="form-control" id="email" name="email" readonly value="<?=$profile_data->email?>">
+												<input type="text" class="form-control" id="email" name="email" value="<?=$profile_data->email?>">
 											</div>
 											<div class="input-group">
 												<div class="input-group-prepend">
 													<label class="input-group-text" for="password">Password</label>
 												</div>
-												<input type="password" class="form-control" id="password" name="password" readonly value="">
+												<input type="password" class="form-control" id="password" name="password" placeholder="***********">
 												<div class="input-group-append">
-													<label class="input-group-text btn btn-warning" for="password" style="cursor: pointer" id="show_password" ><i class="fas fa-eye"></i></label>
+													<label class="input-group-text btn btn-warning" for="password" style="cursor: pointer" id="show_password"><i class="fas fa-eye"></i></label>
 												</div>
 											</div>
+											<small>(Leave the password field blank if you don't want to update the password)</small>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<div clas="row">
+										<div class="col">
+											<button class="save-btn btn btn-success float-right"><i class="far fa-save"></i> Save</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</div>
@@ -148,10 +162,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			})
 
 			$('.save-btn').on('click', function(){
-				$('#rcpn').attr('readonly', true)
-				$('#password').attr('readonly', true)
-				$('#email').attr('readonly', true)
-				$('#upload-btn').attr('hidden', true)
+				//$('#rcpn').attr('readonly', true)
+				//$('#password').attr('readonly', true)
+				//$('#email').attr('readonly', true)
+				//$('#upload-btn').attr('hidden', true)
 			})
 
 			$('#show_password').click(function(){
@@ -196,13 +210,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				console.log(formData);
 
 					Swal.fire({
-						title: 'Do you want to conitue?',
-						text: "Update you information",
+						title: 'Are you sure?',
+						html: "You are about to update your profile data <br><br>" +
+								"<small>(Some data are automatically synced from COS everytime you login)</small>",
 						icon: 'question',
 						showCancelButton: true,
 						confirmButtonColor: '#3085d6',
 						cancelButtonColor: '#d33',
-						confirmButtonText: 'Yes, continue!'
+						confirmButtonText: 'Yes, save!'
 					}).then((result) => {
 						if (result.isConfirmed) {
 							$.ajax({
@@ -234,5 +249,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						}
 					})
 				})
+
+			$('.edit-btn').click();
 		})
 </script>
