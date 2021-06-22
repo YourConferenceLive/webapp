@@ -507,12 +507,6 @@ ADD COLUMN `show_group_chat` INT NULL DEFAULT 1 AFTER `right_table_url`;
 ALTER TABLE `sponsor_booth`
 ADD COLUMN `template` INT NULL DEFAULT 1 AFTER `show_group_chat`;
 
-ALTER TABLE `sponsor_booth`
-ADD COLUMN `facebook_link2` VARCHAR(255) NULL AFTER `facebook_link`;
-
-ALTER TABLE `sponsor_booth`
-ADD COLUMN `twitter_link2` VARCHAR(255) NULL AFTER `twitter_link`;
-
 -- COS API
 ALTER TABLE `project` ADD `api_url` VARCHAR(255) NULL AFTER `timezone`, ADD `api_username` VARCHAR(255) NULL AFTER `api_url`, ADD `api_password` VARCHAR(255) NULL AFTER `api_username`;
 ALTER TABLE `user` ADD `name_prefix` VARCHAR(50) NULL AFTER `photo`;

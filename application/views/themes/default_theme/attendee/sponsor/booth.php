@@ -90,9 +90,7 @@ if(!file_exists($cover_photo_url)){
 						<div class="col website-icons">
 							<?=(isset($data->website_link) && !empty($data->website_link)?'<a href="'.$data->website_link.'" target="_blank" class="btn p-0" title="'.$data->website_link.'"><i class="fa fa-globe fa-2x"></i></a>' : '')?>
 							<?=(isset($data->facebook_link) && !empty($data->facebook_link)?'<a href="'.$data->facebook_link .'" target="_blank" class="btn p-0" title="'.(isset($data->facebook_link) && !empty($data->facebook_link)?$data->facebook_link : '').'"><i class="fab fa-facebook fa-2x" aria-hidden="true"></i></a>': '')?>
-							<?=(isset($data->facebook_link2) && !empty($data->facebook_link2)?'<a href="'.$data->facebook_link2 .'" target="_blank" class="btn p-0" title="'.(isset($data->facebook_link2) && !empty($data->facebook_link2)?$data->facebook_link2 : '').'"><i class="fab fa-facebook fa-2x" aria-hidden="true"></i></a>': '')?>
 							<?=(isset($data->twitter_link) && !empty($data->twitter_link)?'<a href="'.$data->twitter_link.'" target="_blank" class="btn p-0" title="twitter.com/'.(isset($data->twitter_link) && !empty($data->twitter_link)?$data->twitter_link : '').'"><i class="fab fa-twitter fa-2x" aria-hidden="true"></i></a>' : '')?>
-							<?=(isset($data->twitter_link2) && !empty($data->twitter_link2)?'<a href="'.$data->twitter_link.'" target="_blank" class="btn p-0" title="twitter.com/'.(isset($data->twitter_link2) && !empty($data->twitter_link2)?$data->twitter_link2 : '').'"><i class="fab fa-twitter fa-2x" aria-hidden="true"></i></a>' : '')?>
 							<?=(isset($data->linkedin_link) && !empty($data->linkedin_link)?'<a class="btn p-0" href="'.$data->linkedin_link.'" target="_blank" class="btn p-0" title="linkedin.com/'.(isset($data->linkedin_link) && !empty($data->linkedin_link)?$data->linkedin_link : '').'"><i class="fab fa-linkedin fa-2x" aria-hidden="true"></i></a>' : '')?>
 						</div>
 					</div>
