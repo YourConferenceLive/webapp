@@ -25,7 +25,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
-						<li class="breadcrumb-item active">Users</li>
+						<li class="breadcrumb-item active"><a href="<?=$this->project_url.'/admin/users'?>">Users</a></li>
+						<li class="breadcrumb-item active">Exhibitors without booth</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -41,7 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">All users</h3>
+							<h3 class="card-title">Exhibitors without booths</h3>
 							<button class="add-user-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
 						</div>
 						<!-- /.card-header -->
@@ -53,8 +54,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>First Name</th>
 									<th>Surname</th>
 									<th>Email</th>
-									<th>Memb Type</th>
-									<th>Memb Sub Type</th>
 									<th>Accesses</th>
 									<th>Actions</th>
 								</tr>
@@ -150,7 +149,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				$('#idFromApi').val(user.idFromApi);
 				$('#membership_type').val(user.membership_type);
-				$('#membership_sub_type').val(user.membership_sub_type);
 
 				$('#name_prefix').val(user.name_prefix);
 				$('#credentials').val(user.credentials);
@@ -250,7 +248,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			allowOutsideClick: false
 		});
 
-		$.get(project_admin_url+"/users/getAllJson", function (users) {
+		$.get(project_admin_url+"/users/getAllExhibitorsWithoutBoothJson", function (users) {
 			users = JSON.parse(users);
 
 			$('#usersTableBody').html('');
@@ -284,12 +282,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'	</td>' +
 						'	<td>' +
 						'		'+user.email+
-						'	</td>' +
-						'	<td>' +
-						'		'+user.membership_type+
-						'	</td>' +
-						'	<td>' +
-						'		'+user.membership_sub_type+
 						'	</td>' +
 						'	<td>' +
 						'		'+accessList+

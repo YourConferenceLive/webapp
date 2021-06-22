@@ -56,13 +56,38 @@ class CosApi
 
 	public function getMembershipType($partyId)
 	{
+		$url = $this->api_url.$this->api_loc.'party/'.$partyId;
+		$response = $this->secureGet($url);
+		$response = (array) $response;
+		$response = (array) $response['AdditionalAttributes'];
+		$response = (array) $response['$values'];
+
+//		echo "<pre>";
+//		print_r($response);
+//		exit("</pre>");
+
+		foreach ($response as $attr)
+		{
+			if ($attr->Name == 'CustomerTypeCode')
+				return $attr->Value;
+		}
+
+		return NULL;
+	}
+
+	public function getMembershipSubType($partyId)
+	{
 		$url = $this->api_url.$this->api_loc.'cosdemographics/'.$partyId;
 		$response = $this->secureGet($url);
 		$response = (array) $response;
 		$response = (array) $response['Properties'];
 		$response = (array) $response['$values'];
 
-		foreach ($response as $attrs => $attr)
+//		echo "<pre>";
+//		print_r($response);
+//		exit("</pre>");
+
+		foreach ($response as $attr)
 		{
 			if ($attr->Name == 'Category_Contact')
 				return $attr->Value;

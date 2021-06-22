@@ -48,15 +48,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</a>
 				</li>
 
+				<li class="nav-header">USERS</li>
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/users'?>" class="nav-link <?=($this->router->fetch_class()=='users')?'active':''?>">
+					<a href="<?=$this->project_url.'/admin/users'?>" class="nav-link <?=($this->router->fetch_class()=='users' && $this->router->fetch_method()=='index')?'active':''?>">
 						<i class="fas fa-users"></i>
 						<p>
 							Users
 						</p>
 					</a>
 				</li>
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/users/exhibitorsWithoutBooth'?>" class="nav-link <?=($this->router->fetch_method()=='exhibitorsWithoutBooth')?'active':''?>">
+						<i class="fas fa-child"></i>
+						<p>
+							Exhibitors Without Booth
+						</p>
+					</a>
+				</li>
 
+				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link <?=($this->router->fetch_class()=='sessions')?'active':''?>">
 						<i class="fas fa-chalkboard-teacher"></i>
@@ -66,6 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</a>
 				</li>
 
+				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/sponsors'?>" class="nav-link <?=($this->router->fetch_class()=='sponsors')?'active':''?>">
 						<i class="fas fa-border-all"></i>
@@ -74,6 +85,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</p>
 					</a>
 				</li>
+
+				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/evaluation'?>" class="nav-link <?=($this->router->fetch_class()=='evaluation')?'active':''?>">
 						<i class="fas fa-clipboard-check"></i>
@@ -85,7 +98,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<li class="nav-header">SYSTEM</li>
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/logs'?>" class="nav-link">
+					<a href="<?=$this->project_url.'/admin/logs'?>" class="nav-link <?=($this->router->fetch_class()=='logs')?'active':''?>">
 						<i class="fas fa-book"></i>
 						<p class="text">Logs</p>
 					</a>

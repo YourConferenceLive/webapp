@@ -47,7 +47,11 @@
 							</div>
 							<div class="form-group">
 								<label>Membership Type</label>
-								<input name="membership_type" id="membership_type" class="form-control" type="text" placeholder="User's membership type">
+								<input name="membership_type" id="membership_type" class="form-control" type="text" placeholder="User's membership type eg; C for contact">
+							</div>
+							<div class="form-group">
+								<label>Membership Sub Type</label>
+								<input name="membership_sub_type" id="membership_sub_type" class="form-control" type="text" placeholder="User's membership sub type eg; MS for Medical Student (only some Non-members will have sub type)">
 							</div>
 						</div>
 					</div>
