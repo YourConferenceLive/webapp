@@ -26,7 +26,7 @@ No other configuration files should contain environment related variables.
 
 
 ###  2. :arrow_heading_up: Routing
-#### :warning: YCL Web App works slightly different than the traditional <img src="ycl_assets/codeigniter_logo.png" alt="CodeIgniter Logo" width="20"> CodeIgniter application.
+#### :warning: YCL Web App works slightly different than the traditional <img src="ycl_assets/images/codeigniter_logo.png" alt="CodeIgniter Logo" width="20"> CodeIgniter application.
 
 In YCL Web App, there are projects eg; COS or PCE and they are accessible through the url eg; https://yourconference.live/COS or https://yourconference.live/PCE
 
@@ -67,14 +67,14 @@ Each theme directory contains necessary view files for different user types and 
 
 This project requires the following:
 
-* <img src="ycl_assets/php_logo.png" alt="PHP Logo" width="35"> PHP version 5.6 or newer (https://www.php.net/releases/5_6_0.php)  
-* <img src="ycl_assets/mysql_logo.png" alt="MySQL Logo" width="40"> MySQL (5.1+) via the mysqli and pdo drivers (https://docs.oracle.com/cd/E19078-01/mysql/mysql-refman-5.1/)  
+* <img src="ycl_assets/iamges/php_logo.png" alt="PHP Logo" width="35"> PHP version 5.6 or newer (https://www.php.net/releases/5_6_0.php)  
+* <img src="ycl_assets/images/mysql_logo.png" alt="MySQL Logo" width="40"> MySQL (5.1+) via the mysqli and pdo drivers (https://docs.oracle.com/cd/E19078-01/mysql/mysql-refman-5.1/)  
 ---  
 
 ## :package: Installation
 
-This is a standalone web application built using [<img src="ycl_assets/codeigniter_logo.png" alt="CodeIgniter Logo" width="15"> CodeIgniter 3](https://codeigniter.com/userguide3/index.html).    
-[<img src="ycl_assets/codeigniter_logo.png" alt="CodeIgniter Logo" width="15"> CodeIgniter](https://codeigniter.com) is a powerful PHP framework with a very small footprint, built for developers who need a simple and elegant toolkit to create full-featured web applications.
+This is a standalone web application built using [<img src="ycl_assets/images/codeigniter_logo.png" alt="CodeIgniter Logo" width="15"> CodeIgniter 3](https://codeigniter.com/userguide3/index.html).    
+[<img src="ycl_assets/images/codeigniter_logo.png" alt="CodeIgniter Logo" width="15"> CodeIgniter](https://codeigniter.com) is a powerful PHP framework with a very small footprint, built for developers who need a simple and elegant toolkit to create full-featured web applications.
 
 
 ### Your Conference Live can be installed by following 4 steps;

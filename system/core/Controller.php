@@ -78,6 +78,10 @@ class CI_Controller {
 	 * @var string
 	 */
 	public $project_url;
+	/**
+	 * @var string
+	 */
+	public $project_timezone;
 
 	/**
 	 * Class constructor
@@ -114,6 +118,9 @@ class CI_Controller {
 			$this->project = $result->row();
 			$this->themes_dir = 'themes';
 			$this->project_url = base_url($this->project->main_route);
+			$this->project_timezone = $this->project->timezone;
+
+			date_default_timezone_set($this->project->timezone);
 
 			if ($this->project->active == 0) // If project is suspended, show error
 			{

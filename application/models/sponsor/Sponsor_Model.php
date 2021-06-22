@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * @property  project
  */
-class Sponsor_Model extends CI_Model
+class Sponsor_model extends CI_Model
 {
 
 	private $booth_id;
@@ -15,25 +15,22 @@ class Sponsor_Model extends CI_Model
 	{
 		parent::__construct();
 
+		$this->user_id = ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']);
+		$this->booth_id = $_SESSION['project_sessions']["project_{$this->project->id}"]['exhibitor_booth_id'];
+		$this->user_id = ($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id']);
+
 		$this->load->model('Logger_Model', 'logger');
-		$this->sponsor_id = $this->session->userdata('sponsor_id');
-		$this->booth_id = $this->session->userdata('booth_id');
 	}
 
-	function get_sponsor_data()
+	function getBoothData($booth_id)
 	{
 
 		$this->db->select('*');
-		$this->db->from('sponsor_booth_admin sba');
-		$this->db->join('sponsor_booth sb', 'sba.booth_id=sb.id');
-		$this->db->where(array('sba.user_id' => $this->sponsor_id, 'sba.booth_id' => $this->booth_id,'sba.project_id'=>$this->project->id));
-		$result = $this->db->get();
-
-		if ($result) {
-			return $result->result();
-		} else {
-			return '';
-		}
+		$this->db->from('sponsor_booth');
+		$this->db->where('id', $booth_id);
+		$booth = $this->db->get();
+		if ($booth->num_rows() > 0)
+			return $booth->result()[0];
 	}
 
 	function save_booth_details()
@@ -73,6 +70,34 @@ class Sponsor_Model extends CI_Model
 			}
 		}
 	}
+
+	function upload_booth_photos()
+	{
+		$project_id=$this->input->post('project_id');
+		$current_booth_id=$this->input->post('current_booth_id');
+		$photo_type=$this->input->post('type');
+
+		if ($_FILES['file']) {
+			$fileExt = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+			$file_name="{$project_id}.{$current_booth_id}.{$photo_type}.{$fileExt}";
+			if (move_uploaded_file($_FILES["file"]["tmp_name"], FCPATH . "/theme_assets/booth_uploads/{$file_name}")) {
+				$this->db->update('sponsor_booth', array($photo_type => $file_name), array('id' => $current_booth_id));
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+	}
+
+	function change_booth_url()
+	{
+		$current_booth_id=$this->input->post('current_booth_id');
+		$value=$this->input->post('value');
+		$type=$this->input->post('type');
+		$this->db->update('sponsor_booth', array($type => $value,"video_position"=>"1"), array('id' => $current_booth_id));
+	}
+
 
 	function upload_cover()
 	{
@@ -126,7 +151,9 @@ class Sponsor_Model extends CI_Model
 	function update_about_us()
 	{
 		$post = $this->input->post();
+
 		if (isset($post['about_us'])) {
+
 			$this->db->where('id', $this->booth_id);
 			$this->db->update('sponsor_booth', array('about_us' => $post['about_us']));
 			return 'success';
@@ -183,13 +210,13 @@ class Sponsor_Model extends CI_Model
 		}
 	}
 
-	function save_sponsor_group_chat()
+	function save_sponsor_group_chat($booth_id, $user_id)
 	{
 		$post = $this->input->post();
 		$fields = array(
 			'project_id'=> $this->project->id,
-			'booth_id' => $this->booth_id,
-			'chat_from' => $this->sponsor_id,
+			'booth_id' => $booth_id,
+			'chat_from' => $user_id,
 			'chat_text' => $post['chat_text'],
 			'date_time' => date('Y-m-d H:i:s'),
 		);
@@ -204,14 +231,15 @@ class Sponsor_Model extends CI_Model
 
 	}
 
-	function get_sponsor_group_chat()
+	function get_sponsor_group_chat($booth_id)
 	{
 		$post = $this->input->post();
 		$this->db->select('*')
 				->from('sponsor_group_chat sc')
 				->join('user u', 'sc.chat_from = u.id', 'left')
+				->where('cleared', 0)
 				->where('project_id', $this->project->id)
-				->where('booth_id', $this->booth_id)
+				->where('booth_id', $booth_id)
 				->order_by('sc.date_time', 'asc');
 
 		$result = $this->db->get();
@@ -228,10 +256,12 @@ class Sponsor_Model extends CI_Model
 
 		$this->db->select('*')
 			->from('user u')
-			->join('user_project_access upa','upa.user_id = u.id','right')
-			->where('u.id!=',$this->sponsor_id)
-			->where('upa.project_id',$this->project->id)
-			->order_by('u.name');
+			->join('user_project_access upa','upa.user_id = u.id')
+			->where('u.id !=', $this->user_id)
+			->where('upa.project_id', $this->project->id)
+			->where('upa.level', 'attendee')
+			->order_by('u.name')
+			->group_by('u.id');
 
 		$result = $this->db->get();
 		if ($result->num_rows() > 0) {
@@ -242,21 +272,21 @@ class Sponsor_Model extends CI_Model
 		return json_encode($json_array);
 	}
 
-	function get_sponsor_attendee_chat()
+	function get_sponsor_attendee_chat($booth_id)
 	{
 		$post = $this->input->post();
 //		print_r($post);
 		$this->db->select('*')
 			->from('sponsor_attendee_chat sac')
 			->join('user u','sac.from_id = u.id','left')
-			->where('booth_id', $this->booth_id)
+			->where('booth_id', $booth_id)
 			->group_start()
 			->where('sac.to_id', $post['chat_from_id'])
 			->or_where('sac.from_id', $post['chat_from_id'])
 			->group_end()
 //			->where('sac.to_id = '.$post['chat_from_id'].' OR sac.from_id = '.$post['chat_from_id'].'' )
 			->order_by('sac.id', 'asc')
-;
+		;
 		$result = $this->db->get();
 		if ($result->num_rows() > 0) {
 
@@ -286,15 +316,15 @@ class Sponsor_Model extends CI_Model
 		return json_encode($json_array);
 	}
 
-	function save_sponsor_attendee_chat()
+	function save_sponsor_attendee_chat($booth_id, $user_id)
 	{
 		$post = $this->input->post();
 		$fields = array(
 			'project_id'=>$this->project->id,
-			'booth_id' => $this->booth_id,
+			'booth_id' => $booth_id,
 			'chat_from' => 'sponsor',
 			'to_id' => $post['chat_to_id'],
-			'from_id' => $this->sponsor_id,
+			'from_id' => $user_id,
 			'chat_text' => $post['chat_text'],
 			'date_time' => date('Y-m-d H:i:s'),
 		);
@@ -308,7 +338,7 @@ class Sponsor_Model extends CI_Model
 		}
 	}
 
-	function upload_resource_file()
+	function upload_resource_file($booth_id)
 	{
 		$post = $this->input->post();
 		$random_string = md5(uniqid(rand(), true));
@@ -320,7 +350,7 @@ class Sponsor_Model extends CI_Model
 			if (move_uploaded_file($_FILES["resource_file"]["tmp_name"], FCPATH . "cms_uploads/projects/".$this->project->id."/sponsor_assets/uploads/resource_management_files/resource_{$this->booth_id}_{$random_string}.{$fileExt}")) {
 				$data = array(
 					'project_id'=>$this->project->id,
-					'booth_id' => $this->booth_id,
+					'booth_id' => $booth_id,
 					'resource_name' => $resource_name,
 					'screen_name' => $screen_name,
 					'file_name' => "resource_{$this->booth_id}_{$random_string}.{$fileExt}"
@@ -334,11 +364,11 @@ class Sponsor_Model extends CI_Model
 		return $ret;
 	}
 
-	function get_resource_files(){
+	function get_resource_files($booth_id){
 		$this->db->select('*')
 				->from('sponsor_resource_management')
 				->where('project_id',$this->project->id)
-				->where('booth_id',$this->booth_id)
+				->where('booth_id',$booth_id)
 				->order_by('date_time','desc');
 		$result = $this->db->get();
 		if($result->num_rows() > 0){
@@ -374,6 +404,13 @@ class Sponsor_Model extends CI_Model
 	}
 
 	function add_availability_date_time(){
+
+		$overLapCheck = $this->check_availability_overlap();
+		if ($overLapCheck == false){
+			return 'error';
+			die;
+		}
+
 		$post = $this->input->post();
 		$field_set = array(
 			'project_id'=>$this->project->id,
@@ -387,6 +424,24 @@ class Sponsor_Model extends CI_Model
 			return 'success';
 		} else {
 			return 'error';
+		}
+	}
+
+	function check_availability_overlap(){
+		$post = $this->input->post();
+		$from = $post['available_from'];
+		$to = $post['available_to'];
+
+		$this->db->select('*')
+			->from('sponsor_meeting_availability')
+			->where(array('project_id'=>$this->project->id, 'booth_id'=>$this->booth_id, 'sponsor_admin_id'=>$this->sponsor_id, ))
+			->where("('".$from."' between available_from AND available_to) OR ('".$to."' between available_from AND available_to)")
+			;
+		$qstr = $this->db->get();
+		if($qstr->num_rows() > 0 ){
+			return false;
+		}else{
+			return true;
 		}
 	}
 
@@ -415,7 +470,7 @@ class Sponsor_Model extends CI_Model
 			->from('sponsor_meeting_booking smb')
 			->join('user u','smb.user_id = u.id')
 
-			->where('sponsor_id', $this->sponsor_id)
+			->where('sponsor_admin_id', $this->sponsor_id)
 			->where('booth_id',$this->booth_id)
 			->where('project_id', $this->project->id)
 ;
@@ -427,5 +482,90 @@ class Sponsor_Model extends CI_Model
 			$json_array = array('status'=>'error' );
 		}
 		return json_encode($json_array);
+	}
+
+	function clear_group_chat(){
+			$data = array(
+				'booth_id'=>$this->booth_id,
+				'project_id'=>$this->project->id
+			);
+			$this->db->where($data);
+			$this->db->update('sponsor_group_chat',array('cleared'=>1));
+
+		if (!$this->db->affected_rows()) {
+			$result = 'Group chat already empty';
+		} else {
+			$result = 'success';
+		}
+		return $result;
+	}
+
+	function copy_from_group_chat(){
+		$post = $this->input->post();
+			$this->db->select('*')
+				->from('sponsor_group_chat')
+				->where('cleared',0)
+				;
+			$result = $this->db->get();
+//			return $result->result();
+			if($result->num_rows() > 0 ){
+				$data_array = array();
+				foreach ($result->result() as $data){
+					$this->db->select('*')
+						->from('saved_group_chat')
+						->where('sponsor_group_chat_id ', $data->id);
+					$duplicate = $this->db->get();
+
+					if($duplicate->num_rows() < 1){
+
+						$insert = $this->db->insert('saved_group_chat',
+							array(
+								'sponsor_group_chat_id'=>$data->id,
+								'project_id'=>$data->project_id,
+								'booth_id'=>$data->booth_id,
+								'sponsor_admin_id'=>$this->sponsor_id,
+								'name'=>$post['backup_name'],
+								'chat_from'=>$data->chat_from,
+								'chat_text'=>$data->chat_text,
+								'date_time'=>$data->date_time,
+								'save_date_time'=>date('Y-m-d H:i:s')
+							));
+					}else{
+						return array('status'=> 'no_update', 'message'=>'Chats already saved');
+					}
+				}
+				if($insert){
+					return array('status'=> 'success', 'message'=>'Chat saved successfully');
+				}else{
+					return array('status'=> 'error', 'message'=> 'Chat is empty');
+				}
+
+			}else{
+				return array('status'=> 'error', 'message'=> 'Chat is empty');
+			}
+	}
+
+	function get_saved_group_chats()
+	{
+		$post = $this->input->post();
+		$this->db->select('*')
+			->from('saved_group_chat sgc')
+			->join('user u', 'sgc.chat_from = u.id', 'left')
+			->where('sgc.project_id', $this->project->id)
+			->where('sgc.booth_id', $this->booth_id)
+			->where('sgc.sponsor_admin_id', $this->sponsor_id)
+			->order_by('sgc.id', 'asc');
+
+		$result = $this->db->get();
+		if ($result->num_rows() > 0) {
+			$json_array = array('status' => 'success', 'result' => $result->result());
+		} else {
+			$json_array = array('status' => 'empty');
+		}
+		return json_encode($json_array);
+	}
+
+	function delete_saved_chats(){
+		return $this->db->delete('saved_group_chat',array('sponsor_admin_id'=>$this->sponsor_id, 'booth_id'=>$this->booth_id, 'project_id'=>$this->project->id));
 	}
 }

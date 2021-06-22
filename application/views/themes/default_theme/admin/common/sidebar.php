@@ -4,9 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<!-- Brand Logo -->
-	<a href="index3.html" class="brand-link">
+	<a href="<?=$this->project_url.'/admin/dashboard'?>" class="brand-link">
 		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="Logo" class="brand-image img-circle" style="opacity: .8">
-		<span class="brand-text font-weight-light">COS Admin</span>
+		<span class="brand-text font-weight-light"><?=$this->project->name?> Admin</span>
 	</a>
 
 	<!-- Sidebar -->
@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<img src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user.png" class="img-circle elevation-2" alt="User Image">
 			</div>
 			<div class="info">
-				<a href="#" class="d-block"><?=$user['name']?> <?=$user['surname']?></a>
+				<a href="#" class="d-block"><?=$user->name?> <?=$user->surname?></a>
 			</div>
 		</div>
 
@@ -39,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<!-- Add icons to the links using the .nav-icon class
 					 with font-awesome or any other icon font library -->
 				<li class="nav-item menu-open">
-					<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link">
+					<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link <?=($this->router->fetch_class()=='dashboard')?'active':''?>">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>
 							Dashboard
@@ -48,8 +48,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</a>
 				</li>
 
+				<li class="nav-header">USERS</li>
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link active">
+					<a href="<?=$this->project_url.'/admin/users'?>" class="nav-link <?=($this->router->fetch_class()=='users' && $this->router->fetch_method()=='index')?'active':''?>">
+						<i class="fas fa-users"></i>
+						<p>
+							Users
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/users/exhibitorsWithoutBooth'?>" class="nav-link <?=($this->router->fetch_method()=='exhibitorsWithoutBooth')?'active':''?>">
+						<i class="fas fa-child"></i>
+						<p>
+							Exhibitors Without Booth
+						</p>
+					</a>
+				</li>
+
+				<li class="nav-header"></li>
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link <?=($this->router->fetch_class()=='sessions')?'active':''?>">
 						<i class="fas fa-chalkboard-teacher"></i>
 						<p>
 							Sessions
@@ -57,6 +76,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</a>
 				</li>
 
+				<li class="nav-header"></li>
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/sponsors'?>" class="nav-link <?=($this->router->fetch_class()=='sponsors')?'active':''?>">
+						<i class="fas fa-border-all"></i>
+						<p>
+							Sponsors
+						</p>
+					</a>
+				</li>
+
+				<li class="nav-header"></li>
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/evaluation'?>" class="nav-link <?=($this->router->fetch_class()=='evaluation')?'active':''?>">
+						<i class="fas fa-clipboard-check"></i>
+						<p>
+							Evaluations
+						</p>
+					</a>
+				</li>
+
+				<li class="nav-header">SYSTEM</li>
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/logs'?>" class="nav-link <?=($this->router->fetch_class()=='logs')?'active':''?>">
+						<i class="fas fa-book"></i>
+						<p class="text">Logs</p>
+					</a>
+				</li>
 <!--				<li class="nav-item">-->
 <!--					<a href="pages/widgets.html" class="nav-link">-->
 <!--						<i class="nav-icon fas fa-th"></i>-->
@@ -659,6 +705,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<p>Informational</p>-->
 <!--					</a>-->
 <!--				</li>-->
+
+				<li class="nav-header">ACCOUNT</li>
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/authentication/logout/'.base64_encode('admin')?>" class="nav-link">
+						<i class="nav-icon fas fa-sign-out-alt text-danger"></i>
+						<p class="text">Logout</p>
+					</a>
+				</li>
 			</ul>
 		</nav>
 		<!-- /.sidebar-menu -->

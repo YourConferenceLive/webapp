@@ -1,6 +1,11 @@
-.body{
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap');
+
+body{
+	font-size: 15px;
+	font-family: 'Open Sans', sans-serif;
 }
+
 .group-chat-body,
 .sponsor-chat-body{
 	height: 550px;
@@ -57,7 +62,7 @@
 .jumbotron{
 	object-fit: contain;
 	min-height: 23vw;
-	height: 70vh;
+	height: max-content;
 
 	/*width: 100vw !important;*/
 	background-position: center;
@@ -66,12 +71,12 @@
 	/*-moz-background-size: 100% 100%;*/
 	/*-o-background-size: 100% 100%;*/
 	background-size: 100% 100%;
+	position: relative
 }
 .resource-header{
 	background-color: #FCF8E3;
 	color: #8A6D3B;
 }
-
 
 .resources-body{
 	min-height: 0px;
@@ -117,12 +122,12 @@
 	height: 300px;
 }
 .about-us-video>iframe{
-
+	width: 100%;
+	height: 100%;
 	border-radius: 10px;
 }
 .sponsor-main-logo{
 	width: 200px;
-	height: 150px;
 	object-fit: fill;
 }
 
@@ -134,10 +139,10 @@
 }
 
 #tv-container {
-	max-width: 638px;
-	margin-right: auto;
-	margin-left: auto;
-	margin-top: 62px;
+	/*max-width: 638px;*/
+	/*margin-right: auto;*/
+	/*margin-left: auto;*/
+	/*margin-top: 62px;*/
 }
 
 #monitor {
@@ -182,6 +187,176 @@
 	width:100% !important;
 }
 
+main .content{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 75px;
+	position: relative;
+}
+
+main .content .middle{
+	position: relative;
+	z-index: 11;
+	width: 500px;
+	height: 411px;
+	max-width: 100%;
+}
+
+main .content .middle img{
+	width: 500px;
+}
+
+main .content .middle #tv-container{
+	position: absolute;
+	z-index: 1;
+	top: 47px;
+	width: 100%;
+}
+
+main .content .left{
+	order: -1;
+}
+
+main .content .left, main .content .right{
+	z-index: 11;
+	position: relative;
+	width: 240px;
+	height: 340px;
+	max-width: 100%;
+}
+
+
+main .content .left img,main .content .right img{
+	width: 240px;
+}
+
+main .tables{
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin-top: -200px;
+}
+
+main .table_left ,main .table_right{
+	position: relative;
+}
+
+main .table_left{
+	left: 15px;
+}
+
+main .table_right{
+	right: 15px;
+}
+
+main .table_left,main .table_right{
+	width: 150px;
+	height: 212px;
+	display: flex;
+	align-items: flex-end;
+}
+
+main .table_left img,main .table_right img{
+	width: 150px;
+}
+
+.wt_booth_img{
+	cursor: pointer;
+}
+
+
+@keyframes hunting_bg_color {
+	50% {
+		box-shadow: inset -1px -4px 5px -1px #000000a1, 1px 3px 6px 0 #000, 0 0 20px -1px #ffc107b5;
+	}
+}
+
+.wt_hunting_icon{
+	animation: hunting_bg_color 1500ms infinite;
+	position: absolute;
+	border-radius: 100%;
+	padding: 5px;
+	box-shadow: inset -1px -4px 5px -1px #000000a1, 1px 3px 6px 0 #000, 0 0 1px 2px #9e9e9e;
+	background: -moz-linear-gradient(left,#f6f8f8 0%,#dcdfe6 21%,#b9bfcd 49%,#dee2e6 80%,#f6f8f8 100%);
+	background: -webkit-linear-gradient(left,#f6f8f8 0%,#dcdfe6 21%,#b9bfcd 49%,#dee2e6 80%,#f6f8f8 100%);
+	background: linear-gradient(to right,#f6f8f8 0%,#dcdfe6 21%,#b9bfcd 49%,#dee2e6 80%,#f6f8f8 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f8f8',endColorstr='#f6f8f8',GradientType=1);
+}
+.wt_hunting_icon:hover{
+	cursor: pointer;
+	background: yellow;
+}
+.wt_hunting_icon img{
+	width: 100%;
+}
+
+@media only screen and (max-width: 1275px) {
+	main .tables{
+		margin-top: 0;
+		width: 70%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+@media only screen and (max-width: 930px) {
+	main .content .middle img{
+		width: 400px;
+	}
+	main .content .left img, main .content .right img{
+		width: 190px;
+	}
+	main .content .middle #tv-container{
+		left: 0;
+		right: 0;
+		margin: auto;
+		width: 80%;
+	}
+}
+
+@media only screen and (max-width: 750px) {
+	main .content{
+		display: block;
+		text-align: center;
+	}
+
+	main .content .middle{
+		width: max-content;
+		max-width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		height: auto;
+	}
+
+	main .content .middle img{
+		max-width: 100%;
+	}
+
+	main .content .left, main .content .right{
+		display: inline-block;
+		width: 49%;
+		height: auto;
+	}
+
+	main .content .left img, main .content .right img{
+		max-width: 100%;
+	}
+
+	main .tables{
+		width: 100%;
+	}
+
+	main .tables img{
+		max-width: 100%;
+	}
+
+	main .table_left, main .table_right{
+		height: auto;
+	}
+
+
+}
 
 @media all and (min-width: 960px) {
 	#monitor {
@@ -207,7 +382,7 @@
 		0%   { box-shadow: 0 0 100px 0 rgba(225,235,255,0.4); }
 		100% { box-shadow: 0 0 60px 0 rgba(200,220,255,0.6); }
 	}
-	
+
 }
 
 

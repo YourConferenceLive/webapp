@@ -1,23 +1,36 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$ci_controller = $this->router->fetch_class();
+$ci_method = $this->router->fetch_method();
 ?>
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-dark">
+<nav
+		id="mainTopMenu"
+		class="main-header navbar navbar-expand navbar-dark"
+		<?=($ci_controller == 'sessions' && $ci_method == 'view')?'style="margin-left: unset !important;"':''?>
+>
 	<!-- Left navbar links -->
 	<ul class="navbar-nav">
-		<li class="nav-item">
+		<li id="pushMenuItem" class="nav-item">
 			<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
-			<a href="index3.html" class="nav-link">Home</a>
+			<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link">Dashboard</a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
-			<a href="#" class="nav-link">Easy access link 1</a>
+			<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link">Sessions</a>
 		</li>
 	</ul>
 
 	<!-- Right navbar links -->
 	<ul class="navbar-nav ml-auto">
+
+		<li class="nav-item">
+			<a id="admin_timer" class="nav-link disabled" style="display: none;color: rgb(255, 255, 255);">
+				Starts In: __ __
+			</a>
+		</li>
+
 		<!-- Navbar Search -->
 		<li class="nav-item">
 			<a class="nav-link" data-widget="navbar-search" href="#" role="button">
@@ -40,6 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</li>
 
+		<?php if(1==2): ?>
 		<!-- Messages Dropdown Menu -->
 		<li class="nav-item dropdown">
 			<a class="nav-link" data-toggle="dropdown" href="#">
@@ -125,6 +139,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
 			</div>
 		</li>
+		<?php endif; ?>
+
+		<!-- Fullscreen Btn -->
 		<li class="nav-item">
 			<a class="nav-link" data-widget="fullscreen" href="#" role="button">
 				<i class="fas fa-expand-arrows-alt"></i>

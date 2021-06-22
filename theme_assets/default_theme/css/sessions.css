@@ -10,6 +10,14 @@
 	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
 }
 
+.sessions-listing-item .container-fluid {
+	min-height: 210px;
+}
+
+.btn.not-allowed
+{
+  cursor: not-allowed !important;
+}
 
 /************** Join Page *************/
 #full-screen-background.sessions-join
@@ -47,3 +55,294 @@
 	height: 100%;
 	background-color: black;
 }
+
+.middleText
+{
+	position: absolute;
+	width: auto;
+	height: 50px;
+	top: 30%;
+	left: 45%;
+	margin-left: -50px; /* margin is -0.5 * dimension */
+	margin-top: -25px;
+	color: #c6c6c6;
+}
+/* Add your custom css styles */
+
+a.keynote-link {
+	color: #487391;
+}
+
+.rightSticky {
+	width: 200px;
+	height: max-content;
+	position: absolute;
+	right: -150px;
+	bottom: 200px;
+	margin: auto;
+	z-index: 4445;
+}
+
+.rightSticky ul {
+	margin: 0;
+	padding: 0;
+}
+
+.rightSticky ul li {
+	list-style: none;
+	background-color: #0077cc;
+	color: white;
+	padding: 5px 13px;
+	transition: all 200ms ease-in-out;
+	cursor: pointer;
+	opacity: 0.7;
+	position: relative;
+}
+
+.rightSticky .notify {
+	background-color: red;
+	display: block;
+	position: absolute;
+	text-align: center;
+	border-radius: 100%;
+	font-size: 10px;
+	width: 30px;
+	height: 18px;
+	line-height: 18px;
+	top: -4px;
+	left: -20px;
+}
+
+@keyframes blinker {
+	50% {
+		opacity: 0;
+	}
+}
+
+.blink-element{
+	animation: blinker 1s linear infinite;
+}
+
+.rightSticky ul li i {
+	font-size: 25px;
+	min-width: 25px;
+	text-align: center;
+
+}
+
+.rightSticky ul li span {
+	vertical-align: text-bottom;
+	font-weight: bold;
+	margin-left: 10px;
+}
+
+.rightSticky ul li:nth-of-type(1n+2) {
+	margin-top: 8px;
+}
+
+.rightSticky ul li:hover {
+	margin-left: -150px;
+	opacity: 1;
+}
+
+.rightSticykPopup {
+	background-color: #FFFFFF;
+	width: 300px;
+	height: 320px;
+	position: absolute;
+	bottom: 130px;
+	right: 10px;
+	z-index: 4444;
+	box-shadow: 2px 3px black;
+
+}
+
+.rightSticykPopup .header {
+	background-color: #0077cc;
+	width: 100%;
+	height: 36px;
+	color: white;
+	padding: 8px 15px;
+	font-size: 17px;
+	font-weight: 600;
+}
+
+.rightSticykPopup .header .rightTool {
+	float: right;
+	margin-right: 30px;
+	height: 26px;
+}
+
+.rightSticykPopup .header .rightTool .dropdown-menu{
+	left: -125px;
+	padding: 5px 0px;
+}
+
+.rightSticykPopup .header .rightTool .dropdown-menu li{
+	font-size: 14px;
+	font-weight: 400;
+	padding-left: 10px;
+	border-bottom: 1px solid #f1f1f1b0;
+	cursor: pointer;
+}
+
+.rightSticykPopup .header .rightTool .dropdown-menu li a{
+	color: purple;
+}
+
+.rightSticykPopup .header .rightTool .dropdown-menu li:nth-last-of-type(1){
+	border-bottom: none;
+}
+
+.rightSticykPopup .header .rightTool .dropdown-menu li:hover{
+	text-decoration: underline;
+}
+
+.rightSticykPopup .header .rightTool i, .rightSticykPopup .header .rightTool div > span {
+	cursor: pointer;
+}
+
+.rightSticykPopup .header .rightTool i:hover, .rightSticykPopup .header .rightTool div > span:hover {
+	color: black;
+}
+
+.rightSticykPopup .header .rightTool i:nth-of-type(1) {
+	vertical-align: bottom;
+}
+
+.rightSticykPopup .header .rightTool .dropdown {
+	top: -25px;
+	left: 29px;
+}
+
+.rightSticykPopup .contentHeader {
+	color: #0077cc;
+	font-weight: bold;
+	padding: 5px 15px;
+	font-size: 14px;
+}
+
+.presenterRightSticykPopup {
+	position: unset;
+	box-shadow: 0 0px 2px black;
+	margin-bottom: 15px;
+	width: 450px;
+	max-width: 100%;
+	height: 390px;
+}
+
+.presenterRightSticykPopup .dropdown-menu {
+	margin-left: -135px;
+}
+
+.presenterRightSticky {
+	bottom: unset;
+	top: 200px;
+}
+
+#briefcase_section {
+	top: 68px !important;
+}
+
+.messagesSticky .content .messages {
+	padding: 5px 3px;
+	max-height: 240px;
+	height: 200px;
+	overflow: auto;
+}
+
+.messagesStickyPresenter .content .messages {
+	padding: 5px 3px;
+
+}
+
+.messagesStickyPresenter .content .messages {
+	height: 200px;
+}
+
+.messagesSticky .content .messages > div:nth-of-type(1n+2) {
+	margin-top: 5px;
+}
+
+.messagesSticky .content .messages .messageHe, .messagesSticky .content .messages .messageMe {
+	padding: 10px 12px;
+	font-size: 12px;
+	color: black;
+	line-height: 15px;
+	font-weight: 400;
+	border-radius: 10px;
+
+}
+
+.messagesSticky .content .messages .messageHe span {
+	font-weight: 600;
+}
+
+.messagesSticky .content .messages .messageHe p {
+	margin-top: 5px;
+}
+
+.messagesSticky .content .messages .messageHe p, .messagesSticky .content .messages .messageMe p {
+	margin-bottom: 0;
+	color: #2f2f2f;
+}
+
+.messagesSticky .content .messages .messageHe {
+	background-color: #ECEAEB;
+	border-radius: 10px;
+}
+
+.messagesSticky .content .messages .messageMe {
+	background-color: #D0D0D0;
+}
+
+.messagesSticky input {
+	width: 270px;
+	height: 40px;
+	border-radius: 50px;
+	margin: 1px auto 0 auto;
+}
+
+@media only screen and (max-width: 600px) {
+	.rightSticky {
+		bottom: 56px;
+		position: fixed;
+	}
+
+	.rightSticykPopup{
+		display: block;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		height: 100vh;
+		z-index: 133333333;
+	}
+
+	.messagesSticky .content .messages{
+		max-height: 100%;
+		height: 80vh;
+	}
+
+	.messagesSticky input{
+		width: 96%;
+	}
+}
+
+.totalAttende {
+	font-size: 15px;
+}
+
+.border {
+	border: 1px solid;
+}
+
+.borderRed {
+	border-color: red !important;
+}
+
+.displayNone {
+	display: none !important;
+}
+

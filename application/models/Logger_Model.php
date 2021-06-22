@@ -83,4 +83,92 @@ class Logger_Model extends CI_Model
 		return false;
 
 	}
+
+	public function getBoothLogs($booth_id)
+	{
+		$this->db->select('user.name as user_fname, user.surname as user_surname, user.email, logs.*')
+			->from('logs')
+			->join('user','user.id = logs.user_id')
+			->where('logs.info', 'Booth')
+			->where('logs.ref_1', $booth_id)
+			->order_by('logs.date_time', 'desc')
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return $result->result();
+		return new stdClass();
+	}
+
+	public function getTotalBoothVisits($booth_id)
+	{
+		$this->db->select('logs.*')
+			->from('logs')
+			->where('logs.info', 'Booth')
+			->where('logs.name', 'Visit')
+			->where('logs.ref_1', $booth_id)
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return sizeof($result->result());
+		return 0;
+	}
+
+	public function getUniqueBoothVisits($booth_id)
+	{
+		$this->db->select('logs.*')
+			->from('logs')
+			->where('logs.info', 'Booth')
+			->where('logs.name', 'Visit')
+			->where('logs.ref_1', $booth_id)
+			->group_by('logs.user_id')
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return sizeof($result->result());
+		return 0;
+	}
+
+	public function getReturningBoothVisits($booth_id)
+	{
+		$this->db->select('logs.user_id')
+			->from('logs')
+			->where('logs.info', 'Booth')
+			->where('logs.name', 'Visit')
+			->where('logs.ref_1', $booth_id)
+			->group_by('logs.user_id')
+			->having('COUNT(logs.user_id) > 1')
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return sizeof($result->result());
+		return 0;
+	}
+
+	public function getTotalResourceDownloads($booth_id)
+	{
+		$this->db->select('logs.*')
+			->from('logs')
+			->where('logs.info', 'Booth')
+			->where('logs.name', 'Resource to briefcase')
+			->where('logs.ref_1', $booth_id)
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return sizeof($result->result());
+		return 0;
+	}
+
+	public function getAllProjectLogs()
+	{
+		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, logs.*')
+			->from('logs')
+			->join('user','user.id = logs.user_id')
+			->where('logs.project_id', $this->project->id)
+			->order_by('logs.date_time', 'desc')
+		;
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+			return $result->result();
+		return new stdClass();
+	}
 }

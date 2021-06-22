@@ -23,7 +23,7 @@ class Sponsor_Model extends CI_Model
 	function get_booth_data($booth_id){
 
 		$this->db->select('*')
-			->from('sponsor_booth ')
+			->from('sponsor_booth sb')
 			->where('id', $booth_id)
 			->where('project_id', $this->project->id);
 
@@ -62,6 +62,7 @@ class Sponsor_Model extends CI_Model
 			->join('user u', 'sc.chat_from = u.id', 'left')
 			->where('project_id',$this->project->id)
 			->where('booth_id',$post['booth_id'])
+			->where('cleared', 0)
 			->order_by('sc.id', 'asc');
 
 		$result = $this->db->get();
@@ -82,8 +83,8 @@ class Sponsor_Model extends CI_Model
 			->where('sac.booth_id', $post['booth_id'])
 			->where('sac.project_id', $this->project->id)
 			->group_start()
-			->where('from_id', $this->user_id)
-			->or_where('to_id', $this->user_id)
+			->where('from_id', $post['chat_from_id'])
+			->or_where('to_id', $post['chat_from_id'])
 			->group_end()
 			->order_by('sac.id', 'asc')
 			;
@@ -155,9 +156,12 @@ class Sponsor_Model extends CI_Model
 		return json_encode($json_array);
 	}
 
+
+//	GET DATE LIST OF DATETIME PICKER ###############################
+
 	function get_sponsor_date_slot(){
 		$post = $this->input->post();
-		$this->db->select('available_from as start, available_to as end')
+		$this->db->select('DATE(available_from) as start, DATE(available_to) as end')
 			->from('sponsor_meeting_availability')
 			->where('project_id', $this->project->id)
 			->where('booth_id', $post['booth_id'])
@@ -165,10 +169,196 @@ class Sponsor_Model extends CI_Model
 			;
 		$result = $this->db->get();
 		if ($result->num_rows() > 0) {
-			$json_array = array('status' => 'success', 'result' => $result->result());
+			return ($result->result_array());
 		} else {
 			$json_array = array('status' => 'error', json_last_error());
 		}
-		return json_encode($json_array);
+//		return json_encode($json_array);
+	}
+
+
+	function getTimeSlotByDateOf()
+	{
+		$post = $this->input->post();
+		$date = $this->input->post()['date'];
+//		print_r($date);exit;
+		$this->db->select('available_from as start, available_to as end')
+			->from('sponsor_meeting_availability')
+			->where('project_id', $this->project->id)
+			->where('booth_id', $post['booth_id'])
+			->where('sponsor_admin_id', $post['sponsor_id'])
+			->group_start()
+			->where('DATE(available_from)', $date)
+			->or_where('DATE(available_to)', $date)
+			->group_end()
+		;
+		$result = $this->db->get();
+		if($result->num_rows() != 0)
+		{
+
+			return $result->result_array();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	function getExistingBookings($booth_id, $sponsor_id, $date){
+		$this->db->select('day_time_start')
+			->from('sponsor_meeting_booking')
+			->where('project_id', $this->project->id)
+			->where('booth_id', $booth_id)
+			->where('sponsor_admin_id', $sponsor_id)
+			->where('DATE(day_time_start)', $date)
+
+		;
+		$query = $this->db->get();
+		if($query->num_rows() != 0)
+		{
+			return $query->result_array();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	function makeBooking()
+	{
+		$post = $this->input->post();
+		$sponsor_id = $post['sponsor_id'];
+		$booth_id = $post['booth_id'];
+		$meetFrom = $post['meet_from'];
+		$meetTo = $post['meet_to'];
+
+		$data = array(
+			'sponsor_admin_id' => $sponsor_id,
+			'project_id'=>$this->project->id,
+			'booth_id ' => $booth_id,
+			'user_id ' => $this->user_id,
+			'day_time_start' => $meetFrom,
+			'day_time_end' => $meetTo
+		);
+
+		if ($this->existingBookingCheck() != true)
+		{
+			$this->db->insert('sponsor_meeting_booking', $data);
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	function existingBookingCheck()
+	{
+
+		$sponsor_id = $this->input->post()['sponsor_id'];
+		$booth_id = $this->input->post()['booth_id'];
+		$meetFrom = $this->input->post()['meet_from'];
+		$meetTo = $this->input->post()['meet_to'];
+
+		$data = array(
+			'sponsor_admin_id' => $sponsor_id,
+			'project_id'=>$this->project->id,
+			'booth_id ' => $booth_id,
+			'day_time_start' => $meetFrom,
+			'day_time_end' => $meetTo
+		);
+
+		$this->db->select('*');
+		$this->db->from('sponsor_meeting_booking');
+		$this->db->where($data);
+		$query = $this->db->get();
+		if($query->num_rows() != 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	function get_resource_by_id() {
+		$resource_id = $this->input->post('resource_id');
+		$note = $this->input->post('note');
+		$this->db->select('*')
+			->from('sponsor_resource_management')
+			->where('id',$resource_id)
+;
+		$result = $this->db->get();
+
+		if($result->num_rows() > 0 ) {
+			$data = $result->result()[0];
+
+			$check_duplicate = $this->check_bag_item_duplicate($data->file_name);
+
+			if ($check_duplicate) {
+				return array('status'=>'exist','message'=>'file already in the bag');
+			} else {
+
+			$data_field=array(
+				'project_id'=>$data->project_id,
+				'booth_id'=>$data->booth_id,
+				'file_name'=> $data->file_name,
+				'resource_name'=>$data->resource_name,
+				'screen_name'=>$data->screen_name,
+				'note'=>$note,
+				'user_id'=>$this->user_id,
+				'item_type'=>'sponsor_resource',
+				'date_time'=>date('Y-m-d H:i:s')
+			);
+
+			$this->db->insert('sponsor_bag', $data_field);
+
+			$this->logger->add($this->project->id, $this->user_id, "Resource to briefcase", "Booth", $data->booth_id, $resource_id);
+			return array('status'=>'success','message'=>'file added to bag');
+
+			}
+		}
+		return '';
+	}
+
+	function check_bag_item_duplicate($file_name){
+		$this->db->select('*')
+			->from('sponsor_bag')
+			->where('file_name', $file_name);
+
+			$result = $this->db->get();
+			if($result->num_rows() > 0){
+				return true;
+			}else{
+				return false;
+			}
+
+	}
+
+	function save_fishbowl_card(){
+		$field_set = array(
+			'project_id'=>$this->project->id,
+			'booth_id'=>$this->input->post('booth_id'),
+			'user_id'=>$this->user_id,
+			'date_time'=>date('Y-m-d H:i:s')
+		);
+		$result = $this->db->insert('sponsor_fishbowl',$field_set);
+		if(!empty($result)){
+			return array('status'=>'success');
+		}else{
+			return array('status'=>'error');
+		}
+	}
+
+	public function getBoothAdmins($booth_id)
+	{
+		$data = $this->db->select('u.*')
+			->from('sponsor_booth_admin')
+			->join('user u', 'sponsor_booth_admin.user_id = u.id')
+			->where('sponsor_booth_admin.booth_id', $booth_id)
+			->get()
+		;
+		if ($data->num_rows() > 0)
+			return $data->result();
+		return new stdClass();
 	}
 }

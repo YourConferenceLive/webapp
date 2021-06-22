@@ -25,6 +25,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $config['base_url'] = ycl_base_url; // DO NOT MODIFY
 
+
+/*
+|--------------------------------------------------------------------------
+| Socket IO Server URL
+|--------------------------------------------------------------------------
+|
+| You need to set socket server URL for the real-time features to function
+| Contact the lead developer for existing Socket IO app details.
+ */
+defined('ycl_socket_server') OR define('ycl_socket_server', 'http://localhost');
+
+
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -158,7 +170,7 @@ $config['composer_autoload'] = FCPATH . 'vendor/autoload.php';
 | DO NOT CHANGE THIS UNLESS YOU FULLY UNDERSTAND THE REPERCUSSIONS!!
 |
 */
-$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
+$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-@=';
 
 /*
 |--------------------------------------------------------------------------
@@ -379,7 +391,7 @@ $config['encryption_key'] = encryption_key;
 */
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 7200;
+$config['sess_expiration'] = 0;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;

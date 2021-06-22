@@ -1,3 +1,4 @@
+
 <header>
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 		<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="max-width: 80px;"></a>
@@ -18,14 +19,14 @@
 
 				<li class="nav-item ">
 					<div class="dropdown dropdown-user">
-						<button class="btn btn-secondary btn-sm dropdown-toggle " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<img src="" alt="" class=" fa fa-user nav-user-photo">
-							<span> User </span>
+							<span> <?= (isset($this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']))?strtoupper($this->session->userdata('project_sessions')["project_{$this->project->id}"]['name']):'User' ?>  </span>
 						</button>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 							<button class="dropdown-item" type="button">Action</button>
 							<button class="dropdown-item" type="button">Another action</button>
-							<button class="dropdown-item" type="button">Logout</button>
+							<button class="dropdown-item" type="button" onclick='window.location.href=" <?=$this->project_url.'/sponsor/logout/' ?>"'>Logout</button>
 						</div>
 					</div>
 				</li>
