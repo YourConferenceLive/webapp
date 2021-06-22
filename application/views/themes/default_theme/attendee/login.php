@@ -22,16 +22,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="max-width: 100%;max-height: 100%;">
 	</div>
 
-	<h1 class="h3 mb-3 font-weight-normal">Opening Soon!</h1>
-<!--	<h1 class="h3 mb-3 font-weight-normal">Please Login</h1>-->
-<!---->
-<!--	<label for="inputEmail" class="sr-only">Email address</label>-->
-<!--	<input type="email" id="email" class="form-control" placeholder="Email address" required autofocus>-->
-<!---->
-<!--	<label for="inputPassword" class="sr-only">Password</label>-->
-<!--	<input type="password" id="password" class="form-control" placeholder="Password" required>-->
-<!---->
-<!--	<button id="login-btn" class="btn btn-lg btn-primary btn-block" type="button">Login</button>-->
+	<?php if (ycl_env == 'production'): ?>
+		<h1 class="h3 mb-3 font-weight-normal">Opening Soon!</h1>
+	<?php else: ?>
+		<h1 class="h3 mb-3 font-weight-normal">Please Login</h1>
+
+		<label for="inputEmail" class="sr-only">Email address</label>
+		<input type="email" id="email" class="form-control" placeholder="Email address" required autofocus>
+
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input type="password" id="password" class="form-control" placeholder="Password" required>
+
+		<button id="login-btn" class="btn btn-lg btn-primary btn-block" type="button">Login</button>
+	<?php endif; ?>
 
 </form>
 </body>
