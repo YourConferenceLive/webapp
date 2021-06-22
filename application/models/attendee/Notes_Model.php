@@ -12,11 +12,11 @@ class Notes_Model extends CI_Model
 		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 	}
 
-    public function getCount($eposter_id, $user_id)
+    public function getCount($origin_type_id, $user_id)
     {
 		$this->db->select("notes.id");
 		$this->db->join('user', 'user.id = notes.user_id');
-		$this->db->where('notes.origin_type_id', $eposter_id);
+		$this->db->where('notes.origin_type_id', $origin_type_id);
 		$this->db->where('user.active', 1);
 		$this->db->where('user.id', $user_id);
 		$this->db->where('notes.is_deleted', 0);
@@ -25,12 +25,12 @@ class Notes_Model extends CI_Model
 		return $this->db->count_all_results('notes');
     }
 
-	public function getAll($eposter_id, $user_id, $limit, $start)
+	public function getAll($origin_type_id, $user_id, $limit, $start)
 	{
 		$this->db->select('notes.id, notes.user_id, notes.note_text, notes.created_datetime');
 		$this->db->from('notes');
 		$this->db->join('user', 'user.id = notes.user_id');
-		$this->db->where('notes.origin_type_id', $eposter_id);
+		$this->db->where('notes.origin_type_id', $origin_type_id);
 		$this->db->where('user.active', 1);
 		$this->db->where('user.id', $user_id);
 		$this->db->where('notes.is_deleted', 0);
@@ -83,6 +83,7 @@ class Notes_Model extends CI_Model
 		$this->db->where('notes.status', 1);
 		$this->db->where('notes.user_id', $this->user->user_id);
 	    $this->db->group_by('notes.origin_type_id');
+
 		if ($keyword)
 		{
     		$this->db->group_start();
@@ -92,6 +93,7 @@ class Notes_Model extends CI_Model
 			$this->db->or_like('eposters.title', $keyword);
     		$this->db->group_end();
 		}
+
 		return $this->db->get('notes')->num_rows();
     }
 
@@ -140,6 +142,7 @@ class Notes_Model extends CI_Model
 		$this->db->where('notes.status', 1);
 		$this->db->where('notes.user_id', $this->user->user_id);
 	    $this->db->group_by('notes.origin_type_id');
+
 		if ($keyword)
 		{
     		$this->db->group_start();
@@ -149,6 +152,7 @@ class Notes_Model extends CI_Model
 			$this->db->or_like('sessions.name', $keyword);
     		$this->db->group_end();
 		}
+
 		return $this->db->get('notes')->num_rows();
     }
 
@@ -185,12 +189,12 @@ class Notes_Model extends CI_Model
 		return new stdClass();
     }
 
-	public function add()
-	{		
+	public function add($entity_type)
+	{
 		$post = $this->input->post();
-		if ($post['notes'] != '' && $post['entity_type_id'] != '' && $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] != '') {
+		if ($post['notes'] != '' && $entity_type != '' && $post['entity_type_id'] != '' && $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] != '') {
 			$data = array('project_id' 		=> $this->project->id,
-						  'origin_type' 	=> 'eposter',
+						  'origin_type' 	=> strip_tags($entity_type),
 						  'origin_type_id' 	=> strip_tags($post['entity_type_id']),
 						  'user_id' 		=> $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
 						  'note_text' 		=> strip_tags($post['notes']),
