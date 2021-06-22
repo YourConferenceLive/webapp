@@ -178,6 +178,15 @@ if(!file_exists($cover_photo_url)){
 
 			</div>
 		</div>
+		<div class="row m-4">
+			<?php if ( isset($data->special_link) && !empty($data->special_link) && isset($data->special_link_title) && !empty($data->special_link_title)) {
+				?>
+					<div class="offset-lg-4 col-lg-4 col-md-12">
+						<a type="button" class="btn btn-link" href="<?=($data->special_link)?>"><?=($data->special_link_title)?></a>
+					</div>
+					<?php
+			} ?>
+		</div>
 		<div class="row m-xl-4 mb-md-1 justify-content-center flex-lg-row flex-sm-column-reverse flex-row-reverse">
 
 			<div class="col-lg-4 col-md-12">
@@ -192,6 +201,7 @@ if(!file_exists($cover_photo_url)){
 					</div>
 				</div>
 			</div>
+
 			<!--				SPONSOR RESOURCES -->
 			<div class="col-lg-8 col-md-12 my-xl-0 my-sm-5 ">
 				<div class="resources-box">
