@@ -16,10 +16,10 @@ html{
 	width: 300px;
 	height: 200px;
 	position: absolute;
+	top: 18%;
 	left: 350px;
 	right: 0;
 	margin: auto;
-	margin-top: 210px;
 }
 
 .loung-container .tv img {
@@ -36,18 +36,25 @@ html{
 	margin: auto;
 }
 
+#peoples{
+	position: absolute;
+	z-index: 11;
+	width: 800px;
+	max-width: 100%;
+	bottom: 0;
+}
 
 @media screen and (max-width: 1600px) {
 	.loung-container .tv {
 		left: 340px;
 		width: 260px;
+		top: 25%;
 	}
 
 	.loung-container .tv iframe {
 		top: -102px;
 	}
 }
-
 
 @media screen and (max-width: 1560px) {
 	.loung-container .tv {
@@ -85,6 +92,12 @@ html{
 	}
 }
 
+@media screen and (max-width: 1120px) {
+	#peoples{
+		bottom: -280px;
+	}
+}
+
 @media screen and (max-width: 800px) {
 	.loung-container .tv {
 		width: 100%;
@@ -99,4 +112,13 @@ html{
 		top: 20px;
 		width: 95%;
 	}
+
+	#peoples{
+		display: none;
+	}
 }
+
+@media screen and (max-height: 800px) {
+
+}
+

@@ -19,13 +19,13 @@ if(!file_exists($cover_photo_url)){
 	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo;
 }
 ?>
-<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css?ver=7" rel="stylesheet">
+<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css?ver=9" rel="stylesheet">
 <!-- Date Time Picker-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.css">
 
-<main role="main">
+<main role="main" class="template<?=$data->template?>">
 	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/'.$cover_photo_url:'' ?> ')">
 		<div class="content">
 			<div class="middle">
@@ -99,32 +99,38 @@ if(!file_exists($cover_photo_url)){
 			<div class="col-lg-8 col-md-12 mt-5 ">
 				<div class="row">
 					<!--				##############   GROUP CHAT #############################-->
-					<div class="col-xl-6 col-lg-12 mb-3 mt-5">
-						<div class="group-chat card border border-secondary  shadow ml-2">
-							<div class="">
-								<div class="group-chat-header card-header" style="background-color: #337AB7">
-									<div class="row">
-										<div class="col text-white">
-											Group Chat <span class="fas fa-users"></span>
+					<?php
+					if($data->show_group_chat){
+						?>
+						<div class="col-xl-6 col-lg-12 mb-3 mt-5">
+							<div class="group-chat card border border-secondary  shadow ml-2">
+								<div class="">
+									<div class="group-chat-header card-header" style="background-color: #337AB7">
+										<div class="row">
+											<div class="col text-white">
+												Group Chat <span class="fas fa-users"></span>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="group-chat-body card-body overflow-auto ">
+									<div class="group-chat-body card-body overflow-auto ">
 
-								</div>
-								<div class="group-chat-footer card-footer bg-light">
-									<div class="input-group">
-										<input type="text" id="group-chat-text" class="form-control  shadow-none"
-											   placeholder="You can also press enter to send">
-										<div class="input-group-append btn-group-send">
-											<i class="btn btn-primary far  fa-paper-plane form-control send-group-message pt-2"
-											   aria-hidden="true" style="background-color: #337AB7"> send</i>
+									</div>
+									<div class="group-chat-footer card-footer bg-light">
+										<div class="input-group">
+											<input type="text" id="group-chat-text" class="form-control  shadow-none"
+												   placeholder="You can also press enter to send">
+											<div class="input-group-append btn-group-send">
+												<i class="btn btn-primary far  fa-paper-plane form-control send-group-message pt-2"
+												   aria-hidden="true" style="background-color: #337AB7"> send</i>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+						<?php
+					}
+					?>
 					<!--				##############   GROUP CHAT #############################-->
 					<div class="col-xl-6 col-lg-12 mt-5">
 						<!--################## SPONSOR CHAT #######################-->
@@ -241,7 +247,7 @@ if(!file_exists($cover_photo_url)){
 	var hunting_icon = "<?=$hunting_icon?>";
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=7"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=9"></script>
 <script>
 	socket.emit('ycl_booth_visit', {'booth_id':current_booth_id, 'user_id' : user_id});
 </script>

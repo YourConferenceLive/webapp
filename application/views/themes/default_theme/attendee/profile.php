@@ -34,19 +34,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<a class="btn badge badge-info" id="upload-btn">Update Photo</a>
 								</div>
 							</div>
-<!--							<div class="row">-->
-<!--								<div class="col-md-12 text-center mt-3 text-left" >-->
-<!--									<h6 class="text-left">BIOGRAPHY</h6>-->
-<!--									<textarea class="form-control" name="bio" rows="4" id="bio" readonly>--><?//=$profile_data->bio?><!--</textarea>-->
-<!---->
-<!--								</div>-->
-<!--							</div>-->
-<!--							<div class="row">-->
-<!--								<div class="col-md-12 text-center mt-2">-->
-<!--									<h6 class="text-left">DISCLOSURES</h6>-->
-<!--									<textarea class="form-control" name="disclosure" rows="4" id="disclosure" readonly>--><?//=$profile_data->disclosures?><!--</textarea>-->
-<!--								</div>-->
-<!--							</div>-->
+
+							<?php if(1==2): ?> <!-- Hiding BIOGRAPHY & DISCLOSURES -->
+							<div class="row">
+								<div class="col-md-12 text-center mt-3 text-left" >
+									<h6 class="text-left">BIOGRAPHY</h6>
+									<textarea class="form-control" name="bio" rows="4" id="bio" readonly><?=$profile_data->bio?></textarea>
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 text-center mt-2">
+									<h6 class="text-left">DISCLOSURES</h6>
+									<textarea class="form-control" name="disclosure" rows="4" id="disclosure" readonly><?=$profile_data->disclosures?></textarea>
+								</div>
+							</div>
+							<?php endif; ?>
+
 						</div>
 					</div>
 				</div>
