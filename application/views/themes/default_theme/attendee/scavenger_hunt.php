@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="scavanger-hunt-container container-fluid pl-md-6 pr-md-6" id="scavanger-hunt-container">
 	<div class="row">
 		<div class="col-md-12">
-			<div class="text-center btn card mb-2 page-title"><h1 class="mb-0">Scavanger Hunt</span></h1></div>
+			<div class="text-center btn card mb-2 page-title"><h1 class="mb-0">Scavenger Hunt</span></h1></div>
 		</div>
 	</div>
 
@@ -84,20 +84,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 </div>
-<script>
-	$(function (){
-		iframeResize();
-		$(window).on('resize', function(){
-			iframeResize();
-		});
-	});
-
-	function iframeResize()
-	{
-		let totalHeight = window.innerHeight;
-		let menuHeight = document.getElementById('mainMenu').offsetHeight;
-		let iFrameHeight = totalHeight-menuHeight;
-
-		$('#scavanger-hunt-container').css('height', iFrameHeight+'px');
-	}
-</script>

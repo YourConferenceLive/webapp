@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="modal-dialog" role="document" style="overflow-y: initial !important">
 				<div class="modal-content">
 					<div class="modal-header">
-						<p class="modal-title text-justify" id="notesModalLabel">Notes</p>
+						<p class="modal-title text-justify" id="notesModalLabel" style="font-weight:bold;">Notes</p>
 					</div>
 					<div class="modal-body" style="height: 65vh;overflow-y: auto;">
 						<div class="row">
