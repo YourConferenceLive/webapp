@@ -59,10 +59,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<a class="button color btn btn-info btn-sm" id="briefcase_send"><i class="fas fa-save"></i> <span>Save</span></a>
 				</div>
 				<div class="col-md-12">
-<?php
-					if($notes != new stdClass()):?>
 					<div class="contentHeader p-0 pt-2 pb-2">Previous Notes</div>
 					<div id="notes_list_container">
+<?php
+					if($notes != new stdClass()):?>
 						<ul class="list-group">
 <?php
 						foreach ($notes as $note):
@@ -72,12 +72,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							endif;
 						endforeach;?>
 						</ul>
-					</div>
 <?php
 					else:?>
-					<div class="alert alert-info mb-1 mt-3 p-1">No previous notes</div>
+						<div class="alert alert-info mb-1 mt-1 p-1">No previous notes</div>
 <?php
 					endif;?>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -272,6 +272,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	$(function () {
+		$('#notes_list_container').on('click', '.note_detail', function (e) {
+			$('#noteModal').modal('hide');
+  			let note_text = $(this).data('note-text');
+  			$('.modal-body .note-text').text(note_text);
+			$('#noteModal').modal('show');
+			$('#pollModal').modal('hide');
+			$('#pollResultModal').modal('hide');
+		});
+
 		$('#briefcase_send').on('click', function () {
 			let entity_type 	= 'session';
 			let entity_type_id 	= $('#session_id').val();
@@ -321,15 +330,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						}
 					}
 			});
-		});
-
-		$('.note_detail').on('click', function () {
-			$('#noteModal').modal('hide');
-  			let note_text = $(this).data('note-text');
-  			$('.modal-body .note-text').text(note_text);
-			$('#noteModal').modal('show');
-			$('#pollModal').modal('hide');
-			$('#pollResultModal').modal('hide');
 		});
 
 		socket.on('openPollNotification', ()=>{

@@ -6,12 +6,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<p class="modal-title text-justify" id="notesModalLabel"><?php echo $session->name;?> Notes</p>
+				<p class="modal-title text-left" id="notesModalLabel" style="font-weight: bold;"><?php echo $session->name;?> Notes</p>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-12">
-						<div class="note-text text-justify"></div>
+						<div class="note-text text-left"></div>
 					</div>
 				</div>
 			</div>
