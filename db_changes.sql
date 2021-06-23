@@ -526,3 +526,5 @@ ALTER TABLE `user` ADD `membership_type` VARCHAR(10) NULL AFTER `rcp_number`;
 ALTER TABLE `user` ADD `isFromApi` BOOLEAN NOT NULL DEFAULT FALSE AFTER `membership_type`, ADD `IdFromApi` VARCHAR(255) NULL AFTER `isFromApi`;
 ALTER TABLE `user` ADD `membership_sub_type` VARCHAR(50) NULL AFTER `membership_type`;
 
+
+ALTER TABLE `sessions` CHANGE `agenda` `agenda` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
