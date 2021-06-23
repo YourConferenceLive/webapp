@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				}?>
 			</div>
 
-			<div class="tool-btns btn-cstm-first"><a href="javascript:void(0);" data-action-type="notes" data-eposter-id="<?php echo $eposter->id;?>" class="take-notes" title="Take Notes" data-toggle="tooltip" data-placement="left"><i class="fas fa-clipboard fa-fw fa-2x"></i><br>Take Notes</a></div>
+			<div class="tool-btns btn-cstm-first"><a href="javascript:void(0);" data-action-type="notes" data-entity-type="eposter" data-eposter-id="<?php echo $eposter->id;?>" class="take-notes" title="Take Notes" data-toggle="tooltip" data-placement="left"><i class="fas fa-clipboard fa-fw fa-2x"></i><br>Take Notes</a></div>
 			<div class="tool-btns btn-cstm-second"><a href="javascript:void(0);" data-eposter-id="<?php echo $eposter->id;?>" data-credits="<?php echo $eposter->credits;?>" class="claim-credits" title="Claim Credits" data-toggle="tooltip" data-placement="left"><i class="fas fa-certificate fa-fw fa-2x"></i><br>Claim Credits</a></div>
 <?php
 			$link_order = ' btn-cstm-third';
@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					break;
 				}
 			}?>
-			<div class="tool-btns<?php echo $link_order;?>"><a href="javascript:void(0);" data-action-type="comments" data-eposter-id="<?php echo $eposter->id;?>" class="comments" title="Discuss" data-toggle="tooltip" data-placement="left"><i class="fas fa-comment fa-fw fa-2x"></i><br>Discuss</a></div>
+			<div class="tool-btns<?php echo $link_order;?>"><a href="javascript:void(0);" data-action-type="comments" data-entity-type="eposter" data-eposter-id="<?php echo $eposter->id;?>" class="comments" title="Discuss" data-toggle="tooltip" data-placement="left"><i class="fas fa-comment fa-fw fa-2x"></i><br>Discuss</a></div>
 <?php
 			else: //In case eposter is deactivated or deleted ?>
 			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
@@ -150,12 +150,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('.comments, .take-notes').click(function(e) {
 
 					var action_type = $(this).data('action-type');
+					var entity_type = $(this).data('entity-type');
 					var entity_type_id 	= $(this).data('eposter-id');
 
 					if (action_type == 'notes') {
-						$('#addUserNotes input[name="entity_type"]').val(action_type);
+						$('#addUserNotes input[name="entity_type"]').val(entity_type);
 						$('#addUserNotes input[name="entity_type_id"]').val(entity_type_id);
-						loadNotes(action_type, entity_type_id, note_page);
+						loadNotes(entity_type, entity_type_id, note_page);
 						$('#notes_list_container').html('');
 						$('#notesModal').modal('show');
 					} else {
