@@ -64,6 +64,34 @@ class Sessions extends CI_Controller
 		;
 	}
 
+	public function view_without_slides($id)
+	{
+		//$sidebar_data['user'] = $this->user;
+
+		$session = $this->sessions->getById($id);
+
+		$data["error_text"] = "No Slide Found";
+		if (!isset($session->id))
+			$data["error_text"] = "Session Not Found";
+
+
+		$data["session"] = $session;
+		$data["user"] = $this->user;
+
+		//$menu_data['host_chat_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_host_chat", '', true);
+		//$menu_data['questions_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_questions.php", '', true);
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
+			//->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view-without-slides", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_result_modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")
+		;
+	}
+
 	public function getHostChatsJson($session_id)
 	{
 		echo json_encode($this->sessions->getHostChat($session_id));

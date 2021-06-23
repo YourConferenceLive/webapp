@@ -255,12 +255,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<h4 class="fas fa-clipboard-list " style="color:#487391"> Agenda</h4>
 					<h5 id="agenda-modal-session-name" class="ml-4" style="color:#487391">Session Title</h5>
 				</div>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
 			</div>
-			<div class="modal-body">
-
+			<div class="modal-body" style="height: 80vh;">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary " data-dismiss="modal" >Close</button>

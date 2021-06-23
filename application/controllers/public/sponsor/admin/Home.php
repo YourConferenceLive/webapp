@@ -38,6 +38,7 @@ class Home extends CI_Controller
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/menu-bar", $menu_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/change-password-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/sponsor_admin", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/common/sponsor-video-chat-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/footer")
@@ -186,5 +187,20 @@ class Home extends CI_Controller
 	public function delete_saved_chats(){
 		$result = $this->sponsor->delete_saved_chats();
 		echo $result;
+	}
+
+	public function changePasswordAjax()
+	{
+		$post = $this->input->post();
+		$password = $post['password'];
+
+		$this->db->set('password', password_hash($password, PASSWORD_DEFAULT));
+		$this->db->where('id', $this->user_id);
+		$this->db->update('user');
+
+		if ($this->db->affected_rows() > 0)
+			echo true;
+		echo false;
+
 	}
 }
