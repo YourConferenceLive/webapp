@@ -84,20 +84,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 </div>
-<script>
-	$(function (){
-		iframeResize();
-		$(window).on('resize', function(){
-			iframeResize();
-		});
-	});
-
-	function iframeResize()
-	{
-		let totalHeight = window.innerHeight;
-		let menuHeight = document.getElementById('mainMenu').offsetHeight;
-		let iFrameHeight = totalHeight-menuHeight;
-
-		$('#scavanger-hunt-container').css('height', iFrameHeight+'px');
-	}
-</script>
