@@ -12,8 +12,7 @@ $(document).ready(function () {
 
     socket.on("supportChatStatusChange", function (data){
 
-		if (data.room === "COS App"+project_id+"_live_support") {
-			console.log('here');
+			console.log(data.room);
 			if (data.room === live_support_chat_room)
 				supportChatStatus = data.status;
 			if (data.status == 1) {
@@ -23,7 +22,7 @@ $(document).ready(function () {
 				$('#liveSupportChatForm').hide();
 			}
 
-		}
+
     });
 
     fillAllPreviousChats();
