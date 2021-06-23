@@ -18,6 +18,14 @@ class Authentication extends CI_Controller {
 		$username = $this->input->post()['email'];
 		$password = $this->input->post()['password'];
 
+		$email_org = explode('@', $username);
+		if(ycl_env == 'production' && $email_org[1] != 'cos-sco.ca') // Only staff have access for now on prod
+		{
+			$response = array('status'=>'error', 'msg'=>"You are not a COS staff.");
+			echo json_encode($response);
+			return;
+		}
+
 		$this->updateProfileFromCos($username);
 
 		$access_level = $this->input->post()['access_level'];
