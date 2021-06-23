@@ -11,7 +11,7 @@ class Login extends CI_Controller
 
 	public function index()
 	{
-		print_r($this->project); exit;
+		redirect(base_url().$this->project->main_route."/presenter");
 		$data['project'] = $this->project;
 
 		if (isset($_SESSION['project_sessions']["project_$project"]) && $_SESSION['project_sessions']["project_$project"]['is_attendee'] == 1)
