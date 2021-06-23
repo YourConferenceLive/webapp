@@ -464,12 +464,9 @@ $(document).ready(function () {
 				},
 				type: 'post',
 				success: function (response) {
-					Swal.fire(
-						'Item Found',
-						"Scavenger hunt item found and added to your briefcase",
-						'success'
-					);
-
+					Swal.fire('Item Found',
+							  'Scavenger hunt item found and added to your briefcase.<br><span style="color:#284050;">Image trouvée et ajoutée à votre mallette.</span>',
+		  					  'success');
 					item.remove();
 				}
 			});
