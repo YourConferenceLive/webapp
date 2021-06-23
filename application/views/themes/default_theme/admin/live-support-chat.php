@@ -463,7 +463,7 @@
             users = JSON.parse(users);
             $.each(users, function(i, user) {
                 $('.users-list').append(
-                    '<li class="users-list-item list-group-item w-100" user-id="'+user.id+'" user-name="'+user.name+' '+user.surname+'" new-text="0">'+user.name+' '+user.surname+'<img class="typingHint" src="'+ycl_root+'/theme_assets/live_support/typing-animation-3x.gif" style="margin-left: 20px;width: 30px;display: none;"> <span class="badge" style="display: none;">new</span></li>'
+                    '<li class="users-list-item list-group-item w-100" user-id="'+user.id+'" user-name="'+user.name+' '+user.surname+'" new-text="0">'+user.name+' '+user.surname+'<img class="typingHint" src="'+ycl_root+'/theme_assets/live_support/typing-animation-3x.gif" style="margin-left: 20px;width: 30px;display: none;"> <span class="badge badge-danger ml-2" style="display: none;">new</span></li>'
                 );
             });
 
