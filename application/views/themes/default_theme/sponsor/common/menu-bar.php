@@ -47,6 +47,8 @@ $ci_method = $this->router->fetch_method();
 						<?=$user->name?>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+						<a class="change-password-btn dropdown-item" role="button"><i class="fas fa-key"></i> Change password</a>
+						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="<?=$this->project_url?>/authentication/logout/<?=base64_encode('sponsor/admin')?>">Logout <i class="fas fa-sign-out-alt"></i></a>
 <!--						<a class="dropdown-item" href="#">Another action</a>-->
 <!--						<div class="dropdown-divider"></div>-->
