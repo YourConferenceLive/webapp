@@ -192,6 +192,7 @@ class Authentication extends CI_Controller {
 					$project_id = $this->project->id;
 					$user_id = $this->db->insert_id();
 					$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$project_id, 'level'=>'attendee'));
+					$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$project_id, 'level'=>'attendee'));
 				}
 
 
@@ -334,6 +335,7 @@ class Authentication extends CI_Controller {
 			$this->db->where('user_id', $user_id);
 			$this->db->delete('user_project_access');
 
+			$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'attendee'));
 			$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'exhibitor'));
 		}
 
