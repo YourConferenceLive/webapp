@@ -7,7 +7,19 @@
 		</button>
 		<div class="navbar-collapse collapse" id="navbarCollapse" style="">
 			<ul class="navbar-nav mr-auto">
-
+				<?php if (ycl_env == 'testing'): ?>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">
+							<badge class="badge badge-warning text-white"><i class="fas fa-exclamation-triangle"></i> TESTING ENVIRONMENT</badge>
+						</a>
+					</li>
+				<?php elseif(ycl_env == 'development'): ?>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">
+							<badge class="badge badge-warning text-white"><i class="fas fa-exclamation-triangle"></i> DEVELOPMENT ENVIRONMENT</badge>
+						</a>
+					</li>
+				<?php endif; ?>
 			</ul>
 			<ul class="navbar-nav mr-5" >
 				<li class="nav-item active">
