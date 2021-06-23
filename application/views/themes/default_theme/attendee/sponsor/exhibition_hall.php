@@ -177,6 +177,9 @@
 
 <div id="notSupported" class="hidden">We are sorry but your browser does not support WebGL...</div>
 
+<script>
+	let is_exhibitor = "<?=$_SESSION['project_sessions']["project_{$this->project->id}"]['is_exhibitor']?>";
+</script>
 <script src="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/loader.js"></script>
 <script>
 	$('#enterButton').on('click', function () {
