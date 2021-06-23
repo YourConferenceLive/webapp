@@ -102,10 +102,4 @@ class Users extends CI_Controller
 	}
 
 	public function getAllExhibitorsWithoutBoothJson(){echo json_encode($this->users->getExhibitorsWithoutBooth());}
-
-	public function allUsersJson()
-	{
-		echo json_encode($this->users->getAll());
-	}
 }
-

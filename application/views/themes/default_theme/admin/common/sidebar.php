@@ -57,18 +57,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</p>
 					</a>
 				</li>
-
-				<li class="nav-header"></li>
-				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/live_support_chat'?>" class="nav-link <?=($this->router->fetch_class()=='live_support_chat')?'active':''?>">
-						<i class="far fa-life-ring"></i>
-						<p>
-							Live Support
-						</p>
-					</a>
-				</li>
-
-				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/users/exhibitorsWithoutBooth'?>" class="nav-link <?=($this->router->fetch_method()=='exhibitorsWithoutBooth')?'active':''?>">
 						<i class="fas fa-child"></i>
@@ -130,14 +118,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<p class="text">Relaxation Zone Logs</p>
 							</a>
 						</li>
-
-						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/scavenger_hunt'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scavenger_hunt')?'active':''?>">
-								<i class="fas fa-book"></i>
-								<p class="text">Who Found 10 SH Items</p>
-							</a>
-						</li>
-
 					</ul>
 				</li>
 
