@@ -40,6 +40,7 @@ class Analytics extends CI_Controller
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/menu-bar", $menu_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/change-password-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/analytics", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/footer")
 		;

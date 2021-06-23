@@ -8,6 +8,9 @@ redirect 301 /jfs https://yourconference.live/JFS/
 redirect 301 /Jfs https://yourconference.live/JFS/
 redirect 301 /gme https://yourconference.live/GME/
 
+redirect 301 /COS/uploads https://yourconference.live/cos_files/uploads
+redirect 301 /COS/exhibitor_graphics https://yourconference.live/cos_files/exhibitor_graphics/
+
 RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f

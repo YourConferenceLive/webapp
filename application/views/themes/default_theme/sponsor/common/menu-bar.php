@@ -27,6 +27,19 @@ $ci_method = $this->router->fetch_method();
 		</button>
 		<div class="navbar-collapse collapse" id="navbarCollapse" style="">
 			<ul class="navbar-nav mr-auto">
+				<?php if (ycl_env == 'testing'): ?>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">
+							<badge class="badge badge-warning text-white"><i class="fas fa-exclamation-triangle"></i> TESTING ENVIRONMENT</badge>
+						</a>
+					</li>
+				<?php elseif(ycl_env == 'development'): ?>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">
+							<badge class="badge badge-warning text-white"><i class="fas fa-exclamation-triangle"></i> DEVELOPMENT ENVIRONMENT</badge>
+						</a>
+					</li>
+				<?php endif; ?>
 			</ul>
 			<ul class="navbar-nav">
 
@@ -47,6 +60,8 @@ $ci_method = $this->router->fetch_method();
 						<?=$user->name?>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+						<a class="change-password-btn dropdown-item" role="button"><i class="fas fa-key"></i> Change password</a>
+						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="<?=$this->project_url?>/authentication/logout/<?=base64_encode('sponsor/admin')?>">Logout <i class="fas fa-sign-out-alt"></i></a>
 <!--						<a class="dropdown-item" href="#">Another action</a>-->
 <!--						<div class="dropdown-divider"></div>-->

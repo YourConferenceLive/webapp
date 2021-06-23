@@ -14,6 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 <?php
+		// echo substr(str_replace(array(' ', ' - ', '-', ':', '.', ',', '(', ')', '\'', 'è'), array('_', ''), strtolower('Combined Versus Sequential Phacoemulsification and Pars Plana Vitrectomy, A Meta-Analysis')), 0, 142);
 		$options = array('method' => 'get', 'id' => 'frm-search');
 		echo form_open($this->project_url.'/eposters/index', $options);?>
 		<div class="form-row">
@@ -106,6 +107,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<a href="<?=$eposter_url;?>" title="<?=$eposter->title;?>">
 <?php
 							}
+								// echo $eposter->id.'-';
 								echo $eposter->title;
 							if ($eposter_url) {?>
 								</a>

@@ -8,6 +8,7 @@ class Authentication extends CI_Controller {
 		parent::__construct();
 
 		$this->load->model('Authentication_Model', 'auth');
+		$this->load->model('Users_Model', 'user_m');
 		$this->load->model('Logger_Model', 'logger');
 	}
 
@@ -16,6 +17,8 @@ class Authentication extends CI_Controller {
 		$project_id = $this->project->id;
 		$username = $this->input->post()['email'];
 		$password = $this->input->post()['password'];
+
+		$this->updateProfileFromCos($username);
 
 		$access_level = $this->input->post()['access_level'];
 
@@ -27,8 +30,6 @@ class Authentication extends CI_Controller {
 			{
 				if (in_array($access_level, $verification['user']->access_levels))
 				{
-					$this->updateProfileFromCos($username);
-
 					$current_project_sessions = $this->session->userdata('project_sessions');
 
 					$current_project_sessions["project_$project_id"] = array(
@@ -119,7 +120,7 @@ class Authentication extends CI_Controller {
 			$cos21VirtualRegCheck = $this->cosapi->cos21VirtualRegCheck($user_from_cos['PartyId']);
 			if (!isset($cos21VirtualRegCheck->Count) || $cos21VirtualRegCheck->Count < 1)
 			{
-				if ($membership_info == 'IR')
+				if ($membership_info == 'C' && $membership_sub_info == 'IR')
 				{
 					$cosRepReg2021RegCheck = $this->cosapi->cosRepReg2021RegCheck($user_from_cos['PartyId']);
 					if (!isset($cosRepReg2021RegCheck->Count) || $cosRepReg2021RegCheck->Count < 1)
@@ -135,7 +136,7 @@ class Authentication extends CI_Controller {
 			}else{
 				$isAttendee = 1;
 
-				if ($membership_info == 'IR')
+				if ($membership_info == 'C' && $membership_sub_info == 'IR')
 				{
 					$cosRepReg2021RegCheck = $this->cosapi->cosRepReg2021RegCheck($user_from_cos['PartyId']);
 					if (!isset($cosRepReg2021RegCheck->Count) || $cosRepReg2021RegCheck->Count < 1)
@@ -173,7 +174,7 @@ class Authentication extends CI_Controller {
 				'name' => $user_from_cos['PersonName']->FirstName,
 				'surname' => $user_from_cos['PersonName']->LastName,
 				'name_prefix' => $user_from_cos['PersonName']->NamePrefix,
-				'credentials' => $user_from_cos['PersonName']->Designation,
+				'credentials' => (isset($user_from_cos['PersonName']->Designation))?$user_from_cos['PersonName']->Designation:'',
 				'city' => $address_data['CityName'],
 				'country' => $address_data['CountryName'],
 				'membership_type' => $membership_info,
@@ -186,9 +187,13 @@ class Authentication extends CI_Controller {
 
 			if ($this->db->affected_rows() > 0) {
 
-				$project_id = $this->project->id;
-				$user_id = $this->db->insert_id();
-				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$project_id, 'level'=>'attendee'));
+				if ($membership_sub_info != 'IR')
+				{
+					$project_id = $this->project->id;
+					$user_id = $this->db->insert_id();
+					$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$project_id, 'level'=>'attendee'));
+					$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$project_id, 'level'=>'attendee'));
+				}
 
 
 				/********** Login API user *********/
@@ -308,7 +313,7 @@ class Authentication extends CI_Controller {
 			'name' => $user_from_cos['PersonName']->FirstName,
 			'surname' => $user_from_cos['PersonName']->LastName,
 			'name_prefix' => $user_from_cos['PersonName']->NamePrefix,
-			'credentials' => $user_from_cos['PersonName']->Designation,
+			'credentials' => (isset($user_from_cos['PersonName']->Designation))?$user_from_cos['PersonName']->Designation:'',
 			'city' => $address_data['CityName'],
 			'country' => $address_data['CountryName'],
 			'membership_type' => $membership_info,
@@ -320,6 +325,19 @@ class Authentication extends CI_Controller {
 		$this->db->set($user_data);
 		$this->db->where('IdFromApi', $user_from_cos['PartyId']);
 		$this->db->update('user');
+
+		if ($membership_info == 'C' && $membership_sub_info == 'IR')
+		{
+
+			$user_id = $this->user_m->getIdByApiId($user_from_cos['PartyId']);
+
+			$this->db->where('project_id', $this->project->id);
+			$this->db->where('user_id', $user_id);
+			$this->db->delete('user_project_access');
+
+			$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'attendee'));
+			$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'exhibitor'));
+		}
 
 		return true;
 	}

@@ -507,6 +507,18 @@ ADD COLUMN `show_group_chat` INT NULL DEFAULT 1 AFTER `right_table_url`;
 ALTER TABLE `sponsor_booth`
 ADD COLUMN `template` INT NULL DEFAULT 1 AFTER `show_group_chat`;
 
+ALTER TABLE `sponsor_booth`
+ADD COLUMN `facebook_link2` VARCHAR(255) NULL AFTER `facebook_link`;
+
+ALTER TABLE `sponsor_booth`
+ADD COLUMN `twitter_link2` VARCHAR(255) NULL AFTER `twitter_link`;
+
+ALTER TABLE `sponsor_booth`
+ADD COLUMN `special_link` VARCHAR(255) NULL AFTER `template`;
+
+ALTER TABLE `sponsor_booth`
+ADD COLUMN `special_link_title` VARCHAR(255) NULL AFTER `special_link`;
+
 -- COS API
 ALTER TABLE `project` ADD `api_url` VARCHAR(255) NULL AFTER `timezone`, ADD `api_username` VARCHAR(255) NULL AFTER `api_url`, ADD `api_password` VARCHAR(255) NULL AFTER `api_username`;
 ALTER TABLE `user` ADD `name_prefix` VARCHAR(50) NULL AFTER `photo`;
@@ -514,7 +526,14 @@ ALTER TABLE `user` ADD `membership_type` VARCHAR(10) NULL AFTER `rcp_number`;
 ALTER TABLE `user` ADD `isFromApi` BOOLEAN NOT NULL DEFAULT FALSE AFTER `membership_type`, ADD `IdFromApi` VARCHAR(255) NULL AFTER `isFromApi`;
 ALTER TABLE `user` ADD `membership_sub_type` VARCHAR(50) NULL AFTER `membership_type`;
 
+
 ALTER TABLE `sponsor_booth`
 ADD COLUMN `extra_video_1` TEXT NULL AFTER `template`,
 ADD COLUMN `extra_video_2` TEXT NULL AFTER `extra_video_1`;
 
+
+ALTER TABLE `sessions` CHANGE `agenda` `agenda` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `project` ADD `google_analytics_code` VARCHAR(255) NULL AFTER `api_password`;
+
+ALTER TABLE `sponsor_booth` ADD `extra_video_1` VARCHAR(255) NULL AFTER `main_video_description`, ADD `extra_video_2` VARCHAR(255) NULL AFTER `extra_video_1`;

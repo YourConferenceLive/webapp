@@ -39,6 +39,10 @@ class Sponsor extends CI_Controller
 	}
 
 	public function booth($booth_id){
+
+		if ($this->user['is_exhibitor'])
+			redirect(base_url().$this->project->main_route."/lobby"); //Exhibitors can't see booths as an attendee
+
 		$this->logger->log_visit("Booth", $booth_id);
 
 		$data['project'] = $this->project;

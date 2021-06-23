@@ -90,6 +90,13 @@ define('ycl_root', rtrim(ycl_base_url, '/'));
 	//define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 	define('ENVIRONMENT', ycl_env);
 
+	if (ENVIRONMENT == 'production' && strpos($_SERVER['HTTP_HOST'], "www.") === false)
+	{
+		header('Location: '.
+			(@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://').
+			'www.'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+	}
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
@@ -101,11 +108,11 @@ define('ycl_root', rtrim(ycl_base_url, '/'));
 switch (ENVIRONMENT)
 {
 	case 'development':
+	case 'testing':
 		error_reporting(-1);
 		ini_set('display_errors', 1);
 	break;
 
-	case 'testing':
 	case 'production':
 		ini_set('display_errors', 0);
 		if (version_compare(PHP_VERSION, '5.3', '>='))
