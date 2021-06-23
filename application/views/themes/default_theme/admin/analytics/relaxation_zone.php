@@ -108,7 +108,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			"info": true,
 			"autoWidth": false,
 			"responsive": true,
-			"order": [[ 10, "desc" ]],
+			"order": [[ 7, "desc" ]],
 		});
 	});
 </script>
