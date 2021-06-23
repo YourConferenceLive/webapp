@@ -49,7 +49,6 @@ class Live_support_chat extends CI_Controller
         $set = array(
             'status' => $status
         );
-        $this->db->where('project_id', $this->project->id);
         $this->db->update("live_support_chat_status", $set, array('name' => 'isOn'));
         if($this->db->affected_rows() > 0){
             echo json_encode(array('status'=>'success'));

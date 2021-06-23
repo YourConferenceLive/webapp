@@ -404,7 +404,7 @@
             Swal.fire({
                 title: 'Please Wait',
                 text: 'We are changing the status',
-                imageUrl: project_url+'/theme_asstes/live_support/ycl_anime_500kb.gif',
+                imageUrl: project_url+'front_assets/support_chat/ycl_anime_500kb.gif',
                 imageAlt: 'Loading...',
                 showCancelButton: false,
                 showConfirmButton: false,

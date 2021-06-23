@@ -11,9 +11,10 @@ $(document).ready(function () {
     }
 
     socket.on("supportChatStatusChange", function (data){
-    	if(data.room === live_support_chat_room){
 
-    		supportChatStatus = data.status;
+			console.log(data.room);
+			if (data.room === live_support_chat_room)
+				supportChatStatus = data.status;
 			if (data.status == 1) {
 				$('.live-support-open-button').show();
 			} else {
@@ -21,7 +22,6 @@ $(document).ready(function () {
 				$('#liveSupportChatForm').hide();
 			}
 
-		}
 
     });
 
