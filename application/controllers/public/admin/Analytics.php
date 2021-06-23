@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Logs extends CI_Controller
+class Analytics extends CI_Controller
 {
 	public function __construct()
 	{
@@ -13,19 +13,35 @@ class Logs extends CI_Controller
 		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 
 		$this->load->model('Logger_Model', 'logs');
+		$this->load->model('Analytics_Model', 'analytics');
 	}
 
 	public function index()
 	{
 		$sidebar_data['user'] = $this->user;
 
-		$data['logs'] = $this->logs->getAllProjectLogs();
+		$data['logs'] = $this->analytics->getAllProjectLogs();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function relaxation_zone()
+	{
+		$sidebar_data['user'] = $this->user;
+
+		$data['logs'] = $this->analytics->getRelaxationZoneLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/relaxation_zone", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}

@@ -48,5 +48,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		let user_id = "<?=($this->session->userdata('project_sessions')["project_{$this->project->id}"]['user_id'])?>";
 	</script>
 	<script src="<?=ycl_root?>/ycl_assets/js/active-status.js"></script>
+
+	<?php if(isset($this->project->google_analytics_code) && $this->project->google_analytics_code != null): ?>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=<?=$this->project->google_analytics_code?>"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', '<?=$this->project->google_analytics_code?>');
+		</script>
+	<?php endif; ?>
 </head>
 <body>
