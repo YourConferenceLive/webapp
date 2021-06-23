@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<!-- Tab panes -->
 								<div class="tab-content">
 									<div class="tab-pane p-2<?php echo (('agenda' == $active_briefcase_tab) ? ' active' : '' );?>" id="agenda" role="tabpanel" aria-labelledby="agenda-tab">
-										<div class="text-center btn card mb-2 page-title"><h2 class="mb-0">My Agenda</h2></div>
+										<div class="text-center btn card mb-2 page-title"><h3 class="mb-0">My Agenda</h3></div>
 <?php
 									if ($sessions != new stdClass()) :
 										foreach ($sessions as $session):?>
@@ -117,7 +117,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									endif;?>
 									</div>
 									<div class="tab-pane p-2<?php echo (('resources' == $active_briefcase_tab) ? ' active' : '' );?>" id="resources" role="tabpanel" aria-labelledby="resources-tab">
-										<div class="text-center btn card mb-2 page-title"><h2 class="mb-0">Resources</h2></div>
+										<div class="text-center btn card mb-2 page-title"><h3 class="mb-0">Resources</h3></div>
 										<table id="sessionResourcesTable" class="dataTable table table-bordered" style="width:100%;">
 											<thead>
 												<tr>
@@ -135,6 +135,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('session-credits' == $active_credit_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="session-credits-tab" data-toggle="tab" href="#session-credits" role="tab" aria-controls="session-credits">General Sessions</a></li>
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('eposter-credits' == $active_credit_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="eposter-credits-tab" data-toggle="tab" href="#eposter-credits" role="tab" aria-controls="eposter-credits">ePosters</a></li>
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('stc-credits' == $active_credit_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="stc-credits-tab" data-toggle="tab" href="#stc-credits" role="tab" aria-controls="stc-credits">STC</a></li>
+											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('scavenger-hunt-credits' == $active_credit_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="scavenger-hunt-credits-tab" data-toggle="tab" href="#scavenger-hunt-credits" role="tab" aria-controls="scavenger-hunt-credits">Scavenger Hunt</a></li>
 										</ul>
 
 										<div class="tab-content" id="credit-tab-content">
@@ -178,8 +179,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													</thead>
 												</table>
 											</div>
+											<div class="tab-pane p-2 fade" id="scavenger-hunt-credits" role="tabpanel" aria-labelledby="scavenger-hunt-credits-tab">
+												<div class="text-center btn card mb-2 page-title"><h3 class="mb-0">Scavenger Hunt Items</h3></div>
+												<table id="scavengerHuntItemTable" class="dataTable table table-bordered" style="width:100%;">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Booth</th>
+															<th>Item Found</th>
+															<th>Collected On</th>
+														</tr>
+													</thead>
+												</table>
+											</div>
 										</div>
 									</div>
+
 									<div class="tab-pane p-2<?php echo (('notes' == $active_briefcase_tab) ? ' active' : '' );?>" id="notes" role="tabpanel" aria-labelledby="notes-tab">
 										<!-- Notes tabs -->
 										<ul class="nav nav-tabs" id="notes-tabs" role="tablist">
@@ -281,7 +296,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						jsonObj = JSON.parse(response);
 						// Add response in Modal body
 
-						$('.modal-title').html( jsonObj.eposter.title + ' Notes');
+						$('.modal-title').html( ((entity_type == 'eposter') ? jsonObj.eposter.title : jsonObj.session.name ) + ' Notes');
 
 						if (jsonObj.total) {
 							$('.count_note strong').text(jsonObj.total);
@@ -371,6 +386,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		        "order": [[ 0, "ASC" ]]
 		    });
 
+			$('#scavengerHuntItemTable').DataTable({'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+													  bAutoWidth: false, 
+													  aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '12%' }, { sWidth: '18%' }],
+													  'processing': true,
+													  'serverSide': true,
+													  'serverMethod': 'post',
+													  'ajax': {url : project_url+"/briefcase/scavengerHuntItems", type : 'POST'},
+													  'order': [[ 0, "ASC" ]]
+			});
+
 		    $('#sessionResourcesTable').DataTable({dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 						    					   buttons: [{text: 'Download COS 2021 Program',
 						    				   	   className: 'btn btn-block btn-info',
@@ -398,29 +423,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										      		'serverMethod': 'post',
 										      		'ajax': {url : project_url+"/briefcase/getSessionNotes", type : 'POST'},
 										      		"order": [[ 0, "ASC" ]]
-										      	  });
+			});
 
-			$('#sessionNotesTable').DataTable({
-				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
-				"columns": [
-				    { "data": "id", "name": "id"},
-				    { "data": "session_title", "name": "session_title"},
-				    { "data": "action_link", "name": "action_link",
-				        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-				            if(oData.session_id) {
-				                $(nTd).html('<a href="javascript:void(0);" onclick="showNotes(\'session\', '+oData.session_id+', \''+note_page+'\');" data-action-type="notes" data-eposter-id="'+oData.session_id+'" class="eposter-notes" data-toggle="tooltip" data-placement="left" data-original-title="View Notes"><i class="fas fa-clipboard fa-fw"></i> View</a>');
-				            }
-				        }
-				    },
-				    { "data": "added_on", "name": "added_on"},
-				],
-				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '7%' }, { sWidth: '18%' }],
-				'processing': true,
-				'serverSide': true,
-				'serverMethod': 'post',
-				'ajax': {url : project_url+"/briefcase/getSessionNotes", type : 'POST'},
-		        "order": [[ 0, "ASC" ]]
+			$('#sessionNotesTable').DataTable({'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+											   'columns': [{"data": "id", "name": "id"},
+											   			   {"data": "session_title", "name": "session_title"},
+											   			   {"data": "action_link", "name": "action_link",
+														        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+														            if(oData.session_id) {
+														                $(nTd).html('<a href="javascript:void(0);" onclick="showNotes(\'session\', '+oData.session_id+', \''+note_page+'\');" data-action-type="notes" data-eposter-id="'+oData.session_id+'" class="eposter-notes" data-toggle="tooltip" data-placement="left" data-original-title="View Notes"><i class="fas fa-clipboard fa-fw"></i> View</a>');
+														            }
+														        }
+				    									   },
+				    									   {"data": "added_on", "name": "added_on"}],
+												bAutoWidth: false,
+												aoColumns : [{ sWidth: '2%' }, { sWidth: 'auto' }, { sWidth: '7%' }, { sWidth: '18%' }],
+												'processing': true,
+												'serverSide': true,
+												'serverMethod': 'post',
+												'ajax': {url : project_url+"/briefcase/getSessionNotes", type : 'POST'},
+												'order': [[0, 'ASC']]
 		    });
 
 			$('#eposterNotesTable').DataTable({

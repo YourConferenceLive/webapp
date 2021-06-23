@@ -21,6 +21,7 @@ class Eposters extends CI_Controller
 		$this->load->model('attendee/Eposters_Model', 'eposter');
 		$this->load->model('attendee/Comments_Model', 'comment');
 		$this->load->model('attendee/Notes_Model', 'note');
+		$this->load->model('attendee/Sessions_Model', 'sessions_model');
         $this->load->library("pagination");
         $this->load->helper('form');
 	}
@@ -124,19 +125,24 @@ class Eposters extends CI_Controller
 			echo json_encode(array('status'=>'failed'));
 	}
 
-	public function notes($entitiy_type, $eposter_id, $page)
+	public function notes($entitiy_type, $entitiy_type_id, $page)
 	{
-		$this->logger->log_visit("View ".$entitiy_type." notes", $eposter_id);
+		$this->logger->log_visit("View ".$entitiy_type." notes", $entitiy_type_id);
 
 		$data['notes']['user']			= $_SESSION['project_sessions']["project_{$this->project->id}"];
-		$data['notes']['eposter']		= $this->eposter->getById($eposter_id);
-		$data['notes_count']			= $this->note->getCount($entitiy_type, $eposter_id, $data['notes']['user']['user_id']);
+
+		if ($entitiy_type == 'eposter')
+			$data['notes']['eposter']	= $this->eposter->getById($entitiy_type_id);
+		else
+			$data['notes']['session']	= $this->sessions_model->getById($entitiy_type_id);
+
+		$data['notes_count']			= $this->note->getCount($entitiy_type, $entitiy_type_id, $data['notes']['user']['user_id']);
 		$page--;
 		$offset 						= (($page)*$this->notesPerPage);
 
 		$data['notes']['entitiy_type'] 	= $entitiy_type;
 		$data['notes']['total'] 		= $data['notes_count'];
-		$data['notes']['data'] 			= $this->note->getAll($entitiy_type, $eposter_id, $data['notes']['user']['user_id'], $this->notesPerPage, $offset);
+		$data['notes']['data'] 			= $this->note->getAll($entitiy_type, $entitiy_type_id, $data['notes']['user']['user_id'], $this->notesPerPage, $offset);
 
 		echo json_encode($data['notes']);
 		exit;
