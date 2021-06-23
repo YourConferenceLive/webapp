@@ -26,18 +26,18 @@ class Briefcase extends CI_Controller
 
 	public function index()
 	{
-		$this->logger->log_visit("Briefcase Listing");
-
+		$this->logger->log_visit("Briefcase Listing", $this->user['user_id']);
 		$data['user'] 					= $this->user;
-		$data['active_briefcase_tab'] 	= 'itinerary';
+		$data['active_briefcase_tab'] 	= 'agenda';
 		$data['active_credit_tab'] 		= 'session-credits';
-		$data['active_note_tab']		= 'eposter-notes';
+		$data['active_note_tab']		= 'session-notes';
 		$data['notes_per_page']			= $this->notesPerPage;
 
 		//Default value for ePoster Notes Modal
 		$data['eposter']				= new stdClass();
 		$data['eposter']->id 			= null;
 
+		$data['entitiy_type'] 			= 'session';
 		$data['sessions'] 				= $this->briefcase->getAgenda();
 
 		$this->load
@@ -100,6 +100,7 @@ class Briefcase extends CI_Controller
 
 	public function getSessionCredits($session_type)
 	{
+		$this->logger->log_visit("Session Credits", $session_type);
 		$post 				= $this->input->post();
 
 		$draw 				= intval($this->input->post("draw"));
@@ -131,6 +132,7 @@ class Briefcase extends CI_Controller
 
 	public function getEposterCredits()
 	{
+		$this->logger->log_visit("ePoster Credits in Briefcase");
 		$post 				= $this->input->post();
 
 		$draw 				= intval($this->input->post("draw"));
@@ -163,6 +165,7 @@ class Briefcase extends CI_Controller
 
 	public function getEposterNotes()
 	{
+		$this->logger->log_visit("ePoster Notes in Briefcase");
 		$post 				= $this->input->post();
 
 		$draw 				= intval($this->input->post("draw"));
@@ -201,6 +204,7 @@ class Briefcase extends CI_Controller
 
 	public function getSessionNotes()
 	{
+		$this->logger->log_visit("Session Notes in Briefcase");
 		$post 				= $this->input->post();
 
 		$draw 				= intval($this->input->post("draw"));
@@ -221,7 +225,11 @@ class Briefcase extends CI_Controller
 		$table_count 		= 1;
 
 		foreach($query as $r) {
-			$data[] = array($table_count++, $r->name, 'View', $r->created_datetime);
+			$data[] = array('id' 			=> $table_count++,
+							'session_id' 	=> $r->origin_type_id,
+							'session_title'	=> $r->name,
+							'action_link' 	=> 'View',
+							'added_on' 		=> $r->created_datetime);
 		}
 
 		$result 	= array("draw" 				=> $draw,

@@ -21,6 +21,20 @@ $ci_method = $this->router->fetch_method();
 		<li class="nav-item d-none d-sm-inline-block">
 			<a href="<?=$this->project_url.'/presenter/sessions'?>" class="nav-link">My Sessions</a>
 		</li>
+
+		<?php if (ycl_env == 'testing'): ?>
+			<li class="nav-item">
+				<a class="nav-link disabled" href="#">
+					<badge class="badge badge-warning text-white"><i class="fas fa-exclamation-triangle"></i> TESTING ENVIRONMENT</badge>
+				</a>
+			</li>
+		<?php elseif(ycl_env == 'development'): ?>
+			<li class="nav-item">
+				<a class="nav-link disabled" href="#">
+					<badge class="badge badge-warning text-white"><i class="fas fa-exclamation-triangle"></i> DEVELOPMENT ENVIRONMENT</badge>
+				</a>
+			</li>
+		<?php endif; ?>
 	</ul>
 
 	<!-- Right navbar links -->

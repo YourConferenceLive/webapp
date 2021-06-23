@@ -39,7 +39,9 @@ class Sponsor_model extends CI_Model
 		$field_array = array(
 			'project_id'=>$this->project->id,
 			'facebook_link' => $post['facebook'],
+			'facebook_link2' => $post['facebook2'],
 			'twitter_link' => $post['twitter'],
+			'twitter_link2' => $post['twitter2'],
 			'linkedin_link' => $post['linkedin'],
 			'custom_link' => $post['custom'],
 			'about_us' => $post['about_us'],
