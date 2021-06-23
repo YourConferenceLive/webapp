@@ -116,7 +116,7 @@ class Eposters extends CI_Controller
 
 	public function add_notes($entitiy_type = 'eposter')
 	{
-		$this->logger->log_visit("Note added on ".$this->input->post('entity_type'), $this->input->post('entity_type_id'));
+		$this->logger->log_visit("Note added on ".$entitiy_type, $this->input->post('entity_type_id'));
 
 		if ($this->note->add($entitiy_type))
 			echo json_encode(array('status'=>'success'));
@@ -130,13 +130,13 @@ class Eposters extends CI_Controller
 
 		$data['notes']['user']			= $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$data['notes']['eposter']		= $this->eposter->getById($eposter_id);
-		$data['notes_count']			= $this->note->getCount($eposter_id, $data['notes']['user']['user_id']);
+		$data['notes_count']			= $this->note->getCount($entitiy_type, $eposter_id, $data['notes']['user']['user_id']);
 		$page--;
 		$offset 						= (($page)*$this->notesPerPage);
 
 		$data['notes']['entitiy_type'] 	= $entitiy_type;
 		$data['notes']['total'] 		= $data['notes_count'];
-		$data['notes']['data'] 			= $this->note->getAll($eposter_id, $data['notes']['user']['user_id'], $this->notesPerPage, $offset);
+		$data['notes']['data'] 			= $this->note->getAll($entitiy_type, $eposter_id, $data['notes']['user']['user_id'], $this->notesPerPage, $offset);
 
 		echo json_encode($data['notes']);
 		exit;

@@ -12,7 +12,7 @@ class Notes_Model extends CI_Model
 		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 	}
 
-    public function getCount($origin_type_id, $user_id)
+    public function getCount($entitiy_type, $origin_type_id, $user_id)
     {
 		$this->db->select("notes.id");
 		$this->db->join('user', 'user.id = notes.user_id');
@@ -21,22 +21,27 @@ class Notes_Model extends CI_Model
 		$this->db->where('user.id', $user_id);
 		$this->db->where('notes.is_deleted', 0);
 		$this->db->where('notes.status', 1);
+		$this->db->where('notes.origin_type', $entitiy_type);
 
 		return $this->db->count_all_results('notes');
     }
 
-	public function getAll($origin_type_id, $user_id, $limit, $start)
+	public function getAll($entitiy_type, $origin_type_id, $user_id, $limit = '', $start = '')
 	{
 		$this->db->select('notes.id, notes.user_id, notes.note_text, notes.created_datetime');
 		$this->db->from('notes');
 		$this->db->join('user', 'user.id = notes.user_id');
 		$this->db->where('notes.origin_type_id', $origin_type_id);
+		$this->db->where('notes.origin_type', $entitiy_type);
 		$this->db->where('user.active', 1);
 		$this->db->where('user.id', $user_id);
 		$this->db->where('notes.is_deleted', 0);
 		$this->db->where('notes.status', 1);
 		$this->db->order_by('notes.created_datetime', 'DESC');
-		$this->db->limit($limit, $start);
+
+		if ($limit != '' || $start != '')
+			$this->db->limit($limit, $start);
+
 		$eposters = $this->db->get();
 		if ($eposters->num_rows() > 0) {
 			foreach ($eposters->result() as $eposter) {
