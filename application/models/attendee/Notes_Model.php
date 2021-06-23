@@ -163,7 +163,7 @@ class Notes_Model extends CI_Model
 
     public function getAllUserSessionsNotes($start, $length, $order_by, $order, $keyword)
     {
-		$this->db->select('notes.id, notes.origin_type_id, sessions.name, notes.note_text, notes.created_datetime');
+		$this->db->select('notes.id, sessions.id AS session_id, sessions.name, notes.note_text, notes.created_datetime');
 		$this->db->from('notes');
 		$this->db->join('sessions', 'sessions.id = notes.origin_type_id');
 		$this->db->where('sessions.is_deleted', 0);
@@ -185,7 +185,7 @@ class Notes_Model extends CI_Model
 
      	$this->db->limit($length, $start);
 	    $this->db->order_by($order_by, $order);
-	    $this->db->group_by('notes.origin_type_id');
+	    $this->db->group_by('session_id');
 		$eposters = $this->db->get();
 		if ($eposters->num_rows() > 0) {
 			return $eposters->result();
