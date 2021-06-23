@@ -17,9 +17,10 @@ class Authentication extends CI_Controller {
 		$project_id = $this->project->id;
 		$username = $this->input->post()['email'];
 		$password = $this->input->post()['password'];
+		$access_level = $this->input->post()['access_level'];
 
 		$email_org = explode('@', $username);
-		if(ycl_env == 'production' && $email_org[1] != 'cos-sco.ca') // Only staff have access for now on prod
+		if(ycl_env == 'production' && $access_level == 'attendee' && $email_org[1] != 'cos-sco.ca') // Only staff have access for now on prod
 		{
 			$response = array('status'=>'error', 'msg'=>"You are not a COS staff.");
 			echo json_encode($response);
@@ -27,8 +28,6 @@ class Authentication extends CI_Controller {
 		}
 
 		$this->updateProfileFromCos($username);
-
-		$access_level = $this->input->post()['access_level'];
 
 		$verification = $this->auth->verifyLogin($project_id, $username, $password);
 
