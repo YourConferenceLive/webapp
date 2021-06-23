@@ -56,6 +56,8 @@ $ci_method = $this->router->fetch_method();?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/relaxation_zone"><strong>Relaxation Zone</strong></a></li>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/evaluation"><strong>Evaluation</strong></a></li>
 
+					<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color: #487391; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Support</button>
+
 					<li class="nav-item dropdown">
 						<a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">0</span>
@@ -97,3 +99,4 @@ $ci_method = $this->router->fetch_method();?>
 			</div>
 		</nav>
 	</header>
+<?php $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/live_support_chat") ?>
