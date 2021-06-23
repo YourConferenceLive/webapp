@@ -609,7 +609,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                 var pickResult = scene.pick(scene.pointerX, scene.pointerY);
                 console.log(pickResult.pickedMesh.id);
                 toques++;
-                e.preventDefault();
+                //e.preventDefault();
             
                 if (zoomed)
                 {
@@ -668,7 +668,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                     }
 
                 }
-                    return false;
+                    return true;
             });
             ////////////////////////////////////////////////////
 
@@ -717,7 +717,7 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
 //captura doble click
 var clickCount=0;
-window.addEventListener('click', function() {
+canvas.addEventListener('click', function() {
     clickCount++;
     if (clickCount === 1) {
         singleClickTimer = setTimeout(function() {
@@ -728,7 +728,7 @@ window.addEventListener('click', function() {
         clickCount = 0;
         dobleclick();
     }
-}, false);
+}, true);
 
 
 function dobleclick(){
