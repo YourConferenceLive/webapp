@@ -155,8 +155,7 @@
 <div id="bg"></div>
 
 <div class="content2" id="instrucciones" style="display:none;">
-        <img class="center" src="https://yourconference.live/vendor_frontend/3d_exhibition/assets/flechitas.png"><br>
-        <!--h2>Use your keyboard to <br>walk into space</h2-->
+        <img class="center" src="https://yourconference.live/vendor_frontend/3d_exhibition/assets/flechitas.png"><br>        
         <button type="button" onClick="cerrarventanas();" class="center" id="buttonx" value="entendido"><h3>Ok</h3></button>
 </div>
 
@@ -175,6 +174,18 @@
 	<div class="tag" id="clickableTag"></div>
 </div>
 
+<?
+echo "<script>ycl_root='".ycl_root."';</script>";
+
+if ($this->user['is_exhibitor'])
+{
+	echo "<script>is_exhibitor=true;</script>";
+}
+else
+{
+	echo "<script>is_exhibitor=false;</script>";
+}
+?>
 <div id="notSupported" class="hidden">We are sorry but your browser does not support WebGL...</div>
 
 <script src="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/loader.js"></script>
