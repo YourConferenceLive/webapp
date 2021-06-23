@@ -31,7 +31,11 @@ class Authentication_Model extends CI_Model
 				{
 					foreach($result->result() as $row)
 					{
-						$user->access_levels[] = $row->level;
+						if ($row->level == 'moderator')
+							$user->access_levels[] = 'presenter';
+						else
+							$user->access_levels[] = $row->level;
+
 					}
 
 					return array('status'=>true, 'msg'=>"Login successful", 'user'=>$user);

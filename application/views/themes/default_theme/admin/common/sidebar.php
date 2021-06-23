@@ -96,13 +96,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</a>
 				</li>
 
-				<li class="nav-header">SYSTEM</li>
+				<li class="nav-header"></li>
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/logs'?>" class="nav-link <?=($this->router->fetch_class()=='logs')?'active':''?>">
-						<i class="fas fa-book"></i>
-						<p class="text">Logs</p>
+					<a href="#" class="nav-link">
+						<i class="fas fa-chart-area"></i>
+						<p>ANALYTICS <i class="fas fa-angle-left right"></i></p>
+						</p>
 					</a>
+					<ul class="nav nav-treeview" style="display: none;">
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='index')?'active':''?>">
+								<i class="fas fa-book"></i>
+								<p class="text">All Logs</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/relaxation_zone'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='relaxation_zone')?'active':''?>">
+								<i class="fas fa-book"></i>
+								<p class="text">Relaxation Zone Logs</p>
+							</a>
+						</li>
+					</ul>
 				</li>
+
 <!--				<li class="nav-item">-->
 <!--					<a href="pages/widgets.html" class="nav-link">-->
 <!--						<i class="nav-icon fas fa-th"></i>-->

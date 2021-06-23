@@ -146,7 +146,7 @@
 
 
 <button id="enterButton" class="btn btn-primary xy-center">ENTER</button>
-<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/exhibition_landing.jpeg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">
+<img id="full-screen-background" src="<?=ycl_root?>/theme_assets/default_theme/images/exhibition/bg.jpg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">
 <!--<img id="full-screen-background" src="https://dev.yourconference.live/cms_uploads/projects/3/other_images/exhibition_landing.jpeg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">-->
 
 <div class="vertical-center" id="loadingScreen">Loading<br>
@@ -155,12 +155,11 @@
 <div id="bg"></div>
 
 <div class="content2" id="instrucciones" style="display:none;">
-        <img class="center" src="https://dev.yourconference.live/vendor_frontend/3d_exhibition/assets/flechitas.png"><br>
-        <!--h2>Use your keyboard to <br>walk into space</h2-->
+        <img class="center" src="https://yourconference.live/vendor_frontend/3d_exhibition/assets/flechitas.png"><br>        
         <button type="button" onClick="cerrarventanas();" class="center" id="buttonx" value="entendido"><h3>Ok</h3></button>
 </div>
 
-<canvas id="renderCanvas" touch-action="none" width="1794" height="824" style="touch-action: none; opacity: 1;" tabindex="1"></canvas>
+<canvas id="renderCanvas" touch-action="none" style="touch-action: none; opacity: 1;width:100%; height:calc(100% - 67px);z-index: 0;" tabindex="1"></canvas>
 
 <div id="controlPanel" style="display:none;">
 	<div id="controlsZone">
@@ -174,6 +173,10 @@
 	<div class="tag">Control panel</div>
 	<div class="tag" id="clickableTag"></div>
 </div>
+
+<script>
+	let is_exhibitor = "<?=$_SESSION['project_sessions']["project_{$this->project->id}"]['is_exhibitor']?>";	
+</script>
 
 <div id="notSupported" class="hidden">We are sorry but your browser does not support WebGL...</div>
 

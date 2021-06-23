@@ -29,7 +29,23 @@ $ci_method = $this->router->fetch_method();?>
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="navbar-collapse collapse" id="navbarCollapse">
-				<ul class="navbar-nav mr-auto"></ul>
+
+				<ul class="navbar-nav mr-auto">
+					<?php if (ycl_env == 'testing'): ?>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">
+							<badge class="badge badge-warning text-white"><i class="fas fa-exclamation-triangle"></i> TESTING ENVIRONMENT</badge>
+						</a>
+					</li>
+					<?php elseif(ycl_env == 'development'): ?>
+						<li class="nav-item">
+							<a class="nav-link disabled" href="#">
+								<badge class="badge badge-warning text-white"><i class="fas fa-exclamation-triangle"></i> DEVELOPMENT ENVIRONMENT</badge>
+							</a>
+						</li>
+					<?php endif; ?>
+				</ul>
+
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/lobby"><strong>Lobby</strong></a></li>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/sessions/day/2021-06-24"><strong>Agenda</strong></a></li>
