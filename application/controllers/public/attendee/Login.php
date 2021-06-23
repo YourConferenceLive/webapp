@@ -23,4 +23,13 @@ class Login extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer")
 		;
 	}
+
+	public function staff()
+	{
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/staff_login")
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer")
+		;
+	}
 }
