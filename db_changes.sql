@@ -537,3 +537,8 @@ ALTER TABLE `sessions` CHANGE `agenda` `agenda` LONGTEXT CHARACTER SET utf8 COLL
 ALTER TABLE `project` ADD `google_analytics_code` VARCHAR(255) NULL AFTER `api_password`;
 
 ALTER TABLE `sponsor_booth` ADD `extra_video_1` VARCHAR(255) NULL AFTER `main_video_description`, ADD `extra_video_2` VARCHAR(255) NULL AFTER `extra_video_1`;
+
+-- Imran Tariq
+-- Notes table change
+-- 23rd June, 2021
+ALTER TABLE `notes` CHANGE `note_text` `note_text` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
