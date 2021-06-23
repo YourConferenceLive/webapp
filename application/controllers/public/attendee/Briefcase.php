@@ -73,7 +73,7 @@ class Briefcase extends CI_Controller
 
 		$draw 				= intval($this->input->post("draw"));
 		$start 				= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
-		$length 			= ((intval($this->input->post("length"))) ? $this->input->post("length") : 10 );
+		$length 			= ((intval($this->input->get("length"))) ? $this->input->get("length") : 5 );
 
 		$columns_array 		= array('user_agenda.id', 'sessions.name', 'user_agenda.added_datetime');
 		$column_index 		= $post['order'][0]['column'];
@@ -98,6 +98,44 @@ class Briefcase extends CI_Controller
     	exit();
   	}
 
+	public function scavengerHuntItems()
+	{
+		$this->logger->log_visit("Scavenger hunt item");
+		$post 				= $this->input->post();
+
+		$draw 				= intval($this->input->post("draw"));
+		$start 				= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
+		$length 			= ((intval($this->input->post("length"))) ? $this->input->post("length") : 5 );
+
+		$columns_array 		= array('scavenger_hunt_items.id', 'sponsor_booth.name', 'scavenger_hunt_items.icon_name', 'scavenger_hunt_items.date');
+		$column_index 		= $post['order'][0]['column'];
+		$column_name 		= $columns_array[$column_index];
+		$column_sort_order 	= $post['order'][0]['dir']; 
+		$keyword 			= $post['search']['value'];
+
+		$count 				= $this->credit->getScavengerHuntItemsCount($keyword);
+
+		$query 				= $this->credit->getAllScavengerHuntItems($start, $length, $column_name, $column_sort_order, $keyword);
+
+		$data 				= [];
+		$table_count 		= 1;
+
+		foreach($query as $r) {
+			$data[] 		= array($table_count++, 
+									$r->name, 
+									'<img src="'.ycl_root.'/theme_assets/booth_game_icons/'.$r->icon_name.'.png" width="45">', 
+									$r->date);
+		}
+
+		$result 			= array("draw" 				=> $draw,
+									"recordsTotal" 		=> $count,
+				    	     		"recordsFiltered" 	=> $count,
+			         				"data" 				=> $data);
+
+      	echo json_encode($result);
+    	exit();
+	}
+
 	public function getSessionCredits($session_type)
 	{
 		$this->logger->log_visit("Session Credits", $session_type);
@@ -105,7 +143,7 @@ class Briefcase extends CI_Controller
 
 		$draw 				= intval($this->input->post("draw"));
 		$start 				= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
-		$length 			= ((intval($this->input->post("length"))) ? $this->input->post("length") : 10 );
+		$length 			= ((intval($this->input->get("length"))) ? $this->input->get("length") : 5 );
 
 		$columns_array 		= array('user_credits.id', 'sessions.name', 'user_credits.credit', 'user_credits.claimed_datetime');
 		$column_index 		= $post['order'][0]['column'];
@@ -137,7 +175,7 @@ class Briefcase extends CI_Controller
 
 		$draw 				= intval($this->input->post("draw"));
 		$start 				= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
-		$length 			= ((intval($this->input->post("length"))) ? $this->input->post("length") : 10 );
+		$length 			= ((intval($this->input->get("length"))) ? $this->input->get("length") : 5 );
 
 		$columns_array 		= array('user_credits.id', 'eposters.title', 'eposters.type', 'user_credits.credit', 'user_credits.claimed_datetime');
 		$column_index 		= $post['order'][0]['column'];
@@ -170,7 +208,7 @@ class Briefcase extends CI_Controller
 
 		$draw 				= intval($this->input->post("draw"));
 		$start 				= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
-		$length 			= ((intval($this->input->post("length"))) ? $this->input->post("length") : 10 );
+		$length 			= ((intval($this->input->get("length"))) ? $this->input->get("length") : 5 );
 
 		$columns_array 		= array('notes.id', 'eposters.title', 'eposters.type', 'notes.note_text', 'notes.created_datetime');
 		$column_index 		= $post['order'][0]['column'];
@@ -209,7 +247,7 @@ class Briefcase extends CI_Controller
 
 		$draw 				= intval($this->input->post("draw"));
 		$start 				= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
-		$length 			= ((intval($this->input->post("length"))) ? $this->input->post("length") : 10 );
+		$length 			= ((intval($this->input->get("length"))) ? $this->input->get("length") : 5 );
 
 		$columns_array 		= array('notes.id', 'sessions.name', 'notes.note_text', 'notes.created_datetime');
 		$column_index 		= $post['order'][0]['column'];
@@ -226,7 +264,7 @@ class Briefcase extends CI_Controller
 
 		foreach($query as $r) {
 			$data[] = array('id' 			=> $table_count++,
-							'session_id' 	=> $r->origin_type_id,
+							'session_id' 	=> $r->session_id,
 							'session_title'	=> $r->name,
 							'action_link' 	=> 'View',
 							'added_on' 		=> $r->created_datetime);

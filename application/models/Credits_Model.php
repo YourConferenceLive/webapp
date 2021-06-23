@@ -51,7 +51,9 @@ class Credits_Model extends CI_Model
     		$this->db->group_end();
 		}
 
-     	$this->db->limit($length, $start);
+		if ($length > 0)
+	     	$this->db->limit($length, $start);
+
 	    $this->db->order_by($order_by, $order);
 	    $this->db->group_by('user_credits.origin_type_id');
 		$eposters = $this->db->get();
@@ -101,7 +103,9 @@ class Credits_Model extends CI_Model
     		$this->db->group_end();
 		}
 
-     	$this->db->limit($length, $start);
+		if ($length > 0)
+	     	$this->db->limit($length, $start);
+
 	    $this->db->order_by($order_by, $order);
 	    $this->db->group_by('user_credits.origin_type_id');
 		$sessions = $this->db->get();
@@ -111,6 +115,53 @@ class Credits_Model extends CI_Model
 
 		return new stdClass();
 	}
+
+	public function getScavengerHuntItemsCount($keyword)
+	{
+		$this->db->join('sponsor_booth', 'sponsor_booth.id = scavenger_hunt_items.booth_id');
+		$this->db->where('scavenger_hunt_items.user_id', $this->user->user_id);
+		$this->db->where('sponsor_booth.project_id', $this->project->id);
+
+		if ($keyword)
+		{
+    		$this->db->group_start();
+			$this->db->like('sponsor_booth.name', $keyword);
+			$this->db->or_like('scavenger_hunt_items.date', $keyword);
+    		$this->db->group_end();
+		}
+
+		return $this->db->count_all_results('scavenger_hunt_items');
+	}
+
+	public function getAllScavengerHuntItems($start, $length, $order_by, $order, $keyword)
+	{
+		$this->db->select('scavenger_hunt_items.id, sponsor_booth.name, scavenger_hunt_items.icon_name, scavenger_hunt_items.date');
+		$this->db->from('scavenger_hunt_items');
+		$this->db->join('sponsor_booth', 'sponsor_booth.id = scavenger_hunt_items.booth_id');
+		$this->db->where('scavenger_hunt_items.user_id', $this->user->user_id);
+		$this->db->where('sponsor_booth.project_id', $this->project->id);
+
+		if ($keyword)
+		{
+    		$this->db->group_start();
+			$this->db->like('sponsor_booth.name', $keyword);
+			$this->db->or_like('scavenger_hunt_items.date', $keyword);
+    		$this->db->group_end();
+		}
+
+		if ($length > 0)
+	     	$this->db->limit($length, $start);
+
+	    $this->db->order_by($order_by, $order);
+	    $this->db->group_by('sponsor_booth.id');
+		$scavenger_hunt_item = $this->db->get();
+		if ($scavenger_hunt_item->num_rows() > 0) {
+			return $scavenger_hunt_item->result();
+		}
+
+		return new stdClass();
+	}
+
 
 	public function claim($origin_type, $origin_type_id, $credits)
 	{
