@@ -19,6 +19,7 @@ class Sessions extends CI_Controller
 
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('Sessions_Model', 'sessions');
+		$this->load->model('attendee/Notes_Model', 'note');
 
         $this->load->library("pagination");
         $this->load->helper('form');
@@ -60,9 +61,10 @@ class Sessions extends CI_Controller
 	{
 		$this->logger->log_visit("Session View", $session_id);
 
-		$data['user'] = $this->user;
-
-		$data['session'] = $this->sessions->getById($session_id);
+		$data['user'] 		= $this->user;
+		$data['session_id'] = $session_id;
+		$data['session'] 	= $this->sessions->getById($data['session_id']);
+		$data['notes'] 		= $this->note->getAll('session', $data['session_id'], $this->user['user_id']);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
@@ -70,6 +72,7 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/view", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/poll_modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/poll_result_modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/note_modal")
 			//->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
 	}
