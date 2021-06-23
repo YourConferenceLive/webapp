@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/live_support_chat'?>" class="nav-link <?=($this->router->fetch_class()=='live_support_chat')?'active':''?>">
-						<i class="fas fa-clipboard-check"></i>
+						<i class="far fa-life-ring"></i>
 						<p>
 							Live Support
 						</p>
