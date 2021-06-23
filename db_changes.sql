@@ -528,3 +528,42 @@ ALTER TABLE `user` ADD `membership_sub_type` VARCHAR(50) NULL AFTER `membership_
 
 
 ALTER TABLE `sessions` CHANGE `agenda` `agenda` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+
+# Live support chat
+--
+-- Table structure for table `live_support_chat`
+--
+CREATE TABLE `live_support_chat` (
+    `id` int(11) NOT NULL,
+    `project_id` int(11) DEFAULT NULL,
+    `chat_from_type` enum('admin','attendee') NOT NULL DEFAULT 'attendee',
+    `from_id` int(11) NOT NULL,
+    `to_id` int(11) NOT NULL,
+    `text` text NOT NULL,
+    `isRead` tinyint(1) NOT NULL DEFAULT 0,
+    `date_time` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `live_support_chat`
+    ADD PRIMARY KEY (`id`);
+ALTER TABLE `live_support_chat`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+CREATE TABLE `live_support_chat_status` (
+    `id` int(11) NOT NULL,
+    `project_id` int(11) DEFAULT NULL,
+    `name` varchar(20) NOT NULL,
+    `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `live_support_chat_status` (`id`, `project_id`, `name`, `status`) VALUES
+(1, NULL, 'isOn', 1);
+
+ALTER TABLE `live_support_chat_status`
+    ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `live_support_chat_status`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
+# End Live support chat
