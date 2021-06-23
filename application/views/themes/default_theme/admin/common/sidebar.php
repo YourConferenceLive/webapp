@@ -118,6 +118,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<p class="text">Relaxation Zone Logs</p>
 							</a>
 						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/scavenger_hunt'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scavenger_hunt')?'active':''?>">
+								<i class="fas fa-book"></i>
+								<p class="text">Who Found 10 SH Items</p>
+							</a>
+						</li>
+
 					</ul>
 				</li>
 

@@ -37,7 +37,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">Relaxation Zone</h3>
+							<h3 class="card-title">Scavenger Hunt</h3><br>
+							<small>People who found all 10 items</small>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -48,24 +49,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Name</th>
 									<th>Surname</th>
 									<th>Email</th>
-									<th>What</th>
-									<th>Browser</th>
-									<th>OS</th>
-									<th>Time</th>
+									<th>Last Collected Item</th>
+									<th>Last Collected</th>
 								</tr>
 								</thead>
 								<tbody id="logsTableBody">
 								<?php foreach ($logs as $log): ?>
-									<tr>
-										<td><?=$log->user_id?></td>
-										<td><?=$log->user_fname?></td>
-										<td><?=$log->user_surname?></td>
-										<td><?=$log->email?></td>
-										<td><?=$log->name?></td>
-										<td><?=$log->browser?></td>
-										<td><?=$log->os?></td>
-										<td><?=$log->date_time?></td>
-									</tr>
+									<?php if ($log->user_id != ''): ?>
+											<tr>
+												<td><?=$log->user_id?></td>
+												<td><?=$log->user_fname?></td>
+												<td><?=$log->user_surname?></td>
+												<td><?=$log->email?></td>
+												<td><img src="<?=ycl_root?>/theme_assets/booth_game_icons/<?=$log->icon_name?>.png" width="30px"></td>
+												<td><?=$log->last_collected?></td>
+											</tr>
+									<?php endif; ?>
 								<?php endforeach; ?>
 								</tbody>
 							</table>
@@ -108,7 +107,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			"info": true,
 			"autoWidth": false,
 			"responsive": true,
-			"order": [[ 7, "desc" ]],
+			"order": [[ 5, "desc" ]],
 		});
 	});
 </script>
