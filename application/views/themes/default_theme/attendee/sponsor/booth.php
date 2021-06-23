@@ -19,7 +19,7 @@ if(!file_exists($cover_photo_url)){
 	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo;
 }
 ?>
-<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css?ver=9" rel="stylesheet">
+<link href="<?= ycl_root ?>/theme_assets/default_theme/css/booth.css?ver=10" rel="stylesheet">
 <!-- Date Time Picker-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.js"></script>
@@ -78,6 +78,7 @@ if(!file_exists($cover_photo_url)){
 					<div class="about-us">
 						<h4> About Us </h4>
 						<p class="text-left mr-5"><?= $data->about_us ?></p>
+
 					</div>
 					<?php if (isset($data->main_video_url) && !empty($data->main_video_url) && $data->video_position == '0') { ?>
 					<div class="row mb-2 about-us-video align-content-center ">
@@ -95,6 +96,11 @@ if(!file_exists($cover_photo_url)){
 							<?=(isset($data->twitter_link2) && !empty($data->twitter_link2)?'<a href="'.$data->twitter_link.'" target="_blank" class="btn p-0" title="twitter.com/'.(isset($data->twitter_link2) && !empty($data->twitter_link2)?$data->twitter_link2 : '').'"><i class="fab fa-twitter fa-2x" aria-hidden="true"></i></a>' : '')?>
 							<?=(isset($data->linkedin_link) && !empty($data->linkedin_link)?'<a class="btn p-0" href="'.$data->linkedin_link.'" target="_blank" class="btn p-0" title="linkedin.com/'.(isset($data->linkedin_link) && !empty($data->linkedin_link)?$data->linkedin_link : '').'"><i class="fab fa-linkedin fa-2x" aria-hidden="true"></i></a>' : '')?>
 						</div>
+					</div>
+
+					<div class="extra_videos">
+						<div class="extra_video_1"><?=$data->extra_video_1?></div>
+						<div class="extra_video_2"><?=$data->extra_video_2?></div>
 					</div>
 				</div>
 			</div>
@@ -259,7 +265,7 @@ if(!file_exists($cover_photo_url)){
 	var hunting_icon = "<?=$hunting_icon?>";
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=9"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=10"></script>
 <script>
 	socket.emit('ycl_booth_visit', {'booth_id':current_booth_id, 'user_id' : user_id});
 </script>

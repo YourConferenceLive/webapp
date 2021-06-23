@@ -527,4 +527,13 @@ ALTER TABLE `user` ADD `isFromApi` BOOLEAN NOT NULL DEFAULT FALSE AFTER `members
 ALTER TABLE `user` ADD `membership_sub_type` VARCHAR(50) NULL AFTER `membership_type`;
 
 
+ALTER TABLE `sponsor_booth`
+ADD COLUMN `extra_video_1` TEXT NULL AFTER `template`,
+ADD COLUMN `extra_video_2` TEXT NULL AFTER `extra_video_1`;
+
+
 ALTER TABLE `sessions` CHANGE `agenda` `agenda` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `project` ADD `google_analytics_code` VARCHAR(255) NULL AFTER `api_password`;
+
+ALTER TABLE `sponsor_booth` ADD `extra_video_1` VARCHAR(255) NULL AFTER `main_video_description`, ADD `extra_video_2` VARCHAR(255) NULL AFTER `extra_video_1`;

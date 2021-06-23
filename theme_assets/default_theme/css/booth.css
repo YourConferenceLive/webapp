@@ -327,10 +327,9 @@ main .table_left img, main .table_right img {
 	width: 100%;
 }
 
-.template2 .content .middle #tv-container{
+.template2 .content .middle #tv-container {
 	top: 0;
 }
-
 
 .template2 .content .left, .template2 .content .right {
 	position: relative;
@@ -341,19 +340,22 @@ main .table_left img, main .table_right img {
 	margin-top: 25px;
 }
 
-
 .template2 .content .left img, .template2 .content .right img {
 	width: 100%;
 	max-width: 100%;
 }
 
-
-.template2 #monitorscreen{
+.template2 #monitorscreen {
 	padding-bottom: 36.25%;
 }
 
-.template2 #monitorscreen > iframe{
+.template2 #monitorscreen > iframe {
 	height: 140px !important;
+}
+
+.extra_videos iframe {
+	width: 100%;
+	height: 300px;
 }
 
 
@@ -454,20 +456,21 @@ main .table_left img, main .table_right img {
 		height: auto;
 	}
 
-	.jumbotron{
+	.jumbotron {
 		padding-left: 0;
 		padding-right: 0;
 	}
 
-	.template2 .content .middle img{
+	.template2 .content .middle img {
 		height: 170px;
 		object-fit: cover;
 	}
 
-	.template2 #monitorscreen{
+	.template2 #monitorscreen {
 		padding-bottom: 153px;
 	}
-	.template2 #monitorscreen > iframe{
+
+	.template2 #monitorscreen > iframe {
 		margin-top: 0;
 		height: auto !important;
 	}
