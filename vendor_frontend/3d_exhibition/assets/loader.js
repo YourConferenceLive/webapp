@@ -656,14 +656,14 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
                     if (idx>0)
                     {
-                        if(!is_exhibitor)
+                        if(is_exhibitor==1)
                         {
-                        destino=ycl_root+"/COS/sponsor/booth/"+idx;
-                        window.open(destino, '_blank');
+                            alert("No Access");
                         }
                         else
                         {
-                            alert("No Access");
+                            destino=ycl_root+"/COS/sponsor/booth/"+idx;
+                            window.open(destino, '_blank');
                         }
                     }
 
