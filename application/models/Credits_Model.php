@@ -37,7 +37,7 @@ class Credits_Model extends CI_Model
 		$this->db->join('eposters', 'eposters.id = user_credits.origin_type_id');
 		$this->db->where('user_credits.user_id', $this->user->user_id);
 		$this->db->where('eposters.project_id', $this->project->id);
-		$this->db->where('user_credits.origin_type', 'session');
+		$this->db->where('user_credits.origin_type', 'eposter');
 		$this->db->where('eposters.status', 1);
 
 		if ($keyword)
