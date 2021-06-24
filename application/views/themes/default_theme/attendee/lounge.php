@@ -82,7 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <img class="direct-chat-img mr-1" src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$user->photo?>" onerror="this.onerror=null;this.src=`<?=ycl_root?>/ycl_assets/images/person_dp_placeholder.png`;" alt="DP Image">
                                                 <span class="float-right"><i user-id="<?=$user->id?>" class="user-active-status-icon fas fa-circle" style="color: #ffb425;"></i></span>
                                                 <?=$user->name?> <?=$user->surname?><?=($user->credentials!='')?', '.$user->credentials:''?>
-                                                <br><small><?=$user->company_name?></small>
+                                                <br><small><?=($user->company_name != '')?$user->company_name:$user->city?></small>
                                                 <!--<button class="btn btn-sm btn-info float-right"><i class="fas fa-video"></i></button>-->
                                             </li>
                                         <?php endforeach; ?>
@@ -115,7 +115,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     let lounge_user_id = "<?=$lounge_user->id?>";
     let lounge_user_name = "<?=$lounge_user->name?> <?=$lounge_user->surname?>";
     let lounge_user_credentials = "<?=($lounge_user->credentials!='')?', '.$lounge_user->credentials:''?>";
-    let lounge_user_company_name = "<?=$lounge_user->company_name?>";
+    let lounge_user_company_name = "<?=($lounge_user->company_name != '')?$lounge_user->company_name:$lounge_user->city?>";
     let lounge_user_photo = "<?=$lounge_user->photo?>";
 </script>
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/lounge_chats/group_chat.js?v=<?=rand()?>"></script>
