@@ -115,7 +115,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							if ($resource->resource_type == "file") {
 								if ($resource->resource_path != "") {
 									?>
-									<div class="col-md-12"><a href="<?=$this->project_url?>/cms_uploads/projects/<?=$this->project->id?>/sessions/resources/<?=$resource->resource_path?>" download> <?=$resource->resource_name?> </a></div>
+									<div class="col-md-12"><a href="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/resources/<?=$resource->resource_path?>" download> <?=$resource->resource_name?> </a></div>
 									<?php
 								}
 							}
