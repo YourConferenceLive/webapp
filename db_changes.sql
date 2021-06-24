@@ -593,3 +593,4 @@ CREATE TABLE `lounge_group_chat` ( `id` INT NOT NULL AUTO_INCREMENT , `project_i
 CREATE TABLE `lounge_direct_chat` ( `id` INT NOT NULL AUTO_INCREMENT , `project_id` INT NOT NULL , `from_id` INT NOT NULL , `to_id` INT NOT NULL , `message` VARCHAR(255) NOT NULL , `date_time` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 
+CREATE TABLE `session_resources` ( `id` INT NOT NULL AUTO_INCREMENT , `session_id` INT NOT NULL , `resource_name` VARCHAR(255) NOT NULL , `resource_type` ENUM('file','url') NOT NULL DEFAULT 'file' , `resource_path` VARCHAR(255) NOT NULL , `is_active` BOOLEAN NOT NULL DEFAULT TRUE , PRIMARY KEY (`id`)) ENGINE = InnoDB;

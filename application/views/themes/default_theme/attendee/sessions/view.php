@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="rightSticky" data-screen="customer">
 	<ul>
 		<li data-type="notesSticky"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
-<!--		<li data-type="resourcesSticky"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>-->
+		<li data-type="resourcesSticky"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
 <!--		<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
 		<li data-type="questionsSticky"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
 	</ul>
@@ -104,18 +104,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div id="resource_section" style="padding: 0px 0px 0px 0px; margin-top: 10px; background-color: #fff; border-radius: 5px;">
 			<div style="padding: 0px 15px 15px 15px; overflow-y: auto; height: 240px;" id="resource_display_status">
 				<?php
-				if (!empty($session_resource)) {
-					foreach ($session_resource as $val) {
+				if (!empty($session->resources)) {
+					foreach ($session->resources as $resource) {
 						?>
 						<div class="row" style="margin-bottom: 10px; padding-bottom: 5px">
-							<?php if ($val->resource_link != "") { ?>
-								<div class="col-md-12"><a href="<?= $val->resource_link ?>" target="_blank"><?= $val->link_published_name ?></a></div>
+							<?php if ($resource->resource_type == "url") { ?>
+								<div class="col-md-12"><a href="<?=$resource->resource_path?>" target="_blank"><?=$resource->resource_name?></a></div>
 							<?php } ?>
 							<?php
-							if ($val->upload_published_name) {
-								if ($val->resource_file != "") {
+							if ($resource->resource_type == "file") {
+								if ($resource->resource_path != "") {
 									?>
-									<div class="col-md-12"><a href="<?= base_url() ?>uploads/resource_sessions/<?= $val->resource_file ?>" download> <?= $val->upload_published_name ?> </a></div>
+									<div class="col-md-12"><a href="<?=$this->project_url?>/cms_uploads/projects/<?=$this->project->id?>/sessions/resources/<?=$resource->resource_path?>" download> <?=$resource->resource_name?> </a></div>
 									<?php
 								}
 							}
@@ -265,6 +265,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#questionText').on('keyup', function (e) {
 			if (e.key === 'Enter' || e.keyCode === 13)
 			{
+				$('#questionText').prop('disabled', true);
+
 				let question = $(this).val();
 				let sessionId = "<?=$session_id?>";
 
@@ -285,6 +287,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 							if (response.status == 'success')
 							{
+								//socket.emit("ycl_session_question", {sessionId:sessionId, question:question});
+
 								$('#questionText').val('');
 								$('#questionElement').prepend('<p>'+question+'</p>');
 								toastr.success("Question sent");
@@ -292,9 +296,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								toastr.error("Unable to send the question");
 							}
 
+							$('#questionText').prop('disabled', false);
+
 						}).fail((error)=>{
 							toastr.error("Unable to send the question");
-				});
+							$('#questionText').prop('disabled', false);
+						});
 			}
 		});
 	});

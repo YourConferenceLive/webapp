@@ -341,53 +341,61 @@ class Users_Model extends CI_Model
 
 	public function update_profile_attendee()
 	{
-
 		$post = $this->input->post();
 		$user_photo_name = '';
 		if (!isset($post['userId']) || $post['userId'] == 0)
 			return array('status' => 'failed', 'msg'=>'No User(ID) selected', 'technical_data'=>'');
 
 		// Upload files if set
-
 		if (isset($_FILES['user-photo']) && $_FILES['user-photo']['name'] !== '' && !empty( $_FILES['user-photo']['name'] ))
 		{
-
-			if($_FILES['user-photo']['size'] /1000  > 3000 ){
+			if($_FILES['user-photo']['size']/1000 > 3000 ) {
 				return false;
 			}
 
-			$user_photo_name = rand().'_'.str_replace(' ', '_', $_FILES['user-photo']['name']);
-			$destination = FCPATH.'cms_uploads'.DIRECTORY_SEPARATOR.'user_photo'.DIRECTORY_SEPARATOR.'profile_pictures'.DIRECTORY_SEPARATOR.$user_photo_name;
+			$user_photo_name 	= rand().'_'.str_replace(' ', '_', $_FILES['user-photo']['name']);
+			$upload_path 		= FCPATH.'cms_uploads'.DIRECTORY_SEPARATOR.'user_photo'.DIRECTORY_SEPARATOR.'profile_pictures'.DIRECTORY_SEPARATOR;
+			$destination 		= $upload_path.$user_photo_name;
 
-			$profile_picture = $this->compressImage($_FILES['user-photo']['tmp_name'], $destination, 60 );
+			$profile_picture 	= $this->compressImage($_FILES['user-photo']['tmp_name'], $destination, 60 );
 
 		}
-			$data = array(
-				'email' => $post['email'],
-				'name' => $post['first_name'],
-				'surname' => $post['surname'],
-				//'bio' => $post['bio'],
-				//'disclosures' => $post['disclosure'],
-				'city' => $post['city'],
-				'country' => $post['country'],
-				'rcp_number' => $post['rcpn'],
+		$data 	= array('email' 		=> $post['email'],
+						'name' 			=> $post['first_name'],
+						'surname' 		=> $post['surname'],
+						//'bio' 			=> $post['bio'],
+						//'disclosures' 	=> $post['disclosure'],
+						'city' 			=> $post['city'],
+						'country' 		=> $post['country'],
+						'rcp_number'	=> $post['rcpn'],
+						'updated_on' 	=> date('Y-m-d H:i:s'),
+						'updated_by' 	=> $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']);
 
-				'updated_on' => date('Y-m-d H:i:s'),
-				'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
-			);
-		if($user_photo_name!==''){
-			$data['photo'] = $user_photo_name;
+		if($user_photo_name!=='') {
+			$data['photo'] 			= $user_photo_name;
 		}
-		if($post['password'] && $post['password'] !== ''){
-			$data['password']= password_hash($post['password'], PASSWORD_DEFAULT);
+
+		if($post['password'] && $post['password'] !== '') {
+			$data['password'] 			= password_hash($post['password'], PASSWORD_DEFAULT);
 		}
 
 		$this->db->set($data);
 		$this->db->where('id', $post['userId']);
 		$this->db->update('user');
 
-		if ($this->db->affected_rows() > 0)
-		{
+		if ($this->db->affected_rows() > 0) {
+
+			$current_project_sessions 												= $this->session->userdata('project_sessions');
+
+			if($user_photo_name !== '') {
+				unlink(@$upload_path.$post['old_user_photo']);
+				$current_project_sessions["project_{$this->project->id}"]['photo']  = $user_photo_name;
+			}
+
+			$current_project_sessions["project_{$this->project->id}"]['name']  		= $post['first_name'];
+			$current_project_sessions["project_{$this->project->id}"]['surname']  	= $post['surname'];
+			$this->session->set_userdata(array('project_sessions' => $current_project_sessions));
+
 			return true;
 		}
 
