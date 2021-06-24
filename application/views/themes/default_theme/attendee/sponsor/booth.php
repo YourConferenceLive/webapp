@@ -263,6 +263,7 @@ if(!file_exists($cover_photo_url)){
 	var current_user_fullname = current_user_name+' '+current_user_surname;
 	var company_name = "<?=$data->name?>";
 	var hunting_icon = "<?=$hunting_icon?>";
+	var booth_project_id = "<?= $this->project->id?>";
 </script>
 
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_attendee.js?ver=10"></script>
