@@ -65,5 +65,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			gtag('config', '<?=$this->project->google_analytics_code?>');
 		</script>
 	<?php endif; ?>
+
+	<script>
+		socket.on("ycl_push_notification", function (data) {
+			if (data.projectId == project_id)
+			{
+				Swal.fire(
+						'',
+						data.message,
+						'info'
+				);
+			}
+		})
+	</script>
 </head>
 <body>

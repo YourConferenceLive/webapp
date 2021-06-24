@@ -20,6 +20,7 @@ class Sessions extends CI_Controller
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('Sessions_Model', 'sessions');
 		$this->load->model('attendee/Notes_Model', 'note');
+		$this->load->model('Credits_Model', 'credits');
 
         $this->load->library("pagination");
         $this->load->helper('form');
@@ -59,6 +60,8 @@ class Sessions extends CI_Controller
 
 	public function view($session_id)
 	{
+		$this->claimCredit($session_id);
+
 		$this->logger->log_visit("Session View", $session_id);
 
 		$data['user'] 		= $this->user;
@@ -75,6 +78,11 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/note_modal")
 			//->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
+	}
+
+	public function claimCredit($session_id)
+	{
+		$this->credits->claim('session', $session_id, 2);
 	}
 
 	private function countdownInSeconds($countdown_to, $offset=900)
