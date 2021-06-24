@@ -133,7 +133,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		document.getElementById('countdown_timer').innerHTML = countdown_str;
 		if (secondsToCount <= 0) {
-			window.location = `${project_url}/sessions/view/<?=$session->id?>`;
+			<?php if (isset($session->session_type) && $session->session_type == 'zm'): ?>
+				window.location = "<?=$session->external_meeting_link?>";
+			<?php else: ?>
+				window.location = `${project_url}/sessions/view/<?=$session->id?>`;
+			<?php endif; ?>
 		} else {
 			secondsToCount--;
 		}

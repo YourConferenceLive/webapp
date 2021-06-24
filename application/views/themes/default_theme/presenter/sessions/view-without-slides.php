@@ -121,117 +121,117 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="tab-pane fade active show pb-5" id="questions-tab-content" role="tabpanel" aria-labelledby="questions-tab">
 
 								<!-- Question -->
-								<div class="container-fluid mr-2">
-									<div class="row" style="padding-right: 15px">
-										<div class="col-7">
-											<strong>Maria Gonzales</strong>
-										</div>
-										<div class="col-3">
-											<small class="text-secondary">10:00 AM</small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-										</div>
-									</div>
-								</div>
-								<div class="col"><hr></div>
+<!--								<div class="container-fluid mr-2">-->
+<!--									<div class="row" style="padding-right: 15px">-->
+<!--										<div class="col-7">-->
+<!--											<strong>Maria Gonzales</strong>-->
+<!--										</div>-->
+<!--										<div class="col-3">-->
+<!--											<small class="text-secondary">10:00 AM</small>-->
+<!--										</div>-->
+<!--										<div class="col-1">-->
+<!--											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>-->
+<!--										</div>-->
+<!--										<div class="col-1">-->
+<!--											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--									<div class="row">-->
+<!--										<div class="col-12">-->
+<!--											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="col"><hr></div>-->
 
 								<!-- Question -->
-								<div class="container-fluid mr-2">
-									<div class="row" style="padding-right: 15px">
-										<div class="col-7">
-											<strong>John Doe</strong>
-										</div>
-										<div class="col-3">
-											<small class="text-secondary">10:00 AM</small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="far fa-star" style="color: white;cursor: pointer;"></i></small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-											What is the best way to treat this patient?
-										</div>
-									</div>
-								</div>
-								<div class="col"><hr></div>
+<!--								<div class="container-fluid mr-2">-->
+<!--									<div class="row" style="padding-right: 15px">-->
+<!--										<div class="col-7">-->
+<!--											<strong>John Doe</strong>-->
+<!--										</div>-->
+<!--										<div class="col-3">-->
+<!--											<small class="text-secondary">10:00 AM</small>-->
+<!--										</div>-->
+<!--										<div class="col-1">-->
+<!--											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>-->
+<!--										</div>-->
+<!--										<div class="col-1">-->
+<!--											<small class="text-secondary"><i class="far fa-star" style="color: white;cursor: pointer;"></i></small>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--									<div class="row">-->
+<!--										<div class="col-12">-->
+<!--											What is the best way to treat this patient?-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="col"><hr></div>-->
 
 								<!-- Question -->
-								<div class="container-fluid mr-2">
-									<div class="row" style="padding-right: 15px">
-										<div class="col-7">
-											<strong>Richard Lu</strong>
-										</div>
-										<div class="col-3">
-											<small class="text-secondary">10:00 AM</small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>
-										</div>
-										<div class="col-1">
-											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-											Can you elaborate on this information?
-										</div>
-									</div>
-								</div>
-								<div class="col"><hr></div>
-
-							</div>
+<!--								<div class="container-fluid mr-2">-->
+<!--									<div class="row" style="padding-right: 15px">-->
+<!--										<div class="col-7">-->
+<!--											<strong>Richard Lu</strong>-->
+<!--										</div>-->
+<!--										<div class="col-3">-->
+<!--											<small class="text-secondary">10:00 AM</small>-->
+<!--										</div>-->
+<!--										<div class="col-1">-->
+<!--											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>-->
+<!--										</div>-->
+<!--										<div class="col-1">-->
+<!--											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--									<div class="row">-->
+<!--										<div class="col-12">-->
+<!--											Can you elaborate on this information?-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="col"><hr></div>-->
+<!---->
+<!--							</div>-->
 
 							<!-- Starred questions tab -->
 							<div class="tab-pane fade pb-5" id="starred-questions-tab-content" role="tabpanel" aria-labelledby="starred-questions-tab-content">
 
 								<!-- Starred Question -->
-								<div class="container-fluid mr-2">
-									<div class="row">
-										<div class="col-8">
-											<strong>Maria Gonzales</strong>
-										</div>
-										<div class="col-4">
-											<small class="text-secondary">10:00 AM</small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
-										</div>
-									</div>
-								</div>
-								<div class="col"><hr></div>
+<!--								<div class="container-fluid mr-2">-->
+<!--									<div class="row">-->
+<!--										<div class="col-8">-->
+<!--											<strong>Maria Gonzales</strong>-->
+<!--										</div>-->
+<!--										<div class="col-4">-->
+<!--											<small class="text-secondary">10:00 AM</small>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--									<div class="row">-->
+<!--										<div class="col-12">-->
+<!--											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="col"><hr></div>-->
 
 								<!-- Starred Question -->
-								<div class="container-fluid mr-2">
-									<div class="row">
-										<div class="col-8">
-											<strong>Richard Lu</strong>
-										</div>
-										<div class="col-4">
-											<small class="text-secondary">10:00 AM</small>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-											Can you elaborate on this informatiion?
-										</div>
-									</div>
-								</div>
-								<div class="col"><hr></div>
+<!--								<div class="container-fluid mr-2">-->
+<!--									<div class="row">-->
+<!--										<div class="col-8">-->
+<!--											<strong>Richard Lu</strong>-->
+<!--										</div>-->
+<!--										<div class="col-4">-->
+<!--											<small class="text-secondary">10:00 AM</small>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--									<div class="row">-->
+<!--										<div class="col-12">-->
+<!--											Can you elaborate on this informatiion?-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="col"><hr></div>-->
 
 							</div>
 						</div>

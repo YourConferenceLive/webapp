@@ -29,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<li data-type="notesSticky"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
 <!--		<li data-type="resourcesSticky"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>-->
 <!--		<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
-<!--		<li data-type="questionsSticky"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>-->
+		<li data-type="questionsSticky"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
 	</ul>
 </div>
 
@@ -176,7 +176,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="contentHeader">
 			Questions
 		</div>
-		<div class="questionElement">
+		<div id="questionElement" class="questionElement" style="overflow: scroll;height: 170px;">
+
 		</div>
 		<div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
 			<div style="padding:5px;">
@@ -184,9 +185,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					<div class="col-md-12 input-group">
 						<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
-						<input type="text" id="questions" class="form-control" placeholder="Enter Question" value="">
+						<input type="text" id="questionText" class="form-control" placeholder="Press enter to send..." value="">
 					</div>
-					<a class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>
+					<a id="askQuestionBtn" class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>
 				</div>
 				<div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
 					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
@@ -259,6 +260,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		iframeResize();
 		$(window).on('resize', function(){
 			iframeResize();
+		});
+
+		$('#questionText').on('keyup', function (e) {
+			if (e.key === 'Enter' || e.keyCode === 13)
+			{
+				let question = $(this).val();
+				let sessionId = "<?=$session_id?>";
+
+				if(question == '')
+				{
+					toastr.warning('Please enter your question');
+					return false;
+				}
+
+				$.post(project_url+"/sessions/askQuestionAjax",
+						{
+							session_id:sessionId,
+							question:question
+						},
+						function (response)
+						{
+							response = JSON.parse(response);
+
+							if (response.status == 'success')
+							{
+								$('#questionText').val('');
+								$('#questionElement').prepend('<p>'+question+'</p>');
+								toastr.success("Question sent");
+							}else{
+								toastr.error("Unable to send the question");
+							}
+
+						}).fail((error)=>{
+							toastr.error("Unable to send the question");
+				});
+			}
 		});
 	});
 

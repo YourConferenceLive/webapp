@@ -18,7 +18,8 @@ class Login extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header")
 			//->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/login")
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer");
+			//->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer")
+		;
 
 	}
 
