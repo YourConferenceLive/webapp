@@ -52,12 +52,6 @@ $(document).ready(function () {
 		}
 	});
 
-	socket.on('ycl_booth_group_chat', function(data){
-		if(data.booth_id === current_booth_id){
-			get_sponsor_group_chat();
-		}
-	});
-
 	function get_sponsor_group_chat(){
 		var url = "/sponsor/get_sponsor_group_chat/";
 		$.post(project_url+url,{'booth_id':current_booth_id},function(success){
