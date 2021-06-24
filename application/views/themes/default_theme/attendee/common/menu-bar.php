@@ -87,7 +87,7 @@ $ci_method = $this->router->fetch_method();?>
 
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<img class="profile-dp" src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$user['photo']?>" onerror="this.onerror=null;this.src='<?=ycl_root?>/ycl_assets/images/person_dp_placeholder.png';" alt="DP">
+							<img class="profile-dp" src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$user['photo'];?>" onerror="this.onerror=null;this.src='<?=ycl_root?>/ycl_assets/images/person_dp_placeholder.png';" alt="<?php echo $user['name'].' '.$user['surname'];?>">
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/profile" style="color: rgb(72, 115, 145) !important;"><i class="far fa-id-card"></i> Profile</a>
