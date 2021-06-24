@@ -79,7 +79,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <ul id="directChatUsersList" class="list-group" style="height: 90%; overflow: scroll;">
                                         <?php foreach ($allUsers as $user): ?>
                                             <li class="directChatUsersListItem list-group-item pl-1" user-id="<?=$user->id?>" user-name="<?=$user->name?> <?=$user->surname?>" style="cursor: pointer;">
-                                                <img class="direct-chat-img mr-1" src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/" onerror="this.onerror=null;this.src=`<?=ycl_root?>/ycl_assets/images/person_dp_placeholder.png`;" alt="DP Image">
+                                                <img class="direct-chat-img mr-1" src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$user->photo?>" onerror="this.onerror=null;this.src=`<?=ycl_root?>/ycl_assets/images/person_dp_placeholder.png`;" alt="DP Image">
                                                 <!--<span class="float-right"><i class="fas fa-circle" style="color: #ffb425;"></i></span>-->
                                                 <?=$user->name?> <?=$user->surname?><?=($user->credentials!='')?', '.$user->credentials:''?>
                                                 <br><small><?=$user->company_name?></small>
