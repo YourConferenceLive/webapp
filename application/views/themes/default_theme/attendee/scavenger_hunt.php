@@ -20,7 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<p class="mb-0"><strong><u>Scavenger Hunt</u></strong></p>
 				<p>(French instructions to follow)</p>
 				<p>Use the clues below to find and click on all 10 objects that are hidden throughout the virtual exhibition hall. When you find an item, click through and you will receive the below notification that the item has been found.</p>
-				<p>"Scavenger hunt item found and added to your briefcase."</p>
+				<p class="alert alert-success">"Scavenger hunt item found and added to your briefcase."</p>
 				<p>COS members will be automatically entered into the draw for prizes listed below.</p>
 				<p class=mb-0>Clues:</p>
 				<ol>
@@ -51,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="french-content">
 					<p><strong><u>Chasse au trésor</u></strong></p>
 					<p>Utilisez les indices ci-dessous pour trouver les dix images qui sont cachées dans le hall d'exposition virtuel. Lorsque vous trouvez une image, cliquez dessus. Vous recevrez alors l'avis suivant vous informant que l'image a été trouvée :</p>
-					<p>"Image trouvée et ajoutée à votre mallette."</p>
+					<p class="alert alert-success">"Image trouvée et ajoutée à votre mallette."</p>
 					<p>Les membres de la SCO participeront automatiquement au tirage des prix ci-dessous.</p>
 					<p class="mb-0">Indices :</p>
 					<ol>
