@@ -262,6 +262,30 @@ class Users_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function defaultPasswordCheck()
+	{
+		$user_id 	= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'];
+		$password 	= 'COS2021';
+		if (isset($user_id)):
+			$this->db->select('id, password');
+			$this->db->from('user');
+			$this->db->where('id', $user_id);
+			$this->db->order_by('name', 'asc');
+			$user = $this->db->get();
+			if ($user->num_rows() > 0):
+				if (password_verify($password, $user->row()->password)):
+					return true;
+				else:
+					return false;
+				endif;
+			else:
+				return false;
+			endif;
+		else:
+			return false;
+		endif;
+	}
+
 	public function getExhibitorsByBoothId($booth_id)
 	{
 		$user_ids = $this->db
