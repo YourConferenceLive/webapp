@@ -25,7 +25,7 @@ if(!file_exists($cover_photo_url)){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.css">
 
-<main role="main" class="template<?=$data->template?>">
+<main role="main" class="template<?=$data->template?> double_banner<?=$data->double_banner?>">
 	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/'.$cover_photo_url:'' ?> ')">
 		<div class="content">
 			<div class="middle">
