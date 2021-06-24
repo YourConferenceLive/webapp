@@ -33,9 +33,11 @@ class Eposters_Model extends CI_Model
 		}
 
 		if ($keyword) {
+    		$this->db->group_start();
 			$this->db->like('control_number',$keyword);
 			$this->db->or_like('title',$keyword);
 			$this->db->or_like('prize',$keyword);
+    		$this->db->group_end();
 		}
 
 		$this->db->where($where);
@@ -72,9 +74,11 @@ class Eposters_Model extends CI_Model
 		}
 
 		if ($keyword) {
+    		$this->db->group_start();
 			$this->db->or_like('control_number',$keyword);
 			$this->db->or_like('title',$keyword);
 			$this->db->or_like('prize',$keyword);
+    		$this->db->group_end();
 		}
 
 		$this->db->where($where);

@@ -86,7 +86,7 @@ class Logger_Model extends CI_Model
 
 	public function getBoothLogs($booth_id)
 	{
-		$this->db->select('user.name as user_fname, user.surname as user_surname, user.email, logs.*')
+		$this->db->select('user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, logs.*')
 			->from('logs')
 			->join('user','user.id = logs.user_id')
 			->where('logs.info', 'Booth')

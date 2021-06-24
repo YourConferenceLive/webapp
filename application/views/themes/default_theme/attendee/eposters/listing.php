@@ -89,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
 							}?>
 							<img class="eposter-img img-fluid"
-								 src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/<?=$eposter->eposter?>"
+								 src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/<?=(($eposter->eposter) ? $eposter->eposter : 'default.jpg' );?>"
 								 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/default.jpg'">
 							</a>
 						</div>
@@ -107,6 +107,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<a href="<?=$eposter_url;?>" title="<?=$eposter->title;?>">
 <?php
 							}
+								// echo $eposter->title.'<br>'.$eposter->eposter.'<br>'.$eposter->id.'_'.substr(str_replace(array(' ', ' - ', '-', ':', '.', ',', '(', ')', '\'', 'è'), array('_', ''), strtolower( $eposter->title)), 0, 142).'<br>';
+								// echo $eposter->id.'-';
 								// echo $eposter->id.'-';
 								echo $eposter->title;
 							if ($eposter_url) {?>
