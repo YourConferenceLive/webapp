@@ -45,6 +45,8 @@ class Sessions extends CI_Controller
 	{
 		$this->logger->log_visit("Session Join", $session_id);
 
+		$this->claimCredit($session_id, $this->sessions->getCredits($session_id));
+
 		$data['user'] = $this->user;
 		$data['session'] = $this->sessions->getById($session_id);
 		$data['countdownSeconds'] = $this->countdownInSeconds($data['session']->start_date_time);
@@ -60,13 +62,15 @@ class Sessions extends CI_Controller
 
 	public function view($session_id)
 	{
-		$this->claimCredit($session_id);
-
 		$this->logger->log_visit("Session View", $session_id);
+
+		$this->claimCredit($session_id, $this->sessions->getCredits($session_id));
+
+		$session_data = $this->sessions->getById($session_id);
 
 		$data['user'] 		= $this->user;
 		$data['session_id'] = $session_id;
-		$data['session'] 	= $this->sessions->getById($data['session_id']);
+		$data['session'] 	= $session_data;
 		$data['notes'] 		= $this->note->getAll('session', $data['session_id'], $this->user['user_id']);
 
 		$this->load
@@ -80,7 +84,7 @@ class Sessions extends CI_Controller
 		;
 	}
 
-	public function claimCredit($session_id)
+	public function claimCredit($session_id, $credit)
 	{
 		$this->credits->claim('session', $session_id, 2);
 	}
@@ -119,6 +123,12 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/user_biography_modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
+	}
+
+	public function askQuestionAjax()
+	{
+		$post = $this->input->post();
+		echo json_encode($this->sessions->askQuestion($post['session_id'], $post['question']));
 	}
 
 }

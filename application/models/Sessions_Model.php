@@ -608,4 +608,28 @@ class Sessions_Model extends CI_Model
 	}
 	/******./ Host Chat ********/
 
+	public function askQuestion($session_id, $question)
+	{
+		$question = array(
+			'session_id' => $session_id,
+			'user_id' => $this->user->user_id,
+			'question' => $question,
+			'asked_on' => date('Y-m-d H:i:s')
+		);
+		$this->db->insert('session_questions', $question);
+		return ($this->db->affected_rows() > 0) ? array('status'=>'success'):array('status'=>'failed');
+	}
+
+	public function getCredits($session_id)
+	{
+		$this->db->select("credits");
+		$this->db->from('sessions');
+		$this->db->where('id', $session_id);
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result()[0]->credits;
+
+		return 0;
+	}
+
 }
