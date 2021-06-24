@@ -84,14 +84,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	if ($default_password === true):?>
 	Swal.fire({
 		title: 'Welcome!',
-		text: 'Please proceed to your profile to change your default password and enter your Royal College Medical Number.',
+		text: 'Please proceed to your Profile Page to change your default password and enter your Royal College Medical Number.',
 		showCancelButton: true,
 		showConfirmButton: true,
 		allowOutsideClick: false,
-	    type: "success"}).then(function() {
-		    // window.loc 	ation = "redirectURL";
-		    alert ('OK');
-		});
+		confirmButtonText: 'Profile Page'
+	}).then((result) => {
+		if (result.isConfirmed) {
+			window.location.href = project_url+"/profile";
+		}
+	});
 <?php
 	endif;?>
 </script>

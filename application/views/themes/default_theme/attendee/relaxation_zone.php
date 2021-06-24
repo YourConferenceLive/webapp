@@ -4,6 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <link href="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/css/relaxation_zone.css?v=<?= rand() ?>"
 	  rel="stylesheet">
 
+<div class="bg"></div>
+
 <div class="custom-container">
 	<div class="content">
 		<div class="video">
@@ -13,7 +15,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						style="position:absolute;top:0;left:0;width:100%;height:100%;" title="relaxation_01"></iframe>
 			</div>
 		</div>
-		<div class=" blurred-area">
+		<div class="blurred-area">
+			<div class="custom-write diamond">Diamond/Diamant</div>
+			<div class="custom-write platinum">Platinum/Platine</div>
 			<div class="top">
 				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/relaxation_zone/Allergan.png">
 				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/relaxation_zone/Bayer.png">
