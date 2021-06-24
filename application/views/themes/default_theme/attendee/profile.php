@@ -1,9 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<?php
-//print_r($profile_data->photo);exit;
-////?>
 <body>
 <img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
@@ -21,17 +18,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<div class="card-body align-content-center">
 							<div class="row">
-								<div class="col-md-12 text-center ">
+								<div class="col-md-12 text-center">
+									<input type="hidden" name="old_user_photo" id="old_user_photo" value="<?php echo @$profile_data->photo;?>">
 									<input type="file" name="user-photo" id="user-photo" style="display: none;">
-									<?php if(isset($profile_data->photo)):?>
-									<img src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$profile_data->photo?>" class="img-fluid justify-content-center mt-3"  id="user-photo-preview" style="width:150px; height:150px"><br>
-									<?php else:?>
+<?php
+									if(isset($profile_data->photo)):?>
+									<img src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$profile_data->photo?>" 
+										 onerror="this.src='<?=ycl_root?>/ycl_assets/images/person_dp_placeholder.png'"
+										 class="img-fluid justify-content-center mt-3" id="user-photo-preview" style="width:150px;height:150px;"><br>
+<?php
+									else:?>
 									<div style="width: 150px ; height: 150px" class="justify-content-center mt-3 m-auto bg-secondary text-white" >
-										<h1  class="justify-content-center mt-3  position-absolute" style="transform: translate(-50%, -50%); left: 50%; top:25%"><?=ucfirst($profile_data->surname)?></h1>
-										<img class="img-fluid" width="150px" height="150px" id="user-photo-preview">
+										<h1 class="justify-content-center mt-3 position-absolute" style="transform: translate(-50%, -50%); left: 50%; top:25%"><?=ucfirst($profile_data->surname)?></h1>
+										<img class="img-fluid" width="150" height="150" id="user-photo-preview">
 									</div>
-									<?php endif;?>
-										<a class="btn badge badge-info" id="upload-btn">Update Photo</a>
+<?php
+									endif;?>
+									<a class="btn badge badge-info" id="upload-btn">Update Photo</a>
 								</div>
 							</div>
 
@@ -65,7 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 								<div class="card-body">
 									<div class="row">
-										<div class="col-md-6">
+										<div class="col-md-5">
 											<div class="form-group">
 												<label for="first_name">First Name</label>
 												<input type="text" class="form-control" id="first_name" name="first_name" value="<?=$profile_data->name?>">
@@ -79,7 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<input type="text" class="form-control" id="degree" name="degree" value="<?=$profile_data->credentials?>">
 											</div>
 										</div>
-										<div class="col-md-6">
+										<div class="col-md-7">
 											<div class="form-group">
 												<label for="rcpn">Royal College of Physicians Number</label>
 												<input type="text" class="form-control" id="rcpn" name="rcpn"  value="<?=$profile_data->rcp_number?>">
@@ -199,9 +202,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					return false;
 				}
 
-				reader.onload = function (e) { item.parent().parent().next('.user-photo-preview').attr('src', e.target.result); }
+				reader.onload = function (e) { 
+					$('#user-photo-preview').attr('src', e.target.result);
+				}
 				reader.readAsDataURL(this.files[0]);
-				item.parent().parent().next('.user-photo-preview').show();
+				$('#user-photo-preview').show();
 				fileName = fileName.replace("C:\\fakepath\\", "");
 				$(this).next('.custom-file-label').html(fileName);
 			});
@@ -241,7 +246,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								},
 								success: function (data) {
 									data = JSON.parse(data);
-									console.log(data);
+									// console.log(data);
 									if (data.status == 'success')
 									{
 										Swal.fire(
