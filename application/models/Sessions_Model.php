@@ -109,6 +109,7 @@ class Sessions_Model extends CI_Model
 			$sessions->result()[0]->keynote_speakers = $this->getKeynoteSpeakersPerSession($id);
 			$sessions->result()[0]->moderators = $this->getModeratorsPerSession($id);
 			$sessions->result()[0]->invisible_moderators = $this->getInvisibleModeratorsPerSession($id);
+			$sessions->result()[0]->resources = $this->getResources($id);
 
 			return $sessions->result()[0];
 		}
@@ -630,6 +631,19 @@ class Sessions_Model extends CI_Model
 			return $sessions->result()[0]->credits;
 
 		return 0;
+	}
+
+	public function getResources($session_id)
+	{
+		$this->db->select("*");
+		$this->db->from('session_resources');
+		$this->db->where('session_id', $session_id);
+		$this->db->where('is_active', 1);
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
 	}
 
 }
