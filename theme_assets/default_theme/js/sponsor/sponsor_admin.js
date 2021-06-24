@@ -351,6 +351,17 @@ $(document).ready(function () {
 			}, function (success) {
 
 				if (success == 'success') {
+
+					socket.emit('ycl_booth_direct_chat',
+						{
+							'chat_from':current_user_id,
+							'chat_to':chat_to_id,
+							'chat_text':chat_text,
+							'booth_id':current_booth_id,
+							'booth_project_id':booth_project_id,
+							'sponsor_name':sponsor_name
+						});
+
 					get_sponsor_attendee_chat(chat_to_id);
 					// $('.sponsor-chat-body').append('<div class="card sponsor-outgoing-message w-90 float-right  my-1 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img src="'+logo_url+'" class="my-2" src="" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><b>'+sponsor_name+'</b></span><span class="float-left "><small>'+date_now+'<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">'+chat_text+'</div></div></div></div></div><br>');
 					$('#sponsor-chat-text').val("");
@@ -390,6 +401,15 @@ $(document).ready(function () {
 
 		$.post(project_url + "/sponsor/admin/home/save_sponsor_group_chat/", {'chat_text': chat_text}, function (success) {
 			if (success == 'success') {
+
+				socket.emit('ycl_booth_group_chat',
+					{
+						'booth_id':current_booth_id,
+						'from_id': current_user_id,
+						'from_name':sponsor_name,
+						'chat_text':chat_text
+					});
+
 				swal.showLoading();
 				toastr['success']('message sent');
 				get_sponsor_group_chat();
@@ -398,6 +418,15 @@ $(document).ready(function () {
 			}
 			swal.close();
 		})
+	});
+
+	socket.on('ycl_booth_group_chat', function(data){
+		if(data.booth_id === current_booth_id ){
+			if (data.chat_from !== current_id) {
+				$('.group-chat-body').append('<div class="card group-incoming-message w-90  float-left  my-1 pl-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left "><small>' + data.from_name + '</small></span><span class="float-right text-white-50"><small> just now <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">' + data.chat_text + '</div></div></div></div></div>')
+			}
+			$('.group-chat-body').scrollTop($('.group-chat-body')[0].scrollHeight);
+		}
 	});
 
 	function get_sponsor_group_chat() {
@@ -413,7 +442,7 @@ $(document).ready(function () {
 				$('.group-chat-body').html('');
 
 				$.each(datas.result, function (index, data) {
-					if (data.chat_from == current_id) {
+					if (data.chat_from == current_user_id) {
 
 						$('.group-chat-body').append('<div class="card group-outgoing-message w-90 float-right  my-1 pr-2 text-white shadow-lg"><div class="row"><div class="col"><span class="float-right"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><small>' + data.name + ' ' + data.surname + '</small></span><span class="float-left text-white-50"><small>' + data.date_time + '<i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col  text-right">' + data.chat_text + '</div></div></div></div></div><br>');
 					} else {
@@ -426,7 +455,7 @@ $(document).ready(function () {
 				$('.group-chat-body').html('');
 
 			}
-
+			$('.group-chat-body').scrollTop($('.group-chat-body')[0].scrollHeight);
 		});
 	}
 
@@ -531,6 +560,15 @@ $(document).ready(function () {
 			}
 		});
 	}
+
+	socket.on('ycl_booth_direct_chat', function(data){
+		if(data.from_id === $('.sponsor-chat-header').attr('data-to_id') && data.booth_id === current_booth_id && data.booth_project_id === booth_project_id){
+			if (data.to_id === "sponsor") {
+				$('.sponsor-chat-body').append('<div class="card sponsor-incoming-message w-90 float-left  my-1 pl-2 text-white shadow-lg " data-to_id="' + data.to_id + '"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left "><small>' + data.attendee_name + '</small></span><span class="float-right text-white-50"><small> just now <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">' + data.chat_text + '</div></div></div></div></div>');
+				$('.sponsor-chat-body').scrollTop($('.sponsor-chat-body')[0].scrollHeight);
+			}
+		}
+	})
 
 	$('.attendee-list-body').on('click', '.user-info', function () {
 		var attendee_id = $(this).attr('data-user_id');
