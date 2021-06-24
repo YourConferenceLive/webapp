@@ -80,7 +80,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         });
 
                         setTimeout(() => {
-                            window.location = '<?=$this->project_url.'/lobby'?>'
+                            window.location = '<?=$this->project_url.'/lobby/?first_load'?>'
 						}, 1000);
 
 					}else{

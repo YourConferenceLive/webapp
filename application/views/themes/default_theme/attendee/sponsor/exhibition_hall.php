@@ -174,22 +174,10 @@
 	<div class="tag" id="clickableTag"></div>
 </div>
 
-<!--script>
-	let is_exhibitor = "<?//=$_SESSION['project_sessions']["project_{$this->project->id}"]['is_exhibitor']?>";
-</script-->
+<script>
+	let is_exhibitor = "<?=$_SESSION['project_sessions']["project_{$this->project->id}"]['is_exhibitor']?>";	
+</script>
 
-<?
-echo "<script>ycl_root='".ycl_root."';</script>";
-
-if ($this->user['is_exhibitor'])
-{
-	echo "<script>is_exhibitor=true;</script>";
-}
-else
-{
-	echo "<script>is_exhibitor=false;</script>";
-}
-?>
 <div id="notSupported" class="hidden">We are sorry but your browser does not support WebGL...</div>
 
 <script src="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/loader.js"></script>

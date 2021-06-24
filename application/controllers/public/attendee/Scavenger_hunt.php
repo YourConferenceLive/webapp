@@ -17,14 +17,14 @@ class Scavenger_hunt extends CI_Controller
 	{
 		$this->logger->log_visit("Scavenger hunt");
 
-		$data['project'] = $this->project;
-		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$data['project'] 	= $this->project;
+		$data['user'] 		= $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/scavenger_hunt", $data)
-			//->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
 	}
 }

@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="modal-dialog" role="document" style="overflow-y: initial !important">
 				<div class="modal-content">
 					<div class="modal-header">
-						<p class="modal-title text-justify" id="notesModalLabel">Notes</p>
+						<p class="modal-title text-left" id="notesModalLabel" style="font-weight:bold;">Notes</p>
 					</div>
 					<div class="modal-body" style="height: 65vh;overflow-y: auto;">
 						<div class="row">
@@ -60,9 +60,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				});
 
 				let formData = new FormData(document.getElementById('addUserNotes'));
+				let entity_type = formData.get('entity_type');
 
 				$.ajax({type: "POST",
-						url: project_url+"/eposters/add_notes",
+						url: project_url+"/eposters/add_notes/" + entity_type,
 						data: formData,
 						processData: false,
 						contentType: false,
@@ -76,7 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							if (data.status == 'success') {
 								$('#notes_list_container').html('');
 								$('textarea[name="notes"]').val('');
-								loadNotes(formData.get('entity_type'), formData.get('entity_type_id'), note_page);
+								loadNotes(entity_type, formData.get('entity_type_id'), note_page);
 								toastr.success('Note added.');
 								$('#notes').val('');
 							}else{

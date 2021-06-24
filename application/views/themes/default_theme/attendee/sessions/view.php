@@ -33,7 +33,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</ul>
 </div>
 
-
 <div class="rightSticykPopup notesSticky" style="display: none">
 	<div class="header"><span>Toolbox</span>
 		<div class="rightTool">
@@ -53,16 +52,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div id="briefcase_section">
 			<div id="briefcase_section">
 				<div class="col-md-12 input-group">
-					<textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?= isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
+					<input type="hidden" name="session_id" id="session_id" value="<?php echo $session_id;?>">
+					<textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?=isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
 				</div>
-				<a class="button color btn"  id="briefcase_send"><span>Save</span></a>
-				<a class="button color btn" id="downloadbriefcase"><span>Download</span></a>
+				<div class="col-md-12 pt-1">
+					<a class="button color btn btn-info btn-sm" id="briefcase_send"><i class="fas fa-save"></i> <span>Save</span></a>
+				</div>
+				<div class="col-md-12">
+					<div class="contentHeader p-0 pt-2 pb-2">Previous Notes</div>
+					<div id="notes_list_container">
+<?php
+					if($notes != new stdClass()):?>
+						<ul class="list-group">
+<?php
+						foreach ($notes as $note):
+							if (trim($note->note_text) != ''):?>
+							<li class="list-group-item p-1"><?php echo ((strlen($note->note_text) > 20) ? substr($note->note_text, 0, 20).'&hellip; <a href="javascript:void(0);" class="note_detail" data-note-text="'.$note->note_text.'">more&raquo;</a>' : $note->note_text );?></li>
+<?php
+							endif;
+						endforeach;?>
+						</ul>
+<?php
+					else:?>
+						<div class="alert alert-info mb-1 mt-1 p-1">No previous notes</div>
+<?php
+					endif;?>
+					</div>
+				</div>
 			</div>
-			<span id='error_briefcase' style='color:red;'></span>
-			<span id='success_briefcase' style='color:green;'></span>
 		</div>
 	</div>
-
 </div>
 <div class="rightSticykPopup resourcesSticky" style="display: none">
 	<div class="header"><span>Toolbox</span>
@@ -185,12 +204,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </div>
 
-
+<style>
+.list-group {overflow: auto; height: 100px;}
+.list-group-item:nth-child(odd) {background-color: #FFFFFF;}
+.list-group-item:nth-child(even) {background-color: #ECECEC;}
+</style>
 <!--<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/dRp5VbWCQ3A?playlist=dRp5VbWCQ3A&controls=1&autoplay=1&mute=1&loop=1"></iframe>-->
 
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sessions.js?v=<?=rand()?>"></script>
 
 <script type="application/javascript">
+	var note_page = 1;
+
+	function loadNotes(entity_type, entity_type_id, note_page) {
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Loading notes...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+
+		$.ajax({type: "GET",
+				url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
+				data: '',
+				success: function(response){
+					Swal.close();
+					jsonObj = JSON.parse(response);
+					// Add response in Modal body
+					if (jsonObj.total) {
+						var iHTML = '<ul class="list-group">';
+
+						for (let x in jsonObj.data) {
+							let note_id 	= jsonObj.data[x].id;
+							let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+							let datetime 	= jsonObj.data[x].time;
+
+							iHTML += '<!-- Start List Note ' + (x) +' --><li class="list-group-item p-1">'+((note.length > 20) ? note.substr(0, 20) + '&hellip; <a href="javascript:void(0);" class="note_detail" data-note-text="' + note + '">more&raquo;</a>' : note )+'</li>';
+						}
+
+						iHTML += '</ul>';
+
+						$('#notes_list_container').html(iHTML);
+					} else {
+					}
+				}
+			});
+	}
+
 	$(function (){
 		iframeResize();
 		$(window).on('resize', function(){
@@ -206,13 +270,72 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$('#millicastIframe').css('height', iFrameHeight+'px');
 	}
-</script>
 
-<script>
 	$(function () {
+		$('#notes_list_container').on('click', '.note_detail', function (e) {
+			$('#noteModal').modal('hide');
+  			let note_text = $(this).data('note-text');
+  			$('.modal-body .note-text').text(note_text);
+			$('#noteModal').modal('show');
+			$('#pollModal').modal('hide');
+			$('#pollResultModal').modal('hide');
+		});
+
+		$('#briefcase_send').on('click', function () {
+			let entity_type 	= 'session';
+			let entity_type_id 	= $('#session_id').val();
+			let note_text   	= $('#briefcase').val();
+
+			if (entity_type_id == ''  || note_text == '') {
+				toastr.error('Invalid request.');
+				return;
+			}
+
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Posting your notes...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			let formData = new FormData();
+			formData.append("entity_type_id", entity_type_id);
+			formData.append("origin_type", entity_type);
+			formData.append("notes", $('#briefcase').val());
+
+			$.ajax({type: "POST",
+					url: project_url+"/eposters/add_notes/session",
+					data: formData,
+					processData: false,
+					contentType: false,
+					error: function(jqXHR, textStatus, errorMessage) {
+						Swal.close();
+						toastr.error(errorMessage);
+					},
+					success: function(data) {
+						data = JSON.parse(data);
+
+						if (data.status == 'success') {
+							$('#notes_list_container').html('');
+							$('#briefcase').val('');
+							loadNotes(entity_type, entity_type_id, note_page);
+							toastr.success('Note added.');
+							$('#notes').val('');
+						}else{
+							toastr.error("Error");
+						}
+					}
+			});
+		});
+
 		socket.on('openPollNotification', ()=>{
 			$('#pollModal').modal('show');
 			$('#pollResultModal').modal('hide');
+			$('#noteModal').modal('show');
 		});
 
 		socket.on('closePollNotification', ()=>{
@@ -221,6 +344,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		socket.on('openResultNotification', ()=>{
 			$('#pollModal').modal('hide');
+			$('#noteModal').modal('show');
 			$('#pollResultModal').modal('show');
 		});
 

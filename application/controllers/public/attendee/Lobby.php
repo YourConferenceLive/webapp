@@ -11,16 +11,18 @@ class Lobby extends CI_Controller
 			redirect(base_url().$this->project->main_route."/login"); // Not logged-in
 
 		$this->load->model('Logger_Model', 'logger');
+		$this->load->model('Users_Model', 'user');
 	}
 
 	public function index()
 	{
 		$this->logger->log_visit("Lobby");
 
-		$data['project'] = $this->project;
-		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
-
-		$data['lobby_menu'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby/menu", NULL, TRUE);
+		$first_load 				= $this->input->get('first_load');
+		$data['project'] 			= $this->project;
+		$data['user'] 				= $_SESSION['project_sessions']["project_{$this->project->id}"];
+		$data['lobby_menu'] 		= $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby/menu", NULL, TRUE);
+		$data['default_password']   = ((!is_null($first_load)) ? $this->user->defaultPasswordCheck() : false );
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)

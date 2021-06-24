@@ -534,5 +534,62 @@ ALTER TABLE `project` ADD `google_analytics_code` VARCHAR(255) NULL AFTER `api_p
 
 ALTER TABLE `sponsor_booth` ADD `extra_video_1` VARCHAR(255) NULL AFTER `main_video_description`, ADD `extra_video_2` VARCHAR(255) NULL AFTER `extra_video_1`;
 
+
 ALTER TABLE `sponsor_booth` ADD COLUMN `double_banner` INT NULL DEFAULT 0 AFTER `extra_video_2`;
+
+-- Imran Tariq
+-- Notes table change
+-- 23rd June, 2021
+ALTER TABLE `notes` CHANGE `note_text` `note_text` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+
+
+# Live support chat
+--
+-- Table structure for table `live_support_chat`
+--
+CREATE TABLE `live_support_chat` (
+    `id` int(11) NOT NULL,
+    `project_id` int(11) DEFAULT NULL,
+    `chat_from_type` enum('admin','attendee') NOT NULL DEFAULT 'attendee',
+    `from_id` int(11) NOT NULL,
+    `to_id` int(11) NOT NULL,
+    `text` text NOT NULL,
+    `isRead` tinyint(1) NOT NULL DEFAULT 0,
+    `date_time` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `live_support_chat`
+    ADD PRIMARY KEY (`id`);
+ALTER TABLE `live_support_chat`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+CREATE TABLE `live_support_chat_status` (
+    `id` int(11) NOT NULL,
+    `project_id` int(11) DEFAULT NULL,
+    `name` varchar(20) NOT NULL,
+    `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `live_support_chat_status` (`id`, `project_id`, `name`, `status`) VALUES
+(1, NULL, 'isOn', 1);
+
+ALTER TABLE `live_support_chat_status`
+    ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `live_support_chat_status`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
+# End Live support chat
+
+
+ALTER TABLE `sponsor_booth` ADD `website_link_2` VARCHAR(255) NULL AFTER `website_link`, ADD `website_link_3` VARCHAR(255) NULL AFTER `website_link_2`;
+
+
+ALTER TABLE `sessions` ADD `external_meeting_link` VARCHAR(255) NULL AFTER `session_type`;
+ALTER TABLE `session_types` ADD `is_external` BOOLEAN NOT NULL DEFAULT FALSE AFTER `type_name`;
+UPDATE `session_types` SET `is_external` = '1' WHERE `session_types`.`type_code` = 'zm';
+
+CREATE TABLE `lounge_group_chat` ( `id` INT NOT NULL AUTO_INCREMENT , `project_id` INT NOT NULL , `from_id` INT NOT NULL , `message` VARCHAR(255) NOT NULL , `date_time` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `lounge_direct_chat` ( `id` INT NOT NULL AUTO_INCREMENT , `project_id` INT NOT NULL , `from_id` INT NOT NULL , `to_id` INT NOT NULL , `message` VARCHAR(255) NOT NULL , `date_time` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
 

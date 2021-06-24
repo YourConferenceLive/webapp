@@ -22,12 +22,15 @@ class Users_Model extends CI_Model
 		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
 		$this->db->from('user');
 		$this->db->where('id IN ('.$user_ids.')');
-		$this->db->order_by("id", "desc");
+		$this->db->order_by("surname", "asc");
 		$users = $this->db->get();
 		if ($users->num_rows() > 0)
 		{
 			foreach ($users->result() as $user)
+			{
+				$user->company_name = $this->getCompanyName($user->id);
 				$user->accesses = $this->getProjectAccesses($user->id);
+			}
 
 			return $users->result();
 		}
@@ -43,6 +46,7 @@ class Users_Model extends CI_Model
 		$user = $this->db->get();
 		if ($user->num_rows() > 0)
 		{
+			$user->result()[0]->company_name = $this->getCompanyName($user->result()[0]->id);
 			$user->result()[0]->accesses = $this->getProjectAccesses($user->result()[0]->id);
 			return $user->result()[0];
 		}
@@ -262,6 +266,30 @@ class Users_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function defaultPasswordCheck()
+	{
+		$user_id 	= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'];
+		$password 	= 'COS2021';
+		if (isset($user_id)):
+			$this->db->select('id, password');
+			$this->db->from('user');
+			$this->db->where('id', $user_id);
+			$this->db->order_by('name', 'asc');
+			$user = $this->db->get();
+			if ($user->num_rows() > 0):
+				if (password_verify($password, $user->row()->password)):
+					return true;
+				else:
+					return false;
+				endif;
+			else:
+				return false;
+			endif;
+		else:
+			return false;
+		endif;
+	}
+
 	public function getExhibitorsByBoothId($booth_id)
 	{
 		$user_ids = $this->db
@@ -427,5 +455,18 @@ class Users_Model extends CI_Model
 		if ($user->num_rows() > 0)
 			return $user->result()[0]->id;
 		return 0;
+	}
+
+	public function getCompanyName($user_id)
+	{
+		$this->db->select('sponsor_booth.name');
+		$this->db->from('sponsor_booth');
+		$this->db->join('sponsor_booth_admin', 'sponsor_booth_admin.booth_id = sponsor_booth.id');
+		$this->db->join('user', 'user.id = sponsor_booth_admin.user_id');
+		$this->db->where('user.id', $user_id);
+		$user = $this->db->get();
+		if ($user->num_rows() > 0)
+			return $user->result()[0]->name;
+		return '';
 	}
 }
