@@ -172,6 +172,8 @@
 							<th>User ID</th>
 							<th>First Name</th>
 							<th>Second Name</th>
+							<th>Degree</th>
+							<th>City</th>
 							<th>Action</th>
 							<th>Action Time</th>
 							<th>IP</th>
@@ -183,6 +185,8 @@
 									<td><?=$log->user_id?></td>
 									<td><?=$log->user_fname?></td>
 									<td><?=$log->user_surname?></td>
+									<td><?=$log->credentials?></td>
+									<td><?=$log->city?></td>
 									<td><?=$log->name?></td>
 									<td><?=$log->date_time?></td>
 									<td><?=$log->ip?></td>
