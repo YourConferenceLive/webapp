@@ -612,7 +612,7 @@ class Sessions_Model extends CI_Model
 	{
 		$question = array(
 			'session_id' => $session_id,
-			'user_id' => $this->user->user_id,
+			'user_id' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
 			'question' => $question,
 			'asked_on' => date('Y-m-d H:i:s')
 		);
