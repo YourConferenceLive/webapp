@@ -212,10 +212,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				let formData = new FormData(document.getElementById('form_profile'));
 
-				if($('#rcpn').val() === ''){
-					toastr['warning']('Royal College of Physicians Number Required!')
-					return false;
-				}
+				// if($('#rcpn').val() === ''){
+				// 	toastr['warning']('Royal College of Physicians Number Required!')
+				// 	return false;
+				// }
 
 					Swal.fire({
 						title: 'Are you sure?',
