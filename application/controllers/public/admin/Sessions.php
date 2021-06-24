@@ -20,6 +20,7 @@ class Sessions extends CI_Controller
 		$sidebar_data['user'] = $this->user;
 
 		$create_modal['tracks'] = $this->sessions->getAllTracks();
+		$create_modal['types'] = $this->sessions->getAllTypes();
 		$create_modal['presenters'] = $this->sessions->getAllPresenters();
 		$create_modal['moderators'] = $this->sessions->getAllModerators();
 

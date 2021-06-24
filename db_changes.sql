@@ -581,3 +581,11 @@ ALTER TABLE `live_support_chat_status`
 COMMIT;
 
 # End Live support chat
+
+
+ALTER TABLE `sponsor_booth` ADD `website_link_2` VARCHAR(255) NULL AFTER `website_link`, ADD `website_link_3` VARCHAR(255) NULL AFTER `website_link_2`;
+
+
+ALTER TABLE `sessions` ADD `external_meeting_link` VARCHAR(255) NULL AFTER `session_type`;
+ALTER TABLE `session_types` ADD `is_external` BOOLEAN NOT NULL DEFAULT FALSE AFTER `type_name`;
+UPDATE `session_types` SET `is_external` = '1' WHERE `session_types`.`type_code` = 'zm';
