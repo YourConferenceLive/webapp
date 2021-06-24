@@ -22,7 +22,7 @@ class Lobby extends CI_Controller
 		$data['project'] 			= $this->project;
 		$data['user'] 				= $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$data['lobby_menu'] 		= $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby/menu", NULL, TRUE);
-		$data['default_password']   = ((!is_null($first_load)) ? $this->user->defaultPasswordCheck() : false);
+		$data['default_password']   = ((!is_null($first_load)) ? $this->user->defaultPasswordCheck() : false );
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)

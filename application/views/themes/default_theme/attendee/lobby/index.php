@@ -87,11 +87,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		text: 'Please proceed to your profile to change your default password and enter your Royal College Medical Number.',
 		showCancelButton: true,
 		showConfirmButton: true,
-		allowOutsideClick: false,
-	    type: "success"}).then(function() {
-		    // window.loc 	ation = "redirectURL";
-		    alert ('OK');
-		});
+		allowOutsideClick: false
+	});
 <?php
 	endif;?>
 </script>
