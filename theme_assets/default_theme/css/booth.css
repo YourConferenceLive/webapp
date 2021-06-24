@@ -401,6 +401,14 @@ main .table_left img, main .table_right img {
 	width: 100%;
 }
 
+.double_banner1 #monitor {
+	max-width: 80%;
+}
+
+.double_banner1 #monitorscreen > iframe{
+	height: 140px !important;
+}
+
 
 @keyframes hunting_bg_color {
 	50% {
@@ -427,6 +435,14 @@ main .table_left img, main .table_right img {
 
 .wt_hunting_icon img {
 	width: 100%;
+}
+
+.double_banner1 #monitorscreen > iframe{
+	height: 100% !important;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 
 @media only screen and (max-width: 1540px) {
@@ -481,7 +497,12 @@ main .table_left img, main .table_right img {
 		margin: auto;
 		width: 80%;
 	}
+
+	.double_banner1 #monitor{
+		max-width: 100%;
+	}
 }
+
 
 @media only screen and (max-width: 750px) {
 	main .content {
