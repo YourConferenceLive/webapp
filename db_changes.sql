@@ -589,3 +589,6 @@ ALTER TABLE `sponsor_booth` ADD `website_link_2` VARCHAR(255) NULL AFTER `websit
 ALTER TABLE `sessions` ADD `external_meeting_link` VARCHAR(255) NULL AFTER `session_type`;
 ALTER TABLE `session_types` ADD `is_external` BOOLEAN NOT NULL DEFAULT FALSE AFTER `type_name`;
 UPDATE `session_types` SET `is_external` = '1' WHERE `session_types`.`type_code` = 'zm';
+
+CREATE TABLE `lounge_group_chat` ( `id` INT NOT NULL AUTO_INCREMENT , `project_id` INT NOT NULL , `from_id` INT NOT NULL , `message` VARCHAR(255) NOT NULL , `date_time` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `lounge_direct_chat` ( `id` INT NOT NULL AUTO_INCREMENT , `project_id` INT NOT NULL , `from_id` INT NOT NULL , `to_id` INT NOT NULL , `message` VARCHAR(255) NOT NULL , `date_time` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
