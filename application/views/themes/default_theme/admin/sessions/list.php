@@ -145,7 +145,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#sessionName').val(session.name);
 				$('#sessionNameOther').val(session.other_language_name);
 				$(`#sessionTrack option[value="${session.track}"]`).prop('selected', true);
+
+				$('#sessionExternalUrl').val('');
+				$('#sessionExternalUrlDiv').hide();
+				$('#sessionExternalUrl').val(session.external_meeting_link);
+				if (session.external_meeting_link != null || session.external_meeting_link == '' )
+					$('#sessionExternalUrlDiv').show();
 				$(`#sessionType option[value="${session.session_type}"]`).prop('selected', true);
+
 				$('#sessionCredits').val(session.credits);
 				$("#sessionDescription").summernote("code", session.description);
 				$('#startDateTimeInput').datetimepicker('date', moment(session.start_date_time, 'YYYY-MM-DD HH:mm:ss'));
