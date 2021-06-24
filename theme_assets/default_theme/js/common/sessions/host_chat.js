@@ -51,8 +51,8 @@ function loadAllHostChats(session_id)
 				$('#hostChatDiv').prepend('' +
 					'<div class="direct-chat-msg">' +
 					'  <div class="direct-chat-infos clearfix">' +
-					'   <span class="direct-chat-name float-left">'+chat.host_name+'</span>' +
-					'   <span class="direct-chat-timestamp float-right" data-toggle="tooltip" title="'+moment.tz(chat.date_time, project_timezone).format("D MMMM h:mmA")+'">'+moment.tz(chat.date_time, project_timezone).fromNow()+'</span>' +
+					'   <span class="direct-chat-name float-right">'+chat.host_name+'</span>' +
+					'   <span class="direct-chat-timestamp float-left" data-toggle="tooltip" title="'+moment.tz(chat.date_time, project_timezone).format("D MMMM h:mmA")+'">'+moment.tz(chat.date_time, project_timezone).fromNow()+'</span>' +
 					'  </div>' +
 					'  <img class="direct-chat-img" src="'+ycl_root+'/cms_uploads/projects/'+project_id+'/user_assets/user_photos/'+chat.host_photo+'" onerror="this.onerror=null;this.src=`'+ycl_root+'/ycl_assets/images/person_dp_placeholder.png`;" alt="DP Image">' +
 					'  <div class="direct-chat-text">' +

@@ -1,0 +1,81 @@
+.chat-boxes-container
+{
+	position: absolute;
+	top: 40%;
+	left: 31%;
+	width: 68vw;
+	z-index: 11;
+}
+
+#groupChatBody
+{
+	height: 45vh;
+	overflow: scroll;
+}
+
+#otoChatMessagesBody{
+	height: 50vh;
+}
+
+#otoChatUsersBody{
+	height: 50vh;
+}
+
+.direct-chat-msg {
+	margin-bottom: 20px;
+}
+
+.direct-chat-infos {
+	display: block;
+	font-size: 0.875rem;
+	margin-bottom: 2px;
+}
+
+.direct-chat-name {
+	font-weight: 600;
+}
+
+.direct-chat-timestamp {
+	color: #697582;
+}
+
+.direct-chat-img {
+	border-radius: 50%;
+	float: left;
+	height: 40px;
+	width: 40px;
+}
+
+.direct-chat-img-small {
+	border-radius: 50%;
+	float: left;
+	height: 30px;
+	width: 30px;
+}
+
+.right .direct-chat-img {
+	float: right;
+}
+
+.right .direct-chat-text {
+	margin-left: 0;
+	margin-right: 50px;
+}
+
+.direct-chat-text {
+	border-radius: 0.3rem;
+	background-color: #d2d6de;
+	border: 1px solid #d2d6de;
+	border-top-color: rgb(210, 214, 222);
+	border-right-color: rgb(210, 214, 222);
+	border-bottom-color: rgb(210, 214, 222);
+	border-left-color: rgb(210, 214, 222);
+	color: #444;
+	margin: 5px 0 0 50px;
+	margin-right: 0px;
+	margin-left: 50px;
+	padding: 5px 10px;
+	position: relative;
+}
+
+

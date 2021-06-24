@@ -1,14 +1,89 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Users_Model extends CI_Model
+class Lounge_Model extends CI_Model
 {
+
+	/**
+	 * @var int
+	 */
+	private $user_id;
 
 	function __construct()
 	{
 		parent::__construct();
 
 		$this->load->model('Logger_Model', 'logger');
+		$this->user_id = $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'];
+	}
+
+	public function getAllGroupChats()
+	{
+		$this->db->select('lounge_group_chat.*, user.name, user.surname, user.photo, user.credentials');
+		$this->db->from('lounge_group_chat');
+		$this->db->join('user', 'user.id = lounge_group_chat.from_id');
+		$this->db->where('lounge_group_chat.project_id', $this->project->id);
+		$this->db->order_by("lounge_group_chat.id", "desc");
+		$chats = $this->db->get();
+		if ($chats->num_rows() > 0)
+		{
+			foreach ($chats->result() as $chat)
+			{
+				$chat->company_name = $this->getCompanyName($chat->from_id);
+			}
+
+			return $chats->result();
+		}
+
+		return new stdClass();
+	}
+
+	public function sendGroupChat()
+	{
+		$post = $this->input->post();
+		$data = array(
+			'project_id' => $this->project->id,
+			'from_id' => $this->user_id,
+			'message' => strip_tags($post['message']),
+			'date_time' => date('Y-m-d H:i:s')
+		);
+		$this->db->insert('lounge_group_chat', $data);
+
+		if ($this->db->affected_rows() > 0)
+			return true;
+		return false;
+	}
+
+
+	public function getDirectChatsWith($user_id)
+	{
+		$this->db->select('lounge_direct_chat.*, user.name, user.surname, user.photo, user.credentials');
+		$this->db->from('lounge_direct_chat');
+		$this->db->join('user', "user.id = {$user_id}");
+		$this->db->where("(lounge_direct_chat.from_id = {$this->user_id} AND lounge_direct_chat.to_id = {$user_id}) OR (lounge_direct_chat.from_id = {$user_id} AND lounge_direct_chat.to_id = {$this->user_id})");
+		$this->db->order_by("lounge_direct_chat.id", "desc");
+		$chats = $this->db->get();
+		if ($chats->num_rows() > 0)
+			return $chats->result();
+
+		return new stdClass();
+	}
+
+	public function sendDirectChat()
+	{
+		$post = $this->input->post();
+		$data = array(
+			'project_id' => $this->project->id,
+			'from_id' => $this->user_id,
+			'to_id' => $post['to'],
+			'message' => strip_tags($post['message']),
+			'date_time' => date('Y-m-d H:i:s')
+		);
+		$this->db->insert('lounge_direct_chat', $data);
+
+		if ($this->db->affected_rows() > 0)
+			return true;
+		return false;
 	}
 
 	public function getAll()
@@ -264,30 +339,6 @@ class Users_Model extends CI_Model
 			return $users->result();
 
 		return new stdClass();
-	}
-
-	public function defaultPasswordCheck()
-	{
-		$user_id 	= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'];
-		$password 	= 'COS2021';
-		if (isset($user_id)):
-			$this->db->select('id, password');
-			$this->db->from('user');
-			$this->db->where('id', $user_id);
-			$this->db->order_by('name', 'asc');
-			$user = $this->db->get();
-			if ($user->num_rows() > 0):
-				if (password_verify($password, $user->row()->password)):
-					return true;
-				else:
-					return false;
-				endif;
-			else:
-				return false;
-			endif;
-		else:
-			return false;
-		endif;
 	}
 
 	public function getExhibitorsByBoothId($booth_id)
