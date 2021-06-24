@@ -1,6 +1,6 @@
 <?php
 //echo "<pre>";
-//print_r($presenters);
+//print_r($types);
 //exit("</pre>");
 ?>
 <!--Add Session Modal-->
@@ -90,6 +90,21 @@
 									<div class="form-group">
 										<label for="sessionNameOther">Other name (alternative language)</label>
 										<input type="text" class="form-control" id="sessionNameOther" name="sessionNameOther" placeholder="Enter alternative session title/name eg; French">
+									</div>
+
+									<div class="form-group">
+										<label>Type</label>
+										<select id="sessionType" name="sessionType" class="form-control">
+											<?php if (isset($types)): ?>
+												<?php foreach ($types as $type): ?>
+													<option value="<?=$type->type_code?>" is-external="<?=$type->is_external?>"><?=$type->type_name?></option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
+									</div>
+									<div class="form-group" id="sessionExternalUrlDiv" style="display: none;">
+										<label for="sessionExternalUrl">External Meeting URL (eg; Zoom Link)</label>
+										<input type="text" class="form-control" id="sessionExternalUrl" name="sessionExternalUrl" placeholder="This link will open in a new tab (unless user blocked pop opening windows) once the meeting starts (always prefix the URL with protocol ie; http/https)">
 									</div>
 
 									<div class="form-group">
@@ -284,6 +299,18 @@
 
 		$('#moderatorBadge').css('background-color', access_color_codes['moderator']);
 		$('#moderatorBadge').html('<i class="'+access_icons['moderator']+'"></i> Moderator');
+
+
+		if($('option:selected', this).attr('is-external') == 1)
+			$('#sessionExternalUrlDiv').show();
+		else
+			$('#sessionExternalUrlDiv').hide();
+		$('#sessionType').on('change', function() {
+			if($('option:selected', this).attr('is-external') == 1)
+				$('#sessionExternalUrlDiv').show();
+			else
+				$('#sessionExternalUrlDiv').hide();
+		});
 
 		$('#sessionDescription')
 				.summernote

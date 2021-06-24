@@ -183,6 +183,17 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getAllTypes()
+	{
+		$this->db->select('*');
+		$this->db->from('session_types');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+			return $sessions->result();
+
+		return new stdClass();
+	}
+
 	public function add()
 	{
 		$session_data = $this->input->post();
@@ -213,6 +224,8 @@ class Sessions_Model extends CI_Model
 			'description' => $session_data['sessionDescription'],
 			'thumbnail' => $session_photo,
 			'agenda' => $session_data['sessionAgenda'],
+			'session_type' => $session_data['sessionType'],
+			'external_meeting_link' => (isset($session_data['sessionExternalUrl']))?$session_data['sessionExternalUrl']:'',
 			'track' => $session_data['sessionTrack'],
 			'credits' => $session_data['sessionCredits'],
 			'millicast_stream' => $session_data['millicastStream'],
@@ -319,6 +332,8 @@ class Sessions_Model extends CI_Model
 			'other_language_name' => $session_data['sessionNameOther'],
 			'description' => $session_data['sessionDescription'],
 			'agenda' => $session_data['sessionAgenda'],
+			'session_type' => $session_data['sessionType'],
+			'external_meeting_link' => (isset($session_data['sessionExternalUrl']))?$session_data['sessionExternalUrl']:'',
 			'track' => $session_data['sessionTrack'],
 			'credits' => $session_data['sessionCredits'],
 			'millicast_stream' => $session_data['millicastStream'],
