@@ -155,4 +155,23 @@ $(function () {
 			}
 		}
 	});
+
+
+	socket.on('ycl_active_users_list', function (users) {
+		let activeUsers = [];
+		$.each(users, function (socketId, userId) {
+			if(userId != "")
+				activeUsers.push(userId);
+		});
+		let uniqueActiveUsers = [...new Set(activeUsers)];
+
+		console.log(uniqueActiveUsers);
+
+		$('.user-active-status-icon').css('color', '#ffb425');
+		$.each(uniqueActiveUsers, function (key, userId) {
+			if (userId != '')
+				$('.user-active-status-icon[user-id='+userId+']').css('color', '#3ec800');
+		});
+	});
+	socket.emit('ycl_get_active_users_list');
 })
