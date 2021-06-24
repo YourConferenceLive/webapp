@@ -20,7 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="row">
 							<div class="col-md-12 p-3">
 								<!-- Briefcase tabs -->
-								<ul class="nav nav-tabs" id="briefcase-tabs" role="tablist">
+								<ul class="nav nav-pills nav-fill" id="briefcase-tabs" role="tablist">
 									<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('agenda' == $active_briefcase_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="agenda-tab" data-toggle="tab" href="#agenda" role="tab" aria-controls="agenda">My Agenda</a></li>
 									<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('resources' == $active_briefcase_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="resources-tab" data-toggle="tab" href="#resources" role="tab" aria-controls="resources">Resources</a></li>
 									<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('credits' == $active_briefcase_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="credits-tab" data-toggle="tab" href="#credits" role="tab" aria-controls="credits">Credits</a></li>
@@ -131,7 +131,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<div class="tab-pane p-2<?php echo (('credits' == $active_briefcase_tab) ? ' active' : '' );?>" id="credits" role="tabpanel" aria-labelledby="credits-tab">
 										<!-- Credit tabs -->
-										<ul class="nav nav-tabs" id="credit-tabs" role="tablist">
+										<ul class="nav nav-pills nav-fill" id="credit-tabs" role="tablist">
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('session-credits' == $active_credit_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="session-credits-tab" data-toggle="tab" href="#session-credits" role="tab" aria-controls="session-credits">General Sessions</a></li>
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('eposter-credits' == $active_credit_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="eposter-credits-tab" data-toggle="tab" href="#eposter-credits" role="tab" aria-controls="eposter-credits">ePosters</a></li>
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('stc-credits' == $active_credit_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="stc-credits-tab" data-toggle="tab" href="#stc-credits" role="tab" aria-controls="stc-credits">STC</a></li>
@@ -197,7 +197,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 									<div class="tab-pane p-2<?php echo (('notes' == $active_briefcase_tab) ? ' active' : '' );?>" id="notes" role="tabpanel" aria-labelledby="notes-tab">
 										<!-- Notes tabs -->
-										<ul class="nav nav-tabs" id="notes-tabs" role="tablist">
+										<ul class="nav nav-pills nav-fill" id="notes-tabs" role="tablist">
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('session-notes' == $active_note_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="session-notes-tab" data-toggle="tab" href="#session-notes" role="tab" aria-controls="session-notes">Sessions</a></li>
 											<li class="nav-item" role="presentation"><a class="nav-link<?php echo (('eposter-notes' == $active_note_tab) ? ' active" aria-selected="true"' : '" aria-selected="false"' );?>" id="eposter-notes-tab" data-toggle="tab" href="#eposter-notes" role="tab" aria-controls="eposter-notes">ePosters</a></li>
 										</ul>
