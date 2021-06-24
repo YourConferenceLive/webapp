@@ -12,7 +12,7 @@ class Analytics_Model extends CI_Model
 
 	public function getAllProjectLogs()
 	{
-		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, logs.*')
+		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, logs.*')
 			->from('logs')
 			->join('user','user.id = logs.user_id')
 			->where('logs.project_id', $this->project->id)
@@ -26,7 +26,7 @@ class Analytics_Model extends CI_Model
 
 	public function getRelaxationZoneLogs()
 	{
-		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, logs.*')
+		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, logs.*')
 			->from('logs')
 			->join('user','user.id = logs.user_id')
 			->where('logs.info', "Relaxation zone")
@@ -43,7 +43,7 @@ class Analytics_Model extends CI_Model
 	{
 
 		$this->db->select('
-		user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, 
+		user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, 
 		 max(scavenger_hunt_items.date) as last_collected, scavenger_hunt_items.icon_name')
 			->from('scavenger_hunt_items')
 			->join('user','user.id = scavenger_hunt_items.user_id')

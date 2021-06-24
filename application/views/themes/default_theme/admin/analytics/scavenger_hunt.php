@@ -48,7 +48,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>User ID</th>
 									<th>Name</th>
 									<th>Surname</th>
+									<th>Degree</th>
 									<th>Email</th>
+									<th>City</th>
 									<th>Last Collected Item</th>
 									<th>Last Collected</th>
 								</tr>
@@ -60,7 +62,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<td><?=$log->user_id?></td>
 												<td><?=$log->user_fname?></td>
 												<td><?=$log->user_surname?></td>
+												<td><?=$log->credentials?></td>
 												<td><?=$log->email?></td>
+												<td><?=$log->city?></td>
 												<td><img src="<?=ycl_root?>/theme_assets/booth_game_icons/<?=$log->icon_name?>.png" width="30px"></td>
 												<td><?=$log->last_collected?></td>
 											</tr>

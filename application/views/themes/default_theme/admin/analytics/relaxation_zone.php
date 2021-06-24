@@ -47,7 +47,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>User ID</th>
 									<th>Name</th>
 									<th>Surname</th>
+									<th>Degree</th>
 									<th>Email</th>
+									<th>City</th>
 									<th>What</th>
 									<th>Browser</th>
 									<th>OS</th>
@@ -60,7 +62,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<td><?=$log->user_id?></td>
 										<td><?=$log->user_fname?></td>
 										<td><?=$log->user_surname?></td>
+										<td><?=$log->credentials?></td>
 										<td><?=$log->email?></td>
+										<td><?=$log->city?></td>
 										<td><?=$log->name?></td>
 										<td><?=$log->browser?></td>
 										<td><?=$log->os?></td>
