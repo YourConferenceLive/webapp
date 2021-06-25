@@ -98,6 +98,34 @@ class Briefcase extends CI_Controller
     	exit();
   	}
 
+	public function getSessionResources()
+	{
+		$this->logger->log_visit("Scavenger hunt item");
+		$post 				= $this->input->post();
+
+		$draw 				= intval($this->input->post("draw"));
+		$start 				= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
+		$length 			= ((intval($this->input->post("length"))) ? $this->input->post("length") : 5 );
+
+		$columns_array 		= array('scavenger_hunt_items.id', 'sponsor_booth.name', 'scavenger_hunt_items.icon_name', 'scavenger_hunt_items.date');
+		$column_index 		= $post['order'][0]['column'];
+		$column_name 		= $columns_array[$column_index];
+		$column_sort_order 	= $post['order'][0]['dir']; 
+		$keyword 			= $post['search']['value'];
+
+		$count 				= 0;
+		$data 				= [];
+		$table_count 		= 1;
+
+		$result 			= array("draw" 				=> $draw,
+									"recordsTotal" 		=> $count,
+				    	     		"recordsFiltered" 	=> $count,
+			         				"data" 				=> $data);
+
+      	echo json_encode($result);
+    	exit();
+	}
+
 	public function scavengerHuntItems()
 	{
 		$this->logger->log_visit("Scavenger hunt item");
