@@ -288,7 +288,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 							if (response.status == 'success')
 							{
-								//socket.emit("ycl_session_question", {sessionId:sessionId, question:question});
+								socket.emit("ycl_session_question", {sessionId:sessionId, question:question});
 
 								$('#questionText').val('');
 								$('#questionElement').prepend('<p>'+question+'</p>');
