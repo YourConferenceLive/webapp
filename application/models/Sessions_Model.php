@@ -646,4 +646,62 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getAllPolls($session_id)
+	{
+		$this->db->select("*");
+		$this->db->from('session_polls');
+		$this->db->where('session_id', $session_id);
+		$this->db->where('is_active', 1);
+		$polls = $this->db->get();
+		if ($polls->num_rows() > 0)
+			return $polls->result();
+
+		return new stdClass();
+	}
+
+	public function getPollById($id)
+	{
+		$this->db->select("sessions.id as session_id, session_polls.*");
+		$this->db->from('session_polls');
+		$this->db->join('sessions', 'sessions.id = session_polls.session_id');
+		$this->db->where('session_polls.id', $id);
+		$polls = $this->db->get();
+		if ($polls->num_rows() > 0)
+		{
+			$polls->result()[0]->options = $this->getPollOptions($polls->result()[0]->id);
+			return $polls->result()[0];
+		}
+
+
+		return new stdClass();
+	}
+
+	public function getPollOptions($poll_id)
+	{
+		$this->db->select("*");
+		$this->db->from('session_poll_options');
+		$this->db->where('poll_id', $poll_id);
+		$polls = $this->db->get();
+		if ($polls->num_rows() > 0)
+		{
+			return $polls->result();
+		}
+
+
+		return new stdClass();
+	}
+
+	public function vote()
+	{
+		$post = $this->input->post();
+
+		$poll = array(
+			'poll_id' => $post['pollId'],
+			'user_id' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
+			'answer_id' => $post['poll_option'],
+			'answered_on' => date('Y-m-d H:i:s')
+		);
+		$this->db->insert('session_poll_answers', $poll);
+		return ($this->db->affected_rows() > 0) ? array('status'=>'success'):array('status'=>'failed');
+	}
 }

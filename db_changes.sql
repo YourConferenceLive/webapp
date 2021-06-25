@@ -594,3 +594,16 @@ CREATE TABLE `lounge_direct_chat` ( `id` INT NOT NULL AUTO_INCREMENT , `project_
 
 
 CREATE TABLE `session_resources` ( `id` INT NOT NULL AUTO_INCREMENT , `session_id` INT NOT NULL , `resource_name` VARCHAR(255) NOT NULL , `resource_type` ENUM('file','url') NOT NULL DEFAULT 'file' , `resource_path` VARCHAR(255) NOT NULL , `is_active` BOOLEAN NOT NULL DEFAULT TRUE , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+CREATE TABLE `session_polls` ( `id` INT NOT NULL ,  `session_id` INT NOT NULL ,  `poll_question` VARCHAR(255) NOT NULL ,  `poll_tyoe` ENUM('poll') NOT NULL ,  `added_on` DATETIME NOT NULL ) ENGINE = InnoDB;
+CREATE TABLE `session_poll_options` ( `id` INT NOT NULL ,  `poll_id` INT NOT NULL ,  `option_text` VARCHAR(255) NOT NULL ) ENGINE = InnoDB;
+CREATE TABLE `session_poll_answers` ( `id` INT NOT NULL ,  `poll_id` INT NOT NULL ,  `user_id` INT NOT NULL ,  `answer_id` INT NOT NULL ,  `answered_on` DATETIME NOT NULL ) ENGINE = InnoDB;
+ALTER TABLE `session_polls` ADD `show_result` BOOLEAN NOT NULL DEFAULT TRUE AFTER `poll_tyoe`;
+ALTER TABLE `session_poll_options` ADD PRIMARY KEY(`id`);
+ALTER TABLE `session_polls` ADD PRIMARY KEY(`id`);
+ALTER TABLE `session_poll_answers` ADD PRIMARY KEY(`id`);
+ALTER TABLE `session_polls` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `session_poll_options` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `session_poll_answers` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `session_polls` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE AFTER `show_result`;
+

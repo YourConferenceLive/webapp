@@ -215,6 +215,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sessions.js?v=<?=rand()?>"></script>
 
 <script type="application/javascript">
+	let sessionId = "<?=$session->id?>";
 	var note_page = 1;
 
 	function loadNotes(entity_type, entity_type_id, note_page) {
@@ -374,6 +375,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						}
 					}
 			});
+		});
+
+		socket.on('ycl_launch_poll', (data)=>{
+			console.log(data);
+
+			if(data.session_id == sessionId)
+			{
+				$('#pollId').val(data.session_id);
+				$('#pollQuestion').text(data.poll_question);
+				$('#howMuchSecondsLeft').text('');
+
+				$('#pllOptions').html('');
+				$.each(data.options, function (key, option) {
+					$('#pllOptions').append('' +
+							'<div class="form-check mb-2">' +
+							'  <input class="form-check-input" type="radio" name="poll_option" value="'+option.id+'">' +
+							'  <label class="form-check-label">'+option.option_text+'</label>' +
+							'</div>');
+				});
+
+				$('#pollResultModal').modal('hide');
+				$('#noteModal').modal('hide');
+
+				$('#pollModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				});
+
+				var timeleft = 10;
+				var downloadTimer = setInterval(function(){
+					if(timeleft <= 0){
+						clearInterval(downloadTimer);
+						$('#pollModal').modal('hide');
+					} else {
+						$('#howMuchSecondsLeft').text(timeleft);
+					}
+					timeleft -= 1;
+				}, 1000);
+			}
 		});
 
 		socket.on('openPollNotification', ()=>{

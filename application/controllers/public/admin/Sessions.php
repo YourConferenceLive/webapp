@@ -92,4 +92,32 @@ class Sessions extends CI_Controller
 	{
 		echo json_encode($this->sessions->sendHostChat($this->input->post()));
 	}
+
+	public function polls($session_id)
+	{
+		$sidebar_data['user'] = $this->user;
+		$session = $this->sessions->getById($session_id);
+
+		$data['session'] = $session;
+		$data['polls'] = $this->sessions->getAllPolls($session_id);
+
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/polls", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function getAllPollsJson($session_id)
+	{
+		echo json_encode($this->sessions->getAllPolls($session_id));
+	}
+
+	public function getPollByIdJson($id)
+	{
+		echo json_encode($this->sessions->getPollById($id));
+	}
 }

@@ -131,4 +131,10 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->askQuestion($post['session_id'], $post['question']));
 	}
 
+	public function vote()
+	{
+		$this->sessions->vote();
+		echo json_encode(array('status'=>'success'));
+	}
+
 }
