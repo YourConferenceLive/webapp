@@ -276,6 +276,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#attendeesOnline').html('<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees watching this session"><i class="fas fa-eye"></i> 0</span>');
 		$('[data-toggle="tooltip"]').tooltip()
 
+		socket.on('ycl_session_question', function (data) {
+			if (data.sessionId == session_id)
+			{
+				let question = '' +
+						'<div class="container-fluid mr-2">' +
+						'<div class="row" style="padding-right: 15px">' +
+						'<div class="col-7">' +
+						'<strong></strong>' +
+						'</div>' +
+						'<div class="col-3">' +
+						'<small class="text-secondary"></small>' +
+						'</div>' +
+						'<div class="col-1">' +
+						'<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+						'</div>' +
+						'<div class="col-1">' +
+						'<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+						'</div>' +
+						'</div>' +
+						'<div class="row">' +
+						'<div class="col-12">'+data.question+'</div>' +
+						'</div>' +
+						'</div>' +
+						'<div class="col"><hr></div>';
+
+				$('#questions-tab-content').append(question);
+			}
+		});
+
 	});
 
 	function startsIn() {
