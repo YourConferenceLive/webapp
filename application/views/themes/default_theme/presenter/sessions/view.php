@@ -297,7 +297,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<strong></strong>' +
 						'</div>' +
 						'<div class="col-3">' +
-						'<small class="text-secondary">10:00 AM</small>' +
+						'<small class="text-secondary"></small>' +
 						'</div>' +
 						'<div class="col-1">' +
 						'<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
