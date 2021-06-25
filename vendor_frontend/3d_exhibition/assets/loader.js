@@ -559,18 +559,22 @@ var loadScene=async function(name,incremental,sceneLocation,then)
             light4.intensity = 300;
 
 
-            //var matpant = new BABYLON.StandardMaterial("matpant", scene);
-            //var videoTexturepant = new BABYLON.VideoTexture("videoclip", "assets/CLIP.mp4", scene, true, true);
+            var matpant = new BABYLON.StandardMaterial("matpant", scene);
+            var videoTexturepant = new BABYLON.VideoTexture("videoclip", ycl_root+"/vendor_frontend/3d_exhibition/assets/videox.mp4", scene, true, true);
 
-            //matpant.diffuseTexture = videoTexturepant;
 
+            matpant.diffuseTexture = videoTexturepant;
+            videoTexturepant.video.pause();
+            p1=scene.getMeshByName("Novartis-294");
+
+            //p1.material = matpant;
             /*
             p1=scene.getMeshByName("Allergen1-0_primitive1")
             p2=scene.getMeshByName("Allergen2-1_primitive1")
             p3=scene.getMeshByName("Allergen3-1_primitive1")
             p4=scene.getMeshByName("Allergen4-1_primitive1")
 
-            p1.material = matpant;
+            
             p2.material = matpant;
             p3.material = matpant;
             p4.material = matpant;
@@ -613,6 +617,20 @@ var loadScene=async function(name,incremental,sceneLocation,then)
             
                 if (zoomed)
                 {
+
+                    if(pickResult.pickedMesh.id=='Novartis-294')
+                    {
+                        p1.material = matpant;      
+                        if(videoTexturepant.video.paused)
+                        {                            
+                            videoTexturepant.video.play();
+                        }
+                        else
+                        {
+                            videoTexturepant.video.pause();
+                        }        
+                    }
+
                     nombrecito=pickResult.pickedMesh.id;
                     idx=0;
                     if(nombrecito.indexOf('Aequuspharma_pie_enter')>-1) idx=20;
