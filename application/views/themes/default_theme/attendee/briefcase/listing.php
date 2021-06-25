@@ -333,10 +333,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$(document).ready(function() {
 			$('#sessionCreditTable').DataTable({
 				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			   	buttons: [{text: 'Get Certificate (Will be available soon)',
-		   	   	className: 'btn btn-info disabled',
+			   	buttons: [{text: 'Get Certificate',
+		   	   	className: 'btn btn-info',
 		   			action: function ( e, dt, button, config ) {
-	 					// window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+	 					window.open(project_url +'/briefcase/get_certificate', "_blank");
 		   			}
 	      		}],
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
@@ -352,10 +352,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			//ePoster Credit Table
 			$('#eposterCreditTable').DataTable({
 				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			   	buttons: [{text: 'Get Certificate (Will be available soon)',
-		   	   	className: 'btn btn-info disabled',
+			   	buttons: [{text: 'Get Certificate',
+		   	   	className: 'btn btn-info',
 		   			action: function ( e, dt, button, config ) {
-	 					// window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+	 					window.open(project_url +'/briefcase/get_certificate', "_blank");
 		   			}
 	      		}],
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
@@ -370,10 +370,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#stcCreditTable').DataTable({
 				dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			   	buttons: [{text: 'Get Certificate (Will be available soon)',
-		   	   	className: 'btn btn-info disabled',
+			   	buttons: [{text: 'Get Certificate',
+		   	   	className: 'btn btn-info',
 		   			action: function ( e, dt, button, config ) {
-	 					// window.open(ycl_root +'/cms_uploads/projects/3/briefcase/2021_COS_Program.pdf', "_blank");
+	 					window.open(project_url +'/briefcase/get_certificate', "_blank");
 		   			}
 	      		}],
 				'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],

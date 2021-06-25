@@ -100,7 +100,7 @@ class Briefcase extends CI_Controller
 
 	public function getSessionResources()
 	{
-		$this->logger->log_visit("Scavenger hunt item");
+		$this->logger->log_visit("Scavenger hunt item", $this->user['user_id']);
 		$post 				= $this->input->post();
 
 		$draw 				= intval($this->input->post("draw"));
@@ -126,9 +126,24 @@ class Briefcase extends CI_Controller
     	exit();
 	}
 
+	public function get_certificate()
+	{
+		$this->logger->log_visit("Get certificate", $this->user['user_id']);
+		$this->load->library('Pdf');
+
+		$data['user'] 		= $this->user;
+		$data['sessions'] 	= $this->credit->getAllSessionCredits('gs', 0, -1, 'sessions.name', 'ASC', '');
+		$data['eposters'] 	= $this->credit->getAllEposterCredits(0, -1, 'eposters.title', 'ASC', '');
+		$data['stcs'] 		= $this->credit->getAllSessionCredits('zm', 0, -1, 'sessions.name', 'ASC', '');
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/briefcase/certificate", $data);
+
+	}
+
 	public function scavengerHuntItems()
 	{
-		$this->logger->log_visit("Scavenger hunt item");
+		$this->logger->log_visit("Scavenger hunt item", $this->user['user_id']);
 		$post 				= $this->input->post();
 
 		$draw 				= intval($this->input->post("draw"));
@@ -198,7 +213,7 @@ class Briefcase extends CI_Controller
 
 	public function getEposterCredits()
 	{
-		$this->logger->log_visit("ePoster Credits in Briefcase");
+		$this->logger->log_visit("ePoster Credits in Briefcase", $this->user['user_id']);
 		$post 				= $this->input->post();
 
 		$draw 				= intval($this->input->post("draw"));
@@ -231,7 +246,7 @@ class Briefcase extends CI_Controller
 
 	public function getEposterNotes()
 	{
-		$this->logger->log_visit("ePoster Notes in Briefcase");
+		$this->logger->log_visit("ePoster Notes in Briefcase", $this->user['user_id']);
 		$post 				= $this->input->post();
 
 		$draw 				= intval($this->input->post("draw"));
@@ -270,7 +285,7 @@ class Briefcase extends CI_Controller
 
 	public function getSessionNotes()
 	{
-		$this->logger->log_visit("Session Notes in Briefcase");
+		$this->logger->log_visit("Session Notes in Briefcase", $this->user['user_id']);
 		$post 				= $this->input->post();
 
 		$draw 				= intval($this->input->post("draw"));
