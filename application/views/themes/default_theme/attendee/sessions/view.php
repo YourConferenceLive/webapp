@@ -379,7 +379,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		socket.on('openPollNotification', ()=>{
 			$('#pollModal').modal('show');
 			$('#pollResultModal').modal('hide');
-			$('#noteModal').modal('show');
+			$('#noteModal').modal('hide');
 		});
 
 		socket.on('closePollNotification', ()=>{
@@ -388,7 +388,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		socket.on('openResultNotification', ()=>{
 			$('#pollModal').modal('hide');
-			$('#noteModal').modal('show');
+			$('#noteModal').modal('hide');
 			$('#pollResultModal').modal('show');
 		});
 
