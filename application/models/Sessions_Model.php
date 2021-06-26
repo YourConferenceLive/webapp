@@ -751,7 +751,7 @@ class Sessions_Model extends CI_Model
 			'session_id' => $session_id,
 			'poll_question' => $post['pollQuestionInput'],
 			'poll_type' => $post['poll_type'],
-			'show_result' => (isset($post['poll_type']))?1:0,
+			'show_result' => (isset($post['autoPollResult']))?1:0,
 			'is_active' => 1,
 			'added_on' => date('Y-m-d H:i:s'),
 			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
