@@ -570,4 +570,31 @@ class Sponsor_model extends CI_Model
 	function delete_saved_chats(){
 		return $this->db->delete('saved_group_chat',array('sponsor_admin_id'=>$this->sponsor_id, 'booth_id'=>$this->booth_id, 'project_id'=>$this->project->id));
 	}
+
+	function sponsor_chat_mark_read(){
+		$post = $this->input->post();
+//		print_r($this->input->post());
+		$this->db->where('from_id', $post['chat_from_id']);
+		$this->db->update('sponsor_attendee_chat', array('marked_read'=>'1'));
+	}
+
+	function get_unread_chats(){
+		$post = $this->input->post();
+		$this->db->select('*')
+			->from('sponsor_attendee_chat sac')
+			->join('user u', 'sac.from_id = u.id', 'left')
+			->where('sac.project_id', $this->project->id)
+			->where('sac.booth_id', $this->booth_id)
+			->where('sac.marked_read','0')
+			->where('sac.chat_from', 'attendee')
+			->group_by('sac.from_id');
+
+		$result = $this->db->get();
+		if ($result->num_rows() > 0) {
+			$json_array = array('status' => 'success', 'result' => $result->result());
+		} else {
+			$json_array = array('status' => 'empty');
+		}
+		return json_encode($json_array);
+	}
 }

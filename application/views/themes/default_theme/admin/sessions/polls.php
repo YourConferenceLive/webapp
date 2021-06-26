@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Poll ID</th>
 									<th>Name</th>
 									<th>Type</th>
-									<th>Show Result</th>
+									<th>Auto-show Result</th>
 									<th>Actions</th>
 									<th>Manage</th>
 								</tr>
@@ -307,6 +307,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'error');
 			});
 		});
+
+		$('#pollsTable').on('click', '.launch-result-btn', function () {
+			let sessionId = $(this).attr('session-id');
+			let pollId = $(this).attr('poll-id');
+			socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId});
+		});
 	});
 
 	function listPolls()
@@ -352,7 +358,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+show_result+
 					'	</td>' +
 					'	<td>' +
-					'		<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Launch</button>' +
+					'		<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' +
+					'		<button class="launch-result-btn btn btn-sm btn-success ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Show Result</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="edit-poll-btn btn btn-sm btn-primary m-1" poll-id="'+poll.id+'"><i class="fas fa-edit"></i> Edit</button>' +
