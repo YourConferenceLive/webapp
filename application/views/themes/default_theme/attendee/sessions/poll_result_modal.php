@@ -14,12 +14,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-12">
+					<div id="pollResults" class="col-12">
 
 						<!-- poll results -->
 
 						<div class="form-group">
-							<label class="form-check-label">A. Continue current management and follow-up for IOP check and repeat visual field and OCT</label>
+							<label class="form-check-label">A</label>
 							<div class="progress" style="height: 25px;">
 								<div class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
 							</div>
@@ -41,6 +41,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					</div>
 				</div>
+			</div>
+			<div class="modal-footer">
+				<span id="howMuchSecondsLeftResult"></span>
 			</div>
 		</div>
 	</div>

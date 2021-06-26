@@ -305,6 +305,81 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 
+		socket.on('ycl_launch_poll', (data)=>{
+
+			if(data.session_id == session_id)
+			{
+				$('#pollId').val(data.session_id);
+				$('#pollQuestion').text(data.poll_question);
+				$('#howMuchSecondsLeft').text('');
+
+				$('#pllOptions').html('');
+				$.each(data.options, function (key, option) {
+					$('#pllOptions').append('' +
+							'<div class="form-check mb-2">' +
+							'  <input class="form-check-input" type="radio" name="poll_option" value="'+option.id+'">' +
+							'  <label class="form-check-label">'+option.option_text+'</label>' +
+							'</div>');
+				});
+
+				$('#pollResultModal').modal('hide');
+				$('#noteModal').modal('hide');
+
+				$('#pollModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				});
+
+				var timeleft = 10;
+				var downloadTimer = setInterval(function(){
+					if(timeleft <= 0){
+						clearInterval(downloadTimer);
+						$('#pollModal').modal('hide');
+
+						if (data.show_result == 1) // Show result automatically
+						{
+							$.get(project_presenter_url+"/sessions/getPollResultAjax/"+data.id, function (results) {
+								results = JSON.parse(results);
+
+								$('#pollResults').html('');
+								$('#pollResultModalLabel').text(data.poll_question);
+								$.each(results, function (poll_id, option_details) {
+									$('#pollResults').append('' +
+											'<div class="form-group">' +
+											'  <label class="form-check-label">'+option_details.option_name+'</label>' +
+											'  <div class="progress" style="height: 25px;">' +
+											'    <div class="progress-bar" role="progressbar" style="width: '+option_details.vote_percentage+'%;" aria-valuenow="'+option_details.vote_percentage+'" aria-valuemin="0" aria-valuemax="100">'+option_details.vote_percentage+'%</div>' +
+											'  </div>' +
+											'</div>');
+								});
+
+								$('#pollResultModal').modal({
+									backdrop: 'static',
+									keyboard: false
+								});
+
+								var resultTimeleft = 5;
+								var resultTimer = setInterval(function(){
+									if(resultTimeleft <= 0){
+										clearInterval(resultTimer);
+										$('#pollResultModal').modal('hide');
+									} else {
+										$('#howMuchSecondsLeftResult').text(resultTimeleft);
+									}
+									resultTimeleft -= 1;
+								}, 1000);
+
+							});
+						}
+
+					} else {
+						$('#howMuchSecondsLeft').text(timeleft);
+					}
+					timeleft -= 1;
+				}, 1000);
+			}
+		});
+
 	});
 
 	function startsIn() {

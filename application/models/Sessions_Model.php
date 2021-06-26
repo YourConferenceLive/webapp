@@ -704,4 +704,42 @@ class Sessions_Model extends CI_Model
 		$this->db->insert('session_poll_answers', $poll);
 		return ($this->db->affected_rows() > 0) ? array('status'=>'success'):array('status'=>'failed');
 	}
+
+
+	public function getResultByOptionId($option_id)
+	{
+		$this->db->select("*");
+		$this->db->from('session_poll_answers');
+		$this->db->where('answer_id', $option_id);
+		$polls = $this->db->get();
+		if ($polls->num_rows() > 0)
+			return $polls->result();
+
+		return new stdClass();
+	}
+
+	public function getPollResult($poll_id)
+	{
+		$poll = $this->getPollById($poll_id);
+
+		$total_votes = 0;
+		$results_array = array();
+		foreach ($poll->options as $option)
+		{
+			$results = $this->getResultByOptionId($option->id);
+			$total_votes += count((array)$results);
+
+			$results_array[$option->id] = array(
+				'option_name' => $option->option_text,
+				'number_of_answers' => count((array)$results)
+			);
+		}
+
+		foreach ($results_array as $option_id => $result)
+			$results_array[$option_id]['vote_percentage'] = round(($result['number_of_answers']/$total_votes)*100);
+
+		return $results_array;
+
+
+	}
 }
