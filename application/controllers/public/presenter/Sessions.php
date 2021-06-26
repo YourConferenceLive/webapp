@@ -107,5 +107,10 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->getPollResult($poll_id));
 	}
 
+	public function getQuestionsAjax($session_id)
+	{
+		echo json_encode($this->sessions->getQuestions($session_id));
+	}
+
 
 }
