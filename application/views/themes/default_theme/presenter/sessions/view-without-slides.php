@@ -596,11 +596,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<div class="col"><hr></div>');
 			});
 
-			$('#pollResultModal').modal({
-				backdrop: 'static',
-				keyboard: false
-			});
-
 		});
 	}
 </script>
