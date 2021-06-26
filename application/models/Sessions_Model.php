@@ -704,4 +704,78 @@ class Sessions_Model extends CI_Model
 		$this->db->insert('session_poll_answers', $poll);
 		return ($this->db->affected_rows() > 0) ? array('status'=>'success'):array('status'=>'failed');
 	}
+
+
+	public function getResultByOptionId($option_id)
+	{
+		$this->db->select("*");
+		$this->db->from('session_poll_answers');
+		$this->db->where('answer_id', $option_id);
+		$polls = $this->db->get();
+		if ($polls->num_rows() > 0)
+			return $polls->result();
+
+		return new stdClass();
+	}
+
+	public function getPollResult($poll_id)
+	{
+		$poll = $this->getPollById($poll_id);
+
+		$total_votes = 0;
+		$results_array = array();
+		foreach ($poll->options as $option)
+		{
+			$results = $this->getResultByOptionId($option->id);
+			$total_votes += count((array)$results);
+
+			$results_array[$option->id] = array(
+				'option_name' => $option->option_text,
+				'number_of_answers' => count((array)$results)
+			);
+		}
+
+		foreach ($results_array as $option_id => $result)
+			$results_array[$option_id]['vote_percentage'] = round(($result['number_of_answers']/$total_votes)*100);
+
+		return $results_array;
+
+
+	}
+
+	public function addPoll($session_id)
+	{
+		$post = $this->input->post();
+
+		$data = array(
+			'session_id' => $session_id,
+			'poll_question' => $post['pollQuestionInput'],
+			'poll_type' => $post['poll_type'],
+			'show_result' => (isset($post['autoPollResult']))?1:0,
+			'is_active' => 1,
+			'added_on' => date('Y-m-d H:i:s'),
+			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
+		);
+		$this->db->insert('session_polls', $data);
+
+		if ($this->db->affected_rows() > 0)
+		{
+			$poll_id = $this->db->insert_id();
+
+			foreach ($post['pollOptionsInput'] as $option)
+			{
+				$options_array = array(
+					'poll_id' => $poll_id,
+					'option_text' => $option
+				);
+				$this->db->insert('session_poll_options', $options_array);
+			}
+
+			return array('status'=>'success', 'msg'=>'Poll created');
+
+		}else{
+			return array('status'=>'error', 'msg'=>'Unable to create poll');
+		}
+
+	}
 }

@@ -378,7 +378,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		socket.on('ycl_launch_poll', (data)=>{
-			console.log(data);
 
 			if(data.session_id == sessionId)
 			{
@@ -408,6 +407,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					if(timeleft <= 0){
 						clearInterval(downloadTimer);
 						$('#pollModal').modal('hide');
+
+						if (data.show_result == 1) // Show result automatically
+						{
+							$.get(project_url+"/sessions/getPollResultAjax/"+data.id, function (results) {
+								results = JSON.parse(results);
+
+								$('#pollResults').html('');
+								$('#pollResultModalLabel').text(data.poll_question);
+								$.each(results, function (poll_id, option_details) {
+									$('#pollResults').append('' +
+											'<div class="form-group">' +
+											'  <label class="form-check-label">'+option_details.option_name+'</label>' +
+											'  <div class="progress" style="height: 25px;">' +
+											'    <div class="progress-bar" role="progressbar" style="width: '+option_details.vote_percentage+'%;" aria-valuenow="'+option_details.vote_percentage+'" aria-valuemin="0" aria-valuemax="100">'+option_details.vote_percentage+'%</div>' +
+											'  </div>' +
+											'</div>');
+								});
+
+								$('#pollResultModal').modal({
+									backdrop: 'static',
+									keyboard: false
+								});
+
+								var resultTimeleft = 5;
+								var resultTimer = setInterval(function(){
+									if(resultTimeleft <= 0){
+										clearInterval(resultTimer);
+										$('#pollResultModal').modal('hide');
+									} else {
+										$('#howMuchSecondsLeftResult').text(resultTimeleft);
+									}
+									resultTimeleft -= 1;
+								}, 1000);
+
+							});
+						}
+
 					} else {
 						$('#howMuchSecondsLeft').text(timeleft);
 					}

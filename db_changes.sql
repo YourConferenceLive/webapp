@@ -607,3 +607,6 @@ ALTER TABLE `session_poll_options` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREM
 ALTER TABLE `session_poll_answers` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `session_polls` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE AFTER `show_result`;
 
+ALTER TABLE `session_polls` CHANGE `poll_tyoe` `poll_type` ENUM('poll') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `session_polls` ADD `added_by` INT NOT NULL AFTER `added_on`;
+

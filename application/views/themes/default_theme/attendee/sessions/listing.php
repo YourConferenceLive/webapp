@@ -197,8 +197,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<span class="badge badge-pill badge-primary pull-right"><?php echo $session->session_track;?></span>  
 								</div>
 								<div class="clearfix"></div>
-								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="p-0 mt-1" style="color:#487391"><?=$session->name?></a></h4>
-								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="" style="color: #284050;"><?=$session->other_language_name?></a></h4>
+								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall') ? $this->project_url.'/sessions/join/'.$session->id : 'javascript:;' );?>" class="p-0 mt-1" style="color:#487391"><?=$session->name?></a></h4>
+								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall') ? $this->project_url.'/sessions/join/'.$session->id : 'javascript:;' );?>" class="" style="color: #284050;"><?=$session->other_language_name?></a></h4>
 								<p>
 
 									<?php if($session->moderators != new stdClass()):?>
@@ -233,9 +233,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 
 							<div class="col-12 text-md-right text-sm-center" style="position: relative;bottom: 0;">
+<?php
+								if ($session->session_track != 'Exhibit Hall'):?>
 								<a class="btn btn-sm btn-primary m-1 rounded-0 agenda-btn" session-id ="<?=$session->id?>" session-title ="<?=$session->name?>" ><i class="fas fa-clipboard-list"></i> Agenda</a>
+<?php
+								endif;?>
 								<a class="btn btn-sm btn-success m-1 rounded-0<?php echo (($session->briefcase != new stdClass()) ? ' disabled not-allowed' : ' briefcase-btn' );?>" data-session-id ="<?=$session->id?>" data-session-title ="<?=$session->name?>"><i class="fas fa-calendar-check"></i> <?php echo (($session->briefcase != new stdClass()) ? 'Added in Briefcasea' : 'Add to Briefcase' );?></a>
+<?php
+								if ($session->session_track != 'Exhibit Hall'):?>
 								<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Join</a>
+<?php
+								endif;?>
 							</div>
 							<agenda style="display: none;" session-id="<?=$session->id?>"><?=$session->agenda?></agenda>
 
