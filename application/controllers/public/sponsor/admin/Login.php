@@ -14,6 +14,9 @@ class Login extends CI_Controller
 
 	public function index()
 	{
+		if (ycl_env == 'testing')
+			header('Location: https://www.yourconference.live/COS/sponsor/admin');
+
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header")
 			//->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/menu-bar", $data)
