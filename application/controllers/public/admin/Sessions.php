@@ -107,6 +107,7 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/polls", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/add-poll-modal.php")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -119,5 +120,10 @@ class Sessions extends CI_Controller
 	public function getPollByIdJson($id)
 	{
 		echo json_encode($this->sessions->getPollById($id));
+	}
+
+	public function addPollJson($session_id)
+	{
+		echo json_encode($this->sessions->addPoll($session_id));
 	}
 }
