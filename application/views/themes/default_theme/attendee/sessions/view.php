@@ -453,13 +453,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		socket.on('ycl_launch_poll_result', (data)=>{
+			console.log(data)
 			if(data.session_id == sessionId)
 			{
+				$('#pollResultModalLabel').text(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
 
 					$('#pollResults').html('');
-					$('#pollResultModalLabel').text(data.poll_question);
 					$.each(results, function (poll_id, option_details) {
 						$('#pollResults').append('' +
 								'<div class="form-group">' +
