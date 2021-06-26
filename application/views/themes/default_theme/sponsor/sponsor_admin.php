@@ -517,4 +517,4 @@ if(!file_exists($cover_photo_url)){
 
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=3"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=5"></script>
