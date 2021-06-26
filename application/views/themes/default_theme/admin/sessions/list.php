@@ -391,7 +391,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'	</td>' +
 					'	<td>' +
 					'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +
-					'			<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>' +
+					'			<button class="btn btn-sm btn-info m-1"><i class="fas fa-tv"></i> View</button>' +
+					'		</a>' +
+					'		<a target="_blank" href="'+project_admin_url+'/sessions/polls/'+session.id+'">' +
+					'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
 					'		</a>' +
 					'	</td>' +
 					'	<td>' +

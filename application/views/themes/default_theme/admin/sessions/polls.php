@@ -39,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="card">
 						<div class="card-header">
 							<h3 class="card-title">All polls for the session: [<?=$session->id?>] <?=$session->name?></h3>
-							<button class="add-session-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
+							<button class="add-poll-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -102,20 +102,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 
-		$('.add-session-btn').on('click', function () {
+		$('.add-poll-btn').on('click', function () {
 
-			$('#addSessionForm')[0].reset();
-			$('#currentPhotoDiv').hide();
-			$('#sessionDescription').summernote('reset');
-			$('.removeall').click();
+			//$('#addSessionForm')[0].reset();
+			//$('#currentPhotoDiv').hide();
+			//$('#sessionDescription').summernote('reset');
+			//$('.removeall').click();
 			// $('#sponsorId').val(0);
 			// $('#logo_preview').hide();
 			// $('#logo_label').text('');
 			// $('#banner_preview').hide();
 			// $('#banner_label').text('');
-			$('#save-session').html('<i class="fas fa-plus"></i> Create');
+			$('#save-poll').html('<i class="fas fa-plus"></i> Create');
 
-			$('#addSessionModal').modal({
+			$('#addPollModal').modal({
 				backdrop: 'static',
 				keyboard: false
 			});
@@ -346,7 +346,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+poll.poll_question+
 					'	</td>' +
 					'	<td>' +
-					'		'+poll.poll_tyoe+
+					'		'+poll.poll_type+
 					'	</td>' +
 					'	<td>' +
 					'		'+show_result+
@@ -355,8 +355,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Launch</button>' +
 					'	</td>' +
 					'	<td>' +
-					'		<button class="btn btn-sm btn-primary m-1" session-id="'+poll.id+'"><i class="fas fa-edit"></i> Edit</button>' +
-					'		<button class="btn btn-sm btn-danger m-1" session-id="'+poll.id+'" session-name="'+poll.poll_question+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'		<button class="edit-poll-btn btn btn-sm btn-primary m-1" session-id="'+poll.id+'"><i class="fas fa-edit"></i> Edit</button>' +
+					'		<button class="remove-poll-btn btn btn-sm btn-danger m-1" session-id="'+poll.id+'" session-name="'+poll.poll_question+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
 					'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
 					'		<!--<button class="closePoll btn btn-sm btn-primary">Close Poll</button>-->' +
 					'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
