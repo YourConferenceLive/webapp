@@ -778,4 +778,16 @@ class Sessions_Model extends CI_Model
 		}
 
 	}
+
+	public function getQuestions($session_id)
+	{
+		$this->db->select("*");
+		$this->db->from('session_questions');
+		$this->db->where('session_id', $session_id);
+		$polls = $this->db->get();
+		if ($polls->num_rows() > 0)
+			return $polls->result();
+
+		return new stdClass();
+	}
 }

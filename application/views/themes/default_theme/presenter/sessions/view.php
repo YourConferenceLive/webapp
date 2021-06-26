@@ -287,6 +287,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#attendeesOnline').html('<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees watching this session"><i class="fas fa-eye"></i> 0</span>');
 		$('[data-toggle="tooltip"]').tooltip();
 
+		fillQuestions();
+
 		socket.on('ycl_session_question', function (data) {
 			if (data.sessionId == session_id)
 			{
@@ -562,6 +564,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				//$('#presenter_timer').hide();
 			}
 		}, 1000);
+	}
+
+	function fillQuestions() {
+		$.get(project_presenter_url+"/sessions/getQuestionsAjax/"+session_id, function (questions) {
+			questions = JSON.parse(questions);
+
+			$('#questions-tab-content').html('');
+			$.each(questions, function (poll_id, question) {
+				$('#questions-tab-content').append('' +
+						'<div class="container-fluid mr-2">' +
+						'<div class="row" style="padding-right: 15px">' +
+						'<div class="col-7">' +
+						'<strong></strong>' +
+						'</div>' +
+						'<div class="col-3">' +
+						'<small class="text-secondary"></small>' +
+						'</div>' +
+						'<div class="col-1">' +
+						'<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+						'</div>' +
+						'<div class="col-1">' +
+						'<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+						'</div>' +
+						'</div>' +
+						'<div class="row">' +
+						'<div class="col-12">'+question.question+'</div>' +
+						'</div>' +
+						'</div>' +
+						'<div class="col"><hr></div>');
+			});
+
+			$('#pollResultModal').modal({
+				backdrop: 'static',
+				keyboard: false
+			});
+
+		});
 	}
 </script>
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
