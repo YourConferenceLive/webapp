@@ -314,7 +314,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'</div>' +
 						'<div class="col"><hr></div>';
 
-				$('#questions-tab-content').append(question);
+				$('#questions-tab-content').prepend(question);
 			}
 		});
 
@@ -572,7 +572,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#questions-tab-content').html('');
 			$.each(questions, function (poll_id, question) {
-				$('#questions-tab-content').append('' +
+				$('#questions-tab-content').prepend('' +
 						'<div class="container-fluid mr-2">' +
 						'<div class="row" style="padding-right: 15px">' +
 						'<div class="col-7">' +
