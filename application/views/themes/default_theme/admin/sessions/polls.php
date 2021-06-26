@@ -314,12 +314,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let pollId = $(this).attr('poll-id');
 			let pollQuestion = $(this).attr('poll-question');
 			socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId, poll_question:pollQuestion});
+			toastr.success("Result popup triggered");
 		});
 
 		$('#pollsTable').on('click', '.close-result-btn', function () {
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
 			socket.emit('ycl_close_poll_result', {session_id:sessionId,poll_id:pollId});
+			toastr.success("Close result popup triggered");
 		});
 	});
 
