@@ -498,6 +498,11 @@ if(!file_exists($cover_photo_url)){
 		});
 		socket.on('ycl_active_user_in_booth', function (users) {
 
+			let currently_in_the_list = $('#usersInThisBooth').html();
+			$('#other_attendees_list').prepend(currently_in_the_list);
+			$('.video-call').hide();
+			$('#usersInThisBooth').html('');
+
 			if (Object.keys(users).length === 0)
 				return false;
 
