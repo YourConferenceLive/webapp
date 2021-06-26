@@ -418,6 +418,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 
+		socket.on('ycl_close_poll_result', (data)=>{
+			if(data.session_id == session_id)
+			{
+				$('#pollResultModal').modal('hide');
+			}
+		});
+
 	});
 
 	function startsIn() {
