@@ -560,12 +560,18 @@ var loadScene=async function(name,incremental,sceneLocation,then)
 
 
             var matpant = new BABYLON.StandardMaterial("matpant", scene);
+            var matpantjj = new BABYLON.StandardMaterial("matpantjj", scene);
             var videoTexturepant = new BABYLON.VideoTexture("videoclip", ycl_root+"/vendor_frontend/3d_exhibition/assets/videox.mp4", scene, true, true);
-
+            var videoTexturepantjj = new BABYLON.VideoTexture("videoclipjj", ycl_root+"/vendor_frontend/3d_exhibition/assets/videojj_1.mp4", scene, true, true);
 
             matpant.diffuseTexture = videoTexturepant;
             videoTexturepant.video.pause();
+
+            matpantjj.diffuseTexture = videoTexturepantjj;
+            videoTexturepantjj.video.pause();
+
             p1=scene.getMeshByName("Novartis-294");
+            p2=scene.getMeshByName("Johnson & Johnson-30");
 
             //p1.material = matpant;
             /*
@@ -622,12 +628,27 @@ var loadScene=async function(name,incremental,sceneLocation,then)
                     {
                         p1.material = matpant;      
                         if(videoTexturepant.video.paused)
-                        {                            
+                        {
+                            videoTexturepantjj.video.pause();
                             videoTexturepant.video.play();
                         }
                         else
                         {
                             videoTexturepant.video.pause();
+                        }        
+                    }
+
+                    if(pickResult.pickedMesh.id=='Johnson & Johnson-30')
+                    {
+                        p2.material = matpantjj;      
+                        if(videoTexturepantjj.video.paused)
+                        {
+                            videoTexturepant.video.pause();
+                            videoTexturepantjj.video.play();
+                        }
+                        else
+                        {
+                            videoTexturepantjj.video.pause();
                         }        
                     }
 
