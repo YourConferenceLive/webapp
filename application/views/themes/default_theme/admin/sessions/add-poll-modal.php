@@ -45,7 +45,7 @@
 					</div>
 
 					<h5 class="mb-3">Poll Options
-						<button type="button" class="add-new-option-btn btn btn-sm btn-outline-success ml-1"><i class="fas fa-plus"></i></button></h5>
+						<button type="button" class="add-new-option-btn btn btn-sm btn-outline-success ml-1" data-toggle="tooltip" data-placement="right" title="Click to add one more option"><i class="fas fa-plus"></i></button></h5>
 					<div id="pollOptionsInputDiv">
 
 						<div class="input-group input-group-sm mb-2">
@@ -95,6 +95,8 @@
 <script>
 
 	$(function () {
+
+		$('[data-toggle="tooltip"]').tooltip();
 
 		$('.add-new-option-btn').on('click', function () {
 			$('#pollOptionsInputDiv').append('' +
