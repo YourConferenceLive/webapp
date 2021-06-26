@@ -73,8 +73,8 @@
 
 					<div class="form-group">
 						<div class="custom-control custom-switch">
-							<input type="checkbox" class="custom-control-input" id="customSwitch1">
-							<label class="custom-control-label" for="customSwitch1">Automatically show result (for 5 seconds)</label>
+							<input type="checkbox" class="custom-control-input" name="autoPollResult" id="autoPollResult">
+							<label class="custom-control-label" for="autoPollResult">Automatically show result (for 5 seconds)</label>
 						</div>
 					</div>
 
@@ -117,8 +117,9 @@
 		});
 
 		$('#pollsTable').on('click', '.edit-poll-btn', function () {
-			$.get(project_admin_url+"/sessions/getPollByIdJson/"+pollId, function (poll) {
+			toastr.warning('Under development'); return false;
 
+			$.get(project_admin_url+"/sessions/getPollByIdJson/"+$(this).attr('poll-id'), function (poll) {
 
 			}).fail((error)=>{
 				Swal.fire(
