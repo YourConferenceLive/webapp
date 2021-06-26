@@ -414,18 +414,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						keyboard: false
 					});
 
-					var resultTimeleft = 5;
-					var resultTimer = setInterval(function(){
-						if(resultTimeleft <= 0){
-							clearInterval(resultTimer);
-							$('#pollResultModal').modal('hide');
-						} else {
-							$('#howMuchSecondsLeftResult').text(resultTimeleft);
-						}
-						resultTimeleft -= 1;
-					}, 1000);
-
 				});
+			}
+		});
+
+		socket.on('ycl_close_poll_result', (data)=>{
+			if(data.session_id == session_id)
+			{
+				$('#pollResultModal').modal('hide');
 			}
 		});
 	});
