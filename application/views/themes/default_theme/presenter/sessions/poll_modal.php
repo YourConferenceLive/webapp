@@ -2,12 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 //echo"<pre>";print_r($sessions);exit("</pre>");
 ?>
-<!-- Poll Modal - presenter -->
-<div class="modal fade" id="pollModal" tabindex="-1" role="dialog" aria-labelledby="pollModalLabel" aria-hidden="true">
+<!-- Poll Modal - attendee -->
+<div class="modal fade" id="pollModal" tabindex="-1" role="dialog" aria-labelledby="pollModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="pollModalLabel">What would you do next?</h5>
+				<h5 class="modal-title" id="pollModalLabel"><span id="pollQuestion"></span></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -15,27 +15,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-12">
-						<!-- poll radio -->
-						<div class="form-group">
-							<div class="form-check mb-2">
-								<input class="form-check-input" type="radio" name="poll_option">
-								<label class="form-check-label" style="color: white;">A. Continue current management and follow-up for IOP check and repeat visual field and OCT</label>
+						<form id="pollAnswerForm">
+							<!-- poll radio -->
+							<div class="form-group">
+
+								<div id="pllOptions">
+								</div>
+
+								<input type="hidden" id="pollId" name="pollId" value="0">
+
 							</div>
-							<div class="form-check mb-2">
-								<input class="form-check-input" type="radio" name="poll_option">
-								<label class="form-check-label" style="color: white;">B. Switch to preservative free drops (Cosopt and Monoprost)</label>
-							</div>
-							<div class="form-check mb-2">
-								<input class="form-check-input" type="radio" name="poll_option">
-								<label class="form-check-label" style="color: white;">C. Refer for surgery now</label>
-							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<span>10s</span>
-				<!--<button type="button" class="btn btn-primary">Vote</button>-->
+				<span id="howMuchSecondsLeft"></span> seconds left
+				<button id="voteBtn" type="button" class="btn btn-primary"><i class="fas fa-vote-yea"></i> Vote</button>
 			</div>
 		</div>
 	</div>
@@ -43,22 +39,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 	$(function () {
-		socket.on('openPollNotification', ()=>{
-			$('#pollModal').modal('show');
-			$('#pollResultModal').modal('hide');
-		});
+		$('#voteBtn').on('click', function () {
 
-		socket.on('closePollNotification', ()=>{
-			$('#pollModal').modal('hide');
-		});
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Saving...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
 
-		socket.on('openResultNotification', ()=>{
-			$('#pollModal').modal('hide');
-			$('#pollResultModal').modal('show');
-		});
+			let formData = new FormData(document.getElementById('pollAnswerForm'));
 
-		socket.on('closeResultNotification', ()=>{
-			$('#pollResultModal').modal('hide');
+			$.ajax({
+				type: "POST",
+				url: project_url+"/sessions/vote",
+				data: formData,
+				processData: false,
+				contentType: false,
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					$('#pollModal').modal('hide');
+					//toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(data)
+				{
+					Swal.close();
+
+					data = JSON.parse(data);
+
+					if (data.status == 'success')
+					{
+						toastr.success('Vote recorded');
+						$('#pollModal').modal('hide');
+
+					}else{
+						$('#pollModal').modal('hide');
+						//toastr.error("Error");
+					}
+				}
+			});
 		});
-	});
+	})
 </script>
