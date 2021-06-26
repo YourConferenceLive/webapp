@@ -79,6 +79,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<li class="nav-header"></li>
 				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/eposters'?>" class="nav-link <?=($this->router->fetch_class()=='eposters')?'active':''?>">
+						<i class="fas fa fa-print" aria-hidden="true"></i>
+						<p>
+							ePosters
+						</p>
+					</a>
+				</li>
+
+				<li class="nav-header"></li>
+				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/sponsors'?>" class="nav-link <?=($this->router->fetch_class()=='sponsors')?'active':''?>">
 						<i class="fas fa-border-all"></i>
 						<p>
