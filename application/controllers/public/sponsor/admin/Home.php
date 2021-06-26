@@ -203,4 +203,12 @@ class Home extends CI_Controller
 		echo false;
 
 	}
+
+	public function sponsor_chat_mark_read(){
+		$this->sponsor->sponsor_chat_mark_read();
+	}
+
+	public function unread_chats(){
+		echo $this->sponsor->get_unread_chats();
+	}
 }

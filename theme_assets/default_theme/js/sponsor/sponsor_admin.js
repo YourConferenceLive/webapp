@@ -317,7 +317,6 @@ $(document).ready(function () {
 	get_resource_files();
 	get_availability_list();
 	get_full_calendar_events();
-
 	$('#sponsor-chat-text').keypress(function (e) {
 		if (e.which == 13) {
 			$('.btn-sponsor-send').click();
@@ -480,7 +479,7 @@ $(document).ready(function () {
 						'      <img src="'+ycl_root+'/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">\n' +
 						'    </div>\n' +
 						'    <div class="col-8 p-0 pl-2">\n' +
-						'       <span>' + data.name + ' ' + data.surname + ' <i class="user-status-indicator fas fa-dot-circle" user-id="' + data.user_id + '" style="color: grey;"></i></span>\n' +
+						'       <span>' + data.name + ' ' + data.surname + ' <i class="user-status-indicator fas fa-dot-circle" user-id="' + data.user_id + '" style="color: grey;"><badge  class="new-message badge badge-danger float-right ml-2" style="display: none">new</badge></i></span>\n' +
 						'    </div>\n' +
 						'    <div class="col-3 p-0 pl-1">\n' +
 						'    <button style="display: none;" class="btn btn-info btn-sm video-call" room-id="booth_oto_vc_'+data.user_id+'" user-id="' + data.user_id + '" user-name="' + data.name + ' ' + data.surname + '"><i class="fas fa-video"></i></button>\n' +
@@ -542,6 +541,15 @@ $(document).ready(function () {
 		$.post(project_url + "/sponsor/admin/home/get_sponsor_attendee_chat/", {'chat_from_id': chat_from_id}, function () {
 
 		}).done(function (datas) {
+
+			$.post(project_url+"/sponsor/admin/home/sponsor_chat_mark_read/",
+				{
+					'chat_from_id':chat_from_id
+				});
+
+			$('#other_attendees_list .all-users-item[user-id="'+chat_from_id+'"] .new-message').css('display', 'none');
+			$('#usersInThisBooth .all-users-item[user-id="'+chat_from_id+'"] .new-message').css('display', 'none');
+
 			datas = JSON.parse(datas)
 
 			if (datas.status == 'success') {
@@ -549,7 +557,6 @@ $(document).ready(function () {
 				$('.sponsor-chat-body').html('');
 
 				$.each(datas.result, function (index, data) {
-
 					if (data.chat_from == "sponsor") {
 						$('.sponsor-chat-body').append('<div class="card sponsor-outgoing-message w-90 float-right  my-1 pr-2 text-white shadow-lg" ><div class="row"><div class="col"><span class="float-right"><img src="https://via.placeholder.com/150" class="my-2" src="" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-right"><small>' + data.name + ' ' + data.surname + '</small></span><span class="float-left text-white-50"><small>' + data.date_time + ' <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col text-right">' + data.chat_text + '</div></div></div></div></div><br>');
 					} else {
@@ -561,9 +568,32 @@ $(document).ready(function () {
 		});
 	}
 
+	get_unread_chats();
+	function get_unread_chats(){
+
+		$.post(project_url + "/sponsor/admin/home/unread_chats/",
+			function (success) {
+			}).done(function(chats){
+			chats = JSON.parse(chats);
+
+			$.each(chats.result, function(index, chat){
+
+				$('#other_attendees_list .all-users-item[user-id="'+chat.from_id+'"] .new-message').css('display', 'block');
+			});
+		});
+	}
+
 	socket.on('ycl_booth_direct_chat', function(data){
+
+		if (data.to_id === "sponsor") {
+
+			$('#usersInThisBooth .all-users-item[user-id="' + data.from_id + '"] .new-message').css('display', 'block')
+		}
+
 		if(data.from_id === $('.sponsor-chat-header').attr('data-to_id') && data.booth_id === current_booth_id && data.booth_project_id === booth_project_id){
+
 			if (data.to_id === "sponsor") {
+
 				$('.sponsor-chat-body').append('<div class="card sponsor-incoming-message w-90 float-left  my-1 pl-2 text-white shadow-lg " data-to_id="' + data.to_id + '"><div class="row"><div class="col"><span class="float-left"><img class="my-2" src="https://via.placeholder.com/150" style="width: 50px;height: 50px; border-radius: 50%"></span><div class="row ml-1"><div class="col"><span class="float-left "><small>' + data.attendee_name + '</small></span><span class="float-right text-white-50"><small> just now <i class="far fa-clock"></i></small> </span></div></div><div class="row"><div class="col">' + data.chat_text + '</div></div></div></div></div>');
 				$('.sponsor-chat-body').scrollTop($('.sponsor-chat-body')[0].scrollHeight);
 			}
