@@ -43,7 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 			<div class="menu">
 <?php
-				$menu=[["Agenda","Horaire","sessions/day/2021-06-26"],["ePosters","","eposters"],["Evaluation","Evaluation","evaluation"],["Exhibition","Exposition","sponsor"],["Networking Lounge","Résautage","lounge"],["Relaxation Zone","Espace bien-étre","relaxation_zone"]];
+				$menu=[["Agenda","Horaire","sessions/day/2021-06-27"],["ePosters","","eposters"],["Evaluation","Evaluation","evaluation"],["Exhibition","Exposition","sponsor"],["Networking Lounge","Résautage","lounge"],["Relaxation Zone","Espace bien-étre","relaxation_zone"]];
 				for($i=0; $i < count($menu); $i++){
 					?>
 					<a href="<?=base_url().$this->project->main_route?>/<?=$menu[$i][2]?>" class="circle"<?php echo (($menu[$i][0] == 'Evaluation') ? ' target="_blank"' : '' );?>>

@@ -260,8 +260,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	let user_name = "<?=$user->name?> <?=$user->surname?>";
 	let user_photo = "<?=$user->photo?>";
 
-	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' UTC-5' ?>"; // UTC-5 from March 14 2021 | UTC-4 from November 7 2021
-	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' UTC-5' ?>"; // UTC-5 from March 14 2021 | UTC-4 from November 7 2021
+	<?php
+	$dtz = new DateTimeZone($this->project->timezone);
+	$time_in_project = new DateTime('now', $dtz);
+	$gmtOffset = $dtz->getOffset( $time_in_project ) / 3600;
+	$gmtOffset = "GMT" . ($gmtOffset < 0 ? $gmtOffset : "+".$gmtOffset);
+	?>
+	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' '.$gmtOffset ?>";
+	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' '.$gmtOffset ?>";
 
 	console.log(session_start_datetime);
 	console.log(session_end_datetime);

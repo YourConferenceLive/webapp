@@ -271,8 +271,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	let user_name = "<?=$user->name?> <?=$user->surname?>";
 	let user_photo = "<?=$user->photo?>";
 
-	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' UTC-5' ?>"; // UTC-5 from March 14 2021 | UTC-4 from November 7 2021
-	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' UTC-5' ?>"; // UTC-5 from March 14 2021 | UTC-4 from November 7 2021
+	<?php
+	$dtz = new DateTimeZone($this->project->timezone);
+	$time_in_project = new DateTime('now', $dtz);
+	$gmtOffset = $dtz->getOffset( $time_in_project ) / 3600;
+	$gmtOffset = "GMT" . ($gmtOffset < 0 ? $gmtOffset : "+".$gmtOffset);
+	?>
+	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' '.$gmtOffset ?>";
+	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' '.$gmtOffset ?>";
 
 	console.log(session_start_datetime);
 	console.log(session_end_datetime);
@@ -467,7 +473,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			let countdown_str = "";
 
-			console.log(distance);
+			//console.log(distance);
 			if (distance > 86400000)
 				countdown_str = `${days} ${days_label}, ${hours} ${hours_label}, ${minutes} ${minutes_label}, ${seconds} ${seconds_label}`;
 			else if(distance > 3600000)
@@ -481,6 +487,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			// If the count down is finished,
 			if (distance < 0) {
+				//console.log("here");
 				clearInterval(x);
 				//$('#presenter_timer').hide();
 				endsIn();
@@ -492,10 +499,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		// Set the date we're counting down to
 		var countDownDate = new Date(session_end_datetime).getTime();
 
-		console.log("session_end_datetime: " + session_end_datetime);
+		//console.log("session_end_datetime: " + session_end_datetime);
 
 		// Update the count down every 1 second
 		var x = setInterval(function() {
+			//console.log("then here");
 
 			// Get today's date and time
 			var now = new Date().getTime();
