@@ -86,7 +86,7 @@ class Sessions extends CI_Controller
 
 	public function claimCredit($session_id, $credit)
 	{
-		$this->credits->claim('session', $session_id, 2);
+		$this->credits->claim('session', $session_id, $credit);
 	}
 
 	private function countdownInSeconds($countdown_to, $offset=900)
