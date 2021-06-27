@@ -20,6 +20,7 @@ class Analytics extends CI_Controller
 			redirect(base_url($this->project->main_route)."/sponsor/admin/login");
 
 		$this->load->model('Logger_Model', 'logger');
+		$this->load->model('Analytics_Model', 'analytics');
 		$this->load->helper('string');
 		$this->load->model('sponsor/Sponsor_Model', 'sponsor');
 
@@ -31,11 +32,12 @@ class Analytics extends CI_Controller
 		$menu_data['user'] = (Object) $_SESSION['project_sessions']["project_{$this->project->id}"];
 
 		$data['booth'] = $this->sponsor->getBoothData($this->booth_id);
-		$data['logs'] = $this->logger->getBoothLogs($this->booth_id);
-		$data['total_visits'] = $this->logger->getTotalBoothVisits($this->booth_id);
-		$data['unique_visits'] = $this->logger->getUniqueBoothVisits($this->booth_id);
-		$data['returning_visits'] = $this->logger->getReturningBoothVisits($this->booth_id);
-		$data['total_resource_downloads'] = $this->logger->getTotalResourceDownloads($this->booth_id);
+		$data['logs'] = $this->analytics->getBoothLogs($this->booth_id);
+		$data['total_visits'] = $this->analytics->getTotalBoothVisits($this->booth_id);
+		$data['unique_visits'] = $this->analytics->getUniqueBoothVisits($this->booth_id);
+		$data['returning_visits'] = $this->analytics->getReturningBoothVisits($this->booth_id);
+		$data['total_resource_downloads'] = $this->analytics->getTotalResourceDownloads($this->booth_id);
+		$data['resources_added_to_backpack'] = $this->analytics->getSponsorResourcesInBackpack($this->booth_id);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/sponsor/common/header")

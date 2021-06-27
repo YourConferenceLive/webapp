@@ -1,6 +1,6 @@
 <?php
 //echo"<pre>";
-//print_r($booth);
+//print_r($resources_added_to_backpack);
 //exit("</pre>");
 ?>
 
@@ -160,12 +160,19 @@
 	</div>
 
 	<div class="row mb-5">
+
 		<div class="col-12">
-			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title"><i class="fas fa-clipboard-list" style="color: #5b8cff;"></i> All Logs</h5>
-				</div>
-				<div class="card-body pb-0">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-clipboard-list" style="color: #5b8cff;"></i> All Logs</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-folder-open"></i> Resources Saved</a>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active pt-5" id="home" role="tabpanel" aria-labelledby="home-tab">
+					<div class="clearfix"></div>
 					<table id="analyticsTable" class="table table-bordered">
 						<thead>
 						<tr>
@@ -180,18 +187,48 @@
 						</tr>
 						</thead>
 						<tbody id="sessionsTableBody">
-							<?php foreach ($logs as $log): ?>
-								<tr>
-									<td><?=$log->user_id?></td>
-									<td><?=$log->user_fname?></td>
-									<td><?=$log->user_surname?></td>
-									<td><?=$log->credentials?></td>
-									<td><?=$log->city?></td>
-									<td><?=$log->name?></td>
-									<td><?=$log->date_time?></td>
-									<td><?=$log->ip?></td>
-								</tr>
-							<?php endforeach; ?>
+						<?php foreach ($logs as $log): ?>
+							<tr>
+								<td><?=$log->user_id?></td>
+								<td><?=$log->user_fname?></td>
+								<td><?=$log->user_surname?></td>
+								<td><?=$log->credentials?></td>
+								<td><?=$log->city?></td>
+								<td><?=$log->name?></td>
+								<td><?=$log->date_time?></td>
+								<td><?=$log->ip?></td>
+							</tr>
+						<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="tab-pane fade pt-5" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+					<div class="clearfix"></div>
+					<table id="briefcaseTable" class="table table-bordered">
+						<thead>
+						<tr>
+							<th>User ID</th>
+							<th>First Name</th>
+							<th>Second Name</th>
+							<th>Degree</th>
+							<th>City</th>
+							<th>Item</th>
+							<th>Time</th>
+						</tr>
+						</thead>
+						<tbody id="sessionsTableBody">
+						<?php foreach ($resources_added_to_backpack as $item): ?>
+							<tr>
+								<td><?=$item->user_id?></td>
+								<td><?=$item->user_fname?></td>
+								<td><?=$item->user_surname?></td>
+								<td><?=$item->credentials?></td>
+								<td><?=$item->city?></td>
+								<td><?=$item->resource_name?></td>
+								<td><?=$item->added_date_time?></td>
+							</tr>
+						<?php endforeach; ?>
 						</tbody>
 					</table>
 				</div>
@@ -229,6 +266,22 @@
 		buttons:
 				[
 					{ extend: 'excel', text: '<i class="far fa-file-excel"></i> Export Excel', className:'btn-success', title:'<?=$booth->name?> - booth analytics (<?=date('Y-m-d')?>)' }
+				]
+	});
+
+	$('#briefcaseTable').DataTable({
+		"dom": 'lBfrtip',
+		"paging": true,
+		"lengthChange": true,
+		"searching": true,
+		"ordering": true,
+		"info": true,
+		"autoWidth": false,
+		"responsive": true,
+		"order": [[ 5, "desc" ]],
+		buttons:
+				[
+					{ extend: 'excel', text: '<i class="far fa-file-excel"></i> Export Excel', className:'btn-success', title:'<?=$booth->name?> - resources saved (<?=date('Y-m-d')?>)' }
 				]
 	});
 </script>
