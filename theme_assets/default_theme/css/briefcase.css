@@ -2,7 +2,7 @@
 .briefcase-container{padding-bottom: 50px;}
 .briefcase-container h1{color: #487391;}
 .briefcase-items h2, .briefcase-items h3{color: #284050;}
-.briefcase-items h3{font-style: italic;font-weight: 400;}
+.briefcase-items h3{font-weight: 400;}
 .briefcase-items{background-color: #e9ecef8c;box-shadow: 0px 5px 30px 10px #aaaaaa8c;}
 .briefcase-items .container-fluid {}
 
