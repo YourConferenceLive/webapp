@@ -32,11 +32,11 @@ class Accreditation_reports extends CI_Controller
 	public function getAllSessionsCredits($session_type)
 	{
 		$this->logger->log_visit("Sessions credits report of $session_type");
-		$get 					= $this->input->get();
+		$post 					= $this->input->post();
 
-		$draw 					= intval($this->input->get("draw"));
-		$start 					= ((intval($this->input->get("start"))) ? $this->input->get("start") : 0 );
-		$length 				= ((intval($this->input->get("length"))) ? $this->input->get("length") : 0 );
+		$draw 					= intval($this->input->post("draw"));
+		$start 					= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
+		$length 				= ((intval($this->input->post("length"))) ? $this->input->post("length") : 0 );
 
 		if ($session_type == 'gs') {
 			$columns_array 		= array('user.rcp_number', 'user_credits.id', 'sessions.name', 'user_credits.credit', 'user_credits.claimed_datetime');
@@ -44,14 +44,15 @@ class Accreditation_reports extends CI_Controller
 			$columns_array 		= array('user.rcp_number', 'user_credits.id', '', 'user_credits.credit', 'sessions.name', 'user_credits.claimed_datetime');
 		}
 
-		$column_index 			= $get['order'][0]['column'];
-		$column_name 			= $columns_array[$column_index];
-		$column_sort_order 		= $get['order'][0]['dir']; 
-		$keyword 				= $get['search']['value'];
+		$column_index 			= $post['order'][0]['column'];
+		$column_name 			= ((@$columns_array[$column_index]) ? $columns_array[$column_index] : 'user.rcp_number' );
+		$column_sort_order 		= (($post['order'][0]['dir']) ? $post['order'][0]['dir'] : 'ASC' ); 
+		$keyword 				= $post['search']['value'];
 		$count 					= $this->credit->getAllSessionsCreditsCount($session_type, $keyword);
 
 		$query 					= $this->credit->getAllSessionsCredits($session_type, $start, $length, $column_name, $column_sort_order, $keyword);
 		$data 					= [];
+
 
 		if ($session_type == 'gs') {
 			foreach($query as $r) {
@@ -108,17 +109,17 @@ class Accreditation_reports extends CI_Controller
 	public function getAllEpostersCredits()
 	{
 		$this->logger->log_visit("ePosters credits report");
-		$get 				= $this->input->get();
+		$post 				= $this->input->post();
 
-		$draw 				= intval($this->input->get("draw"));
-		$start 				= ((intval($this->input->get("start"))) ? $this->input->get("start") : 0 );
-		$length 			= ((intval($this->input->get("length"))) ? $this->input->get("length") : 5 );
+		$draw 				= intval($this->input->post("draw"));
+		$start 				= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
+		$length 			= ((intval($this->input->post("length"))) ? $this->input->post("length") : 5 );
 
 		$columns_array 		= array('user_credits.id', 'eposters.title', 'eposters.type', 'user_credits.credit', 'user_credits.claimed_datetime');
-		$column_index 		= $get['order'][0]['column'];
-		$column_name 		= $columns_array[$column_index];
-		$column_sort_order 	= $get['order'][0]['dir']; 
-		$keyword 			= $get['search']['value'];
+		$column_index 		= $post['order'][0]['column'];
+		$column_name 		= ((@$columns_array[$column_index]) ? $columns_array[$column_index] : 'user.rcp_number' );
+		$column_sort_order 	= (($post['order'][0]['dir']) ? $post['order'][0]['dir'] : 'ASC' ); 
+		$keyword 			= $post['search']['value'];
 		$count 				= $this->credit->getAllEpostersCreditsCount($keyword);
 
 		$query 				= $this->credit->getAllEpostersCredits($start, $length, $column_name, $column_sort_order, $keyword);

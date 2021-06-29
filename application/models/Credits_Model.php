@@ -71,7 +71,8 @@ class Credits_Model extends CI_Model
 		$this->db->where('sessions.is_deleted', 0);
 		$this->db->where('user_credits.user_id', $this->user->user_id);
 		$this->db->where('user_credits.origin_type', 'session');
-		$this->db->where('sessions.session_type', $session_type);
+		$this->db->where_in('sessions.session_type', (($session_type == 'stc') ? array($session_type) : array($session_type, 'zm') ) );
+
 		if ($keyword)
 		{
     		$this->db->group_start();
@@ -93,7 +94,7 @@ class Credits_Model extends CI_Model
 		$this->db->where('sessions.is_deleted', 0);
 		$this->db->where('user_credits.user_id', $this->user->user_id);
 		$this->db->where('user_credits.origin_type', 'session');
-		$this->db->where('sessions.session_type', $session_type);
+		$this->db->where_in('sessions.session_type', (($session_type == 'stc') ? array($session_type) : array($session_type, 'zm') ) );
 
 		if ($keyword)
 		{
@@ -194,7 +195,8 @@ class Credits_Model extends CI_Model
 		$this->db->where('user.active', 1);
 		$this->db->where('sessions.is_deleted', 0);
 		$this->db->where('user_credits.origin_type', 'session');
-		$this->db->where('sessions.session_type', $session_type);
+		$this->db->where_in('sessions.session_type', (($session_type == 'stc') ? array($session_type) : array($session_type, 'zm') ) );
+
 		if ($keyword)
 		{
     		$this->db->group_start();
@@ -204,6 +206,7 @@ class Credits_Model extends CI_Model
 			$this->db->or_like('sessions.name', $keyword);
     		$this->db->group_end();
 		}
+
 		return $this->db->count_all_results('user_credits');
 	}
 
@@ -217,7 +220,7 @@ class Credits_Model extends CI_Model
 		$this->db->where('user.active', 1);
 		$this->db->where('user_credits.origin_type', 'session');
 		$this->db->where('sessions.is_deleted', 0);
-		$this->db->where('sessions.session_type', $session_type);
+		$this->db->where_in('sessions.session_type', (($session_type == 'stc') ? array($session_type) : array($session_type, 'zm') ) );
 
 		if ($keyword)
 		{

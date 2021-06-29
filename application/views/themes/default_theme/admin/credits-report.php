@@ -174,7 +174,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
-				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/gs", type : 'GET'},
+				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/gs", type : 'POST'},
 		        "order": [[ 0, "ASC" ]]
 		    });
 	
@@ -183,7 +183,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
-				'ajax': {url : project_url+"/admin/accreditation_reports/getAllEpostersCredits", type : 'GET'},
+				'ajax': {url : project_url+"/admin/accreditation_reports/getAllEpostersCredits", type : 'POST'},
 		        "order": [[ 0, "ASC" ]]
 		    });
 	
@@ -192,7 +192,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
-				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/stc", type : 'GET'},
+				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/stc", type : 'POST'},
 		        "order": [[ 0, "ASC" ]]
 		    });
 		});
