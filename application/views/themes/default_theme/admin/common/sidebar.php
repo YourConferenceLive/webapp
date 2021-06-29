@@ -109,6 +109,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<li class="nav-header"></li>
 				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/accreditation_reports'?>" class="nav-link <?=($this->router->fetch_class()=='evaluation')?'active':''?>">
+						<i class="fas fa-chart-bar"></i>
+						<p>
+							Accreditation Reports
+						</p>
+					</a>
+				</li>
+
+				<li class="nav-header"></li>
+				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/live_support_chat'?>" class="nav-link <?=($this->router->fetch_class()=='live_support_chat')?'active':''?>">
 						<i class="far fa-life-ring"></i>
 						<p>
