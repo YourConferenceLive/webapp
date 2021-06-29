@@ -134,7 +134,7 @@ class Briefcase extends CI_Controller
 		$data['user'] 		= $this->user;
 		$data['sessions'] 	= $this->credit->getUserSessionsCredits('gs', 0, -1, 'sessions.name', 'ASC', '');
 		$data['eposters'] 	= $this->credit->getUserEpostersCredits(0, -1, 'eposters.title', 'ASC', '');
-		$data['stcs'] 		= $this->credit->getUserSessionsCredits('zm', 0, -1, 'sessions.name', 'ASC', '');
+		$data['stcs'] 		= $this->credit->getUserSessionsCredits('stc', 0, -1, 'sessions.name', 'ASC', '');
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/briefcase/certificate", $data);

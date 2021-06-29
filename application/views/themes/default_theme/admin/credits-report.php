@@ -192,7 +192,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
-				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/zm", type : 'GET'},
+				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/stc", type : 'GET'},
 		        "order": [[ 0, "ASC" ]]
 		    });
 		});
