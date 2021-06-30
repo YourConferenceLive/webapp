@@ -1,12 +1,7 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-//echo"<pre>";print_r($logs);exit("</pre>");
-?>
-
+defined('BASEPATH') OR exit('No direct script access allowed');?>
 <style>
-	#sessionsTable_filter, #sessionsTable_paginate{
-		float: right;
-	}
+#sessionsTable_filter, #sessionsTable_paginate{float: right;}
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -56,20 +51,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</tr>
 								</thead>
 								<tbody id="logsTableBody">
-								<?php foreach ($logs as $log): ?>
-									<?php if ($log->user_id != ''): ?>
-											<tr>
-												<td><?=$log->user_id?></td>
-												<td><?=$log->user_fname?></td>
-												<td><?=$log->user_surname?></td>
-												<td><?=$log->credentials?></td>
-												<td><?=$log->email?></td>
-												<td><?=$log->city?></td>
-												<td><img src="<?=ycl_root?>/theme_assets/booth_game_icons/<?=$log->icon_name?>.png" width="30px"></td>
-												<td><?=$log->last_collected?></td>
-											</tr>
-									<?php endif; ?>
-								<?php endforeach; ?>
+<?php
+								foreach ($logs as $log):
+									if ($log->id != ''):?>
+									<tr>
+										<td><?=$log->id?></td>
+										<td><?=$log->name?></td>
+										<td><?=$log->surname?></td>
+										<td><?=$log->credentials?></td>
+										<td><?=$log->email?></td>
+										<td><?=$log->city?></td>
+										<td align="center"><img src="<?=ycl_root?>/theme_assets/booth_game_icons/<?=$log->icon_name?>.png" width="30" title="<?php echo $log->booth_name;?>"></td>
+										<td><?=$log->last_collected?></td>
+									</tr>
+<?php
+									endif;
+								endforeach;?>
 								</tbody>
 							</table>
 						</div>
@@ -102,7 +99,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 	$(function () {
-
 		$('#logsTable').DataTable({
 			"paging": true,
 			"lengthChange": true,
@@ -111,7 +107,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			"info": true,
 			"autoWidth": false,
 			"responsive": true,
-			"order": [[ 5, "desc" ]],
+			"order": [[ 7, "desc" ]],
 		});
 	});
 </script>

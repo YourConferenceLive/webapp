@@ -48,9 +48,8 @@ class Analytics extends CI_Controller
 
 	public function scavenger_hunt()
 	{
-		$sidebar_data['user'] = $this->user;
-
-		$data['logs'] = $this->analytics->getScavengerHuntData();
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getScavengerHuntData();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
