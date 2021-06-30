@@ -100,6 +100,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <script>
 	$(function () {
 		$('#logsTable').DataTable({
+			dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [{text: '<i class="fas fa-file-csv"></i> Export CSV',
+				className: 'btn btn-success',
+				action: function ( e, dt, button, config ) {
+					window.open(project_url +'/admin/analytics/scavenger_hunt_export/csv', "_blank");
+				}
+			}],
 			"paging": true,
 			"lengthChange": true,
 			"searching": true,
