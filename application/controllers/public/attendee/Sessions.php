@@ -20,7 +20,7 @@ class Sessions extends CI_Controller
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('Sessions_Model', 'sessions');
 		$this->load->model('attendee/Notes_Model', 'note');
-		$this->load->model('Credits_Model', 'credits');
+		$this->load->model('Credits_Model', 'credit');
 
         $this->load->library("pagination");
         $this->load->helper('form');
@@ -86,7 +86,7 @@ class Sessions extends CI_Controller
 
 	public function claimCredit($session_id, $credit)
 	{
-		$this->credits->claim('session', $session_id, $credit);
+		$this->credit->claim('session', $session_id, $credit);
 	}
 
 	private function countdownInSeconds($countdown_to, $offset=900)

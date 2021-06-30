@@ -382,7 +382,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
-				'ajax': {url : project_url+"/briefcase/getSessionCredits/zm", type : 'POST'},
+				'ajax': {url : project_url+"/briefcase/getSessionCredits/stc", type : 'POST'},
 		        "order": [[ 0, "ASC" ]]
 		    });
 

@@ -132,9 +132,9 @@ class Briefcase extends CI_Controller
 		$this->load->library('Pdf');
 
 		$data['user'] 		= $this->user;
-		$data['sessions'] 	= $this->credit->getAllSessionCredits('gs', 0, -1, 'sessions.name', 'ASC', '');
-		$data['eposters'] 	= $this->credit->getAllEposterCredits(0, -1, 'eposters.title', 'ASC', '');
-		$data['stcs'] 		= $this->credit->getAllSessionCredits('zm', 0, -1, 'sessions.name', 'ASC', '');
+		$data['sessions'] 	= $this->credit->getUserSessionsCredits('gs', 0, -1, 'sessions.name', 'ASC', '');
+		$data['eposters'] 	= $this->credit->getUserEpostersCredits(0, -1, 'eposters.title', 'ASC', '');
+		$data['stcs'] 		= $this->credit->getUserSessionsCredits('stc', 0, -1, 'sessions.name', 'ASC', '');
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/briefcase/certificate", $data);
@@ -193,9 +193,9 @@ class Briefcase extends CI_Controller
 		$column_name 		= $columns_array[$column_index];
 		$column_sort_order 	= $post['order'][0]['dir']; 
 		$keyword 			= $post['search']['value'];
-		$count 				= $this->credit->getSessionCreditsCount($session_type, $keyword);
+		$count 				= $this->credit->getUserSessionsCreditsCount($session_type, $keyword);
 
-		$query 				= $this->credit->getAllSessionCredits($session_type, $start, $length, $column_name, $column_sort_order, $keyword);
+		$query 				= $this->credit->getUserSessionsCredits($session_type, $start, $length, $column_name, $column_sort_order, $keyword);
 
 		$data 				= [];
 		$table_count 		= 1;
@@ -225,9 +225,9 @@ class Briefcase extends CI_Controller
 		$column_name 		= $columns_array[$column_index];
 		$column_sort_order 	= $post['order'][0]['dir']; 
 		$keyword 			= $post['search']['value'];
-		$count 				= $this->credit->getEposterCreditsCount($keyword);
+		$count 				= $this->credit->getUserEpostersCreditsCount($keyword);
 
-		$query 				= $this->credit->getAllEposterCredits($start, $length, $column_name, $column_sort_order, $keyword);
+		$query 				= $this->credit->getUserEpostersCredits($start, $length, $column_name, $column_sort_order, $keyword);
 
 		$data 				= [];
 		$table_count 		= 1;
