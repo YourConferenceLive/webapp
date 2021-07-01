@@ -197,10 +197,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<span class="badge badge-pill badge-primary pull-right"><?php echo $session->session_track;?></span>  
 								</div>
 								<div class="clearfix"></div>
-								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall') ? $this->project_url.'/sessions/join/'.$session->id : 'javascript:;' );?>" class="p-0 mt-1" style="color:#487391"><?=$session->name?></a></h4>
-								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall') ? $this->project_url.'/sessions/join/'.$session->id : 'javascript:;' );?>" class="" style="color: #284050;"><?=$session->other_language_name?></a></h4>
+								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="p-0 mt-1" style="color:#487391"><?=$session->name?></a></h4>
+								<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="" style="color: #284050;"><?=$session->other_language_name?></a></h4>
 								<p>
-
 									<?php if($session->moderators != new stdClass()):?>
 										<span><strong>Moderator:</strong></span>
 									<?php foreach ($session->moderators as $index=> $moderator):?>
@@ -245,7 +244,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-secondary m-1 rounded-0 disabled"><i class="far fa-play-circle"></i> Recording Coming Soon</a>
 <?php
 									elseif ($session->video_url != ''):?>
-										<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-search"></i> View Recording</a>
+										<a href="<?=$this->project_url?>/sessions/view/<?=$session->id?>" class="btn btn-sm btn-warning m-1 rounded-0"><i class="fas fa-search"></i> View Recording</a>
 <?php
 									else:?>
 										<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Join</a>
