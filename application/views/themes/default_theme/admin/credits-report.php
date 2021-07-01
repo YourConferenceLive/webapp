@@ -175,10 +175,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
-				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/gs", type : 'POST'},
-		        "order": [[ 0, "ASC" ]],
-				buttons:[{ extend: 'excel', text: '<i class="far fa-file-excel"></i> Export Excel', className:'btn-success', title:'Group Learning Export' }]
-		    });
+				'ajax': {url: project_url + "/admin/accreditation_reports/getAllSessionsCredits/gs", type: 'POST'},
+				"order": [[0, "ASC"]],
+				buttons: [
+					{
+						extend: 'excel',
+						text: '<i class="far fa-file-excel"></i> Export Excel',
+						className: 'btn-success',
+						title: 'Group Learning Export',
+						exportOptions: {
+							modifier: {
+								page: 'all',
+								search: 'none'
+							}
+						}
+					}]
+			});
 	
 			$('#eposterCreditTable').DataTable({
         		"dom": 'lBfrtip',
