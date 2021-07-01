@@ -102,13 +102,12 @@ class Sessions extends CI_Controller
 
 	public function day($day, $track_id = 'NaN', $keynote_id = 'NaN', $speaker_id = 'NaN', $keyword = 'NaN')
 	{
+		$data['user'] 				= $this->user;
 
-		$data['user'] 			= $this->user;
-
-		$data['track_id'] 		= (($track_id != ''  && $track_id != 'NaN') ? $track_id : '' );
-		$data['keynote_id'] 	= (($keynote_id != '' && $keynote_id != 'NaN') ? $keynote_id : '' );
-		$data['speaker_id'] 	= (($speaker_id != '' && $speaker_id != 'NaN') ? $speaker_id : '' );
-		$data['keyword'] 		= (($keyword != '' && $keyword != 'NaN') ? urldecode($keyword) : '' );
+		$data['track_id'] 			= (($track_id != ''  && $track_id != 'NaN') ? $track_id : '' );
+		$data['keynote_id'] 		= (($keynote_id != '' && $keynote_id != 'NaN') ? $keynote_id : '' );
+		$data['speaker_id'] 		= (($speaker_id != '' && $speaker_id != 'NaN') ? $speaker_id : '' );
+		$data['keyword'] 			= (($keyword != '' && $keyword != 'NaN') ? urldecode($keyword) : '' );
 
 		$data['tracks'] 			= $this->sessions->getAllTracks();
 		$data['keynote_speakers'] 	= $this->sessions->getAllKeynoteSpeakers();

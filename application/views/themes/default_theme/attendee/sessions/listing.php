@@ -240,13 +240,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								endif;?>
 								<a class="btn btn-sm btn-success m-1 rounded-0<?php echo (($session->briefcase != new stdClass()) ? ' disabled not-allowed' : ' briefcase-btn' );?>" data-session-id ="<?=$session->id?>" data-session-title ="<?=$session->name?>"><i class="fas fa-calendar-check"></i> <?php echo (($session->briefcase != new stdClass()) ? 'Already in the Briefcase' : 'Add to Briefcase' );?></a>
 <?php
-								if ($session->session_track != 'Exhibit Hall'):?>
-								 <?php if ($session->end_date_time < date('Y-m-d H:i:s')): ?>
+								if ($session->session_track != 'Exhibit Hall'):
+									if ($session->end_date_time < date('Y-m-d H:i:s') && $session->video_url == ''):?>
 										<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-secondary m-1 rounded-0 disabled"><i class="far fa-play-circle"></i> Recording Coming Soon</a>
-								<?php else: ?>
-										<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Join</a>
-								 <?php endif; ?>
 <?php
+									elseif ($session->video_url != ''):?>
+										<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-search"></i> View Recording</a>
+<?php
+									else:?>
+										<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Join</a>
+<?php
+									endif;
 								endif;?>
 							</div>
 							<agenda style="display: none;" session-id="<?=$session->id?>"><?=$session->agenda?></agenda>
