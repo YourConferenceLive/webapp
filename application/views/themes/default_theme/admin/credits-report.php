@@ -183,12 +183,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						text: '<i class="far fa-file-excel"></i> Export Excel',
 						className: 'btn-success',
 						title: 'Group Learning Export',
-						exportOptions: {
-							modifier: {
-								page: 'all',
-								search: 'none'
-							}
-						}
+						action: ajaxExportAction
 					}]
 			});
 	
