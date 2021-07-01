@@ -1,12 +1,7 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-//echo"<pre>";print_r($sessions);exit("</pre>");
-?>
-
+defined('BASEPATH') OR exit('No direct script access allowed');?>
 <style>
-	#sessionsTable_filter, #sessionsTable_paginate{
-		float: right;
-	}
+#sessionsTable_filter, #sessionsTable_paginate{float: right;}
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -44,20 +39,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="card-body">
 							<table id="sessionsTable" class="table table-bordered table-striped">
 								<thead>
-								<tr>
-									<th>Session ID</th>
-									<th>Day</th>
-									<th>Start Time</th>
-									<th>End Time</th>
-									<th>People</th>
-									<th>Credits</th>
-									<th>Name</th>
-									<th>Actions</th>
-									<th>Manage</th>
-								</tr>
+									<tr>
+										<th>Session ID</th>
+										<th>Day</th>
+										<th>Start Time</th>
+										<th>End Time</th>
+										<th>People</th>
+										<th>Credits</th>
+										<th>Name</th>
+										<th>Actions</th>
+										<th>Manage</th>
+									</tr>
 								</thead>
 								<tbody id="sessionsTableBody">
-
 								</tbody>
 							</table>
 						</div>
@@ -102,7 +96,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			"autoWidth": false,
 			"responsive": true,
 		});
-
 
 		$('.add-session-btn').on('click', function () {
 
@@ -149,8 +142,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#sessionExternalUrl').val('');
 				$('#sessionExternalUrlDiv').hide();
 				$('#sessionExternalUrl').val(session.external_meeting_link);
+
 				if (session.external_meeting_link != null || session.external_meeting_link == '' )
 					$('#sessionExternalUrlDiv').show();
+
 				$(`#sessionType option[value="${session.session_type}"]`).prop('selected', true);
 
 				$('#sessionCredits').val(session.credits);
@@ -159,8 +154,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#endDateTimeInput').datetimepicker('date', moment(session.end_date_time, 'YYYY-MM-DD HH:mm:ss'));
 
 				$('#sessionPhoto').val('');
-				if (session.thumbnail != '')
-				{
+				if (session.thumbnail != '') {
 					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.thumbnail);
 					$('#currentPhotoDiv').show();
 				}else{
@@ -170,6 +164,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$("#sessionAgenda").summernote("code", session.agenda);
 				$('#millicastStream').val(session.millicast_stream);
 				$('#zoomLink').val(session.zoom_link);
+				$('#sessionVideo').val(session.video_url);
 				$('#slidesHtml').html(session.presenter_embed_code);
 
 				// Moderators
@@ -196,7 +191,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				});
 				$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
 
-
 				// Invisible Moderators
 				$('select[name="sessionInvisibleModerators[]"] option').prop('selected', false);
 				$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
@@ -204,7 +198,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					$('select[name="sessionInvisibleModerators[]"] option[value="'+invisible_moderator.id+'"]').prop('selected', true);
 				});
 				$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
-
 
 				$('#save-session').html('<i class="fas fa-save"></i> Save');
 
@@ -246,8 +239,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					$.get(project_admin_url+"/sessions/remove/"+session_id, function (response) {
 						response = JSON.parse(response);
 
-						if (response.status == 'success')
-						{
+						if (response.status == 'success') {
 							listSessions();
 							toastr.success(session_name+" has been removed!");
 						}else{
@@ -281,7 +273,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function listSessions()
 	{
-
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading sessions data...',
@@ -305,66 +296,77 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$.each(sessions, function(key, session)
 			{
-
 				// Moderators badge
 				let moderatorsList = '';
 				let moderatorsNumber = Object.keys(session.moderators).length;
 				let moderatorsBadgeType = 'badge-danger';
+
 				if (moderatorsNumber > 0)
 					moderatorsList += '<strong>Moderators List</strong><br><br>';
+
 				$.each(session.moderators, function(key, moderator)
 				{
 					moderatorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
 				});
+
 				if (moderatorsNumber > 0)
 					moderatorsBadgeType = 'badge-success';
-				let moderatorsBadge = '<badge class="badge badge-pill '+moderatorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+moderatorsList+'">M ('+moderatorsNumber+')</badge>';
 
+				let moderatorsBadge = '<badge class="badge badge-pill '+moderatorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+moderatorsList+'">M ('+moderatorsNumber+')</badge>';
 
 				// Invisible Moderators badge
 				let invisibleModeratorsList = '';
 				let invisibleModeratorsNumber = Object.keys(session.invisible_moderators).length;
 				let invisibleModeratorsBadgeType = 'badge-danger';
+
 				if (invisibleModeratorsNumber > 0)
 					invisibleModeratorsList += '<strong>Invisible Moderators</strong><br><br>';
+
 				$.each(session.invisible_moderators, function(key, moderator)
 				{
 					invisibleModeratorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
 				});
+
 				if (invisibleModeratorsNumber > 0)
 					invisibleModeratorsBadgeType = 'badge-success';
-				let invisibleModeratorsBadge = '<badge class="badge badge-pill '+invisibleModeratorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+invisibleModeratorsList+'">InM ('+invisibleModeratorsNumber+')</badge>';
 
+				let invisibleModeratorsBadge = '<badge class="badge badge-pill '+invisibleModeratorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+invisibleModeratorsList+'">InM ('+invisibleModeratorsNumber+')</badge>';
 
 				// Keynote Speakers badge
 				let keynoteSpeakersList = '';
 				let keynoteSpeakersNumber = Object.keys(session.keynote_speakers).length;
 				let keynoteSpeakerBadgeType = 'badge-danger';
+
 				if (keynoteSpeakersNumber > 0)
 					keynoteSpeakersList += '<strong>Keynote Speakers List</strong><br><br>';
+
 				$.each(session.keynote_speakers, function(key, keynote_speaker)
 				{
 					keynoteSpeakersList += keynote_speaker.name+' '+keynote_speaker.surname+' <br>('+keynote_speaker.email+')<br><br>';
 				});
+
 				if (keynoteSpeakersNumber > 0)
 					keynoteSpeakerBadgeType = 'badge-success';
-				let keynoteSpeakersBadge = '<badge class="badge badge-pill '+keynoteSpeakerBadgeType+'" data-html="true" data-toggle="tooltip" title="'+keynoteSpeakersList+'">K ('+keynoteSpeakersNumber+')</badge>';
 
+				let keynoteSpeakersBadge = '<badge class="badge badge-pill '+keynoteSpeakerBadgeType+'" data-html="true" data-toggle="tooltip" title="'+keynoteSpeakersList+'">K ('+keynoteSpeakersNumber+')</badge>';
 
 				// Presenters badge
 				let presentersList = '';
 				let presentersNumber = Object.keys(session.presenters).length;
 				let presenterBadgeType = 'badge-danger';
+
 				if (presentersNumber > 0)
 					presentersList += '<strong>Presenters List</strong><br><br>';
+
 				$.each(session.presenters, function(key, presenter)
 				{
 					presentersList += presenter.name+' '+presenter.surname+' <br>('+presenter.email+')<br><br>';
 				});
+
 				if (presentersNumber > 0)
 					presenterBadgeType = 'badge-success';
-				let presentersBadge = '<badge class="badge badge-pill '+presenterBadgeType+'" data-html="true" data-toggle="tooltip" title="'+presentersList+'">P ('+presentersNumber+')</badge>';
 
+				let presentersBadge = '<badge class="badge badge-pill '+presenterBadgeType+'" data-html="true" data-toggle="tooltip" title="'+presentersList+'">P ('+presentersNumber+')</badge>';
 
 				$('#sessionsTableBody').append(
 					'<tr>' +

@@ -5,25 +5,9 @@
 ?>
 <!--Add Session Modal-->
 <style>
-	.note-editable
-	{
-		background-color: white;
-		color: black;
-	}
-
-	.select2-container--default
-	.select2-selection--multiple
-	{
-		background-color: #343a40 !important;
-	}
-
-	.select2-container--default
-	.select2-selection--multiple
-	.select2-selection__choice
-	{
-		background-color: #006cac !important;
-	}
-
+.note-editable{background-color: white;color: black;}
+.select2-container--default .select2-selection--multiple{background-color: #343a40 !important;}
+.select2-container--default .select2-selection--multiple .select2-selection__choice{background-color: #006cac !important;}
 </style>
 
 <div class="modal fade" id="addSessionModal" tabindex="-1" role="dialog" aria-labelledby="addSessionModalLabel" aria-hidden="true">
@@ -53,6 +37,10 @@
 
 								<li class="nav-item">
 									<a class="nav-link" id="agendaTab" data-toggle="pill" href="#agendaTabContents" role="tab" aria-controls="agendaTabContents" aria-selected="false"><i class="fas fa-clipboard-check"></i> Agenda</a>
+								</li>
+
+								<li class="nav-item">
+									<a class="nav-link" id="videoTab" data-toggle="pill" href="#videoTabContents" role="tab" aria-controls="videoTabContents" aria-selected="false"><i class="fab fa-vimeo"></i> Video</a>
 								</li>
 
 								<li class="nav-item">
@@ -171,6 +159,13 @@
 									<div class="form-group">
 										<label for="sessionAgenda">Agenda</label>
 										<textarea id="sessionAgenda" name="sessionAgenda" class="form-control" placeholder="Enter session agenda"></textarea>
+									</div>
+								</div>
+
+								<div class="tab-pane fade" id="videoTabContents" role="tabpanel" aria-labelledby="videoTab">
+									<div class="form-group">
+										<label for="sessionVideo">Video</label>
+										<input type="text" class="form-control" id="sessionVideo" name="sessionVideo" placeholder="Eg; https://vimeo.com/123456789">
 									</div>
 								</div>
 

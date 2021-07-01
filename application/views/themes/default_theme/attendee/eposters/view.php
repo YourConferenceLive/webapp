@@ -14,9 +14,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 			if (($eposter->type == 'surgical_video' && $eposter->video_url != '') || $eposter->type == 'eposter'): 
 				if ($eposter->type == 'surgical_video'):
-// URI : http://www.crocs.com
-// Username : itrana123@gmail.com
-// PWD : 1eJ2*erUGb97Nv3kw*gaL5
 					$video_url = preg_replace('/[^0-9]/', '', $eposter->video_url)?>
 		<iframe id="vimeo_player" src="https://player.vimeo.com/video/<?=$video_url;?>?color=f7dfe9&title=0&byline=0&portrait=0" style="/*position:absolute;top:0;left:0;*/width:100%;height:90%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
 		<script src="https://player.vimeo.com/api/player.js"></script>

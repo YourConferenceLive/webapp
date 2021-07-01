@@ -610,3 +610,7 @@ ALTER TABLE `session_polls` ADD `is_active` BOOLEAN NOT NULL DEFAULT TRUE AFTER 
 ALTER TABLE `session_polls` CHANGE `poll_tyoe` `poll_type` ENUM('poll') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `session_polls` ADD `added_by` INT NOT NULL AFTER `added_on`;
 
+-- Imran Tariq
+-- Session table change
+-- 1st July, 2021
+ALTER TABLE `sessions` ADD `video_url` VARCHAR(255) NULL DEFAULT NULL AFTER `zoom_link`;

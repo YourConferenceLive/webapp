@@ -1,26 +1,29 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?>
-
+defined('BASEPATH') OR exit('No direct script access allowed');?>
 <style>
-	body{
-		overflow: hidden;
-		background-color: #151515;
-	}
+body{overflow: hidden;background-color: #151515;}
 </style>
 
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
 
 <div class="sessions-view-container container-fluid p-0">
-		<?php if (isset($session->millicast_stream) && $session->millicast_stream != ''): ?>
-			<iframe id="millicastIframe" class="" src="https://viewer.millicast.com/v2?streamId=pYVHx2/<?=str_replace(' ', '', $session->millicast_stream)?>&autoPlay=true&muted=true&disableFull=true" width="100%" style="height: 100%"></iframe>
-		<?php else: ?>
+<?php
+			if (isset($session->video_url) && $session->video_url != ''):
+					$video_url = preg_replace('/[^0-9]/', '', $session->video_url);?>
+			<iframe id="sessionIframe" src="https://player.vimeo.com/video/<?=$video_url;?>?color=f7dfe9&title=0&byline=0&portrait=0" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="height: 100%"></iframe>
+			<script src="https://player.vimeo.com/api/player.js"></script>
+<?php
+			elseif (isset($session->millicast_stream) && $session->millicast_stream != ''):?>
+			<iframe id="sessionIframe" class="" src="https://viewer.millicast.com/v2?streamId=pYVHx2/<?=str_replace(' ', '', $session->millicast_stream)?>&autoPlay=true&muted=true&disableFull=true" width="100%" style="height: 100%"></iframe>
+<?php
+			else:?>
 			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
 				<div class="middleText">
 					<h3>No Stream Found</h3>
 				</div>
 			</div>
-		<?php endif; ?>
+<?php
+			endif;?>
 </div>
 
 <!--bizim-->
@@ -28,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<ul>
 		<li data-type="notesSticky"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
 		<li data-type="resourcesSticky"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
-<!--		<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
+		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
 		<li data-type="questionsSticky"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
 	</ul>
 </div>
@@ -103,33 +106,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<div id="resource_section" style="padding: 0px 0px 0px 0px; margin-top: 10px; background-color: #fff; border-radius: 5px;">
 			<div style="padding: 0px 15px 15px 15px; overflow-y: auto; height: 240px;" id="resource_display_status">
-				<?php
+<?php
 				if (!empty($session->resources)) {
-					foreach ($session->resources as $resource) {
-						?>
+					foreach ($session->resources as $resource) {?>
 						<div class="row" style="margin-bottom: 10px; padding-bottom: 5px">
-							<?php if ($resource->resource_type == "url") { ?>
+<?php
+							if ($resource->resource_type == "url") {?>
 								<div class="col-md-12"><a href="<?=$resource->resource_path?>" target="_blank"><?=$resource->resource_name?></a></div>
-							<?php } ?>
-							<?php
+<?php
+							}?>
+<?php
 							if ($resource->resource_type == "file") {
-								if ($resource->resource_path != "") {
-									?>
+								if ($resource->resource_path != "") {?>
 									<div class="col-md-12"><a href="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/resources/<?=$resource->resource_path?>" download> <?=$resource->resource_name?> </a></div>
-									<?php
+<?php
 								}
-							}
-							?>
+							}?>
 						</div>
-						<?php
+<?php
 					}
-				}
-				?>
+				}?>
 				<span id='success_resource' style='color:green;'></span>
 			</div>
 		</div>
 	</div>
-
 </div>
 <div class="rightSticykPopup messagesSticky" style="display: none">
 	<div class="header"><span>Toolbox</span>
@@ -146,17 +146,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader">
-			Messages
-		</div>
-		<div class="messages">
-
-		</div>
-
+		<div class="contentHeader">Messages</div>
+		<div class="messages"></div>
 		<input type="text" class="form-control" placeholder="Enter message" id='sendGroupChat'>
-
 	</div>
-
 </div>
 <div class="rightSticykPopup questionsSticky" style="display: none">
 	<div class="header"><span>Toolbox</span>
@@ -173,16 +166,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader">
-			Questions
-		</div>
-		<div id="questionElement" class="questionElement" style="overflow: scroll;height: 170px;">
-
-		</div>
+		<div class="contentHeader">Questions</div>
+		<div id="questionElement" class="questionElement" style="overflow: scroll;height: 170px;"></div>
 		<div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
 			<div style="padding:5px;">
 				<div style="text-align: center; display: flex; " id="questions_section">
-
 					<div class="col-md-12 input-group">
 						<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
 						<input type="text" id="questionText" class="form-control" placeholder="Press enter to send..." value="">
@@ -264,36 +252,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		$('#questionText').on('keyup', function (e) {
-			if (e.key === 'Enter' || e.keyCode === 13)
-			{
+			if (e.key === 'Enter' || e.keyCode === 13) {
 				$('#questionText').prop('disabled', true);
 
 				let question = $(this).val();
 				let sessionId = "<?=$session_id?>";
 
-				if(question == '')
-				{
+				if(question == '') {
 					toastr.warning('Please enter your question');
 					return false;
 				}
 
-				$.post(project_url+"/sessions/askQuestionAjax",
-						{
-							session_id:sessionId,
-							question:question
-						},
-						function (response)
-						{
+				$.post(project_url+"/sessions/askQuestionAjax",{session_id:sessionId,
+																question:question
+															   },
+						function (response) {
 							response = JSON.parse(response);
 
-							if (response.status == 'success')
-							{
+							if (response.status == 'success') {
 								socket.emit("ycl_session_question", {sessionId:sessionId, question:question});
 
 								$('#questionText').val('');
 								$('#questionElement').prepend('<p>'+question+'</p>');
 								toastr.success("Question sent");
-							}else{
+							} else {
 								toastr.error("Unable to send the question");
 							}
 
@@ -307,13 +289,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
-	function iframeResize()
-	{
+	function iframeResize() {
 		let totalHeight = window.innerHeight;
 		let menuHeight = document.getElementById('mainMenu').offsetHeight;
 		let iFrameHeight = totalHeight-menuHeight;
 
-		$('#millicastIframe').css('height', iFrameHeight+'px');
+		$('#sessionIframe').css('height', iFrameHeight+'px');
 	}
 
 	$(function () {
@@ -370,7 +351,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							loadNotes(entity_type, entity_type_id, note_page);
 							toastr.success('Note added.');
 							$('#notes').val('');
-						}else{
+						} else {
 							toastr.error("Error");
 						}
 					}
@@ -379,8 +360,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		socket.on('ycl_launch_poll', (data)=>{
 
-			if(data.session_id == sessionId)
-			{
+			if(data.session_id == sessionId) {
 				$('#pollId').val(data.session_id);
 				$('#pollQuestion').text(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
@@ -404,12 +384,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				var timeleft = 10;
 				var downloadTimer = setInterval(function(){
-					if(timeleft <= 0){
+					if(timeleft <= 0) {
 						clearInterval(downloadTimer);
 						$('#pollModal').modal('hide');
 
-						if (data.show_result == 1) // Show result automatically
-						{
+						if (data.show_result == 1) {// Show result automatically
 							$.get(project_url+"/sessions/getPollResultAjax/"+data.id, function (results) {
 								results = JSON.parse(results);
 
@@ -432,7 +411,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 								var resultTimeleft = 5;
 								var resultTimer = setInterval(function(){
-									if(resultTimeleft <= 0){
+									if(resultTimeleft <= 0) {
 										clearInterval(resultTimer);
 										$('#pollResultModal').modal('hide');
 									} else {
@@ -440,10 +419,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									}
 									resultTimeleft -= 1;
 								}, 1000);
-
 							});
 						}
-
 					} else {
 						$('#howMuchSecondsLeft').text(timeleft);
 					}
@@ -454,8 +431,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		socket.on('ycl_launch_poll_result', (data)=>{
 			console.log(data)
-			if(data.session_id == sessionId)
-			{
+			if(data.session_id == sessionId) {
 				$('#pollResultModalLabel').text(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
@@ -475,18 +451,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						backdrop: 'static',
 						keyboard: false
 					});
-
 				});
 			}
 		});
 
 		socket.on('ycl_close_poll_result', (data)=>{
-			if(data.session_id == sessionId)
-			{
+			if(data.session_id == sessionId) {
 				$('#pollResultModal').modal('hide');
 			}
 		});
-
-
 	});
 </script>
