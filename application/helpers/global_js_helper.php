@@ -44,6 +44,54 @@ if(!function_exists('global_js'))
 			return (n < 10 ? "0" + n : n);
 		}';
 
+		$js_methods .= '
+		let ajaxPrevExportAction = function (self, e, dt, button, config) {
+			if (button[0].className.indexOf("buttons-excel") >= 0) {
+				if ($.fn.dataTable.ext.buttons.excelHtml5.available(dt, config)) {
+					$.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+				}
+				else {
+					$.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+				}
+			} else if (button[0].className.indexOf("buttons-print") >= 0) {
+				$.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+			}
+		};
+		';
+
+		$js_methods .= '
+		let ajaxExportAction = function (e, dt, button, config) {
+			Swal.fire({
+				title: "Please Wait",
+				text: "We are preparing the file",
+				imageUrl: "'.ycl_root.'/cms_uploads/projects/'.$CI->project->id.'/theme_assets/loading.gif",
+				imageUrlOnError: "'.ycl_root.'/ycl_assets/ycl_anime_500kb.gif",
+				imageAlt: "Loading...",
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+			var self = this;
+			var oldStart = dt.settings()[0]._iDisplayStart;
+			dt.one("preXhr", function (e, s, data) {
+				data.start = 0;
+				data.length = 2147483647;
+				dt.one("preDraw", function (e, settings) {
+					ajaxPrevExportAction(self, e, dt, button, config);
+
+					dt.one("preXhr", function (e, s, data) {
+						settings._iDisplayStart = oldStart;
+						data.start = oldStart;
+					});
+					setTimeout(dt.ajax.reload, 0);
+					Swal.close();
+					return false;
+				});
+			});
+			dt.ajax.reload();
+		};
+		';
+
 		$global_js = "$js_start_tag \n $js_variables \n $js_methods \n $js_end_tag";
 
 		return $global_js;
