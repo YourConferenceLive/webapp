@@ -170,21 +170,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 		$(document).ready(function() {
 			$('#sessionCreditTable').DataTable({
+        		"dom": 'lBfrtip',
         		"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
 				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/gs", type : 'POST'},
-		        "order": [[ 0, "ASC" ]]
+		        "order": [[ 0, "ASC" ]],
+				buttons:[{ extend: 'excel', text: '<i class="far fa-file-excel"></i> Export Excel', className:'btn-success', title:'Group Learning Export' }]
 		    });
 	
 			$('#eposterCreditTable').DataTable({
+        		"dom": 'lBfrtip',
         		"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
 				'ajax': {url : project_url+"/admin/accreditation_reports/getAllEpostersCredits", type : 'POST'},
-		        "order": [[ 0, "ASC" ]]
+		        "order": [[ 0, "ASC" ]],
+				buttons:[{ extend: 'excel', text: '<i class="far fa-file-excel"></i> Export Excel', className:'btn-success', title:'Self Learning Export' }]
 		    });
 	
 			$('#stcCreditTable').DataTable({
