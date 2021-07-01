@@ -51,8 +51,8 @@ class Accreditation_reports extends CI_Controller
 		$count 					= $this->credit->getAllSessionsCreditsCount($session_type, $keyword);
 
 		$query 					= $this->credit->getAllSessionsCredits($session_type, $start, $length, $column_name, $column_sort_order, $keyword);
-		$data 					= [];
 
+		$data 					= [];
 
 		if ($session_type == 'gs') {
 			foreach($query as $r) {

@@ -294,7 +294,6 @@ class Credits_Model extends CI_Model
 	     	$this->db->limit($length, $start);
 
 	    $this->db->order_by($order_by, $order);
-	    $this->db->group_by('user_credits.origin_type_id');
 		$eposters = $this->db->get();
 		if ($eposters->num_rows() > 0) {
 			return $eposters->result();

@@ -195,7 +195,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'serverMethod': 'post',
 				'ajax': {url : project_url+"/admin/accreditation_reports/getAllEpostersCredits", type : 'POST'},
 		        "order": [[ 0, "ASC" ]],
-				buttons:[{ extend: 'excel', text: '<i class="far fa-file-excel"></i> Export Excel', className:'btn-success', title:'Self Learning Export' }]
+				buttons: [
+					{
+						extend: 'excel',
+						text: '<i class="far fa-file-excel"></i> Export Excel',
+						className: 'btn-success',
+						title: 'Self Learning Export',
+						action: ajaxExportAction
+					}]
 		    });
 	
 			$('#stcCreditTable').DataTable({
@@ -206,7 +213,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'serverMethod': 'post',
 				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/stc", type : 'POST'},
 		        "order": [[ 0, "ASC" ]],
-				buttons:[{ extend: 'excel', text: '<i class="far fa-file-excel"></i> Export Excel', className:'btn-success', title:'Practice Assessment Export' }]
+				buttons: [
+					{
+						extend: 'excel',
+						text: '<i class="far fa-file-excel"></i> Export Excel',
+						className: 'btn-success',
+						title: 'Practice Assessment Export',
+						action: ajaxExportAction
+					}]
 		    });
 		});
 	</script>
