@@ -188,12 +188,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		    });
 	
 			$('#stcCreditTable').DataTable({
-        		"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
+        		"dom": 'lBfrtip',
+				"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
 				'ajax': {url : project_url+"/admin/accreditation_reports/getAllSessionsCredits/stc", type : 'POST'},
-		        "order": [[ 0, "ASC" ]]
+		        "order": [[ 0, "ASC" ]],
+				buttons:[{ extend: 'excel', text: '<i class="far fa-file-excel"></i> Export Excel', className:'btn-success', title:'Practice Assessment Export' }]
 		    });
 		});
 	</script>
