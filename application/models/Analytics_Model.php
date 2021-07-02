@@ -293,4 +293,52 @@ class Analytics_Model extends CI_Model
 
 		return new stdClass();
 	}
+
+	/**
+	 * @param null|string $name - what
+	 * @param null|string $info - where
+	 * @param null|int $ref_id - either null or a item ID like session ID
+	 * @param string $day - either 'all' or a particular day like 2021-06-24
+	 * @param bool|int $unique_user - false for all, true for unique, user_id for a particular user
+	 * @return object
+	 */
+	public function getLogs($name=null, $info=null, $ref_id=null, $day='all', $unique_user=false)
+	{
+		$this->db
+			->select
+			(
+			'user.id as user_id,
+			user.name as user_fname, 
+			user.surname as user_surname, 
+			user.email, 
+			user.city, 
+			user.credentials, 
+			logs.*'
+			)
+			->from('logs')
+			->join('user','user.id = logs.user_id')
+			->where('logs.project_id', $this->project->id)
+			->order_by('logs.date_time', 'desc');
+
+		if ($name!=null)
+			$this->db->where('logs.name', $name);
+
+		if ($info!=null)
+			$this->db->where('logs.info', $info);
+
+		if ($ref_id!=null)
+			$this->db->where('logs.ref_1', $ref_id);
+
+		if ($day!='all' && DateTime::createFromFormat('Y-m-d', $day)!=false)
+			$this->db->like('logs.date_time', $day);
+
+		if ($unique_user===true)
+			$this->db->group_by('logs.user_id');
+
+		if (is_numeric($unique_user))
+			$this->db->where('logs.user_id', $unique_user);
+
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)?$result->result():new stdClass();
+	}
 }
