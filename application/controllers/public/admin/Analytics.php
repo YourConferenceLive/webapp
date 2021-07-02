@@ -82,4 +82,159 @@ class Analytics extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
+
+	public function credit_report()
+	{
+		$sidebar_data['user'] = $this->user;
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/credit_report")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function getAllSessionsCredits($session_type)
+	{
+		$this->logs->log_visit("Sessions credits report of $session_type");
+		$post 					= $this->input->post();
+
+		$draw 					= intval($this->input->post("draw"));
+		$start 					= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
+		$length 				= ((intval($this->input->post("length"))) ? $this->input->post("length") : 0 );
+
+		if ($session_type == 'gs') {
+			$columns_array 		= array('user.rcp_number', 'user_credits.id', 'credit_filter', 'sessions.name', 'user_credits.credit', 'user_credits.claimed_datetime');
+		} else {
+			$columns_array 		= array('user.rcp_number', 'user_credits.id', 'credit_filter', '', 'user_credits.credit', 'sessions.name', 'user_credits.claimed_datetime');
+		}
+
+		$column_index 			= $post['order'][0]['column'];
+		$column_name 			= ((@$columns_array[$column_index]) ? $columns_array[$column_index] : 'user.rcp_number' );
+		$column_sort_order 		= (($post['order'][0]['dir']) ? $post['order'][0]['dir'] : 'ASC' ); 
+		$keyword 				= $post['search']['value'];
+		$count 					= $this->analytics->getAllSessionsCreditsCount($session_type, $keyword);
+
+		$query 					= $this->analytics->getAllSessionsCredits($session_type, $start, $length, $column_name, $column_sort_order, $keyword);
+
+		$data 					= [];
+
+		if ($session_type == 'gs') {
+			foreach($query as $r) {
+				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
+
+				$data[] = array($r->rcp_number,
+								'20210624',
+								(($r->credit_filter == 'Live&nbsp;Meeting') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
+								'Conference',
+								'Yes',
+								$r->credit,
+								'2021 COS Annual Meeting and Exhibition',
+								'',
+								$claimed_datetime->format('Y-m-d'),
+								'',
+								'',
+								'Canadian Ophthamological Society',
+								'Canada',
+								'',//'Please amend this question',
+								'',
+								'',
+								'',
+								'',
+								'',
+								'',
+								'',
+								'',
+								'');
+			}
+		} else {
+			foreach($query as $r) {
+				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
+
+				$data[] = array($r->rcp_number, 
+								'20210624',
+								(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
+								'Practice Assessment',
+								$r->credit, 
+								$r->session_name,
+								$claimed_datetime->format('Y-m-d'),
+								'COS',
+								'Canada',
+								'Collaborator');
+
+			}
+		}
+
+		$result 	= array("draw" 				=> $draw,
+							"recordsTotal" 		=> $count,
+		    	     		"recordsFiltered" 	=> $count,
+			         		"data" 				=> $data);
+      	echo json_encode($result);
+    	exit();
+	}
+
+	public function getAllEpostersCredits()
+	{
+		$this->logs->log_visit("ePosters credits report");
+		$post 				= $this->input->post();
+
+		$draw 				= intval($this->input->post("draw"));
+		$start 				= ((intval($this->input->post("start"))) ? $this->input->post("start") : 0 );
+		$length 			= ((intval($this->input->post("length"))) ? $this->input->post("length") : 5 );
+
+		$columns_array 		= array('user_credits.id', 'eposters.title', 'credit_filter', 'eposters.type', 'user_credits.credit', 'user_credits.claimed_datetime');
+		$column_index 		= $post['order'][0]['column'];
+		$column_name 		= ((@$columns_array[$column_index]) ? $columns_array[$column_index] : 'user.rcp_number' );
+		$column_sort_order 	= (($post['order'][0]['dir']) ? $post['order'][0]['dir'] : 'ASC' ); 
+		$keyword 			= $post['search']['value'];
+		$count 				= $this->analytics->getAllEpostersCreditsCount($keyword);
+
+		$query 				= $this->analytics->getAllEpostersCredits($start, $length, $column_name, $column_sort_order, $keyword);
+
+		$data 				= [];
+		$table_count 		= 1;
+
+		foreach($query as $r) {
+			$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
+			$data[] = array($r->rcp_number, 
+							'20210624',
+							(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
+							'Poster Viewing',
+							$r->credit, 
+							'Poster Viewing session at the COS conference',//$r->title,
+							'',
+							$claimed_datetime->format('Y-m-d'),
+							'',
+							'',
+							'Canadian Ophthamological Society',
+							'Canada',
+							'',//'Please amend this question',
+							'',
+							'',
+							'',
+							'',
+							'',
+							'',
+							'',
+							'',
+							'');
+		}
+
+		$result 	= array("draw" 				=> $draw,
+							"recordsTotal" 		=> $count,
+		    	     		"recordsFiltered" 	=> $count,
+			         		"data" 				=> $data);
+      	echo json_encode($result);
+    	exit();
+	}
+
+	public function detail()
+	{
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/staff_login")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer");
+	}
+
 }

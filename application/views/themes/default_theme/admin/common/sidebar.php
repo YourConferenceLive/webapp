@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
 				<div class="input-group-append">
 					<button class="btn btn-sidebar">
-						<i class="fas fa-search fa-fw"></i>
+						<i class="nav-icon fas fa-search fa-fw"></i>
 					</button>
 				</div>
 			</div>
@@ -41,119 +41,90 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<li class="nav-item menu-open">
 					<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link <?=($this->router->fetch_class()=='dashboard')?'active':''?>">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
-						<p>
-							Dashboard
-<!--							<i class="right fas fa-angle-left"></i>-->
-						</p>
+						<p>Dashboard</p>
 					</a>
 				</li>
 
-				<li class="nav-header">USERS</li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/users'?>" class="nav-link <?=($this->router->fetch_class()=='users' && $this->router->fetch_method()=='index')?'active':''?>">
-						<i class="fas fa-users"></i>
-						<p>
-							Users
-						</p>
+						<i class="nav-icon fas fa-users"></i>
+						<p>Users</p>
 					</a>
 				</li>
 
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/users/exhibitorsWithoutBooth'?>" class="nav-link <?=($this->router->fetch_method()=='exhibitorsWithoutBooth')?'active':''?>">
-						<i class="fas fa-child"></i>
-						<p>
-							Exhibitors Without Booth
-						</p>
+						<i class="nav-icon fas fa-child"></i>
+						<p>Exhibitors Without Booth</p>
 					</a>
 				</li>
 
-				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link <?=($this->router->fetch_class()=='sessions')?'active':''?>">
-						<i class="fas fa-chalkboard-teacher"></i>
-						<p>
-							Sessions
-						</p>
+						<i class="nav-icon fas fa-chalkboard-teacher"></i>
+						<p>Sessions</p>
 					</a>
 				</li>
 
-				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/eposters'?>" class="nav-link <?=($this->router->fetch_class()=='eposters')?'active':''?>">
-						<i class="fas fa fa-print" aria-hidden="true"></i>
-						<p>
-							ePosters
-						</p>
+						<i class="nav-icon fas fa fa-print" aria-hidden="true"></i>
+						<p>ePosters</p>
 					</a>
 				</li>
 
-				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/sponsors'?>" class="nav-link <?=($this->router->fetch_class()=='sponsors')?'active':''?>">
-						<i class="fas fa-border-all"></i>
-						<p>
-							Sponsors
-						</p>
+						<i class="nav-icon fas fa-border-all"></i>
+						<p>Sponsors</p>
 					</a>
 				</li>
 
-				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/evaluation'?>" class="nav-link <?=($this->router->fetch_class()=='evaluation')?'active':''?>">
-						<i class="fas fa-clipboard-check"></i>
-						<p>
-							Evaluations
-						</p>
+						<i class="nav-icon fas fa-clipboard-check"></i>
+						<p>Evaluations</p>
 					</a>
 				</li>
 
-				<li class="nav-header"></li>
-				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/accreditation_reports'?>" class="nav-link <?=($this->router->fetch_class()=='evaluation')?'active':''?>">
-						<i class="fas fa-chart-bar"></i>
-						<p>
-							Accreditation Reports
-						</p>
-					</a>
-				</li>
-
-				<li class="nav-header"></li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/live_support_chat'?>" class="nav-link <?=($this->router->fetch_class()=='live_support_chat')?'active':''?>">
-						<i class="far fa-life-ring"></i>
-						<p>
-							Live Support
-						</p>
+						<i class="nav-icon far fa-life-ring"></i>
+						<p>Live Support</p>
 					</a>
 				</li>
 
-				<li class="nav-header"></li>
-				<li class="nav-item">
+				<li class="nav-item<?=($this->router->fetch_class()=='analytics')?' menu-is-opening menu-open':''?>">
 					<a href="#" class="nav-link">
-						<i class="fas fa-chart-area"></i>
-						<p>ANALYTICS <i class="fas fa-angle-left right"></i></p>
-						</p>
+						<i class="nav-icon fas fa-chart-area"></i>
+						<p>ANALYTICS <i class="nav-icon fas fa-angle-left right"></i></p>
 					</a>
-					<ul class="nav nav-treeview" style="display: none;">
-
+					<ul class="nav nav-treeview" style="display:<?=($this->router->fetch_class()=='analytics')?' block':' none'?>;">
 						<li class="nav-item">
 							<a href="<?=$this->project_url.'/admin/analytics'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='index')?'active':''?>">
-								<i class="fas fa-book"></i>
+								<i class="nav-icon fas fa-book"></i>
 								<p class="text">All Logs</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
 							<a href="<?=$this->project_url.'/admin/analytics/relaxation_zone'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='relaxation_zone')?'active':''?>">
-								<i class="fas fa-book"></i>
+								<i class="nav-icon fas fa-book"></i>
 								<p class="text">Relaxation Zone Logs</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
 							<a href="<?=$this->project_url.'/admin/analytics/scavenger_hunt'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scavenger_hunt')?'active':''?>">
-								<i class="fas fa-book"></i>
+								<i class="nav-icon fas fa-book"></i>
 								<p class="text">Who Found 10 SH Items</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/credit_report'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='credit_report')?'active':''?>">
+								<i class="nav-icon fas fa-chart-bar"></i>
+								<p>Credit Report</p>
 							</a>
 						</li>
 
@@ -174,7 +145,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<i class="nav-icon fas fa-copy"></i>-->
 <!--						<p>-->
 <!--							Layout Options-->
-<!--							<i class="fas fa-angle-left right"></i>-->
+<!--							<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--							<span class="badge badge-info right">6</span>-->
 <!--						</p>-->
 <!--					</a>-->
@@ -269,7 +240,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<i class="nav-icon fas fa-tree"></i>-->
 <!--						<p>-->
 <!--							UI Elements-->
-<!--							<i class="fas fa-angle-left right"></i>-->
+<!--							<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--						</p>-->
 <!--					</a>-->
 <!--					<ul class="nav nav-treeview">-->
@@ -328,7 +299,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<i class="nav-icon fas fa-edit"></i>-->
 <!--						<p>-->
 <!--							Forms-->
-<!--							<i class="fas fa-angle-left right"></i>-->
+<!--							<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--						</p>-->
 <!--					</a>-->
 <!--					<ul class="nav nav-treeview">-->
@@ -363,7 +334,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<i class="nav-icon fas fa-table"></i>-->
 <!--						<p>-->
 <!--							Tables-->
-<!--							<i class="fas fa-angle-left right"></i>-->
+<!--							<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--						</p>-->
 <!--					</a>-->
 <!--					<ul class="nav nav-treeview">-->
@@ -418,7 +389,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<i class="nav-icon far fa-envelope"></i>-->
 <!--						<p>-->
 <!--							Mailbox-->
-<!--							<i class="fas fa-angle-left right"></i>-->
+<!--							<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--						</p>-->
 <!--					</a>-->
 <!--					<ul class="nav nav-treeview">-->
@@ -447,7 +418,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<i class="nav-icon fas fa-book"></i>-->
 <!--						<p>-->
 <!--							Pages-->
-<!--							<i class="fas fa-angle-left right"></i>-->
+<!--							<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--						</p>-->
 <!--					</a>-->
 <!--					<ul class="nav nav-treeview">-->
@@ -518,7 +489,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<i class="nav-icon far fa-plus-square"></i>-->
 <!--						<p>-->
 <!--							Extras-->
-<!--							<i class="fas fa-angle-left right"></i>-->
+<!--							<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--						</p>-->
 <!--					</a>-->
 <!--					<ul class="nav nav-treeview">-->
@@ -527,7 +498,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--								<i class="far fa-circle nav-icon"></i>-->
 <!--								<p>-->
 <!--									Login & Register v1-->
-<!--									<i class="fas fa-angle-left right"></i>-->
+<!--									<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--								</p>-->
 <!--							</a>-->
 <!--							<ul class="nav nav-treeview">-->
@@ -562,7 +533,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--								<i class="far fa-circle nav-icon"></i>-->
 <!--								<p>-->
 <!--									Login & Register v2-->
-<!--									<i class="fas fa-angle-left right"></i>-->
+<!--									<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--								</p>-->
 <!--							</a>-->
 <!--							<ul class="nav nav-treeview">-->
@@ -647,7 +618,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--						<i class="nav-icon fas fa-search"></i>-->
 <!--						<p>-->
 <!--							Search-->
-<!--							<i class="fas fa-angle-left right"></i>-->
+<!--							<i class="nav-icon fas fa-angle-left right"></i>-->
 <!--						</p>-->
 <!--					</a>-->
 <!--					<ul class="nav nav-treeview">-->
@@ -681,7 +652,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--				<li class="nav-header">MULTI LEVEL EXAMPLE</li>-->
 <!--				<li class="nav-item">-->
 <!--					<a href="#" class="nav-link">-->
-<!--						<i class="fas fa-circle nav-icon"></i>-->
+<!--						<i class="nav-icon fas fa-circle nav-icon"></i>-->
 <!--						<p>Level 1</p>-->
 <!--					</a>-->
 <!--				</li>-->
@@ -739,7 +710,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--				</li>-->
 <!--				<li class="nav-item">-->
 <!--					<a href="#" class="nav-link">-->
-<!--						<i class="fas fa-circle nav-icon"></i>-->
+<!--						<i class="nav-icon fas fa-circle nav-icon"></i>-->
 <!--						<p>Level 1</p>-->
 <!--					</a>-->
 <!--				</li>-->
@@ -763,7 +734,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--					</a>-->
 <!--				</li>-->
 
-				<li class="nav-header">ACCOUNT</li>
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/authentication/logout/'.base64_encode('admin')?>" class="nav-link">
 						<i class="nav-icon fas fa-sign-out-alt text-danger"></i>
