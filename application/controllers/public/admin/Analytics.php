@@ -83,14 +83,14 @@ class Analytics extends CI_Controller
 		;
 	}
 
-	public function credit_report()
+	public function credits_report()
 	{
 		$sidebar_data['user'] = $this->user;
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/credit_report")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/credits_report")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}

@@ -185,7 +185,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				buttons: [
 					{
 						extend: 'excel',
-						text: '<i class="far fa-file-excel"></i> Export Excel',
+						text: '<i class="far fa-file-excel"></i> Group Learning Export',
 						className: 'btn-info',
 						title: 'Group Learning Export',
 						action: ajaxExportAction
@@ -205,7 +205,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				buttons: [
 					{
 						extend: 'excel',
-						text: '<i class="far fa-file-excel"></i> Export Excel',
+						text: '<i class="far fa-file-excel"></i> Self Learning Export',
 						className: 'btn-info',
 						title: 'Self Learning Export',
 						action: ajaxExportAction
@@ -225,7 +225,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				buttons: [
 					{
 						extend: 'excel',
-						text: '<i class="far fa-file-excel"></i> Export Excel',
+						text: '<i class="far fa-file-excel"></i> Practice Assessment Export',
 						className: 'btn-info',
 						title: 'Practice Assessment Export',
 						action: ajaxExportAction
