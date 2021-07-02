@@ -1,6 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?>
+defined('BASEPATH') OR exit('No direct script access allowed');?>
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<!-- Brand Logo -->
@@ -14,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<!-- Sidebar user panel (optional) -->
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 			<div class="image">
-				<img src="<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user.png" class="img-circle elevation-2" alt="User Image">
+				<img class="img-circle elevation-2" src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$user->photo;?>" onerror="this.onerror=null;this.src='<?=ycl_root?>/vendor_frontend/adminlte/dist/img/user.png';" alt="<?php echo $user->name.' '.$user->surname;?>">
 			</div>
 			<div class="info">
 				<a href="#" class="d-block"><?=$user->name?> <?=$user->surname?></a>
@@ -122,7 +121,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</li>
 
 						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/credit_report'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='credit_report')?'active':''?>">
+							<a href="<?=$this->project_url.'/admin/analytics/credits_report'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='credits_report')?'active':''?>">
 								<i class="nav-icon fas fa-chart-bar"></i>
 								<p>Credit Report</p>
 							</a>
