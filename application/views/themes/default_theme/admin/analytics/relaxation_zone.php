@@ -21,7 +21,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
-						<li class="breadcrumb-item active">Analytics</li>
+						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Analytics</a></li>
+						<li class="breadcrumb-item active">Relaxation Zone</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -103,16 +104,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 	$(function () {
-
-		$('#logsTable').DataTable({
-			"paging": true,
-			"lengthChange": true,
-			"searching": true,
-			"ordering": true,
-			"info": true,
-			"autoWidth": false,
-			"responsive": true,
-			"order": [[ 7, "desc" ]],
+		$('#logsTable').DataTable({dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+								   buttons:[{ extend: 'excel', 
+					   						  text: '<i class="far fa-file-excel"></i> Relaxation Zone Export', 
+					   						  className:'btn-info', 
+					   						  title:'Relaxation-Zone-Export-<?php echo date('mdY');?>'
+											}],
+								   "paging": true,
+								   "lengthChange": true,
+								   "searching": true,
+								   "ordering": true,
+								   "info": true,
+								   "autoWidth": false,
+								   "responsive": true,
+								   "order": [[ 7, "desc" ]]
 		});
 	});
 </script>

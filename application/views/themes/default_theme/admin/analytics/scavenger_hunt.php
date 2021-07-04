@@ -16,7 +16,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
-						<li class="breadcrumb-item active">Analytics</li>
+						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/analytics'?>">Analytics</a></li>
+						<li class="breadcrumb-item active">Scavenger Hunt</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -32,8 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">Scavenger Hunt</h3><br>
-							<small>People who found all 10 items</small>
+							<h3 class="card-title">Scavenger Hunt <small>(People who found all 10 items)</small></h3>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -99,22 +99,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <script>
 	$(function () {
-		$('#logsTable').DataTable({
-			dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			buttons: [{text: '<i class="fas fa-file-csv"></i> Export CSV',
-				className: 'btn btn-success',
-				action: function ( e, dt, button, config ) {
-					window.open(project_url +'/admin/analytics/scavenger_hunt_export/csv', "_blank");
-				}
-			}],
-			"paging": true,
-			"lengthChange": true,
-			"searching": true,
-			"ordering": true,
-			"info": true,
-			"autoWidth": false,
-			"responsive": true,
-			"order": [[ 7, "desc" ]],
+		$('#logsTable').DataTable({dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+								   buttons:[{ extend: 'excel', 
+					   						  text: '<i class="far fa-file-excel"></i> Scavenger Hunt Export', 
+					   						  className:'btn-info', 
+					   						  title:'Scavenger-Hunt-Export-<?php echo date('mdY');?>'
+											}],
+								   "paging": true,
+								   "lengthChange": true,
+								   "searching": true,
+								   "ordering": true,
+								   "info": true,
+								   "autoWidth": false,
+								   "responsive": true,
+								   "order": [[ 7, "desc" ]]
 		});
 	});
 </script>

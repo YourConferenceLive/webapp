@@ -37,57 +37,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 				<!-- Add icons to the links using the .nav-icon class
 					 with font-awesome or any other icon font library -->
-				<li class="nav-item menu-open">
-					<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link <?=($this->router->fetch_class()=='dashboard')?'active':''?>">
+				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/dashboard'?>" class="nav-link<?=($this->router->fetch_class()=='dashboard')?' active':''?>">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>Dashboard</p>
 					</a>
 				</li>
 
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/users'?>" class="nav-link <?=($this->router->fetch_class()=='users' && $this->router->fetch_method()=='index')?'active':''?>">
+					<a href="<?=$this->project_url.'/admin/users'?>" class="nav-link<?=($this->router->fetch_class()=='users' && $this->router->fetch_method()=='index')?' active':''?>">
 						<i class="nav-icon fas fa-users"></i>
 						<p>Users</p>
 					</a>
 				</li>
 
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/users/exhibitorsWithoutBooth'?>" class="nav-link <?=($this->router->fetch_method()=='exhibitorsWithoutBooth')?'active':''?>">
+					<a href="<?=$this->project_url.'/admin/users/exhibitorsWithoutBooth'?>" class="nav-link<?=($this->router->fetch_method()=='exhibitorsWithoutBooth')?' active':''?>">
 						<i class="nav-icon fas fa-child"></i>
 						<p>Exhibitors Without Booth</p>
 					</a>
 				</li>
 
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link <?=($this->router->fetch_class()=='sessions')?'active':''?>">
+					<a href="<?=$this->project_url.'/admin/sessions'?>" class="nav-link<?=($this->router->fetch_class()=='sessions')?' active':''?>">
 						<i class="nav-icon fas fa-chalkboard-teacher"></i>
 						<p>Sessions</p>
 					</a>
 				</li>
 
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/eposters'?>" class="nav-link <?=($this->router->fetch_class()=='eposters')?'active':''?>">
+					<a href="<?=$this->project_url.'/admin/eposters'?>" class="nav-link<?=($this->router->fetch_class()=='eposters')?' active':''?>">
 						<i class="nav-icon fas fa fa-print" aria-hidden="true"></i>
 						<p>ePosters</p>
 					</a>
 				</li>
 
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/sponsors'?>" class="nav-link <?=($this->router->fetch_class()=='sponsors')?'active':''?>">
+					<a href="<?=$this->project_url.'/admin/sponsors'?>" class="nav-link<?=($this->router->fetch_class()=='sponsors')?' active':''?>">
 						<i class="nav-icon fas fa-border-all"></i>
 						<p>Sponsors</p>
 					</a>
 				</li>
 
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/evaluation'?>" class="nav-link <?=($this->router->fetch_class()=='evaluation')?'active':''?>">
+					<a href="<?=$this->project_url.'/admin/evaluation'?>" class="nav-link<?=($this->router->fetch_class()=='evaluation')?' active':''?>">
 						<i class="nav-icon fas fa-clipboard-check"></i>
 						<p>Evaluations</p>
 					</a>
 				</li>
 
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/live_support_chat'?>" class="nav-link <?=($this->router->fetch_class()=='live_support_chat')?'active':''?>">
+					<a href="<?=$this->project_url.'/admin/live_support_chat'?>" class="nav-link<?=($this->router->fetch_class()=='live_support_chat')?' active':''?>">
 						<i class="nav-icon far fa-life-ring"></i>
 						<p>Live Support</p>
 					</a>
@@ -95,38 +95,156 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 				<li class="nav-item<?=($this->router->fetch_class()=='analytics')?' menu-is-opening menu-open':''?>">
 					<a href="#" class="nav-link">
-						<i class="nav-icon fas fa-chart-area"></i>
-						<p>ANALYTICS <i class="nav-icon fas fa-angle-left right"></i></p>
+						<i class="nav-icon fas fa-chart-pie"></i>
+						<p>Analytics <i class="nav-icon fas fa-angle-left right"></i></p>
 					</a>
 					<ul class="nav nav-treeview" style="display:<?=($this->router->fetch_class()=='analytics')?' block':' none'?>;">
-						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='index')?'active':''?>">
+						<li class="nav-item sr-only">
+							<a href="<?=$this->project_url.'/admin/analytics'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='index')?' active':''?>">
 								<i class="nav-icon fas fa-book"></i>
 								<p class="text">All Logs</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/relaxation_zone'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='relaxation_zone')?'active':''?>">
-								<i class="nav-icon fas fa-book"></i>
-								<p class="text">Relaxation Zone Logs</p>
+							<a href="<?=$this->project_url.'/admin/analytics/scavenger_hunt'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scavenger_hunt')?' active':''?>">
+								<i class="nav-icon fas fa-bullseye"></i>
+								<p class="text">Scavenger Hunt</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/scavenger_hunt'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scavenger_hunt')?'active':''?>">
-								<i class="nav-icon fas fa-book"></i>
-								<p class="text">Who Found 10 SH Items</p>
+							<a href="<?=$this->project_url.'/admin/analytics/relaxation_zone'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='relaxation_zone')?' active':''?>">
+								<i class="nav-icon fas fa-couch"></i>
+								<p class="text">Relaxation Zone</p>
 							</a>
 						</li>
 
 						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/credits_report'?>" class="nav-link <?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='credits_report')?'active':''?>">
+							<a href="<?=$this->project_url.'/admin/analytics/trivia_night'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='trivia_night')?' active':''?>">
+								<i class="nav-icon fas fa-info"></i>
+								<p class="text">Trivia Night</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/exhibition_hall'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='exhibition_hall')?' active':''?>">
+								<i class="nav-icon fas fa-palette"></i>
+								<p class="text">Exhibition Hall</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/exhibition_hall'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='exhibition_hall')?' active':''?>">
+								<i class="nav-icon fas fa-palette"></i>
+								<p class="text">Exhibition Hall</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/scientific_sessions'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scientific_sessions')?' active':''?>">
+								<i class="nav-icon fas fa-vials"></i>
+								<p class="text">Scientific Sessions</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/scientific_sessions'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scientific_sessions')?' active':''?>">
+								<i class="nav-icon fas fa-vials"></i>
+								<p class="text">Scientific Sessions</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/session_recordings'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='session_recordings')?' active':''?>">
+								<i class="nav-icon fas fa-record-vinyl"></i>
+								<p class="text">Session Recordings</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/session_recordings'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='session_recordings')?' active':''?>">
+								<i class="nav-icon fas fa-record-vinyl"></i>
+								<p class="text">Session Recordings</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/skills_transfer_courses'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='skills_transfer_courses')?' active':''?>">
+								<i class="nav-icon fas fa-tools"></i>
+								<p class="text">Skills Transfer Courses</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/eposters'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='eposters')?' active':''?>">
+								<i class="nav-icon fas fa-user-md"></i>
+								<p class="text">ePosters/Surgical Videos</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/overall'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='overall')?' active':''?>">
+								<i class="nav-icon fas fa-globe"></i>
+								<p class="text">Overall</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/overall'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='overall')?' active':''?>">
+								<i class="nav-icon fas fa-globe"></i>
+								<p class="text">Overall</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/sessions'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='sessions')?' active':''?>">
+								<i class="nav-icon fas fa-chalkboard-teacher"></i>
+								<p class="text">Sessions</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/credits_report/1'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='credits_report' && $this->uri->segment(5) == 1)?' active':''?>">
 								<i class="nav-icon fas fa-chart-bar"></i>
-								<p>Credit Report</p>
+								<p class="text">Section 1 - Credits Report</p>
 							</a>
 						</li>
 
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/credits_report/2'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='credits_report' && $this->uri->segment(5) == 2)?' active':''?>">
+								<i class="nav-icon fas fa-chart-area"></i>
+								<p class="text">Section 2 - Credits Report</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/credits_report/3'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='credits_report' && $this->uri->segment(5) == 3)?' active':''?>">
+								<i class="nav-icon fas fa-chart-line"></i>
+								<p class="text">Section 3 - Credits Report</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/annual_general_meeting'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='annual_general_meeting')?' active':''?>">
+								<i class="nav-icon fas fa-handshake"></i>
+								<p class="text">Annual General Meeting</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/presidents_celebration'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='presidents_celebration')?' active':''?>">
+								<i class="nav-icon fas fa-glass-cheers"></i>
+								<p class="text">President's Celebration</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?=$this->project_url.'/admin/analytics/awards_ceremony'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='awards_ceremony')?' active':''?>">
+								<i class="nav-icon fas fa-award"></i>
+								<p class="text">Awards Ceremony</p>
+							</a>
+						</li>
 					</ul>
 				</li>
 

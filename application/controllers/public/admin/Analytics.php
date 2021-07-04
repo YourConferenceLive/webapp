@@ -83,14 +83,127 @@ class Analytics extends CI_Controller
 		;
 	}
 
-	public function credits_report()
+	public function trivia_night()
 	{
-		$sidebar_data['user'] = $this->user;
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/credits_report")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function exhibition_hall()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function scientific_sessions()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function session_recordings()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function skills_transfer_courses()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function eposters()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function overall()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function sessions()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function credits_report($section = 1)
+	{
+		$sidebar_data['user'] = $this->user;
+		$data['section'] 	  = $section;
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/credits_report", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -227,6 +340,48 @@ class Analytics extends CI_Controller
 			         		"data" 				=> $data);
       	echo json_encode($result);
     	exit();
+	}
+
+	public function annual_general_meeting()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function presidents_celebration()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function awards_ceremony()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['logs'] 			= $this->analytics->getLogs();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/logs", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
 	}
 
 	public function detail()

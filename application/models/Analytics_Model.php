@@ -17,6 +17,7 @@ class Analytics_Model extends CI_Model
 			->join('user','user.id = logs.user_id')
 			->where('logs.project_id', $this->project->id)
 			->order_by('logs.date_time', 'desc')
+			->limit(100)//For development purpose
 		;
 		$result = $this->db->get();
 		if ($result->num_rows() > 0)
@@ -304,21 +305,17 @@ class Analytics_Model extends CI_Model
 	 */
 	public function getLogs($name=null, $info=null, $ref_id=null, $day='all', $unique_user=false)
 	{
-		$this->db
-			->select
-			(
-			'user.id as user_id,
-			user.name as user_fname, 
-			user.surname as user_surname, 
-			user.email, 
-			user.city, 
-			user.credentials, 
-			logs.*'
-			)
-			->from('logs')
-			->join('user','user.id = logs.user_id')
-			->where('logs.project_id', $this->project->id)
-			->order_by('logs.date_time', 'desc');
+		$this->db->select('user.id as user_id,
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email,
+						   user.city,
+						   user.credentials, 
+						   logs.*')
+				 ->from('logs')
+				 ->join('user','user.id = logs.user_id')
+				 ->where('logs.project_id', $this->project->id)
+				 ->order_by('logs.date_time', 'desc');
 
 		if ($name!=null)
 			$this->db->where('logs.name', $name);
@@ -338,7 +335,10 @@ class Analytics_Model extends CI_Model
 		if (is_numeric($unique_user))
 			$this->db->where('logs.user_id', $unique_user);
 
+		$this->db->limit(100);//For development purpose
+
 		$result = $this->db->get();
-		return ($result->num_rows() > 0)?$result->result():new stdClass();
+
+		return ($result->num_rows() > 0) ? $result->result() : new stdClass();
 	}
 }
