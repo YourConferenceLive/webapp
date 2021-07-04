@@ -12,16 +12,24 @@ class Analytics_Model extends CI_Model
 
 	public function getAllProjectLogs()
 	{
-		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, logs.*')
-			->from('logs')
-			->join('user','user.id = logs.user_id')
-			->where('logs.project_id', $this->project->id)
-			->order_by('logs.date_time', 'desc')
-			->limit(100)//For development purpose
-		;
+		$this->db->select('logs.*, 
+						   user.id as user_id, 
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email, 
+						   user.city, 
+						   user.credentials')
+				 ->from('logs')
+				 >join('user','user.id = logs.user_id')
+				 ->where('logs.project_id', $this->project->id)
+				 ->order_by('logs.date_time', 'desc')
+				 ->limit(100);//For development purpose
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
+
 		return new stdClass();
 	}
 
@@ -48,13 +56,18 @@ class Analytics_Model extends CI_Model
 		return new stdClass();
 	}
 
-	public function getRelaxationZoneLogsUniqueVisitors()
+	public function getLogsUniquevisitors($name=null, $info=null)
 	{
 		$this->db->select('COUNT(`id`) as `unique_visitors`')
 				 ->from('`logs`')
-				 ->where('`info`', "Relaxation zone")
 				 ->where('`project_id`', $this->project->id)
 				 ->group_by('user_id');
+
+		if ($name!=null)
+			$this->db->where('`name`', $name);
+
+		if ($info!=null)
+			$this->db->where('`info`', $info);
 
 		$result 	= $this->db->get();
 
@@ -64,17 +77,23 @@ class Analytics_Model extends CI_Model
 		return 0;
 	}
 
-	public function getRelaxationZoneLogsDateStats()
+	public function getLogsDateStats($name=null, $info=null)
 	{
 		$this->db->select('COUNT(`id`) as `total_rows`,
 						   DATE_FORMAT(`date_time`, \'%Y-%m-%d\') as `date`')
 				 ->from('`logs`')
-				 ->where('`info`', "Relaxation zone")
 				 ->where('`project_id`', $this->project->id)
 				 ->group_by('EXTRACT(DAY FROM `date_time`)')
 				 ->order_by('`date_time`', 'ASC');
 
+		if ($name!=null)
+			$this->db->where('`name`', $name);
+
+		if ($info!=null)
+			$this->db->where('`info`', $info);
+
 		$result 	= $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
 
@@ -105,6 +124,7 @@ class Analytics_Model extends CI_Model
 				 ->order_by('scavenger_hunt_items.id', 'DESC');
 
 		$result 	= $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
 
@@ -113,30 +133,39 @@ class Analytics_Model extends CI_Model
 
 	public function getBoothLogs($booth_id)
 	{
-		$this->db->select('user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, logs.*')
-			->from('logs')
-			->join('user','user.id = logs.user_id')
-			->where('logs.info', 'Booth')
-			->where('logs.ref_1', $booth_id)
-			->order_by('logs.date_time', 'desc')
-		;
+		$this->db->select('logs.*,
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email, 
+						   user.city, 
+						   user.credentials')
+				 ->from('logs')
+				 ->join('user','user.id = logs.user_id')
+				 ->where('logs.info', 'Booth')
+				 ->where('logs.ref_1', $booth_id)
+				 ->order_by('logs.date_time', 'desc');
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
+
 		return new stdClass();
 	}
 
 	public function getTotalBoothVisits($booth_id)
 	{
 		$this->db->select('logs.*')
-			->from('logs')
-			->where('logs.info', 'Booth')
-			->where('logs.name', 'Visit')
-			->where('logs.ref_1', $booth_id)
-		;
+				 ->from('logs')
+				 ->where('logs.info', 'Booth')
+				 ->where('logs.name', 'Visit')
+				 ->where('logs.ref_1', $booth_id);
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return sizeof($result->result());
+
 		return 0;
 	}
 
@@ -179,7 +208,9 @@ class Analytics_Model extends CI_Model
 			->where('logs.name', 'Resource to briefcase')
 			->where('logs.ref_1', $booth_id)
 		;
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return sizeof($result->result());
 		return 0;
@@ -187,14 +218,21 @@ class Analytics_Model extends CI_Model
 
 	public function getSponsorResourcesInBackpack($booth_id)
 	{
-		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, 
-		sponsor_bag.resource_name, sponsor_bag.date_time as added_date_time')
+		$this->db->select('user.id as user_id, 
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email, user.city, 
+						   user.credentials, 
+						   sponsor_bag.resource_name, 
+						   sponsor_bag.date_time as added_date_time')
 			->from('sponsor_bag')
 			->join('user','user.id = sponsor_bag.user_id')
 			->where('sponsor_bag.booth_id', $booth_id)
 			->order_by('sponsor_bag.date_time', 'desc')
 		;
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
 		return new stdClass();
@@ -346,13 +384,13 @@ class Analytics_Model extends CI_Model
 	 */
 	public function getLogs($name=null, $info=null, $ref_id=null, $day='all', $unique_user=false)
 	{
-		$this->db->select('user.id as user_id,
+		$this->db->select('logs.*,
+						   user.id as user_id,
 						   user.name as user_fname, 
 						   user.surname as user_surname, 
 						   user.email,
 						   user.city,
-						   user.credentials, 
-						   logs.*')
+						   user.credentials')
 				 ->from('logs')
 				 ->join('user','user.id = logs.user_id')
 				 ->where('logs.project_id', $this->project->id)
@@ -376,7 +414,7 @@ class Analytics_Model extends CI_Model
 		if (is_numeric($unique_user))
 			$this->db->where('logs.user_id', $unique_user);
 
-		$this->db->limit(100);//For development purpose
+		// $this->db->limit(100);//For development purpose
 
 		$result = $this->db->get();
 

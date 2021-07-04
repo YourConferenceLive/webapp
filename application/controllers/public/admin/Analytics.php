@@ -35,8 +35,8 @@ class Analytics extends CI_Controller
 	{
 		$sidebar_data['user'] 		= $this->user;
 		$data['logs']				= $this->analytics->getRelaxationZoneLogs();
-		$data['unique_visitors']	= $this->analytics->getRelaxationZoneLogsUniqueVisitors();
-		$data['stats'] 				= $this->analytics->getRelaxationZoneLogsDateStats();
+		$data['unique_visitors']	= $this->analytics->getLogsUniqueVisitors('Visit', 'Relaxation zone');
+		$data['stats'] 				= $this->analytics->getLogsDateStats('Visit', 'Relaxation zone');
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
@@ -45,29 +45,6 @@ class Analytics extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/relaxation_zone", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
-	}
-
-	public function scavenger_hunt_export($param)
-	{
-		if ($param != 'csv')
-			return false;
-
-		$file 		= fopen('php://output', 'w');
-		$filename 	= 'Scavenger-Hunt-'.date('Y-m-d').'.csv';
-		header("Content-Description: File Transfer");
-		header("Content-Disposition: attachment; filename = $filename");
-		header("Content-Type: application/csv;");
-		$header 		= array("User ID", "Name", "Surname", "Degree", "Email","City", "Last Collected Item", "Last Collected");
-		fputcsv($file, $header);
-		$data 			= $this->analytics->getScavengerHuntData();
-
-		foreach ($data as $row) {
-
-			$csv_data 	= array($row->id, $row->name, $row->surname, $row->credentials, $row->email, $row->city, $row->booth_name, $row->last_collected);
-			fputcsv($file, $csv_data);
-		}
-		fclose($file);
-		exit;
 	}
 
 	public function scavenger_hunt()
@@ -100,8 +77,16 @@ class Analytics extends CI_Controller
 
 	public function exhibition_hall()
 	{
-		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
+		$sidebar_data['user'] 		= $this->user;
+		$data['logs'] 				= $this->analytics->getLogs('Visit', 'Booth');
+		$data['unique_visitors']	= $this->analytics->getLogsUniqueVisitors('Visit', 'Booth');
+		$data['stats'] 				= $this->analytics->getLogsDateStats('Visit', 'Booth');
+
+// echo $this->db->last_query();
+// echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+// exit;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")

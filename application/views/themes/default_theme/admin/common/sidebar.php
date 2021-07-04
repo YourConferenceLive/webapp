@@ -135,20 +135,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						</li>
 
 						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/exhibition_hall'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='exhibition_hall')?' active':''?>">
-								<i class="nav-icon fas fa-palette"></i>
-								<p class="text">Exhibition Hall</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/scientific_sessions'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scientific_sessions')?' active':''?>">
-								<i class="nav-icon fas fa-vials"></i>
-								<p class="text">Scientific Sessions</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
 							<a href="<?=$this->project_url.'/admin/analytics/scientific_sessions'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scientific_sessions')?' active':''?>">
 								<i class="nav-icon fas fa-vials"></i>
 								<p class="text">Scientific Sessions</p>
@@ -180,13 +166,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							<a href="<?=$this->project_url.'/admin/analytics/eposters'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='eposters')?' active':''?>">
 								<i class="nav-icon fas fa-user-md"></i>
 								<p class="text">ePosters/Surgical Videos</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/overall'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='overall')?' active':''?>">
-								<i class="nav-icon fas fa-globe"></i>
-								<p class="text">Overall</p>
 							</a>
 						</li>
 
