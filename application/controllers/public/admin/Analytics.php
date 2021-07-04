@@ -378,4 +378,9 @@ class Analytics extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer");
 	}
 
+	public function getLogsDt()
+	{
+		echo $this->analytics->getLogsDt();
+	}
+
 }

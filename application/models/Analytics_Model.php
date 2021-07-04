@@ -374,18 +374,12 @@ class Analytics_Model extends CI_Model
 		return new stdClass();
 	}
 
-	/**
-	 * @param null|string $name - what
-	 * @param null|string $info - where
-	 * @param null|int $ref_id - either null or a item ID like session ID
-	 * @param string $day - either 'all' or a particular day like 2021-06-24
-	 * @param bool|int $unique_user - false for all, true for unique, user_id for a particular user
-	 * @return object
-	 */
-	public function getLogs($name=null, $info=null, $ref_id=null, $day='all', $unique_user=false)
+
+	public function getLogsDt()
 	{
+		$post = $this->input->post();
+
 		$this->db->select('logs.*,
-						   user.id as user_id,
 						   user.name as user_fname, 
 						   user.surname as user_surname, 
 						   user.email,
@@ -393,31 +387,64 @@ class Analytics_Model extends CI_Model
 						   user.credentials')
 				 ->from('logs')
 				 ->join('user','user.id = logs.user_id')
-				 ->where('logs.project_id', $this->project->id)
-				 ->order_by('logs.date_time', 'desc');
+				 ->where('logs.project_id', $this->project->id);
 
-		if ($name!=null)
-			$this->db->where('logs.name', $name);
+		if (isset($post['logType']) && $post['logType']!='')
+			$this->db->where('logs.name', $post['logType']);
 
-		if ($info!=null)
-			$this->db->where('logs.info', $info);
+		if (isset($post['logPlace']) && $post['logPlace']!='')
+			$this->db->where('logs.info', $post['logPlace']);
 
-		if ($ref_id!=null)
-			$this->db->where('logs.ref_1', $ref_id);
 
-		if ($day!='all' && DateTime::createFromFormat('Y-m-d', $day)!=false)
-			$this->db->like('logs.date_time', $day);
+		// Get total number of rows without filtering
+		$tempDbObj = clone $this->db;
+		$total_results = $tempDbObj->count_all_results();
 
-		if ($unique_user===true)
+		// Days filter
+		if (isset($post['logDays']) && $post['logDays']!='all' && DateTime::createFromFormat('Y-m-d', $post['logDays'])!=false)
+			$this->db->like('logs.date_time', $post['logDays']);
+
+		// Unique user filter
+		if (isset($post['logUserUniqueness']) && $post['logUserUniqueness']=='unique')
 			$this->db->group_by('logs.user_id');
 
-		if (is_numeric($unique_user))
-			$this->db->where('logs.user_id', $unique_user);
+		// Column Search
+		foreach ($post['columns'] as $column)
+		{
+			if ($column['search']['value']!='')
+				$this->db->like($column['name'], $column['search']['value']);
+		}
+		$tempDbObj = clone $this->db;
+		$total_filtered_results = $tempDbObj->count_all_results();
 
-		// $this->db->limit(100);//For development purpose
+		// Filter for pagination and rows per page
+		if (isset($post['start']) && isset($post['length']))
+			$this->db->limit((intval($post['start'])+intval($post['length'])), $post['start']);
+
+		// Dynamic sort
+		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
 
 		$result = $this->db->get();
 
-		return ($result->num_rows() > 0) ? $result->result() : new stdClass();
+		if ($result->num_rows() > 0)
+		{
+			$response_array = array(
+				"draw" => $post['draw'],
+				"recordsTotal" => $total_results,
+				"recordsFiltered" => $total_filtered_results,
+				"data" => $result->result()
+			);
+
+			return json_encode($response_array);
+		}
+
+		$response_array = array(
+			"draw" => $post['draw'],
+			"recordsTotal" => 0,
+			"recordsFiltered" => 0,
+			"data" => new stdClass()
+		);
+
+		return json_encode($response_array);
 	}
 }
