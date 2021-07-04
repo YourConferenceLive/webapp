@@ -179,7 +179,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								'</label>'
 						$("#logsTable_length").append(daysDropdown);
 
-						let filterInfo = '<i class="ml-3 fas fa-info-circle" style="font-size: 20px;color: #95f5ff;" data-toggle="tooltip" data-placement="top" title="You can combine filters. <br> eg; Unique users on 2021-06-24"></i>';
+						let filterInfo = '<i class="ml-3 fas fa-info-circle" style="font-size: 20px;color: #95f5ff;" data-toggle="tooltip" data-placement="top" data-html="true" title="You can combine filters. <br> eg; Unique users on 2021-06-24"></i>';
 						$("#logsTable_length").append(filterInfo);
 
 						$('[data-toggle="tooltip"]').tooltip();
