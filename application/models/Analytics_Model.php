@@ -27,16 +27,57 @@ class Analytics_Model extends CI_Model
 
 	public function getRelaxationZoneLogs()
 	{
-		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, logs.*')
-			->from('logs')
-			->join('user','user.id = logs.user_id')
-			->where('logs.info', "Relaxation zone")
-			->where('logs.project_id', $this->project->id)
-			->order_by('logs.date_time', 'desc')
-		;
+		$this->db->select('logs.*,
+						   user.id as user_id, 
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email, 
+						   user.city, 
+						   user.credentials')
+				 ->from('logs')
+				 ->join('user','user.id = logs.user_id')
+				 ->where('logs.info', "Relaxation zone")
+				 ->where('logs.project_id', $this->project->id)
+				 ->order_by('logs.date_time', 'desc');
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
+
+		return new stdClass();
+	}
+
+	public function getRelaxationZoneLogsUniqueVisitors()
+	{
+		$this->db->select('COUNT(`id`) as `unique_visitors`')
+				 ->from('`logs`')
+				 ->where('`info`', "Relaxation zone")
+				 ->where('`project_id`', $this->project->id)
+				 ->group_by('user_id');
+
+		$result 	= $this->db->get();
+
+		if ($result->num_rows() > 0)
+			return $result->num_rows();
+
+		return 0;
+	}
+
+	public function getRelaxationZoneLogsDateStats()
+	{
+		$this->db->select('COUNT(`id`) as `total_rows`,
+						   DATE_FORMAT(`date_time`, \'%Y-%m-%d\') as `date`')
+				 ->from('`logs`')
+				 ->where('`info`', "Relaxation zone")
+				 ->where('`project_id`', $this->project->id)
+				 ->group_by('EXTRACT(DAY FROM `date_time`)')
+				 ->order_by('`date_time`', 'ASC');
+
+		$result 	= $this->db->get();
+		if ($result->num_rows() > 0)
+			return $result->result();
+
 		return new stdClass();
 	}
 
