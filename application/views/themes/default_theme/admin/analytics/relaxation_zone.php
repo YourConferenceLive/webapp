@@ -90,7 +90,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		// Setup - add a text input to each footer cell
 		$('#logsTable thead th').each(function() {
-			$(this).html($(this).text()+'<br><input type="text" placeholder="Search '+$(this).text()+'" style="width: inherit;"/>');
+			$(this).html($(this).text()+'<br><input type="text" placeholder="Search '+$(this).text()+'" style="width: inherit;background: #31373d;color: white;border: 1px solid #666;"/>');
 		});
 		let logsDt = $('#logsTable')
 				.DataTable(
