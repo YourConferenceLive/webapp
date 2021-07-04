@@ -419,7 +419,7 @@ class Analytics_Model extends CI_Model
 
 		// Filter for pagination and rows per page
 		if (isset($post['start']) && isset($post['length']))
-			$this->db->limit((intval($post['start'])+intval($post['length'])), $post['start']);
+			$this->db->limit($post['length'], $post['start']);
 
 		// Dynamic sort
 		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
