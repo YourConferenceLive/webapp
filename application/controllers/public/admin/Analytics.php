@@ -39,7 +39,7 @@ class Analytics extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/relaxation_zone", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/relaxation_zone")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
