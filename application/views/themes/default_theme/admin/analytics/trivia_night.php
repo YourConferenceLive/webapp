@@ -107,8 +107,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									data.logType = "Visit";
 									data.logPlace = "Session Join";
 									data.ref1 = "17";//Trivia Night Session ID in DB
-									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();;
-									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
+									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();
+									data.logDays = '2021-06-24'; // Trivia night was on 24th, hence only need data from that day
 								}
 							},
 					"columns":
@@ -167,29 +167,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								'</label>'
 						$("#logsTable_length").append(uniqueUserDropdown);
 
-						let daysDropdown = '' +
-								'<label class="ml-3">' +
-								' Show <select id="logsTable_days" name="logsTable_days" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Filter by a particular day">' +
-								'  <option value="all">All</option>' +
-								'  <option value="2021-06-24">2021-06-24</option>' +
-								'  <option value="2021-06-25">2021-06-25</option>' +
-								'  <option value="2021-06-26">2021-06-26</option>' +
-								'  <option value="2021-06-27">2021-06-27</option>' +
-								' </select> day(s)' +
-								'</label>'
-						$("#logsTable_length").append(daysDropdown);
-
-						let filterInfo = '<i class="ml-3 fas fa-info-circle" style="font-size: 20px;color: #95f5ff;" data-toggle="tooltip" data-placement="top" data-html="true" title="You can combine filters. <br> eg; Unique users on 2021-06-24"></i>';
-						$("#logsTable_length").append(filterInfo);
-
 						$('[data-toggle="tooltip"]').tooltip();
 					}
 				}
 		);
-
-		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days', function () {
-			logsDt.ajax.reload();
-		});
 
 		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user', function () {
 			logsDt.ajax.reload();
