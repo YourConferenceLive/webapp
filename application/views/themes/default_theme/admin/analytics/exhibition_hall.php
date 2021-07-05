@@ -116,7 +116,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								{ "name": "user.name", "data": "user_fname" },
 								{ "name": "user.surname", "data": "user_surname" },
 								{ "name": "user.email", "data": "email" },
-								{ "name": "booth_name", "data": "booth_name" },
+								{ "name": "booth.name", "data": "booth_name" },
 								{ "name": "user.city", "data": "city" },
 								{ "name": "logs.date_time", "data": "date_time" }
 							],
