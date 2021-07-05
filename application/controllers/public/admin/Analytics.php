@@ -74,13 +74,12 @@ class Analytics extends CI_Controller
 	public function exhibition_hall()
 	{
 		$sidebar_data['user'] 		= $this->user;
-		$data['logs'] 				= $this->analytics->getLogs('Visit', 'Booth');
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/exhibition_hall", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/exhibition_hall")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
