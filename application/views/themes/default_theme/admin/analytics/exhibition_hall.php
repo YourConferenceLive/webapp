@@ -82,10 +82,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-
+<?php 
+	$booth_array = array();
+	foreach ($booths as $booth) {
+		$booth_array[] 	= array('id' => $booth->id, 'name' => $booth->name);
+	}?>
 <script>
 	$(function ()
 	{
+		let booths = <?php echo json_encode($booth_array); ?>;
 
 		// Setup - add a text input to each footer cell
 		$('#logsTable thead th').each(function() {
@@ -106,7 +111,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"data": function (data) {
 									data.logType = "Visit";
 									data.logPlace = "Booth";
-									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();;
+									data.logBooths = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_booth').val();
+									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();
 									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
 								}
 							},
@@ -157,6 +163,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							});
 						});
 
+						let boothDropdown =
+								'<label class="ml-3">' +
+								' Show <select id="logsTable_booth" name="logsTable_booth" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select booth to filter data">' +
+								'  <option value="">All</option>';
+
+						for (var key of Object.keys(booths)) {
+						boothDropdown +=
+								'  <option value="' + booths[key]['id'] + '">' + booths[key]['name'] + '</option>';
+						}
+
+						boothDropdown +=
+								' </select> booth(s)' +
+								'</label>';
+
+						$("#logsTable_length").append(boothDropdown);
+
 						let uniqueUserDropdown = '' +
 								'<label class="ml-3">' +
 								' Show <select id="logsTable_user" name="logsTable_user" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select unique to show only unique users">' +
@@ -185,6 +207,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					}
 				}
 		);
+
+		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_booth', function () {
+			logsDt.ajax.reload();
+		});
 
 		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days', function () {
 			logsDt.ajax.reload();

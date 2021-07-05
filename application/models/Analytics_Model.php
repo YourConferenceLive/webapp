@@ -366,6 +366,10 @@ class Analytics_Model extends CI_Model
 		$tempDbObj = clone $this->db;
 		$total_results = $tempDbObj->count_all_results();
 
+		// Booths filter for Exhibition Hall 
+		if (isset($post['logBooths']) && $post['logBooths']!='')
+			$this->db->where('logs.ref_1', $post['logBooths']);
+
 		// Days filter
 		if (isset($post['logDays']) && $post['logDays']!='all' && DateTime::createFromFormat('Y-m-d', $post['logDays'])!=false)
 			$this->db->like('logs.date_time', $post['logDays']);
