@@ -34,9 +34,6 @@ class Analytics extends CI_Controller
 	public function relaxation_zone()
 	{
 		$sidebar_data['user'] 		= $this->user;
-		$data['logs']				= $this->analytics->getRelaxationZoneLogs();
-		$data['unique_visitors']	= $this->analytics->getLogsUniqueVisitors('Visit', 'Relaxation zone');
-		$data['stats'] 				= $this->analytics->getLogsDateStats('Visit', 'Relaxation zone');
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
@@ -64,13 +61,12 @@ class Analytics extends CI_Controller
 	public function trivia_night()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/trivia_night", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/trivia_night")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -79,14 +75,6 @@ class Analytics extends CI_Controller
 	{
 		$sidebar_data['user'] 		= $this->user;
 		$data['logs'] 				= $this->analytics->getLogs('Visit', 'Booth');
-		$data['unique_visitors']	= $this->analytics->getLogsUniqueVisitors('Visit', 'Booth');
-		$data['stats'] 				= $this->analytics->getLogsDateStats('Visit', 'Booth');
-
-// echo $this->db->last_query();
-// echo '<pre>';
-// print_r($data);
-// echo '</pre>';
-// exit;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")

@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Analytics</a></li>
-						<li class="breadcrumb-item active">Relaxation Zone</li>
+						<li class="breadcrumb-item active">Trivia Night</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">Relaxation Zone</h3>
+							<h3 class="card-title">Trivia Night</h3>
 						</div>
 						<!-- /.card-header -->
 						<div id="logsTableCard" class="card-body">
@@ -99,13 +99,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
 					"serverSide": true,
-					"ajax":
+						"ajax":
 							{
 								"url": project_admin_url+"/analytics/getLogsDt",
 								"type": "POST",
 								"data": function (data) {
 									data.logType = "Visit";
-									data.logPlace = "Scavenger hunt";
+									data.logPlace = "Session Join";
+									data.ref1 = "1";
 									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();;
 									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
 								}

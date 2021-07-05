@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0">Exhibition Hall</h1>
+					<h1 class="m-0">Analytics</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
@@ -21,60 +21,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
-		</div><!-- /.container-fluid -->
+		</div><!-- /.container-fluid <--></-->
 	</div>
 	<!-- /.content-header -->
 
 	<!-- Main content -->
 	<section class="content">
 		<div class="container-fluid">
-	        <div class="row">
-				<div class="col-lg-6 col-6">
-					<!-- small box -->
-					<div class="small-box bg-warning">
-						<div class="inner">
-<?php
-							foreach ($stats as $row) {
-								if (in_array($row->date, array('2021-06-24', '2021-06-25', '2021-06-26', '2021-06-27'))):?>
-							<div class="col-6 m-0 p-0 float-sm-left">
-								<h3<?php echo ((in_array($row->date, array('2021-06-26', '2021-06-27'))) ? ' class="m-0"' : '' );?>><?php echo $row->total_rows;?> <sup style="font-size:50%; font-weight: normal; font-style:italic;">visits on <?php echo $row->date;?></sup></h3>
-							</div>
-<?php
-								endif;
-							}?>
-							<div class="clearfix"></div>
-						</div>
-              			<div class="icon"><i class="ion ion-person-add"></i></div>
-            		</div>
-          		</div>
-          		<!-- ./col -->
-
-          		<div class="col-lg-3 col-6">
-            		<!-- small box -->
-            		<div class="small-box bg-info">
-              			<div class="inner">
-                			<h3><?php echo count($logs);?></h3>
-                			<p>Total Visitors</p>
-              			</div>
-              			<div class="icon"><i class="ion ion-bag"></i></div>
-            		</div>
-         		</div>
-				<!-- ./col -->
-
-				<div class="col-lg-3 col-6">
-					<!-- small box -->
-					<div class="small-box bg-success">
-						<div class="inner">
-			                <h3><?php echo number_format(($unique_visitors/count($logs))*100, 2);?><sup style="font-size: 20px">%</sup></h3>
-			                <p>Unique Visitors</p>
-            			</div>
-						<div class="icon"><i class="ion ion-stats-bars"></i></div>
-            		</div>
-          		</div>
-				<!-- ./col -->
-	        </div>
-	        <!-- /.row -->
-
 			<div class="row">
 				<div class="col-12">
 					<div class="card">
@@ -94,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<th>City</th>
 										<th>What</th>
 										<th>Browser</th>
-										<th>OS</th>
+										<th>OS</th>           
 										<th>Time</th>
 									</tr>
 								</thead>

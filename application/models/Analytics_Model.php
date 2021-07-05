@@ -56,50 +56,6 @@ class Analytics_Model extends CI_Model
 		return new stdClass();
 	}
 
-	public function getLogsUniquevisitors($name=null, $info=null)
-	{
-		$this->db->select('COUNT(`id`) as `unique_visitors`')
-				 ->from('`logs`')
-				 ->where('`project_id`', $this->project->id)
-				 ->group_by('user_id');
-
-		if ($name!=null)
-			$this->db->where('`name`', $name);
-
-		if ($info!=null)
-			$this->db->where('`info`', $info);
-
-		$result 	= $this->db->get();
-
-		if ($result->num_rows() > 0)
-			return $result->num_rows();
-
-		return 0;
-	}
-
-	public function getLogsDateStats($name=null, $info=null)
-	{
-		$this->db->select('COUNT(`id`) as `total_rows`,
-						   DATE_FORMAT(`date_time`, \'%Y-%m-%d\') as `date`')
-				 ->from('`logs`')
-				 ->where('`project_id`', $this->project->id)
-				 ->group_by('EXTRACT(DAY FROM `date_time`)')
-				 ->order_by('`date_time`', 'ASC');
-
-		if ($name!=null)
-			$this->db->where('`name`', $name);
-
-		if ($info!=null)
-			$this->db->where('`info`', $info);
-
-		$result 	= $this->db->get();
-
-		if ($result->num_rows() > 0)
-			return $result->result();
-
-		return new stdClass();
-	}
-
 	public function getScavengerHuntData()
 	{
 		$this->db->select('user.id, 
@@ -395,6 +351,8 @@ class Analytics_Model extends CI_Model
 		if (isset($post['logPlace']) && $post['logPlace']!='')
 			$this->db->where('logs.info', $post['logPlace']);
 
+		if (isset($post['ref1']) && $post['ref1']!='')
+			$this->db->where('logs.ref_1', $post['ref1']);
 
 		// Get total number of rows without filtering
 		$tempDbObj = clone $this->db;
