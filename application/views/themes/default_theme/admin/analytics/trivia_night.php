@@ -47,7 +47,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>User ID</th>
 										<th>Name</th>
 										<th>Surname</th>
-										<th>Degree</th>
 										<th>Email</th>
 										<th>Company Name</th>
 										<th>City</th>
@@ -117,7 +116,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								{ "name": "user.id", "data": "user_id", "width": "105px" },
 								{ "name": "user.name", "data": "user_fname" },
 								{ "name": "user.surname", "data": "user_surname" },
-								{ "name": "user.credentials", "data": "credentials" },
 								{ "name": "user.email", "data": "email" },
 								{ "name": "sponsor_booth.name", "data": "company_name" },
 								{ "name": "user.city", "data": "city" },
@@ -130,13 +128,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"info": true,
 					"autoWidth": false,
 					"responsive": false,
-					"order": [[ 7, "desc" ]],
+					"order": [[ 6, "desc" ]],
 
 					buttons: [
 						{
 							extend: 'excel',
 							text: '<i class="far fa-file-excel"></i> Export Excel',
-							className: 'btn-info',
+							className: 'btn-success',
 							attr:  {
 								"data-toggle": 'tooltip',
 								"data-placement": 'top',

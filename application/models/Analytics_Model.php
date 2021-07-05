@@ -340,16 +340,13 @@ class Analytics_Model extends CI_Model
 						   user.surname as user_surname, 
 						   user.email,
 						   user.city,
-						   user.credentials')
+						   user.credentials,
+						   sponsor_booth.name as company_name')
 				 ->from('logs')
 				 ->join('user','user.id = logs.user_id')
+				 ->join('sponsor_booth_admin', 'logs.user_id = sponsor_booth_admin.user_id', 'left')
+				 ->join('sponsor_booth', 'sponsor_booth_admin.booth_id = sponsor_booth.id', 'left')
 				 ->where('logs.project_id', $this->project->id);
-
-		if (isset($post['logPlace']) && $post['logPlace'] == 'Session Join' && isset($post['ref1']) && $post['ref1'] == '17') {
-			$this->db->select('sponsor_booth.name as company_name');
-			$this->db->join('sponsor_booth_admin', 'logs.user_id = sponsor_booth_admin.user_id');
-			$this->db->join('sponsor_booth', 'sponsor_booth_admin.booth_id = sponsor_booth.id');
-		}
 
 		if (isset($post['logType']) && $post['logType']!='')
 			$this->db->where('logs.name', $post['logType']);
