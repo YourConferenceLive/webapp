@@ -49,6 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>Surname</th>
 										<th>Degree</th>
 										<th>Email</th>
+										<th>Company Name</th>
 										<th>City</th>
 										<th>Time</th>
 									</tr>
@@ -99,14 +100,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
 					"serverSide": true,
-						"ajax":
+					"ajax":
 							{
 								"url": project_admin_url+"/analytics/getLogsDt",
 								"type": "POST",
 								"data": function (data) {
 									data.logType = "Visit";
 									data.logPlace = "Session Join";
-									data.ref1 = "1";
+									data.ref1 = "17";//Trivia Night Session ID in DB
 									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();;
 									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
 								}
@@ -118,6 +119,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								{ "name": "user.surname", "data": "user_surname" },
 								{ "name": "user.credentials", "data": "credentials" },
 								{ "name": "user.email", "data": "email" },
+								{ "name": "sponsor_booth.name", "data": "company_name" },
 								{ "name": "user.city", "data": "city" },
 								{ "name": "logs.date_time", "data": "date_time" }
 							],
@@ -128,19 +130,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"info": true,
 					"autoWidth": false,
 					"responsive": false,
-					"order": [[ 6, "desc" ]],
+					"order": [[ 7, "desc" ]],
 
 					buttons: [
 						{
 							extend: 'excel',
 							text: '<i class="far fa-file-excel"></i> Export Excel',
-							className: 'btn-success',
+							className: 'btn-info',
 							attr:  {
 								"data-toggle": 'tooltip',
 								"data-placement": 'top',
 								"title": 'Export will consider your filters and search',
 							},
-							title: 'relaxation_zone_export',
+							title: 'Trivia_Night_Export',
 							action: ajaxExportAction
 						}],
 
