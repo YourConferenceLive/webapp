@@ -154,13 +154,12 @@ class Analytics extends CI_Controller
 	public function sessions()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/sessions", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/sessions")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -365,6 +364,11 @@ class Analytics extends CI_Controller
 	public function getEpostersLogsDt()
 	{
 		echo $this->analytics->getEpostersLogsDt();
+	}
+
+	public function getSessionQuestionsDt()
+	{
+		echo $this->analytics->getSessionQuestionsDt();
 	}
 
 	public function getLogsDt()

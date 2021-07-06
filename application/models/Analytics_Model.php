@@ -330,6 +330,65 @@ class Analytics_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getSessionQuestionsDt()
+	{
+		$post = $this->input->post();
+
+		$this->db->select('sessions.id AS session_id,
+						   sessions.name AS session_name,
+						   session_types.type_name as session_type,
+						   COUNT(session_questions.id) AS total_questions')
+				 ->from('sessions')
+				 ->join('session_types', 'sessions.session_type = session_types.type_code')
+				 ->join('session_questions', 'sessions.id = session_questions.session_id', 'left')
+				 ->where('sessions.project_id', $this->project->id)
+				 ->group_by('sessions.id');
+
+		// Get total number of rows without filtering
+		$tempDbObj = clone $this->db;
+		$total_results = $tempDbObj->count_all_results();
+
+		// Column Search
+		foreach ($post['columns'] as $column)
+		{
+			if ($column['search']['value']!='')
+				$this->db->like($column['name'], $column['search']['value']);
+		}
+
+		$tempDbObj = clone $this->db;
+		$total_filtered_results = $tempDbObj->count_all_results();
+
+		// Filter for pagination and rows per page
+		if (isset($post['start']) && isset($post['length']))
+			$this->db->limit($post['length'], $post['start']);
+
+		// Dynamic sort
+		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
+
+		$result = $this->db->get();
+
+		if ($result->num_rows() > 0)
+		{
+			$response_array = array(
+				"draw" => $post['draw'],
+				"recordsTotal" => $total_results,
+				"recordsFiltered" => $total_filtered_results,
+				"data" => $result->result()
+			);
+
+			return json_encode($response_array);
+		}
+
+		$response_array = array(
+			"draw" => $post['draw'],
+			"recordsTotal" => 0,
+			"recordsFiltered" => 0,
+			"data" => new stdClass()
+		);
+
+		return json_encode($response_array);
+	}
+
 	public function getEpostersLogsDt()
 	{
 		$post = $this->input->post();
