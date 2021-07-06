@@ -393,10 +393,13 @@ class Analytics_Model extends CI_Model
 		$post = $this->input->post();
 
 		$this->db->select('eposters.id,
+						   CONCAT_WS(" ", user.name, user.surname, user.credentials) AS author,
 						   eposters.title,
 						   REPLACE(REPLACE(eposters.type, \'surgical_video\', \'Surgical Video\'), \'eposter\', \'ePoster\') as type,
 						   COUNT(DISTINCT logs.user_id) AS total_vistors')
 				 ->from('eposters')
+				 ->join('eposter_authors', 'eposters.id = eposter_authors.eposter_id')
+				 ->join('user', 'eposter_authors.user_id = user.id')
 				 ->join('logs', 'eposters.id = logs.ref_1', 'left')
 				 ->where('logs.info', 'ePoster View')
 				 ->where('eposters.project_id', $this->project->id)
@@ -409,7 +412,13 @@ class Analytics_Model extends CI_Model
 		// Column Search
 		foreach ($post['columns'] as $column)
 		{
-			if ($column['search']['value']!='')
+			if ($column['name'] == 'author' && $column['search']['value']!='') {
+	    		$this->db->group_start();
+				$this->db->like('user.name',$column['search']['value']);
+				$this->db->or_like('user.surname',$column['search']['value']);
+				$this->db->or_like('user.credentials',$column['search']['value']);
+	    		$this->db->group_end();
+			} elseif ($column['search']['value']!='')
 				$this->db->like($column['name'], $column['search']['value']);
 		}
 

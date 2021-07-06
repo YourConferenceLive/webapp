@@ -45,6 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<thead>
 									<tr>
 										<th>ePoster ID</th>
+										<th>Author</th>
 										<th>ePoster Name</th>
 										<th>ePoster Type</th>
 										<th>Total Visitors</th>
@@ -108,6 +109,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"columns":
 							[
 								{ "name": "eposters.id", "data": "id", "width": "105px" },
+								{ "name": "author", "data": "author" },
 								{ "name": "eposters.title", "data": "title" },
 								{ "name": "eposters.type", "data": "type" },
 								{ "name": "total_vistors", "data": "total_vistors" }
