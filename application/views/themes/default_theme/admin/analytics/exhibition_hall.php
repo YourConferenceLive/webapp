@@ -163,7 +163,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							});
 						});
 
-						let boothDropdown =
+						let boothDropdown = '' +
 								'<label class="ml-3">' +
 								' Show <select id="logsTable_booth" name="logsTable_booth" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select booth to filter data">' +
 								'  <option value="">All</option>';
