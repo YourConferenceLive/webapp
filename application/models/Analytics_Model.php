@@ -330,6 +330,64 @@ class Analytics_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getEpostersLogsDt()
+	{
+		$post = $this->input->post();
+
+		$this->db->select('eposters.id,
+						   eposters.title,
+						   REPLACE(REPLACE(eposters.type, \'surgical_video\', \'Surgical Video\'), \'eposter\', \'ePoster\') as type,
+						   COUNT(logs.id) AS total_vistors')
+				 ->from('eposters')
+				 ->join('logs', 'eposters.id = logs.ref_1', 'left')
+				 ->where('logs.info', 'ePoster View')
+				 ->where('eposters.project_id', $this->project->id)
+				 ->group_by('logs.ref_1');
+
+		// Get total number of rows without filtering
+		$tempDbObj = clone $this->db;
+		$total_results = $tempDbObj->count_all_results();
+
+		// Column Search
+		foreach ($post['columns'] as $column)
+		{
+			if ($column['search']['value']!='')
+				$this->db->like($column['name'], $column['search']['value']);
+		}
+
+		$tempDbObj = clone $this->db;
+		$total_filtered_results = $tempDbObj->count_all_results();
+
+		// Filter for pagination and rows per page
+		if (isset($post['start']) && isset($post['length']))
+			$this->db->limit($post['length'], $post['start']);
+
+		// Dynamic sort
+		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
+
+		$result = $this->db->get();
+
+		if ($result->num_rows() > 0)
+		{
+			$response_array = array(
+				"draw" => $post['draw'],
+				"recordsTotal" => $total_results,
+				"recordsFiltered" => $total_filtered_results,
+				"data" => $result->result()
+			);
+
+			return json_encode($response_array);
+		}
+
+		$response_array = array(
+			"draw" => $post['draw'],
+			"recordsTotal" => 0,
+			"recordsFiltered" => 0,
+			"data" => new stdClass()
+		);
+
+		return json_encode($response_array);
+	}
 
 	public function getLogsDt()
 	{
@@ -384,6 +442,7 @@ class Analytics_Model extends CI_Model
 			if ($column['search']['value']!='')
 				$this->db->like($column['name'], $column['search']['value']);
 		}
+
 		$tempDbObj = clone $this->db;
 		$total_filtered_results = $tempDbObj->count_all_results();
 

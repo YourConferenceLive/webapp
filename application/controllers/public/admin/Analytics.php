@@ -89,13 +89,12 @@ class Analytics extends CI_Controller
 	public function scientific_sessions()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/scientific_sessions", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/scientific_sessions")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -103,13 +102,12 @@ class Analytics extends CI_Controller
 	public function session_recordings()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/session_recordings", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/session_recordings")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -117,13 +115,12 @@ class Analytics extends CI_Controller
 	public function skills_transfer_courses()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/skills_transfer_courses", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/skills_transfer_courses")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -131,13 +128,12 @@ class Analytics extends CI_Controller
 	public function eposters()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/eposters", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/eposters")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -145,13 +141,12 @@ class Analytics extends CI_Controller
 	public function overall()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/overall", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/overall")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -367,9 +362,12 @@ class Analytics extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer");
 	}
 
-	public function getLogsDt()
+	public function getLogsDt($section = '')
 	{
-		echo $this->analytics->getLogsDt();
+		if ($section == 'eposter')
+			echo $this->analytics->getEpostersLogsDt();
+		else
+			echo $this->analytics->getLogsDt();
 	}
 
 }
