@@ -337,12 +337,12 @@ class Analytics_Model extends CI_Model
 		$this->db->select('eposters.id,
 						   eposters.title,
 						   REPLACE(REPLACE(eposters.type, \'surgical_video\', \'Surgical Video\'), \'eposter\', \'ePoster\') as type,
-						   COUNT(logs.id) AS total_vistors')
+						   COUNT(DISTINCT logs.user_id) AS total_vistors')
 				 ->from('eposters')
 				 ->join('logs', 'eposters.id = logs.ref_1', 'left')
 				 ->where('logs.info', 'ePoster View')
 				 ->where('eposters.project_id', $this->project->id)
-				 ->group_by('logs.ref_1');
+				 ->group_by('eposters.id');
 
 		// Get total number of rows without filtering
 		$tempDbObj = clone $this->db;
