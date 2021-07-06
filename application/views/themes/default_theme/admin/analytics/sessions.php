@@ -46,7 +46,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<tr>
 										<th>Session ID</th>
 										<th>Session Name</th>
-										<th>Session Type</th>
 										<th>Total Questions</th>
 									</tr>
 								</thead>
@@ -97,15 +96,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"serverSide": true,
 					"ajax":
 							{
-								"url": project_admin_url+"/analytics/getSessionQuestionsDt",
+								"url": project_admin_url+"/analytics/session_questions",
 								"type": "POST",
 								"data": function (data) {}
 							},
 					"columns":
 							[
 								{ "name": "sessions.id", "data": "session_id", "width": "105px" },
-								{ "name": "sessions.name", "data": "session_name" },
-								{ "name": "session_types.type_name", "data": "session_type" },
+								{ "name": "sessions.name", "data": "session_name", "width": "610px" },
 								{ "name": "total_questions", "data": "total_questions" },
 							],
 					"paging": true,

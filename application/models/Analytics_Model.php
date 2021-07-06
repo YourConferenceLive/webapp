@@ -336,12 +336,11 @@ class Analytics_Model extends CI_Model
 
 		$this->db->select('sessions.id AS session_id,
 						   sessions.name AS session_name,
-						   session_types.type_name as session_type,
 						   COUNT(session_questions.id) AS total_questions')
 				 ->from('sessions')
-				 ->join('session_types', 'sessions.session_type = session_types.type_code')
 				 ->join('session_questions', 'sessions.id = session_questions.session_id', 'left')
 				 ->where('sessions.project_id', $this->project->id)
+				 ->where('sessions.session_type', 'gs')
 				 ->group_by('sessions.id');
 
 		// Get total number of rows without filtering

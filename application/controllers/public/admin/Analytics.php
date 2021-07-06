@@ -366,7 +366,7 @@ class Analytics extends CI_Controller
 		echo $this->analytics->getEpostersLogsDt();
 	}
 
-	public function getSessionQuestionsDt()
+	public function session_questions()
 	{
 		echo $this->analytics->getSessionQuestionsDt();
 	}
