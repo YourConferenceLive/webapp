@@ -211,9 +211,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							"title": 'Export will consider your filters and search',
 						},
 						title: 'session_attendees_export',
-						exportOptions: {
-            				columns: [0, 1, 2]
-        				},
 						action: ajaxExportAction
 				}],
 				initComplete: function() {
