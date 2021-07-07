@@ -100,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"ajax":
 							{
 								"url": project_admin_url+"/analytics/stc_attendees",
-								"type": "GET"
+								"type": "POST"
 							},
 					"columns":
 							[
@@ -183,8 +183,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				"serverSide": true,
 				"ajax":
 						{
-							"url": project_admin_url+"/analytics/session_attendees/"+session_id,
-							"type": "GET"
+							"url": project_admin_url+"/analytics/getLogsDt/",
+							"type": "POST",
+							"data": function (data) {
+								data.logType = "Visit";
+								data.logPlace = "Session Join";
+								data.ref1 = session_id
+								data.logUserUniqueness = 'unique';
+								data.logDays = 'all';
+							}
 						},
 				"columns":
 						[
