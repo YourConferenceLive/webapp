@@ -343,7 +343,7 @@ class Analytics extends CI_Controller
 	public function awards_ceremony()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
+		$data['session_id'] 	= 12;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
