@@ -111,7 +111,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"data": function (data) {
 									data.logType = "Visit";
 									data.logPlace = "Booth";
-									data.logBooths = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_booth').val();
+									data.ref1 = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_booth').val();
 									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();
 									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
 								}
