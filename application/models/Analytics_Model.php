@@ -330,79 +330,9 @@ class Analytics_Model extends CI_Model
 		return new stdClass();
 	}
 
-	public function getSessionAttendees($session_id)
-	{
-		$post = $this->input->get();
-
-		$this->db->select('logs.*,
-						   user.name as user_fname, 
-						   user.surname as user_surname, 
-						   user.email,
-						   user.city,
-						   user.credentials')
-				 ->from('logs')
-				 ->join('user','user.id = logs.user_id')
-				 ->where('logs.project_id', $this->project->id)
-				 ->where('logs.info', 'Session Join')
-				 ->where('logs.ref_1', $session_id)
-				 ->group_by('logs.user_id');
-
-		// Get total number of rows without filtering
-		$tempDbObj = clone $this->db;
-		$total_results = $tempDbObj->count_all_results();
-
-		// Days filter
-		if (isset($post['logDays']) && $post['logDays']!='all' && DateTime::createFromFormat('Y-m-d', $post['logDays'])!=false)
-			$this->db->like('logs.date_time', $post['logDays']);
-
-		// Unique user filter
-		if (isset($post['logUserUniqueness']) && $post['logUserUniqueness']=='unique')
-			$this->db->group_by('logs.user_id');
-
-		// Column Search
-		foreach ($post['columns'] as $column)
-		{
-			if ($column['search']['value']!='')
-				$this->db->like($column['name'], $column['search']['value']);
-		}
-
-		$tempDbObj = clone $this->db;
-		$total_filtered_results = $tempDbObj->count_all_results();
-
-		// Filter for pagination and rows per page
-		if (isset($post['start']) && isset($post['length']))
-			$this->db->limit($post['length'], $post['start']);
-
-		// Dynamic sort
-		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
-
-		$result = $this->db->get();
-
-		if ($result->num_rows() > 0)
-		{
-			$response_array = array(
-				"draw" => $post['draw'],
-				"recordsTotal" => $total_results,
-				"recordsFiltered" => $total_filtered_results,
-				"data" => $result->result()
-			);
-
-			return json_encode($response_array);
-		}
-
-		$response_array = array(
-			"draw" => $post['draw'],
-			"recordsTotal" => 0,
-			"recordsFiltered" => 0,
-			"data" => new stdClass()
-		);
-
-		return json_encode($response_array);
-	}
-
 	public function getSessionAttendeesDt()
 	{
-		$post = $this->input->get();
+		$post = $this->input->post();
 
 		$this->db->select('sessions.id AS session_id,
 						   sessions.name AS session_name,

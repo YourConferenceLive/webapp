@@ -315,7 +315,7 @@ class Analytics extends CI_Controller
 	public function annual_general_meeting()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
+		$data['session_id'] 	= 37;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
@@ -370,11 +370,6 @@ class Analytics extends CI_Controller
 	public function stc_attendees()
 	{
 		echo $this->analytics->getSessionAttendeesDt();
-	}
-
-	public function session_attendees($session_id)
-	{
-		echo $this->analytics->getSessionAttendees($session_id);
 	}
 
 	public function session_questions()
