@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- /.content-header -->
 
 	<!-- Main content -->
-		<section class="content" style="width: fit-content;">
+		<section class="content"		>
 		<div class="container-fluid">
 	        <!-- /.row -->
 			<div class="row">
