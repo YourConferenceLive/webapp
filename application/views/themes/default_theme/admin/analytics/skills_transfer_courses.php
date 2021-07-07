@@ -127,6 +127,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"title": 'Export will consider your filters and search',
 							},
 							title: 'skills_transfer_courses_export',
+							exportOptions: {
+	            				columns: [0, 1, 2]
+	        				},
 							action: ajaxExportAction
 					}],
 					columnDefs: [{
