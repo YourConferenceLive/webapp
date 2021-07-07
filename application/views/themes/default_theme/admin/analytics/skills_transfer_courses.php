@@ -131,6 +131,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					}],
 					columnDefs: [{
 					        targets: [3],
+					        orderable: false,
 					        render: function ( data, type, columns, meta ) {
 
 			                if(type === 'display') {
@@ -235,7 +236,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		$("#sessionAttendeesModal").on('hide.bs.modal', function(){
-			$('#attendeesTable').DataTable().destroy();
+			var dTable = $('#attendeesTable').dataTable();
+			dTable.fnDestroy();
+			dTable.fnDraw();
 		});
 	});
 </script>
