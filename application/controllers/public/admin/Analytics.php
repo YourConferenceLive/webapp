@@ -329,7 +329,7 @@ class Analytics extends CI_Controller
 	public function presidents_celebration()
 	{
 		$sidebar_data['user'] 	= $this->user;
-		$data['logs'] 			= $this->analytics->getLogs();
+		$data['session_id'] 	= 34;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
