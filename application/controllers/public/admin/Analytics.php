@@ -121,6 +121,7 @@ class Analytics extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/skills_transfer_courses")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/session_attendees_modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -364,6 +365,16 @@ class Analytics extends CI_Controller
 	public function getEpostersLogsDt()
 	{
 		echo $this->analytics->getEpostersLogsDt();
+	}
+
+	public function stc_attendees()
+	{
+		echo $this->analytics->getSessionAttendeesDt();
+	}
+
+	public function session_attendees($session_id)
+	{
+		echo $this->analytics->getSessionAttendees($session_id);
 	}
 
 	public function session_questions()
