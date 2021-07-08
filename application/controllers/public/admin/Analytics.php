@@ -14,6 +14,7 @@ class Analytics extends CI_Controller
 
 		$this->load->model('Logger_Model', 'logs');
 		$this->load->model('Analytics_Model', 'analytics');
+		$this->load->model('Booths_Model', 'booths');
 	}
 
 	public function index()
@@ -33,40 +34,15 @@ class Analytics extends CI_Controller
 
 	public function relaxation_zone()
 	{
-		$sidebar_data['user'] = $this->user;
-
-		$data['logs'] = $this->analytics->getRelaxationZoneLogs();
+		$sidebar_data['user'] 		= $this->user;
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/relaxation_zone", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/relaxation_zone")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
-	}
-
-	public function scavenger_hunt_export($param)
-	{
-		if ($param != 'csv')
-			return false;
-
-		$file 		= fopen('php://output', 'w');
-		$filename 	= 'Scavenger-Hunt-'.date('Y-m-d').'.csv';
-		header("Content-Description: File Transfer");
-		header("Content-Disposition: attachment; filename = $filename");
-		header("Content-Type: application/csv;");
-		$header 		= array("User ID", "Name", "Surname", "Degree", "Email","City", "Last Collected Item", "Last Collected");
-		fputcsv($file, $header);
-		$data 			= $this->analytics->getScavengerHuntData();
-
-		foreach ($data as $row) {
-
-			$csv_data 	= array($row->id, $row->name, $row->surname, $row->credentials, $row->email, $row->city, $row->booth_name, $row->last_collected);
-			fputcsv($file, $csv_data);
-		}
-		fclose($file);
-		exit;
 	}
 
 	public function scavenger_hunt()
@@ -83,14 +59,121 @@ class Analytics extends CI_Controller
 		;
 	}
 
-	public function credits_report()
+	public function trivia_night()
 	{
-		$sidebar_data['user'] = $this->user;
+		$sidebar_data['user'] 	= $this->user;
+
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/credits_report")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/trivia_night")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function exhibition_hall()
+	{
+		$sidebar_data['user'] 		= $this->user;
+		$data['booths'] 			= $this->booths->getAll();
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/exhibition_hall", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function scientific_sessions()
+	{
+		$sidebar_data['user'] 	= $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/scientific_sessions")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function session_recordings()
+	{
+		$sidebar_data['user'] 	= $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/session_recordings")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function skills_transfer_courses()
+	{
+		$sidebar_data['user'] 	= $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/skills_transfer_courses")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/session_attendees_modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function eposters()
+	{
+		$sidebar_data['user'] 	= $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/eposters")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function overall()
+	{
+		$sidebar_data['user'] 	= $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/overall")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function sessions()
+	{
+		$sidebar_data['user'] 	= $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/sessions")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function credits_report($section = 1)
+	{
+		$sidebar_data['user'] = $this->user;
+		$data['section'] 	  = $section;
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/credits_report", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -229,12 +312,74 @@ class Analytics extends CI_Controller
     	exit();
 	}
 
+	public function annual_general_meeting()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['session_id'] 	= 37;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/annual_general_meeting", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function presidents_celebration()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['session_id'] 	= 34;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/presidents_celebration", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function awards_ceremony()
+	{
+		$sidebar_data['user'] 	= $this->user;
+		$data['session_id'] 	= 12;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/awards_ceremony", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
 	public function detail()
 	{
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/staff_login")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer");
+	}
+
+	public function getEpostersLogsDt()
+	{
+		echo $this->analytics->getEpostersLogsDt();
+	}
+
+	public function stc_attendees()
+	{
+		echo $this->analytics->getSessionAttendeesDt();
+	}
+
+	public function session_questions()
+	{
+		echo $this->analytics->getSessionQuestionsDt();
+	}
+
+	public function getLogsDt()
+	{
+		echo $this->analytics->getLogsDt();
 	}
 
 }

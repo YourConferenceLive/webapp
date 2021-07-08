@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Analytics</a></li>
-						<li class="breadcrumb-item active">Relaxation Zone</li>
+						<li class="breadcrumb-item active">Skills Transfer Courses</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -30,27 +30,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- /.content-header -->
 
 	<!-- Main content -->
-		<section class="content" style="width: fit-content;">
+		<section class="content">
 		<div class="container-fluid">
 	        <!-- /.row -->
 			<div class="row">
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">Relaxation Zone</h3>
+							<h3 class="card-title">Skills Transfer Courses</h3>
 						</div>
 						<!-- /.card-header -->
 						<div id="logsTableCard" class="card-body">
 							<table id="logsTable" class="table table-bordered table-striped">
 								<thead>
 									<tr>
-										<th>User ID</th>
-										<th>Name</th>
-										<th>Surname</th>
-										<th>Degree</th>
-										<th>Email</th>
-										<th>City</th>
-										<th>Time</th>
+										<th>Session ID</th>
+										<th>Session Name</th>
+										<th>Total Attendees</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<!-- Server Side DT -->
@@ -86,11 +83,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(function ()
 	{
-
 		// Setup - add a text input to each footer cell
 		$('#logsTable thead th').each(function() {
-			$(this).html($(this).text()+'<br><input type="text" placeholder="Search '+$(this).text()+'" style="width: inherit;background: #31373d;color: white;border: 1px solid #666;"/>');
+			if ($(this).text() != 'Action')
+				$(this).html($(this).text()+'<br><input type="text" placeholder="Search '+$(this).text()+'" style="width: inherit;background: #31373d;color: white;border: 1px solid #666;"/>');
 		});
+
 		let logsDt = $('#logsTable')
 				.DataTable(
 				{
@@ -101,24 +99,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"serverSide": true,
 					"ajax":
 							{
-								"url": project_admin_url+"/analytics/getLogsDt",
-								"type": "POST",
-								"data": function (data) {
-									data.logType = "Visit";
-									data.logPlace = "Scavenger hunt";
-									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();;
-									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
-								}
+								"url": project_admin_url+"/analytics/stc_attendees",
+								"type": "POST"
 							},
 					"columns":
 							[
-								{ "name": "user.id", "data": "user_id", "width": "105px" },
-								{ "name": "user.name", "data": "user_fname" },
-								{ "name": "user.surname", "data": "user_surname" },
-								{ "name": "user.credentials", "data": "credentials" },
-								{ "name": "user.email", "data": "email" },
-								{ "name": "user.city", "data": "city" },
-								{ "name": "logs.date_time", "data": "date_time" }
+								{ "name": "sessions.id", "data": "session_id", "width": "105px" },
+								{ "name": "sessions.name", "data": "session_name" },
+								{ "name": "total_attendees", "data": "total_attendees" },
+								{ "name": "action", "data": "session_id"}
 							],
 					"paging": true,
 					"lengthChange": true,
@@ -127,10 +116,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"info": true,
 					"autoWidth": false,
 					"responsive": false,
-					"order": [[ 6, "desc" ]],
-
-					buttons: [
-						{
+					"order": [[ 1, "desc" ]],
+					buttons: [{
 							extend: 'excel',
 							text: '<i class="far fa-file-excel"></i> Export Excel',
 							className: 'btn-success',
@@ -139,10 +126,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"data-placement": 'top',
 								"title": 'Export will consider your filters and search',
 							},
-							title: 'relaxation_zone_export',
+							title: 'skills_transfer_courses_export',
+							exportOptions: {
+	            				columns: [0, 1, 2]
+	        				},
 							action: ajaxExportAction
-						}],
+					}],
+					columnDefs: [{
+					        targets: [3],
+					        orderable: false,
+					        render: function ( data, type, columns, meta ) {
 
+			                if(type === 'display') {
+			                    data = '<button class="viewAttendees btn btn-sm btn-success" session-id="'+ data +'"><i class="fas fa-search"></i> View</button>';
+			                }
+
+			                return data;
+			            } 
+					}],
 					initComplete: function() {
 						var api = this.api();
 						// Apply the search
@@ -150,49 +151,104 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							var that = this;
 							$('input', this.header()).on('keyup change', function() {
 								if (that.search() !== this.value) {
-									that
-											.search(this.value)
-											.draw();
+									that.search(this.value).draw();
 								}
 							});
 						});
-
-						let uniqueUserDropdown = '' +
-								'<label class="ml-3">' +
-								' Show <select id="logsTable_user" name="logsTable_user" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select unique to show only unique users">' +
-								'  <option value="all">All</option>' +
-								'  <option value="unique">Unique</option>' +
-								' </select> users' +
-								'</label>'
-						$("#logsTable_length").append(uniqueUserDropdown);
-
-						let daysDropdown = '' +
-								'<label class="ml-3">' +
-								' Show <select id="logsTable_days" name="logsTable_days" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Filter by a particular day">' +
-								'  <option value="all">All</option>' +
-								'  <option value="2021-06-24">2021-06-24</option>' +
-								'  <option value="2021-06-25">2021-06-25</option>' +
-								'  <option value="2021-06-26">2021-06-26</option>' +
-								'  <option value="2021-06-27">2021-06-27</option>' +
-								' </select> day(s)' +
-								'</label>'
-						$("#logsTable_length").append(daysDropdown);
-
-						let filterInfo = '<i class="ml-3 fas fa-info-circle" style="font-size: 20px;color: #95f5ff;" data-toggle="tooltip" data-placement="top" data-html="true" title="You can combine filters. <br> eg; Unique users on 2021-06-24"></i>';
-						$("#logsTable_length").append(filterInfo);
-
 						$('[data-toggle="tooltip"]').tooltip();
 					}
 				}
 		);
 
-		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days', function () {
-			logsDt.ajax.reload();
+		$('#logsTable').on('click', '.viewAttendees', function () {
+
+			let session_id = $(this).attr('session-id');
+
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Loading session attendees data...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			let attendeesDT = $('#attendeesTable').DataTable({
+				"dom": "<'row'<'col-sm-12 col-md-8'l><'#attendeesTableBtns.col-sm-12 col-md-4 text-right'B>>" +
+						"<'row'<'col-sm-12'tr>>" +
+						"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+				"serverSide": true,
+				"ajax":
+						{
+							"url": project_admin_url+"/analytics/getLogsDt/",
+							"type": "POST",
+							"data": function (data) {
+								data.logType = "Visit";
+								data.logPlace = "Session Join";
+								data.ref1 = session_id
+								data.logUserUniqueness = 'unique';
+								data.logDays = 'all';
+							}
+						},
+				"columns":
+						[
+							{ "name": "user.id", "data": "user_id", "width": "75px" },
+							{ "name": "user.name", "data": "user_fname" },
+							{ "name": "user.surname", "data": "user_surname" },
+							{ "name": "user.credentials", "data": "credentials" },
+							{ "name": "user.email", "data": "email" },
+							{ "name": "user.city", "data": "city" },
+							{ "name": "logs.date_time", "data": "date_time" }
+						],
+				"paging": true,
+				"lengthChange": true,
+				"searching": true,
+				"ordering": true,
+				"info": true,
+				"autoWidth": false,
+				"responsive": false,
+				"order": [[ 6, "desc" ]],
+				buttons: [{
+						extend: 'excel',
+						text: '<i class="far fa-file-excel"></i> Export Excel',
+						className: 'btn-success',
+						attr:  {
+							"data-toggle": 'tooltip',
+							"data-placement": 'top',
+							"title": 'Export will consider your filters and search',
+						},
+						title: 'session_attendees_export',
+						action: ajaxExportAction
+				}],
+				initComplete: function() {
+					var api = this.api();
+					// Apply the search
+					api.columns().every(function() {
+						var that = this;
+						$('input', this.header()).on('keyup change', function() {
+							if (that.search() !== this.value) {
+								that.search(this.value).draw();
+							}
+						});
+					});
+				}
+			});
+
+			Swal.close();
+
+			$('#sessionAttendeesModal').modal({
+				backdrop: 'static',
+				keyboard: false
+			});
 		});
 
-		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user', function () {
-			logsDt.ajax.reload();
+		$("#sessionAttendeesModal").on('hide.bs.modal', function(){
+			var dTable = $('#attendeesTable').dataTable();
+			dTable.fnDestroy();
+			dTable.fnDraw();
 		});
-
 	});
 </script>

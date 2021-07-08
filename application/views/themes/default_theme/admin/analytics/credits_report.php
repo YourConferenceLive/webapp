@@ -29,6 +29,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							<h3 class="card-title">Credits Report</h3>
 						</div>
 						<div class="card-body">
+<?php
+								if ($section == 1):?>
 							<div class="row">
 								<div class="col-12">
 									<div class="card">
@@ -71,7 +73,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 								    	</div>
 									</div>
 								</div>
-
+<?php
+								elseif ($section == 2):?>
 								<div class="row">
 									<div class="col-12">
 										<div class="card">
@@ -113,7 +116,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										</div>
 									</div>
 								</div>
-
+<?php
+								elseif ($section == 3):?>
 								<div class="row">
 									<div class="col-12">
 										<div class="card">
@@ -144,7 +148,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 									</div>
 								</div>
 							</div>
-
+<?php
+							endif;?>
 						</div>
 					</div>
 				</div>
@@ -171,7 +176,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 	<script>
 		$(document).ready(function() {
-
+<?php
+			if ($section == 1):?>
 			$('#sessionCreditTable').DataTable({
         		"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			   	"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
@@ -191,7 +197,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						action: ajaxExportAction
 					}]
 			});
-
+<?php
+			elseif ($section == 2):?>
 			$('#eposterCreditTable').DataTable({
         		"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			   	"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
@@ -211,7 +218,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						action: ajaxExportAction
 					}]
 		    });
-
+<?php
+			elseif ($section == 3):?>
 			$('#stcCreditTable').DataTable({
         		"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			   	"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
@@ -231,5 +239,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						action: ajaxExportAction
 					}]
 		    });
+<?php
+			endif;?>
 		});
 	</script>

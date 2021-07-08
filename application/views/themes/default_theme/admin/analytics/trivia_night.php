@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Analytics</a></li>
-						<li class="breadcrumb-item active">Relaxation Zone</li>
+						<li class="breadcrumb-item active">Trivia Night</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">Relaxation Zone</h3>
+							<h3 class="card-title">Trivia Night</h3>
 						</div>
 						<!-- /.card-header -->
 						<div id="logsTableCard" class="card-body">
@@ -47,8 +47,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>User ID</th>
 										<th>Name</th>
 										<th>Surname</th>
-										<th>Degree</th>
 										<th>Email</th>
+										<th>Company Name</th>
 										<th>City</th>
 										<th>Time</th>
 									</tr>
@@ -105,9 +105,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"type": "POST",
 								"data": function (data) {
 									data.logType = "Visit";
-									data.logPlace = "Scavenger hunt";
-									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();;
-									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
+									data.logPlace = "Session Join";
+									data.ref1 = "17";//Trivia Night Session ID in DB
+									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();
+									data.logDays = '2021-06-24'; // Trivia night was on 24th, hence only need data from that day
 								}
 							},
 					"columns":
@@ -115,8 +116,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								{ "name": "user.id", "data": "user_id", "width": "105px" },
 								{ "name": "user.name", "data": "user_fname" },
 								{ "name": "user.surname", "data": "user_surname" },
-								{ "name": "user.credentials", "data": "credentials" },
 								{ "name": "user.email", "data": "email" },
+								{ "name": "sponsor_booth.name", "data": "company_name" },
 								{ "name": "user.city", "data": "city" },
 								{ "name": "logs.date_time", "data": "date_time" }
 							],
@@ -139,7 +140,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"data-placement": 'top',
 								"title": 'Export will consider your filters and search',
 							},
-							title: 'relaxation_zone_export',
+							title: 'Trivia_Night_Export',
 							action: ajaxExportAction
 						}],
 
@@ -166,29 +167,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								'</label>'
 						$("#logsTable_length").append(uniqueUserDropdown);
 
-						let daysDropdown = '' +
-								'<label class="ml-3">' +
-								' Show <select id="logsTable_days" name="logsTable_days" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Filter by a particular day">' +
-								'  <option value="all">All</option>' +
-								'  <option value="2021-06-24">2021-06-24</option>' +
-								'  <option value="2021-06-25">2021-06-25</option>' +
-								'  <option value="2021-06-26">2021-06-26</option>' +
-								'  <option value="2021-06-27">2021-06-27</option>' +
-								' </select> day(s)' +
-								'</label>'
-						$("#logsTable_length").append(daysDropdown);
-
-						let filterInfo = '<i class="ml-3 fas fa-info-circle" style="font-size: 20px;color: #95f5ff;" data-toggle="tooltip" data-placement="top" data-html="true" title="You can combine filters. <br> eg; Unique users on 2021-06-24"></i>';
-						$("#logsTable_length").append(filterInfo);
-
 						$('[data-toggle="tooltip"]').tooltip();
 					}
 				}
 		);
-
-		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days', function () {
-			logsDt.ajax.reload();
-		});
 
 		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user', function () {
 			logsDt.ajax.reload();

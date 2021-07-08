@@ -1,7 +1,11 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');?>
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
+
 <style>
-#sessionsTable_filter, #sessionsTable_paginate{float: right;}
+	#sessionsTable_filter, #sessionsTable_paginate{
+		float: right;
+	}
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -16,8 +20,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
-						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/analytics'?>">Analytics</a></li>
-						<li class="breadcrumb-item active">Scavenger Hunt</li>
+						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Analytics</a></li>
+						<li class="breadcrumb-item active">Sessions Q&A</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -26,48 +30,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	<!-- /.content-header -->
 
 	<!-- Main content -->
-	<section class="content">
+		<section class="content"		>
 		<div class="container-fluid">
-			<!-- Info boxes -->
+	        <!-- /.row -->
 			<div class="row">
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">Scavenger Hunt <small>(People who found all 10 items)</small></h3>
+							<h3 class="card-title">Sessions Q&A</h3>
 						</div>
 						<!-- /.card-header -->
-						<div class="card-body">
+						<div id="logsTableCard" class="card-body">
 							<table id="logsTable" class="table table-bordered table-striped">
 								<thead>
-								<tr>
-									<th>User ID</th>
-									<th>Name</th>
-									<th>Surname</th>
-									<th>Degree</th>
-									<th>Email</th>
-									<th>City</th>
-									<th>Last Collected Item</th>
-									<th>Last Collected</th>
-								</tr>
-								</thead>
-								<tbody id="logsTableBody">
-<?php
-								foreach ($logs as $log):
-									if ($log->id != ''):?>
 									<tr>
-										<td><?=$log->id?></td>
-										<td><?=$log->name?></td>
-										<td><?=$log->surname?></td>
-										<td><?=$log->credentials?></td>
-										<td><?=$log->email?></td>
-										<td><?=$log->city?></td>
-										<td align="center"><img src="<?=ycl_root?>/theme_assets/booth_game_icons/<?=$log->icon_name?>.png" width="30" title="<?php echo $log->booth_name;?>"></td>
-										<td><?=$log->last_collected?></td>
+										<th>Session ID</th>
+										<th>Session Name</th>
+										<th>Total Questions</th>
 									</tr>
-<?php
-									endif;
-								endforeach;?>
-								</tbody>
+								</thead>
+								<!-- Server Side DT -->
 							</table>
 						</div>
 						<!-- /.card-body -->
@@ -98,21 +80,70 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <script>
-	$(function () {
-		$('#logsTable').DataTable({dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-								   buttons:[{ extend: 'excel', 
-					   						  text: '<i class="far fa-file-excel"></i> Scavenger Hunt Export', 
-					   						  className:'btn-info', 
-					   						  title:'Scavenger-Hunt-Export-<?php echo date('mdY');?>'
-											}],
-								   "paging": true,
-								   "lengthChange": true,
-								   "searching": true,
-								   "ordering": true,
-								   "info": true,
-								   "autoWidth": false,
-								   "responsive": true,
-								   "order": [[ 7, "desc" ]]
+	$(function ()
+	{
+		// Setup - add a text input to each footer cell
+		$('#logsTable thead th').each(function() {
+			$(this).html($(this).text()+'<br><input type="text" placeholder="Search '+$(this).text()+'" style="width: inherit;background: #31373d;color: white;border: 1px solid #666;"/>');
 		});
+		let logsDt = $('#logsTable')
+				.DataTable(
+				{
+					"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
+							"<'row'<'col-sm-12'tr>>" +
+							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+					"serverSide": true,
+					"ajax":
+							{
+								"url": project_admin_url+"/analytics/session_questions",
+								"type": "POST",
+								"data": function (data) {}
+							},
+					"columns":
+							[
+								{ "name": "sessions.id", "data": "session_id", "width": "105px" },
+								{ "name": "sessions.name", "data": "session_name", "width": "610px" },
+								{ "name": "total_questions", "data": "total_questions" },
+							],
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": false,
+					"responsive": false,
+					"order": [[ 1, "desc" ]],
+					buttons: [
+						{
+							extend: 'excel',
+							text: '<i class="far fa-file-excel"></i> Export Excel',
+							className: 'btn-success',
+							attr:  {
+								"data-toggle": 'tooltip',
+								"data-placement": 'top',
+								"title": 'Export will consider your filters and search',
+							},
+							title: 'sessions_questions_export',
+							action: ajaxExportAction
+						}],
+					initComplete: function() {
+						var api = this.api();
+						// Apply the search
+						api.columns().every(function() {
+							var that = this;
+							$('input', this.header()).on('keyup change', function() {
+								if (that.search() !== this.value) {
+									that
+											.search(this.value)
+											.draw();
+								}
+							});
+						});
+
+						$('[data-toggle="tooltip"]').tooltip();
+					}
+				}
+		);
 	});
 </script>

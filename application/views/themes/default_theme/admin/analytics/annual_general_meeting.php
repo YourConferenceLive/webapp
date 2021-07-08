@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Analytics</a></li>
-						<li class="breadcrumb-item active">Relaxation Zone</li>
+						<li class="breadcrumb-item active">COS Annual General Meeting</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -30,14 +30,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- /.content-header -->
 
 	<!-- Main content -->
-		<section class="content" style="width: fit-content;">
-		<div class="container-fluid">
+		<section class="content">
+		<div class="container-fluid" style="width:fit-content;">
 	        <!-- /.row -->
 			<div class="row">
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">Relaxation Zone</h3>
+							<h3 class="card-title">COS Annual General Meeting</h3>
 						</div>
 						<!-- /.card-header -->
 						<div id="logsTableCard" class="card-body">
@@ -86,11 +86,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(function ()
 	{
+		let session_id = <?php echo $session_id?>;
 
 		// Setup - add a text input to each footer cell
 		$('#logsTable thead th').each(function() {
-			$(this).html($(this).text()+'<br><input type="text" placeholder="Search '+$(this).text()+'" style="width: inherit;background: #31373d;color: white;border: 1px solid #666;"/>');
+			if ($(this).text() != 'Action')
+				$(this).html($(this).text()+'<br><input type="text" placeholder="Search '+$(this).text()+'" style="width: inherit;background: #31373d;color: white;border: 1px solid #666;"/>');
 		});
+
 		let logsDt = $('#logsTable')
 				.DataTable(
 				{
@@ -100,19 +103,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					"serverSide": true,
 					"ajax":
-							{
-								"url": project_admin_url+"/analytics/getLogsDt",
+							{								
+								"url": project_admin_url+"/analytics/getLogsDt/",
 								"type": "POST",
 								"data": function (data) {
 									data.logType = "Visit";
-									data.logPlace = "Scavenger hunt";
+									data.logPlace = "Session Join";
+									data.ref1 = session_id
 									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();;
 									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
 								}
 							},
 					"columns":
 							[
-								{ "name": "user.id", "data": "user_id", "width": "105px" },
+								{ "name": "user.id", "data": "user_id", "width": "110px" },
 								{ "name": "user.name", "data": "user_fname" },
 								{ "name": "user.surname", "data": "user_surname" },
 								{ "name": "user.credentials", "data": "credentials" },
@@ -127,10 +131,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"info": true,
 					"autoWidth": false,
 					"responsive": false,
-					"order": [[ 6, "desc" ]],
-
-					buttons: [
-						{
+					"order": [[ 1, "desc" ]],
+					buttons: [{
 							extend: 'excel',
 							text: '<i class="far fa-file-excel"></i> Export Excel',
 							className: 'btn-success',
@@ -139,10 +141,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"data-placement": 'top',
 								"title": 'Export will consider your filters and search',
 							},
-							title: 'relaxation_zone_export',
+							title: 'cos_annual_general_meeting_export',
 							action: ajaxExportAction
-						}],
-
+					}],
 					initComplete: function() {
 						var api = this.api();
 						// Apply the search
@@ -150,9 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							var that = this;
 							$('input', this.header()).on('keyup change', function() {
 								if (that.search() !== this.value) {
-									that
-											.search(this.value)
-											.draw();
+									that.search(this.value).draw();
 								}
 							});
 						});
@@ -193,6 +192,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user', function () {
 			logsDt.ajax.reload();
 		});
-
 	});
 </script>

@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Analytics</a></li>
-						<li class="breadcrumb-item active">Relaxation Zone</li>
+						<li class="breadcrumb-item active">ePosters/Surgical Videos</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -37,20 +37,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">Relaxation Zone</h3>
+							<h3 class="card-title">ePosters/Surgical Videos</h3>
 						</div>
 						<!-- /.card-header -->
 						<div id="logsTableCard" class="card-body">
 							<table id="logsTable" class="table table-bordered table-striped">
 								<thead>
 									<tr>
-										<th>User ID</th>
-										<th>Name</th>
-										<th>Surname</th>
-										<th>Degree</th>
-										<th>Email</th>
-										<th>City</th>
-										<th>Time</th>
+										<th>ePoster ID</th>
+										<th>Author</th>
+										<th>ePoster Name</th>
+										<th>ePoster Type</th>
+										<th>Total Visitors</th>
 									</tr>
 								</thead>
 								<!-- Server Side DT -->
@@ -86,11 +84,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(function ()
 	{
-
 		// Setup - add a text input to each footer cell
 		$('#logsTable thead th').each(function() {
 			$(this).html($(this).text()+'<br><input type="text" placeholder="Search '+$(this).text()+'" style="width: inherit;background: #31373d;color: white;border: 1px solid #666;"/>');
 		});
+
 		let logsDt = $('#logsTable')
 				.DataTable(
 				{
@@ -101,24 +99,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"serverSide": true,
 					"ajax":
 							{
-								"url": project_admin_url+"/analytics/getLogsDt",
+								"url": project_admin_url+"/analytics/getEpostersLogsDt",
 								"type": "POST",
 								"data": function (data) {
 									data.logType = "Visit";
-									data.logPlace = "Scavenger hunt";
-									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();;
-									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
+									data.logPlace = "ePoster View";
 								}
 							},
 					"columns":
 							[
-								{ "name": "user.id", "data": "user_id", "width": "105px" },
-								{ "name": "user.name", "data": "user_fname" },
-								{ "name": "user.surname", "data": "user_surname" },
-								{ "name": "user.credentials", "data": "credentials" },
-								{ "name": "user.email", "data": "email" },
-								{ "name": "user.city", "data": "city" },
-								{ "name": "logs.date_time", "data": "date_time" }
+								{ "name": "eposters.id", "data": "id", "width": "105px" },
+								{ "name": "author", "data": "author" },
+								{ "name": "eposters.title", "data": "title" },
+								{ "name": "eposters.type", "data": "type" },
+								{ "name": "total_vistors", "data": "total_vistors" }
 							],
 					"paging": true,
 					"lengthChange": true,
@@ -127,8 +121,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"info": true,
 					"autoWidth": false,
 					"responsive": false,
-					"order": [[ 6, "desc" ]],
-
+					"order": [[ 1, "desc" ]],
 					buttons: [
 						{
 							extend: 'excel',
@@ -139,7 +132,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"data-placement": 'top',
 								"title": 'Export will consider your filters and search',
 							},
-							title: 'relaxation_zone_export',
+							title: 'eposters_analytics_export',
 							action: ajaxExportAction
 						}],
 
@@ -156,30 +149,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								}
 							});
 						});
-
-						let uniqueUserDropdown = '' +
-								'<label class="ml-3">' +
-								' Show <select id="logsTable_user" name="logsTable_user" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select unique to show only unique users">' +
-								'  <option value="all">All</option>' +
-								'  <option value="unique">Unique</option>' +
-								' </select> users' +
-								'</label>'
-						$("#logsTable_length").append(uniqueUserDropdown);
-
-						let daysDropdown = '' +
-								'<label class="ml-3">' +
-								' Show <select id="logsTable_days" name="logsTable_days" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Filter by a particular day">' +
-								'  <option value="all">All</option>' +
-								'  <option value="2021-06-24">2021-06-24</option>' +
-								'  <option value="2021-06-25">2021-06-25</option>' +
-								'  <option value="2021-06-26">2021-06-26</option>' +
-								'  <option value="2021-06-27">2021-06-27</option>' +
-								' </select> day(s)' +
-								'</label>'
-						$("#logsTable_length").append(daysDropdown);
-
-						let filterInfo = '<i class="ml-3 fas fa-info-circle" style="font-size: 20px;color: #95f5ff;" data-toggle="tooltip" data-placement="top" data-html="true" title="You can combine filters. <br> eg; Unique users on 2021-06-24"></i>';
-						$("#logsTable_length").append(filterInfo);
 
 						$('[data-toggle="tooltip"]').tooltip();
 					}

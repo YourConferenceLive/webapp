@@ -12,30 +12,47 @@ class Analytics_Model extends CI_Model
 
 	public function getAllProjectLogs()
 	{
-		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, logs.*')
-			->from('logs')
-			->join('user','user.id = logs.user_id')
-			->where('logs.project_id', $this->project->id)
-			->order_by('logs.date_time', 'desc')
-		;
+		$this->db->select('logs.*, 
+						   user.id as user_id, 
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email, 
+						   user.city, 
+						   user.credentials')
+				 ->from('logs')
+				 >join('user','user.id = logs.user_id')
+				 ->where('logs.project_id', $this->project->id)
+				 ->order_by('logs.date_time', 'desc')
+				 ->limit(100);//For development purpose
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
+
 		return new stdClass();
 	}
 
 	public function getRelaxationZoneLogs()
 	{
-		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, logs.*')
-			->from('logs')
-			->join('user','user.id = logs.user_id')
-			->where('logs.info', "Relaxation zone")
-			->where('logs.project_id', $this->project->id)
-			->order_by('logs.date_time', 'desc')
-		;
+		$this->db->select('logs.*,
+						   user.id as user_id, 
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email, 
+						   user.city, 
+						   user.credentials')
+				 ->from('logs')
+				 ->join('user','user.id = logs.user_id')
+				 ->where('logs.info', "Relaxation zone")
+				 ->where('logs.project_id', $this->project->id)
+				 ->order_by('logs.date_time', 'desc');
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
+
 		return new stdClass();
 	}
 
@@ -63,6 +80,7 @@ class Analytics_Model extends CI_Model
 				 ->order_by('scavenger_hunt_items.id', 'DESC');
 
 		$result 	= $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
 
@@ -71,30 +89,39 @@ class Analytics_Model extends CI_Model
 
 	public function getBoothLogs($booth_id)
 	{
-		$this->db->select('user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, logs.*')
-			->from('logs')
-			->join('user','user.id = logs.user_id')
-			->where('logs.info', 'Booth')
-			->where('logs.ref_1', $booth_id)
-			->order_by('logs.date_time', 'desc')
-		;
+		$this->db->select('logs.*,
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email, 
+						   user.city, 
+						   user.credentials')
+				 ->from('logs')
+				 ->join('user','user.id = logs.user_id')
+				 ->where('logs.info', 'Booth')
+				 ->where('logs.ref_1', $booth_id)
+				 ->order_by('logs.date_time', 'desc');
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
+
 		return new stdClass();
 	}
 
 	public function getTotalBoothVisits($booth_id)
 	{
 		$this->db->select('logs.*')
-			->from('logs')
-			->where('logs.info', 'Booth')
-			->where('logs.name', 'Visit')
-			->where('logs.ref_1', $booth_id)
-		;
+				 ->from('logs')
+				 ->where('logs.info', 'Booth')
+				 ->where('logs.name', 'Visit')
+				 ->where('logs.ref_1', $booth_id);
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return sizeof($result->result());
+
 		return 0;
 	}
 
@@ -137,7 +164,9 @@ class Analytics_Model extends CI_Model
 			->where('logs.name', 'Resource to briefcase')
 			->where('logs.ref_1', $booth_id)
 		;
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return sizeof($result->result());
 		return 0;
@@ -145,14 +174,21 @@ class Analytics_Model extends CI_Model
 
 	public function getSponsorResourcesInBackpack($booth_id)
 	{
-		$this->db->select('user.id as user_id, user.name as user_fname, user.surname as user_surname, user.email, user.city, user.credentials, 
-		sponsor_bag.resource_name, sponsor_bag.date_time as added_date_time')
+		$this->db->select('user.id as user_id, 
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email, user.city, 
+						   user.credentials, 
+						   sponsor_bag.resource_name, 
+						   sponsor_bag.date_time as added_date_time')
 			->from('sponsor_bag')
 			->join('user','user.id = sponsor_bag.user_id')
 			->where('sponsor_bag.booth_id', $booth_id)
 			->order_by('sponsor_bag.date_time', 'desc')
 		;
+
 		$result = $this->db->get();
+
 		if ($result->num_rows() > 0)
 			return $result->result();
 		return new stdClass();
@@ -292,5 +328,275 @@ class Analytics_Model extends CI_Model
 		}
 
 		return new stdClass();
+	}
+
+	public function getSessionAttendeesDt()
+	{
+		$post = $this->input->post();
+
+		$this->db->select('sessions.id AS session_id,
+						   sessions.name AS session_name,
+						   COUNT(DISTINCT logs.user_id) AS total_attendees')
+				 ->from('sessions')
+				 ->join('logs', 'sessions.id = logs.ref_1', 'left')
+				 ->where('sessions.project_id', $this->project->id)
+				 ->where('logs.info', 'Session Join')
+				 ->where('sessions.session_type', 'zm')
+				 ->group_by('sessions.id');
+
+		// Get total number of rows without filtering
+		$tempDbObj = clone $this->db;
+		$total_results = $tempDbObj->count_all_results();
+
+		// Column Search
+		foreach ($post['columns'] as $column)
+		{
+			if ($column['search']['value']!='')
+				$this->db->like($column['name'], $column['search']['value']);
+		}
+
+		$tempDbObj = clone $this->db;
+		$total_filtered_results = $tempDbObj->count_all_results();
+
+		// Filter for pagination and rows per page
+		if (isset($post['start']) && isset($post['length']))
+			$this->db->limit($post['length'], $post['start']);
+
+		// Dynamic sort
+		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
+
+		$result = $this->db->get();
+
+		if ($result->num_rows() > 0)
+		{
+			$response_array = array(
+				"draw" => $post['draw'],
+				"recordsTotal" => $total_results,
+				"recordsFiltered" => $total_filtered_results,
+				"data" => $result->result()
+			);
+
+			return json_encode($response_array);
+		}
+
+		$response_array = array(
+			"draw" => $post['draw'],
+			"recordsTotal" => 0,
+			"recordsFiltered" => 0,
+			"data" => new stdClass()
+		);
+
+		return json_encode($response_array);
+	
+	}
+
+	public function getSessionQuestionsDt()
+	{
+		$post = $this->input->post();
+
+		$this->db->select('sessions.id AS session_id,
+						   sessions.name AS session_name,
+						   COUNT(session_questions.id) AS total_questions')
+				 ->from('sessions')
+				 ->join('session_questions', 'sessions.id = session_questions.session_id', 'left')
+				 ->where('sessions.project_id', $this->project->id)
+				 ->where('sessions.session_type', 'gs')
+				 ->group_by('sessions.id');
+
+		// Get total number of rows without filtering
+		$tempDbObj = clone $this->db;
+		$total_results = $tempDbObj->count_all_results();
+
+		// Column Search
+		foreach ($post['columns'] as $column)
+		{
+			if ($column['search']['value']!='')
+				$this->db->like($column['name'], $column['search']['value']);
+		}
+
+		$tempDbObj = clone $this->db;
+		$total_filtered_results = $tempDbObj->count_all_results();
+
+		// Filter for pagination and rows per page
+		if (isset($post['start']) && isset($post['length']))
+			$this->db->limit($post['length'], $post['start']);
+
+		// Dynamic sort
+		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
+
+		$result = $this->db->get();
+
+		if ($result->num_rows() > 0)
+		{
+			$response_array = array(
+				"draw" => $post['draw'],
+				"recordsTotal" => $total_results,
+				"recordsFiltered" => $total_filtered_results,
+				"data" => $result->result()
+			);
+
+			return json_encode($response_array);
+		}
+
+		$response_array = array(
+			"draw" => $post['draw'],
+			"recordsTotal" => 0,
+			"recordsFiltered" => 0,
+			"data" => new stdClass()
+		);
+
+		return json_encode($response_array);
+	}
+
+	public function getEpostersLogsDt()
+	{
+		$post = $this->input->post();
+
+		$this->db->select('eposters.id,
+						   CONCAT_WS(" ", user.name, user.surname, user.credentials) AS author,
+						   eposters.title,
+						   REPLACE(REPLACE(eposters.type, \'surgical_video\', \'Surgical Video\'), \'eposter\', \'ePoster\') as type,
+						   COUNT(DISTINCT logs.user_id) AS total_vistors')
+				 ->from('eposters')
+				 ->join('eposter_authors', 'eposters.id = eposter_authors.eposter_id')
+				 ->join('user', 'eposter_authors.user_id = user.id')
+				 ->join('logs', 'eposters.id = logs.ref_1', 'left')
+				 ->where('logs.info', 'ePoster View')
+				 ->where('eposters.project_id', $this->project->id)
+				 ->group_by('eposters.id');
+
+		// Get total number of rows without filtering
+		$tempDbObj = clone $this->db;
+		$total_results = $tempDbObj->count_all_results();
+
+		// Column Search
+		foreach ($post['columns'] as $column)
+		{
+			if ($column['name'] == 'author' && $column['search']['value']!='') {
+	    		$this->db->group_start();
+				$this->db->like('user.name',$column['search']['value']);
+				$this->db->or_like('user.surname',$column['search']['value']);
+				$this->db->or_like('user.credentials',$column['search']['value']);
+	    		$this->db->group_end();
+			} elseif ($column['search']['value']!='')
+				$this->db->like($column['name'], $column['search']['value']);
+		}
+
+		$tempDbObj = clone $this->db;
+		$total_filtered_results = $tempDbObj->count_all_results();
+
+		// Filter for pagination and rows per page
+		if (isset($post['start']) && isset($post['length']))
+			$this->db->limit($post['length'], $post['start']);
+
+		// Dynamic sort
+		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
+
+		$result = $this->db->get();
+
+		if ($result->num_rows() > 0)
+		{
+			$response_array = array(
+				"draw" => $post['draw'],
+				"recordsTotal" => $total_results,
+				"recordsFiltered" => $total_filtered_results,
+				"data" => $result->result()
+			);
+
+			return json_encode($response_array);
+		}
+
+		$response_array = array(
+			"draw" => $post['draw'],
+			"recordsTotal" => 0,
+			"recordsFiltered" => 0,
+			"data" => new stdClass()
+		);
+
+		return json_encode($response_array);
+	}
+
+	public function getLogsDt()
+	{
+		$post = $this->input->post();
+
+		$this->db->select('logs.*,
+						   user.name as user_fname, 
+						   user.surname as user_surname, 
+						   user.email,
+						   user.city,
+						   user.credentials,
+						   sponsor_booth.name as company_name')
+				 ->from('logs')
+				 ->join('user','user.id = logs.user_id')
+				 ->join('sponsor_booth_admin', 'logs.user_id = sponsor_booth_admin.user_id', 'left')
+			     ->join('sponsor_booth', 'sponsor_booth_admin.booth_id = sponsor_booth.id', 'left')
+				 ->where('logs.project_id', $this->project->id);
+
+		if (isset($post['logPlace']) && $post['logPlace'] == 'Booth') // For booth analytics
+			$this->db
+				->select('booth.name as booth_name')
+				->join('sponsor_booth as booth', 'logs.ref_1 = booth.id');
+
+		if (isset($post['logPlace']) && $post['logPlace']!='')
+			$this->db->where('logs.info', $post['logPlace']);
+
+		if (isset($post['logType']) && $post['logType']!='')
+			$this->db->where('logs.name', $post['logType']);
+
+		if (isset($post['ref1']) && $post['ref1']!='')
+			$this->db->where('logs.ref_1', $post['ref1']);
+
+		// Get total number of rows without filtering
+		$tempDbObj = clone $this->db;
+		$total_results = $tempDbObj->count_all_results();
+
+		// Days filter
+		if (isset($post['logDays']) && $post['logDays']!='all' && DateTime::createFromFormat('Y-m-d', $post['logDays'])!=false)
+			$this->db->like('logs.date_time', $post['logDays']);
+
+		// Unique user filter
+		if (isset($post['logUserUniqueness']) && $post['logUserUniqueness']=='unique')
+			$this->db->group_by('logs.user_id');
+
+		// Column Search
+		foreach ($post['columns'] as $column)
+		{
+			if ($column['search']['value']!='')
+				$this->db->like($column['name'], $column['search']['value']);
+		}
+
+		$tempDbObj = clone $this->db;
+		$total_filtered_results = $tempDbObj->count_all_results();
+
+		// Filter for pagination and rows per page
+		if (isset($post['start']) && isset($post['length']))
+			$this->db->limit($post['length'], $post['start']);
+
+		// Dynamic sort
+		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
+
+		$result = $this->db->get();
+
+		if ($result->num_rows() > 0)
+		{
+			$response_array = array(
+				"draw" => $post['draw'],
+				"recordsTotal" => $total_results,
+				"recordsFiltered" => $total_filtered_results,
+				"data" => $result->result()
+			);
+
+			return json_encode($response_array);
+		}
+
+		$response_array = array(
+			"draw" => $post['draw'],
+			"recordsTotal" => 0,
+			"recordsFiltered" => 0,
+			"data" => new stdClass()
+		);
+
+		return json_encode($response_array);
 	}
 }
