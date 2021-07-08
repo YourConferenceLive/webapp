@@ -179,8 +179,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 			if ($section == 1):?>
 			$('#sessionCreditTable').DataTable({
-        		"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			   	"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
+        		"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
+							"<'row'<'col-sm-12'tr>>" +
+							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+				"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				bAutoWidth: false, 
 				aoColumns : [{ sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: 'auto' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '8%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '4%' }, { sWidth: '4%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }],
 				'processing': true,
@@ -192,7 +195,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					{
 						extend: 'excel',
 						text: '<i class="far fa-file-excel"></i> Group Learning Export',
-						className: 'btn-info',
+						className: 'btn-success',
 						title: 'Group Learning Export',
 						action: ajaxExportAction
 					}]
@@ -200,8 +203,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 			elseif ($section == 2):?>
 			$('#eposterCreditTable').DataTable({
-        		"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			   	"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
+        		"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
+							"<'row'<'col-sm-12'tr>>" +
+							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+				"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				bAutoWidth: false, 
 				aoColumns : [{ sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: 'auto' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '6%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '4%' }, { sWidth: '4%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }],
 				'processing': true,
@@ -213,7 +219,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					{
 						extend: 'excel',
 						text: '<i class="far fa-file-excel"></i> Self Learning Export',
-						className: 'btn-info',
+						className: 'btn-success',
 						title: 'Self Learning Export',
 						action: ajaxExportAction
 					}]
@@ -221,8 +227,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 			elseif ($section == 3):?>
 			$('#stcCreditTable').DataTable({
-        		"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-			   	"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
+        		"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
+							"<'row'<'col-sm-12'tr>>" +
+							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+				"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				bAutoWidth: false, 
 				aoColumns : [{ sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: 'auto' }, { sWidth: '5%' }, { sWidth: '4%' }, { sWidth: '3%' }, { sWidth: '3%' }],
 				'processing': true,
@@ -234,7 +243,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					{
 						extend: 'excel',
 						text: '<i class="far fa-file-excel"></i> Practice Assessment Export',
-						className: 'btn-info',
+						className: 'btn-success',
 						title: 'Practice Assessment Export',
 						action: ajaxExportAction
 					}]

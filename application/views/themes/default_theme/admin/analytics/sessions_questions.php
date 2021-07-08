@@ -96,7 +96,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"serverSide": true,
 					"ajax":
 							{
-								"url": project_admin_url+"/analytics/session_questions",
+								"url": project_admin_url+"/analytics/sessionQuestionsDt",
 								"type": "POST",
 								"data": function (data) {}
 							},

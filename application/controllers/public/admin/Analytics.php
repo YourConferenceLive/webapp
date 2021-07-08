@@ -95,6 +95,7 @@ class Analytics extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/scientific_sessions")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/session_attendees_modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -152,7 +153,7 @@ class Analytics extends CI_Controller
 		;
 	}
 
-	public function sessions()
+	public function sessions_questions()
 	{
 		$sidebar_data['user'] 	= $this->user;
 
@@ -160,7 +161,7 @@ class Analytics extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
-			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/sessions")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/sessions_questions")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -367,12 +368,17 @@ class Analytics extends CI_Controller
 		echo $this->analytics->getEpostersLogsDt();
 	}
 
+	public function scientific_sessions_log()
+	{
+		echo $this->analytics->getScientificSessionsDt();
+	}
+
 	public function stc_attendees()
 	{
 		echo $this->analytics->getSessionAttendeesDt();
 	}
 
-	public function session_questions()
+	public function sessionQuestionsDt()
 	{
 		echo $this->analytics->getSessionQuestionsDt();
 	}
@@ -381,5 +387,4 @@ class Analytics extends CI_Controller
 	{
 		echo $this->analytics->getLogsDt();
 	}
-
 }
