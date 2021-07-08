@@ -170,9 +170,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						</li>
 
 						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/sessions'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='sessions')?' active':''?>">
+							<a href="<?=$this->project_url.'/admin/analytics/sessions_questions'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='sessions_questions')?' active':''?>">
 								<i class="nav-icon fas fa-chalkboard-teacher"></i>
-								<p class="text">Sessions</p>
+								<p class="text">Sessions Q&A</p>
 							</a>
 						</li>
 

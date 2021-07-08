@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	<!-- /.content-header -->
 
 	<!-- Main content -->
-	<section class="content">
+	<section class="content" style="width: fit-content;">
 		<div class="container-fluid">
 			<!-- Info boxes -->
 			<div class="row">
@@ -39,16 +39,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						<div class="card-body">
 							<table id="logsTable" class="table table-bordered table-striped">
 								<thead>
-								<tr>
-									<th>User ID</th>
-									<th>Name</th>
-									<th>Surname</th>
-									<th>Degree</th>
-									<th>Email</th>
-									<th>City</th>
-									<th>Last Collected Item</th>
-									<th>Last Collected</th>
-								</tr>
+									<tr>
+										<th>User ID</th>
+										<th>Name</th>
+										<th>Surname</th>
+										<th>Degree</th>
+										<th>Email</th>
+										<th>City</th>
+										<th>Last Collected Item</th>
+										<th>Last Collected</th>
+									</tr>
 								</thead>
 								<tbody id="logsTableBody">
 <?php
@@ -99,11 +99,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <script>
 	$(function () {
-		$('#logsTable').DataTable({dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+		// Setup - add a text input to each footer cell
+		$('#logsTable thead th').each(function() {
+			$(this).html($(this).text()+'<br><input type="text" placeholder="Search '+$(this).text()+'" style="width: inherit;background: #31373d;color: white;border: 1px solid #666;"/>');
+		});
+
+		$('#logsTable').DataTable({"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
+										  "<'row'<'col-sm-12'tr>>" +
+										  "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
 								   buttons:[{ extend: 'excel', 
 					   						  text: '<i class="far fa-file-excel"></i> Scavenger Hunt Export', 
-					   						  className:'btn-info', 
-					   						  title:'Scavenger-Hunt-Export-<?php echo date('mdY');?>'
+					   						  className:'btn-success', 
+					   						  title:'scavenger_hunt_export'
 											}],
 								   "paging": true,
 								   "lengthChange": true,
@@ -111,7 +120,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 								   "ordering": true,
 								   "info": true,
 								   "autoWidth": false,
-								   "responsive": true,
+								   "responsive": false,
 								   "order": [[ 7, "desc" ]]
 		});
 	});
