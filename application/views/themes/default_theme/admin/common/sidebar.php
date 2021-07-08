@@ -134,21 +134,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							</a>
 						</li>
 
-						<li class="nav-item">
+						<li class="nav-item sr-only">
 							<a href="<?=$this->project_url.'/admin/analytics/scientific_sessions'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scientific_sessions')?' active':''?>">
 								<i class="nav-icon fas fa-vials"></i>
 								<p class="text">Scientific Sessions</p>
 							</a>
 						</li>
 
-						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/session_recordings'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='session_recordings')?' active':''?>">
-								<i class="nav-icon fas fa-record-vinyl"></i>
-								<p class="text">Session Recordings</p>
-							</a>
-						</li>
-
-						<li class="nav-item">
+						<li class="nav-item sr-only">
 							<a href="<?=$this->project_url.'/admin/analytics/session_recordings'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='session_recordings')?' active':''?>">
 								<i class="nav-icon fas fa-record-vinyl"></i>
 								<p class="text">Session Recordings</p>
@@ -169,7 +162,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							</a>
 						</li>
 
-						<li class="nav-item">
+						<li class="nav-item sr-only">
 							<a href="<?=$this->project_url.'/admin/analytics/overall'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='overall')?' active':''?>">
 								<i class="nav-icon fas fa-globe"></i>
 								<p class="text">Overall</p>
