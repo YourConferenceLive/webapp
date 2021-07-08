@@ -641,49 +641,46 @@ class Analytics_Model extends CI_Model
 		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
 
 		$result = $this->db->get();
-// echo $this->db->last_query();exit;
+
 		if ($result->num_rows() > 0)
 		{
-			foreach ($result->result() as $item) {
-				$user_start_time 	= new DateTime($item->date_time);
-				$session_start_time	= new DateTime($post['startTime']);
-				$session_end_time	= new DateTime($post['endTime']);
-				$query = $this->db->select('*')
-								  ->where(array('user_id' => $item->user_id, 
-								  				'id>' => $item->id,
-								  				'date_time<' => $session_end_time->format('Y-m-d H:i:s')))
-								  ->get('logs');
-				
-				if ($query->num_rows() > 0) {
-					// echo $this->db->last_query();
-					foreach ($query->result() as $row) {
-						// echo '<pre>';
-						// print_r($row);
-						// echo '</pre>';
-						// exit;
+			if (isset($post['startTime']) && $post['startTime']!='' && isset($post['endTime']) && $post['endTime']!='') {
+				foreach ($result->result() as $item) {
+					$user_start_time 	= new DateTime($item->date_time);
+					$session_start_time	= new DateTime($post['startTime']);
+					$session_end_time	= new DateTime($post['endTime']);
+					$query = $this->db->select('*')
+									  ->where(array('user_id' => $item->user_id, 
+									  				'id>' => $item->id,
+									  				'date_time<' => $session_end_time->format('Y-m-d H:i:s')))
+									  ->get('logs');
+					
+					if ($query->num_rows() > 0) {
+						foreach ($query->result() as $row) {
+						}
+						//Stopped here for assessments by Mark 8th July 2021
+						$interval = $user_start_time->diff($session_end_time);
+					} else {
+						$interval = $user_start_time->diff($session_end_time);
 					}
-					//Stopped here for assessments by Mark 8th July 2021
-					$interval = $user_start_time->diff($session_end_time);
-				} else {
-					$interval = $user_start_time->diff($session_end_time);
-				}
 
-				$item->time_in_session = '';
-				if ($interval){
-					if ($interval->y)
-						$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->y . ' year'.(($interval->y > 1) ? 's' : '' );
+					$item->time_in_session = '';
+					if ($interval){
+						if ($interval->y)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->y . ' year'.(($interval->y > 1) ? 's' : '' );
 
-					if ($interval->m)
-						$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->m . ' month'.(($interval->m > 1) ? 's' : '' );
+						if ($interval->m)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->m . ' month'.(($interval->m > 1) ? 's' : '' );
 
-					if ($interval->d)
-						$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->d . ' day'.(($interval->d > 1) ? 's' : '' );
+						if ($interval->d)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->d . ' day'.(($interval->d > 1) ? 's' : '' );
 
-					if ($interval->i)
-						$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->i . ' minute'.(($interval->i > 1) ? 's' : '' );
+						if ($interval->i)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->i . ' minute'.(($interval->i > 1) ? 's' : '' );
 
-					if ($interval->s)
-						$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->s . ' second'.(($interval->s > 1) ? 's' : '' );
+						if ($interval->s)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->s . ' second'.(($interval->s > 1) ? 's' : '' );
+					}
 				}
 			}
 
