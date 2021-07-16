@@ -211,7 +211,7 @@ class Analytics extends CI_Controller
 				$data[] = array($r->rcp_number,
 								'20210624',
 								$r->name.' '.$r->surname,
-								(($r->credit_filter == 'Live&nbsp;Meeting') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
+								(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ),
 								'Conference',
 								'Yes',
 								$r->credit,
