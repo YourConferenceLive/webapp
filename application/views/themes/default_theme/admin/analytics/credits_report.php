@@ -43,7 +43,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 														<tr>
 															<th>ParticipantId</th>
 															<th>ActivityId</th>
-															<th>Name</th>
 															<th>EarnedAt</th>
 															<th>MP_GroupLearningDirect</th>
 															<th>MP_GroupLearing_Accredited</th>
@@ -88,7 +87,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 														<tr>
 															<th>ParticipantId</th>
 															<th>ActivityId</th>
-															<th>Name</th>
 															<th>EarnedAt</th>
 															<th>MP_SelfLearningList</th>
 															<th>MP_ActivityHours</th>
@@ -132,7 +130,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 														<tr>
 															<th>ParticipantID</th>
 															<th>ActivityID</th>
-															<th>Name</th>
 															<th>EarnedAt</th>
 															<th>MP_AssessmentActivityDirect</th>
 															<th>MP_ActivityHours</th>
