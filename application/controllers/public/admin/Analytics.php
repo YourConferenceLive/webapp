@@ -210,6 +210,7 @@ class Analytics extends CI_Controller
 
 				$data[] = array($r->rcp_number,
 								'20210624',
+								$r->name.' '.$r->surname,
 								(($r->credit_filter == 'Live&nbsp;Meeting') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
 								'Conference',
 								'Yes',
@@ -238,6 +239,7 @@ class Analytics extends CI_Controller
 
 				$data[] = array($r->rcp_number, 
 								'20210624',
+								$r->name.' '.$r->surname,
 								(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
 								'Practice Assessment',
 								$r->credit, 
@@ -283,6 +285,7 @@ class Analytics extends CI_Controller
 			$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
 			$data[] = array($r->rcp_number, 
 							'20210624',
+							$r->name.' '.$r->surname,
 							(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
 							'Poster Viewing',
 							$r->credit, 
