@@ -189,9 +189,9 @@ class Analytics extends CI_Controller
 		$length 				= ((intval($this->input->post("length"))) ? $this->input->post("length") : 0 );
 
 		if ($session_type == 'gs') {
-			$columns_array 		= array('user.rcp_number', 'user_credits.id', 'credit_filter', 'sessions.name', 'user_credits.credit', 'user_credits.claimed_datetime');
+			$columns_array 		= array('user.rcp_number', 'user.name', 'user_credits.id', 'credit_filter', 'sessions.name', 'user_credits.credit', 'user_credits.claimed_datetime');
 		} else {
-			$columns_array 		= array('user.rcp_number', 'user_credits.id', 'credit_filter', '', 'user_credits.credit', 'sessions.name', 'user_credits.claimed_datetime');
+			$columns_array 		= array('user.rcp_number', 'user.name', 'user_credits.id', 'credit_filter', '', 'user_credits.credit', 'sessions.name', 'user_credits.claimed_datetime');
 		}
 
 		$column_index 			= $post['order'][0]['column'];
@@ -210,6 +210,7 @@ class Analytics extends CI_Controller
 
 				$data[] = array($r->rcp_number,
 								'20210624',
+					$r->name.' '.$r->surname,
 								(($r->credit_filter == 'Live&nbsp;Meeting') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
 								'Conference',
 								'Yes',
@@ -238,6 +239,7 @@ class Analytics extends CI_Controller
 
 				$data[] = array($r->rcp_number, 
 								'20210624',
+					$r->name.' '.$r->surname,
 								(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
 								'Practice Assessment',
 								$r->credit, 
@@ -283,6 +285,7 @@ class Analytics extends CI_Controller
 			$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
 			$data[] = array($r->rcp_number, 
 							'20210624',
+							$r->name.' '.$r->surname,
 							(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
 							'Poster Viewing',
 							$r->credit, 
