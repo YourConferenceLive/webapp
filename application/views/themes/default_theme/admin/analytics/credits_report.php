@@ -179,7 +179,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 			if ($section == 1):?>
 			$('#sessionCreditTable').DataTable({
-        		"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
+        		"dom": "<'row'<'#logsTableBtns.col-sm-12 col-md-4 text-left mb-4'B>><'col-sm-12 col-md-8'l>" +
 							"<'row'<'col-sm-12'tr>>" +
 							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
@@ -203,9 +203,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 			elseif ($section == 2):?>
 			$('#eposterCreditTable').DataTable({
-        		"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
-							"<'row'<'col-sm-12'tr>>" +
-							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+				"dom": "<'row'<'#logsTableBtns.col-sm-12 col-md-4 text-left mb-4'B>><'col-sm-12 col-md-8'l>" +
+						"<'row'<'col-sm-12'tr>>" +
+						"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
 				"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				bAutoWidth: false, 
@@ -227,9 +227,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 			elseif ($section == 3):?>
 			$('#stcCreditTable').DataTable({
-        		"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
-							"<'row'<'col-sm-12'tr>>" +
-							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+				"dom": "<'row'<'#logsTableBtns.col-sm-12 col-md-4 text-left mb-4'B>><'col-sm-12 col-md-8'l>" +
+						"<'row'<'col-sm-12'tr>>" +
+						"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
 				"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				bAutoWidth: false, 
