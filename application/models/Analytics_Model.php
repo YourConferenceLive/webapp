@@ -221,12 +221,12 @@ class Analytics_Model extends CI_Model
 	{
 		$this->db->select('user_credits.id, 
 						   user_credits.origin_type_id, 
-						   sessions.name AS session_name, 
+						   GROUP_CONCAT(sessions.name SEPARATOR "</br>") AS session_name, 
 						   sessions.session_type, 
 						   sessions.start_date_time, 
-						   user_credits.claimed_datetime, 
+						   GROUP_CONCAT(DATE_FORMAT( user_credits.claimed_datetime, "%Y-%m-%d") SEPARATOR " | ") AS claimed_datetime, 
 						   sessions.end_date_time, 
-						   user_credits.credit, 
+						   SUM(user_credits.credit) AS credit, 
 						   user.rcp_number, 
 						   IF(`sessions`.`start_date_time`<`user_credits`.`claimed_datetime` AND `sessions`.`end_date_time`>`user_credits`.`claimed_datetime`, "Live&nbsp;Meeting&nbsp;Credit", "Post&nbsp;Meeting&nbsp;Credit") AS `credit_filter`, 
 						   user.name,
@@ -239,6 +239,7 @@ class Analytics_Model extends CI_Model
 		$this->db->where('user_credits.origin_type', 'session');
 		$this->db->where('sessions.is_deleted', 0);
 		$this->db->where_in('sessions.session_type', (($session_type == 'stc') ? array($session_type) : array($session_type, 'zm') ) );
+		$this->db->group_by('user.id');
 
 		if ($keyword)
 		{
@@ -248,6 +249,8 @@ class Analytics_Model extends CI_Model
 			$this->db->or_like('user_credits.credit', $keyword);
 			$this->db->or_like('user_credits.claimed_datetime', $keyword);
 			$this->db->or_like('sessions.name', $keyword);
+			$this->db->or_like('user.name', $keyword);
+			$this->db->or_like('user.surname', $keyword);
     		$this->db->group_end();
 		}
 
@@ -292,12 +295,12 @@ class Analytics_Model extends CI_Model
 						   user_credits.origin_type_id, 
 						   eposters.title, 
 						   eposters.type, 
-						   user_credits.credit, 
+						   SUM(user_credits.credit) as credit, 
 						   user.rcp_number, 
 						   IF(\'2021-06-24 00:00:00>\'<`user_credits`.`claimed_datetime` AND \'2021-06-27 23:59:59\'>`user_credits`.`claimed_datetime`, "Live&nbsp;Meeting&nbsp;Credit", "Post&nbsp;Meeting&nbsp;Credit") AS `credit_filter`, 
 						   user.name, 
 						   user.surname, 
-						   user_credits.claimed_datetime');
+						   GROUP_CONCAT(DATE_FORMAT( user_credits.claimed_datetime, "%Y-%m-%d") SEPARATOR " | ") AS claimed_datetime');
 		$this->db->from('user_credits');
 		$this->db->join('eposters', 'eposters.id = user_credits.origin_type_id');
 		$this->db->join('user', 'user.id = user_credits.user_id');
@@ -305,6 +308,7 @@ class Analytics_Model extends CI_Model
 		$this->db->where('user_credits.origin_type', 'eposter');
 		$this->db->where('eposters.status', 1);
 		$this->db->where('user.active', 1);
+		$this->db->group_by('user.id');
 
 		if ($keyword)
 		{
@@ -315,6 +319,8 @@ class Analytics_Model extends CI_Model
 			$this->db->or_like('user_credits.claimed_datetime', $keyword);
 			$this->db->or_like('eposters.title', $keyword);
 			$this->db->or_like('eposters.type', $keyword);
+			$this->db->or_like('user.name', $keyword);
+			$this->db->or_like('user.surname', $keyword);
     		$this->db->group_end();
 		}
 

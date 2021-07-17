@@ -206,7 +206,8 @@ class Analytics extends CI_Controller
 
 		if ($session_type == 'gs') {
 			foreach($query as $r) {
-				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
+//				print_r($r);
+//				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
 
 				$data[] = array($r->rcp_number,
 								'20210624',
@@ -217,7 +218,7 @@ class Analytics extends CI_Controller
 								$r->credit,
 								'2021 COS Annual Meeting and Exhibition',
 								'',
-								$claimed_datetime->format('Y-m-d'),
+								$r->claimed_datetime,
 								'',
 								'',
 								'Canadian Ophthamological Society',
@@ -235,7 +236,7 @@ class Analytics extends CI_Controller
 			}
 		} else {
 			foreach($query as $r) {
-				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
+//				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
 
 				$data[] = array($r->rcp_number, 
 								'20210624',
@@ -244,7 +245,7 @@ class Analytics extends CI_Controller
 								'Practice Assessment',
 								$r->credit, 
 								$r->session_name,
-								$claimed_datetime->format('Y-m-d'),
+								$r->claimed_datetime,
 								'COS',
 								'Canada',
 								'Collaborator');
@@ -282,7 +283,7 @@ class Analytics extends CI_Controller
 		$table_count 		= 1;
 
 		foreach($query as $r) {
-			$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
+
 			$data[] = array($r->rcp_number, 
 							'20210624',
 							$r->name.' '.$r->surname,
@@ -291,7 +292,7 @@ class Analytics extends CI_Controller
 							$r->credit, 
 							'Poster Viewing session at the COS conference',//$r->title,
 							'',
-							$claimed_datetime->format('Y-m-d'),
+							$r->claimed_datetime,
 							'',
 							'',
 							'Canadian Ophthamological Society',
