@@ -221,12 +221,12 @@ class Analytics_Model extends CI_Model
 	{
 		$this->db->select('user_credits.id, 
 						   user_credits.origin_type_id, 
-						   sessions.name AS session_name, 
+						   GROUP_CONCAT(sessions.name SEPARATOR "</br>") AS session_name, 
 						   sessions.session_type, 
 						   sessions.start_date_time, 
-						   user_credits.claimed_datetime, 
+						   GROUP_CONCAT(DATE_FORMAT( user_credits.claimed_datetime, "%Y-%m-%d") SEPARATOR " | ") AS claimed_datetime, 
 						   sessions.end_date_time, 
-						   user_credits.credit, 
+						   SUM(user_credits.credit) AS credit, 
 						   user.rcp_number, 
 						   IF(`sessions`.`start_date_time`<`user_credits`.`claimed_datetime` AND `sessions`.`end_date_time`>`user_credits`.`claimed_datetime`, "Live&nbsp;Meeting&nbsp;Credit", "Post&nbsp;Meeting&nbsp;Credit") AS `credit_filter`, 
 						   user.name,
@@ -239,6 +239,7 @@ class Analytics_Model extends CI_Model
 		$this->db->where('user_credits.origin_type', 'session');
 		$this->db->where('sessions.is_deleted', 0);
 		$this->db->where_in('sessions.session_type', (($session_type == 'stc') ? array($session_type) : array($session_type, 'zm') ) );
+		$this->db->group_by('user.id');
 
 		if ($keyword)
 		{
@@ -248,6 +249,8 @@ class Analytics_Model extends CI_Model
 			$this->db->or_like('user_credits.credit', $keyword);
 			$this->db->or_like('user_credits.claimed_datetime', $keyword);
 			$this->db->or_like('sessions.name', $keyword);
+			$this->db->or_like('user.name', $keyword);
+			$this->db->or_like('user.surname', $keyword);
     		$this->db->group_end();
 		}
 
@@ -292,12 +295,12 @@ class Analytics_Model extends CI_Model
 						   user_credits.origin_type_id, 
 						   eposters.title, 
 						   eposters.type, 
-						   user_credits.credit, 
+						   SUM(user_credits.credit) as credit, 
 						   user.rcp_number, 
 						   IF(\'2021-06-24 00:00:00>\'<`user_credits`.`claimed_datetime` AND \'2021-06-27 23:59:59\'>`user_credits`.`claimed_datetime`, "Live&nbsp;Meeting&nbsp;Credit", "Post&nbsp;Meeting&nbsp;Credit") AS `credit_filter`, 
 						   user.name, 
 						   user.surname, 
-						   user_credits.claimed_datetime');
+						   GROUP_CONCAT(DATE_FORMAT( user_credits.claimed_datetime, "%Y-%m-%d") SEPARATOR " | ") AS claimed_datetime');
 		$this->db->from('user_credits');
 		$this->db->join('eposters', 'eposters.id = user_credits.origin_type_id');
 		$this->db->join('user', 'user.id = user_credits.user_id');
@@ -305,6 +308,7 @@ class Analytics_Model extends CI_Model
 		$this->db->where('user_credits.origin_type', 'eposter');
 		$this->db->where('eposters.status', 1);
 		$this->db->where('user.active', 1);
+		$this->db->group_by('user.id');
 
 		if ($keyword)
 		{
@@ -315,6 +319,8 @@ class Analytics_Model extends CI_Model
 			$this->db->or_like('user_credits.claimed_datetime', $keyword);
 			$this->db->or_like('eposters.title', $keyword);
 			$this->db->or_like('eposters.type', $keyword);
+			$this->db->or_like('user.name', $keyword);
+			$this->db->or_like('user.surname', $keyword);
     		$this->db->group_end();
 		}
 
@@ -336,14 +342,16 @@ class Analytics_Model extends CI_Model
 
 		$this->db->select('sessions.id AS session_id,
 						   sessions.name AS session_name,
+						   sessions.start_date_time AS start_time,
+						   sessions.end_date_time AS end_time,
 						   COUNT(DISTINCT logs.user_id) AS total_attendees')
 				 ->from('sessions')
 				 ->join('logs', 'sessions.id = logs.ref_1', 'left')
 				 ->where('sessions.project_id', $this->project->id)
-				 ->where('logs.info', 'Session Join')
+				 ->where('logs.info', 'Session View')
 				 ->where_in('sessions.id', array(38,46,53))
+				 ->where('logs.date_time BETWEEN sessions.start_date_time and sessions.end_date_time')
 				 ->group_by('sessions.id');
-
 		// Get total number of rows without filtering
 		$tempDbObj = clone $this->db;
 		$total_results = $tempDbObj->count_all_results();
@@ -366,7 +374,7 @@ class Analytics_Model extends CI_Model
 		$this->db->order_by($post['columns'][$post['order'][0]['column']]['name'], $post['order'][0]['dir']);
 
 		$result = $this->db->get();
-
+// echo $this->db->last_query();exit;
 		if ($result->num_rows() > 0)
 		{
 			$response_array = array(
@@ -605,6 +613,10 @@ class Analytics_Model extends CI_Model
 		if (isset($post['ref1']) && $post['ref1']!='')
 			$this->db->where('logs.ref_1', $post['ref1']);
 
+		//Filter data based on date
+		if (isset($post['startTime']) && $post['startTime']!='' && isset($post['endTime']) && $post['endTime']!='')
+			$this->db->where('logs.date_time BETWEEN "'.$post['startTime'].'" AND "'.$post['endTime'].'"');
+
 		// Get total number of rows without filtering
 		$tempDbObj = clone $this->db;
 		$total_results = $tempDbObj->count_all_results();
@@ -638,6 +650,46 @@ class Analytics_Model extends CI_Model
 
 		if ($result->num_rows() > 0)
 		{
+			if (isset($post['startTime']) && $post['startTime']!='' && isset($post['endTime']) && $post['endTime']!='') {
+				foreach ($result->result() as $item) {
+					$user_start_time 	= new DateTime($item->date_time);
+					$session_start_time	= new DateTime($post['startTime']);
+					$session_end_time	= new DateTime($post['endTime']);
+					$query = $this->db->select('*')
+									  ->where(array('user_id' => $item->user_id, 
+									  				'id>' => $item->id,
+									  				'date_time<' => $session_end_time->format('Y-m-d H:i:s')))
+									  ->get('logs');
+					
+					if ($query->num_rows() > 0) {
+						foreach ($query->result() as $row) {
+						}
+						//Stopped here for assessments by Mark 8th July 2021
+						$interval = $user_start_time->diff($session_end_time);
+					} else {
+						$interval = $user_start_time->diff($session_end_time);
+					}
+
+					$item->time_in_session = '';
+					if ($interval){
+						if ($interval->y)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->y . ' year'.(($interval->y > 1) ? 's' : '' );
+
+						if ($interval->m)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->m . ' month'.(($interval->m > 1) ? 's' : '' );
+
+						if ($interval->d)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->d . ' day'.(($interval->d > 1) ? 's' : '' );
+
+						if ($interval->i)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->i . ' minute'.(($interval->i > 1) ? 's' : '' );
+
+						if ($interval->s)
+							$item->time_in_session .= (($item->time_in_session) ? ', ' : '' ).$interval->s . ' second'.(($interval->s > 1) ? 's' : '' );
+					}
+				}
+			}
+
 			$response_array = array(
 				"draw" => $post['draw'],
 				"recordsTotal" => $total_results,

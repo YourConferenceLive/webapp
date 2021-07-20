@@ -134,7 +134,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							</a>
 						</li>
 
-						<li class="nav-item sr-only">
+						<li class="nav-item">
 							<a href="<?=$this->project_url.'/admin/analytics/scientific_sessions'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='scientific_sessions')?' active':''?>">
 								<i class="nav-icon fas fa-vials"></i>
 								<p class="text">Scientific Sessions</p>

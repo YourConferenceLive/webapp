@@ -206,17 +206,19 @@ class Analytics extends CI_Controller
 
 		if ($session_type == 'gs') {
 			foreach($query as $r) {
-				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
+//				print_r($r);
+//				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
 
 				$data[] = array($r->rcp_number,
 								'20210624',
-								(($r->credit_filter == 'Live&nbsp;Meeting') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
+								$r->name.' '.$r->surname,
+								(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ),
 								'Conference',
 								'Yes',
 								$r->credit,
 								'2021 COS Annual Meeting and Exhibition',
 								'',
-								$claimed_datetime->format('Y-m-d'),
+								$r->claimed_datetime,
 								'',
 								'',
 								'Canadian Ophthamological Society',
@@ -234,15 +236,16 @@ class Analytics extends CI_Controller
 			}
 		} else {
 			foreach($query as $r) {
-				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
+//				$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
 
 				$data[] = array($r->rcp_number, 
 								'20210624',
+								$r->name.' '.$r->surname,
 								(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
 								'Practice Assessment',
 								$r->credit, 
 								$r->session_name,
-								$claimed_datetime->format('Y-m-d'),
+								$r->claimed_datetime,
 								'COS',
 								'Canada',
 								'Collaborator');
@@ -280,15 +283,16 @@ class Analytics extends CI_Controller
 		$table_count 		= 1;
 
 		foreach($query as $r) {
-			$claimed_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $r->claimed_datetime);
+
 			$data[] = array($r->rcp_number, 
 							'20210624',
+							$r->name.' '.$r->surname,
 							(($r->credit_filter == 'Live&nbsp;Meeting&nbsp;Credit') ? '<span class="badge badge-pill badge-success">'.$r->credit_filter.'</span>' : '<span class="badge badge-pill badge-secondary">'.$r->credit_filter.'</span>' ), 
 							'Poster Viewing',
 							$r->credit, 
 							'Poster Viewing session at the COS conference',//$r->title,
 							'',
-							$claimed_datetime->format('Y-m-d'),
+							$r->claimed_datetime,
 							'',
 							'',
 							'Canadian Ophthamological Society',
@@ -368,7 +372,7 @@ class Analytics extends CI_Controller
 		echo $this->analytics->getEpostersLogsDt();
 	}
 
-	public function scientific_sessions_log()
+	public function scientificSessionsDt()
 	{
 		echo $this->analytics->getScientificSessionsDt();
 	}

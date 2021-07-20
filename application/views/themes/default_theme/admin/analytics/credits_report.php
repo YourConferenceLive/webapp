@@ -35,7 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 								<div class="col-12">
 									<div class="card">
 								      	<div class="card-header">
-								        	<h3 class="card-title">Section 1 - Group Learning</h3>
+								        	<h3 class="card-title">Section 1 - Group Learning (Sessions)</h3>
 								      	</div>
 								      		<div class="card-body">
 												<table id="sessionCreditTable" class="dataTable table table-striped table-bordered mt-2" style="width:100%;">
@@ -43,6 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 														<tr>
 															<th>ParticipantId</th>
 															<th>ActivityId</th>
+															<th>Participant Name</th>
 															<th>EarnedAt</th>
 															<th>MP_GroupLearningDirect</th>
 															<th>MP_GroupLearing_Accredited</th>
@@ -79,7 +80,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 									<div class="col-12">
 										<div class="card">
 											<div class="card-header">
-								        		<h3 class="card-title">Section 2 - Self - Learning</h3>
+								        		<h3 class="card-title">Section 2 - Self - Learning (ePoster)</h3>
 								      		</div>
 								      		<div class="card-body">
 												<table id="eposterCreditTable" class="dataTable table table-striped table-bordered mt-2" style="width:100%;">
@@ -87,6 +88,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 														<tr>
 															<th>ParticipantId</th>
 															<th>ActivityId</th>
+															<th>Participant Name</th>
 															<th>EarnedAt</th>
 															<th>MP_SelfLearningList</th>
 															<th>MP_ActivityHours</th>
@@ -122,7 +124,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 									<div class="col-12">
 										<div class="card">
 											<div class="card-header">
-								        		<h3 class="card-title">Section 3 - Practice Assessment</h3>
+								        		<h3 class="card-title">Section 3 - Practice Assessment (STC)</h3>
 								        	</div>
 								      		<div class="card-body">
 												<table id="stcCreditTable" class="dataTable table table-striped table-bordered mt-2" style="width:100%;">
@@ -130,6 +132,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 														<tr>
 															<th>ParticipantID</th>
 															<th>ActivityID</th>
+															<th>Participant Name</th>
 															<th>EarnedAt</th>
 															<th>MP_AssessmentActivityDirect</th>
 															<th>MP_ActivityHours</th>
@@ -176,16 +179,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 	<script>
 		$(document).ready(function() {
+
 <?php
 			if ($section == 1):?>
 			$('#sessionCreditTable').DataTable({
-        		"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
+        		"dom": "<'row'<'#logsTableBtns.col-sm-12 col-md-4 text-left mb-4'B >><'row'<'float-left mb-2 ml-3' f>><'col-sm-12 col-md-8'l>" +
 							"<'row'<'col-sm-12'tr>>" +
 							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
-				"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
-				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: 'auto' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '8%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '4%' }, { sWidth: '4%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }],
+				"columnDefs": [ {"targets": 'no-sort', "orderable": false,} ],
+				bAutoWidth: false,
+				aoColumns : [{ sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' },  { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: 'auto' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '8%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '4%' }, { sWidth: '4%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
@@ -203,13 +207,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 			elseif ($section == 2):?>
 			$('#eposterCreditTable').DataTable({
-        		"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
-							"<'row'<'col-sm-12'tr>>" +
-							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+				"dom": "<'row'<'#logsTableBtns.col-sm-12 col-md-4 text-left mb-4'B>><'row'<'float-left mb-2 ml-3' f>><'col-sm-12 col-md-8'l>" +
+						"<'row'<'col-sm-12'tr>>" +
+						"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
 				"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: 'auto' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '6%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '4%' }, { sWidth: '4%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }],
+				aoColumns : [{ sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' },  { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: 'auto' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '6%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '4%' }, { sWidth: '4%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
@@ -227,13 +231,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 			elseif ($section == 3):?>
 			$('#stcCreditTable').DataTable({
-        		"dom": "<'row'<'col-sm-12 col-md-8'l><'#logsTableBtns.col-sm-12 col-md-4 text-right'B>>" +
-							"<'row'<'col-sm-12'tr>>" +
-							"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+				"dom": "<'row'<'#logsTableBtns.col-sm-12 col-md-4 text-left mb-4'B>><'row'<'float-left mb-2 ml-3' f>><'col-sm-12 col-md-8'l>" +
+						"<'row'<'col-sm-12'tr>>" +
+						"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
 
 				"columnDefs": [ {"targets": 'no-sort', "orderable": false} ],
 				bAutoWidth: false, 
-				aoColumns : [{ sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: 'auto' }, { sWidth: '5%' }, { sWidth: '4%' }, { sWidth: '3%' }, { sWidth: '3%' }],
+				aoColumns : [{ sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' }, { sWidth: '3%' },  { sWidth: '3%' }, { sWidth: 'auto' }, { sWidth: '5%' }, { sWidth: '4%' }, { sWidth: '3%' }, { sWidth: '3%' }],
 				'processing': true,
 				'serverSide': true,
 				'serverMethod': 'post',
