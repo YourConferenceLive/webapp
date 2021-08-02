@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>Email</th>
 										<th>Action</th>
 										<th>Info</th>
-										<th>Time</th>
+										<th>Duration on the platform (in hours and minutes)</th>
 									</tr>
 								</thead>
 								<!-- Server Side DT -->
@@ -137,7 +137,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"data-placement": 'top',
 								"title": 'Export will consider your filters and search',
 							},
-							title: 'relaxation_zone_export',
+							title: 'overall_conference_export',
 							action: ajaxExportAction
 						}],
 
