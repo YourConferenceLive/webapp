@@ -409,6 +409,9 @@ class Analytics_Model extends CI_Model
 				 ->where('sessions.project_id', $this->project->id)
 				 ->where('logs.info', 'Session Join')
 				 ->where('sessions.session_type', 'zm')
+				 ->or_where(array('sessions.session_type'=>'stc'))
+				->order_by('sessions.session_type', 'asc')
+				->order_by('sessions.name', 'asc')
 				 ->group_by('sessions.id');
 
 		// Get total number of rows without filtering
