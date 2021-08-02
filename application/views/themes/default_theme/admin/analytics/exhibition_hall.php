@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>Email</th>
 										<th>Booth</th>
 										<th>City</th>
-										<th>Duration on the platform (in hours and minutes)</th>
+										<th>Time</th>
 									</tr>
 								</thead>
 								<!-- Server Side DT -->
