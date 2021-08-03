@@ -218,12 +218,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							</a>
 						</li>
 
-						<li class="nav-item">
-							<a href="<?=$this->project_url.'/admin/analytics/session_evaluation'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='session_evaluation')?' active':''?>">
+<!--						<li class="nav-item">
+							<a href="<?/*=$this->project_url.'/admin/analytics/session_evaluation'*/?>" class="nav-link<?/*=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='session_evaluation')?' active':''*/?>">
 								<i class="nav-icon fas fa-poll"></i>
 								<p class="text">Session Evaluation/Polls</p>
 							</a>
-						</li>
+						</li>-->
 
 						<li class="nav-item">
 							<a href="<?=$this->project_url.'/admin/analytics/overallConference'?>" class="nav-link<?=($this->router->fetch_class()=='analytics' && $this->router->fetch_method()=='overallConference')?' active':''?>">
