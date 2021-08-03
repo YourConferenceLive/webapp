@@ -391,4 +391,74 @@ class Analytics extends CI_Controller
 	{
 		echo $this->analytics->getLogsDt();
 	}
+
+	public function session_evaluation(){
+		$sidebar_data['user'] 	= $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/session_evaluations"	)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function getAllSessions(){
+		echo $this->analytics->getAllSessions();
+	}
+
+	public function evaluationExport($session_id){
+//		$data['poll_list']= $this->analytics->getPollQuestion($session_id);
+//		$data['flash_report_list'] = $this->msessions->get_polling_report($data['poll_list']);
+		$result = $this->analytics->evaluationExport($session_id);
+		$distinctQuestions = $this->analytics->getDistinctPollQuestions();
+		$headers = $distinctQuestions;
+		array_unshift($headers, "Session Name", "Attendee Name");
+
+		echo "<pre>";
+		print_r($result);exit;
+//
+//		$file = fopen('php://output', 'w');
+//		$filename = 'Evaluation_report'.date('Y-m-d').'.csv';
+//		header("Content-Description: File Transfer");
+//		header("Content-Disposition: attachment; filename = $filename");
+//		header("Content-Type: application/csv;");
+//
+//
+
+//		$final_result = array();
+//		foreach ($result['cat'] as $poll_question){
+//			foreach ( $poll_question['answer'] as $occ => $poll_answer){
+//
+//				fputcsv($out, $poll_answer);
+////				foreach ( $stuff['videos'] as $video ) {
+////					$line = [$sales['name'], $stuff['key'], $video['vid_url'], $video['nice_name'] ];
+////					//$finalResult[] = $a;
+////					fputcsv($out, $line);
+////				}
+//			}
+//		}
+//		fclose($file);
+//		exit;
+
+	}
+
+	public function overallConference(){
+		$sidebar_data['user'] 	= $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/overall_report"	)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+
+	}
+
+	public function getOverallConference(){
+		echo $this->analytics->getOverallConference();
+	}
+
 }

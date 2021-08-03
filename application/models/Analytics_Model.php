@@ -712,4 +712,81 @@ class Analytics_Model extends CI_Model
 
 		return json_encode($response_array);
 	}
+
+	function getAllSessions() {
+		$this->db->select('*')
+			->from('sessions')
+			->order_by('sessions.start_date_time','asc');
+		$sessions=$this->db->get();
+		if(!empty($sessions)){
+			return json_encode($sessions->result());
+		}else{
+			return '';
+		}
+	}
+
+	function evaluationExport($session_id){
+
+		$this->db->select('*')
+			->from('session_polls')
+//			->where('session_id', $session_id)
+//			->join('session_poll_answers spa', 'user.id=spa.user_id')
+		;
+		$polls = $this->db->get();
+		$poll_array = array();
+
+		foreach ($polls->result_array() as $poll){
+			$poll['answer'] = $this->getPollAnswer($poll['id']);
+			$poll_array[]= $poll;
+		}
+
+		return $poll_array;
+	}
+
+	function getDistinctPollQuestions(){
+		$this->db->distinct()->select('poll_question')
+			->from('session_polls');
+		$distinctQuestion = $this->db->get();
+		return array_map('current', $distinctQuestion->result_array());
+	}
+
+	function getPollAnswer($poll_id){
+//		print_r($poll_id);exit;
+		$this->db->distinct()->select('user_id')
+			->from('session_poll_answers')
+			->where('poll_id', $poll_id)
+			;
+		$users = $this->db->get();
+		$result_array = array();
+
+		foreach ($users->result_array() as $user){
+			$user[] = $this->getUserPollAnswer($user['user_id']);
+			$result_array[] = $user;
+		}
+		return $result_array;
+	}
+
+	function getUserPollAnswer($user_id){
+		$this->db->select('spa.*, user.id,user.name,user.surname')
+			->from('session_poll_answers spa')
+			->where('user_id', $user_id)
+			->join('user', 'spa.user_id=user.id')
+		;
+		$result = $this->db->get();
+		return $result->result_array();
+
+	}
+
+	function getOverallConference(){
+		$this->db->select('logs.*, DATE_FORMAT(logs.date_time, "%Y-%m-%d") as date, CONCAT(user.name," ",user.surname) as attendee_name, ')
+			->from('logs')
+			->join('user', 'logs.user_id=user.id')
+			->limit(100);
+		$conferenceLogs = $this->db->get();
+		if(!empty($conferenceLogs)){
+			return json_encode($conferenceLogs->result());
+		}else{
+			return '';
+		}
+	}
 }

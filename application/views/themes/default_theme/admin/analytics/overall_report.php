@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Dashboard</a></li>
 						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Analytics</a></li>
-						<li class="breadcrumb-item active">Exhibition Hall</li>
+						<li class="breadcrumb-item active">Overall Conference</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">Exhibition Hall</h3>
+							<h3 class="card-title">Overall Conference</h3>
 						</div>
 						<!-- /.card-header -->
 						<div id="logsTableCard" class="card-body">
@@ -48,9 +48,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>Name</th>
 										<th>Surname</th>
 										<th>Email</th>
-										<th>Booth</th>
-										<th>City</th>
-										<th>Time</th>
+										<th>Action</th>
+										<th>Info</th>
+										<th>Duration on the platform (in hours and minutes)</th>
 									</tr>
 								</thead>
 								<!-- Server Side DT -->
@@ -82,15 +82,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<?php 
-	$booth_array = array();
-	foreach ($booths as $booth) {
-		$booth_array[] 	= array('id' => $booth->id, 'name' => $booth->name);
-	}?>
+
 <script>
 	$(function ()
 	{
-		let booths = <?php echo json_encode($booth_array); ?>;
 
 		// Setup - add a text input to each footer cell
 		$('#logsTable thead th').each(function() {
@@ -109,10 +104,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"url": project_admin_url+"/analytics/getLogsDt",
 								"type": "POST",
 								"data": function (data) {
-									data.logType = "Visit";
-									data.logPlace = "Booth";
-									data.ref1 = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_booth').val();
-									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();
+									data.logUserUniqueness = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_user').val();;
 									data.logDays = $('#logsTableCard > #logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days').val();
 								}
 							},
@@ -122,8 +114,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								{ "name": "user.name", "data": "user_fname" },
 								{ "name": "user.surname", "data": "user_surname" },
 								{ "name": "user.email", "data": "email" },
-								{ "name": "booth.name", "data": "booth_name" },
-								{ "name": "user.city", "data": "city" },
+								{ "name": "logs.name", "data": "name" },
+								{ "name": "logs.info", "data": "info" },
 								{ "name": "logs.date_time", "data": "date_time" }
 							],
 					"paging": true,
@@ -134,10 +126,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					"autoWidth": false,
 					"responsive": false,
 					"order": [[ 6, "desc" ]],
-					"oLanguage": {
-						"sInfo": "Showing (_START_ to _END_) of _TOTAL_ Records",
-						"sInfoFiltered": "(Unique Attendee) - filtering from _MAX_ Total Records"
-					},
+
 					buttons: [
 						{
 							extend: 'excel',
@@ -148,7 +137,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								"data-placement": 'top',
 								"title": 'Export will consider your filters and search',
 							},
-							title: 'exhibition_hall_export',
+							title: 'overall_conference_export',
 							action: ajaxExportAction
 						}],
 
@@ -165,22 +154,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								}
 							});
 						});
-
-						let boothDropdown = '' +
-								'<label class="ml-3">' +
-								' Show <select id="logsTable_booth" name="logsTable_booth" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select booth to filter data">' +
-								'  <option value="">All</option>';
-
-						for (var key of Object.keys(booths)) {
-						boothDropdown +=
-								'  <option value="' + booths[key]['id'] + '">' + booths[key]['name'] + '</option>';
-						}
-
-						boothDropdown +=
-								' </select> booth(s)' +
-								'</label>';
-
-						$("#logsTable_length").append(boothDropdown);
 
 						let uniqueUserDropdown = '' +
 								'<label class="ml-3">' +
@@ -210,10 +183,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					}
 				}
 		);
-
-		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_booth', function () {
-			logsDt.ajax.reload();
-		});
 
 		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_days', function () {
 			logsDt.ajax.reload();
