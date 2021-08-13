@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>Email</th>
 										<th>Action</th>
 										<th>Info</th>
-										<th>Session</th>
+<!--										<th>Session</th>-->
 										<th>Duration on the platform</th>
 <!--										<th id="th_view" >View</th>-->
 									</tr>
@@ -122,7 +122,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								{ "name": "user.email", "data": "email" },
 								{ "name": "logs.name", "data": "name" },
 								{ "name": "logs.info", "data": "info" },
-								{ "name": "sessions.name", "data": "sessions_name" },
+								// { "name": "sessions.name", "data": "sessions_name" },
 								{ "name": "logs.date_time", "data": "date_time" },
 								// { "name": "action", "data": null, render: function(data, type, row, meta) {
 								// 		return '<button class="viewAttendees btn btn-sm btn-success" data-session-name="'+row.sessions_name+'" data-session-id="'+ row.sessions_id +'" data-start-time="'+ row.start_time +'" data-end-time="'+ row.end_time +'"><i class="fas fa-search"></i> View</button>';
