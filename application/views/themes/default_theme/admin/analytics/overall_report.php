@@ -51,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>Action</th>
 										<th>Info</th>
 <!--										<th>Session</th>-->
-										<th>Duration on the platform</th>
+										<th>Time</th>
 <!--										<th id="th_view" >View</th>-->
 									</tr>
 								</thead>
