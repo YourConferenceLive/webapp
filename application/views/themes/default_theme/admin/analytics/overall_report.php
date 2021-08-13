@@ -52,7 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>Info</th>
 										<th>Session</th>
 										<th>Duration on the platform</th>
-										<th id="th_view" >View</th>
+<!--										<th id="th_view" >View</th>-->
 									</tr>
 								</thead>
 								<!-- Server Side DT -->
@@ -124,10 +124,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								{ "name": "logs.info", "data": "info" },
 								{ "name": "sessions.name", "data": "sessions_name" },
 								{ "name": "logs.date_time", "data": "date_time" },
-								{ "name": "action", "data": null, render: function(data, type, row, meta) {
-										return '<button class="viewAttendees btn btn-sm btn-success" data-session-name="'+row.sessions_name+'" data-session-id="'+ row.sessions_id +'" data-start-time="'+ row.start_time +'" data-end-time="'+ row.end_time +'"><i class="fas fa-search"></i> View</button>';
-									}
-								},
+								// { "name": "action", "data": null, render: function(data, type, row, meta) {
+								// 		return '<button class="viewAttendees btn btn-sm btn-success" data-session-name="'+row.sessions_name+'" data-session-id="'+ row.sessions_id +'" data-start-time="'+ row.start_time +'" data-end-time="'+ row.end_time +'"><i class="fas fa-search"></i> View</button>';
+								// 	}
 							],
 					"paging": true,
 					"lengthChange": true,
@@ -186,14 +185,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								'</label>'
 						$("#logsTable_length").append(uniqueUserDropdown);
 
-						let uniqueSessionDropdown = '' +
-								'<label class="ml-3">' +
-								' Show <select id="logsTable_session" name="logsTable_session" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select unique to show only unique session">' +
-								'  <option value="all">All</option>' +
-								'  <option value="unique">Unique</option>' +
-								' </select> sessions' +
-								'</label>'
-						$("#logsTable_length").append(uniqueSessionDropdown);
+						// let uniqueSessionDropdown = '' +
+						// 		'<label class="ml-3">' +
+						// 		' Show <select id="logsTable_session" name="logsTable_session" aria-controls="logsTable" class="custom-select custom-select-sm form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Select unique to show only unique session">' +
+						// 		'  <option value="all">All</option>' +
+						// 		'  <option value="unique">Unique</option>' +
+						// 		' </select> sessions' +
+						// 		'</label>'
+						// $("#logsTable_length").append(uniqueSessionDropdown);
 
 						let daysDropdown = '' +
 								'<label class="ml-3">' +
@@ -223,109 +222,109 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			logsDt.ajax.reload();
 		});
 
-		$('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_session', function () {
+		// $('#logsTableCard').on('change', '#logsTable_wrapper > div > div > #logsTable_length > label > #logsTable_session', function () {
+		//
+		// 	logsDt.ajax.reload();
+		// 	console.log(myCondition);
+		// });
 
-			logsDt.ajax.reload();
-			console.log(myCondition);
-		});
-
-		$('#logsTable').on('click', '.viewAttendees', function () {
-
-			let session_id 		= $(this).data('session-id');
-			let start_time 		= $(this).data('start-time');
-			let end_time 		= $(this).data('end-time');
-			let session_name 		= $(this).data('session-name');
-			console.log('[' + session_id + '-' + start_time + '-' + end_time + ']');
-			Swal.fire({
-				title: 'Please Wait',
-				text: 'Loading session attendees data...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-
-			let attendeesDT = $('#attendeesTable').DataTable({
-				"dom": "<'row'<'col-sm-12 col-md-8'l><'#attendeesTableBtns.col-sm-12 col-md-4 text-right'B>>" +
-						"<'row'<'col-sm-12'tr>>" +
-						"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-
-				"serverSide": true,
-				"ajax":
-						{
-							"url": project_admin_url+"/analytics/getLogsDt/",
-							"type": "POST",
-							"data": function (data) {
-								data.logType = "Visit";
-								data.logPlace = "Session View";
-								data.ref1 = session_id;
-								data.startTime = start_time;
-								data.endTime = end_time;
-								data.logUserUniqueness = 'unique';
-								data.logDays = 'all';
-							}
-						},
-				"columns":
-						[
-							{ "name": "user.id", "data": "user_id", "width": "75px" },
-							{ "name": "user.name", "data": "user_fname" },
-							{ "name": "user.surname", "data": "user_surname" },
-							{ "name": "user.credentials", "data": "credentials" },
-							{ "name": "user.email", "data": "email" },
-							{ "name": "user.city", "data": "city" },
-							{ "name": "logs.date_time", "data": "time_in_session" }
-						],
-				"paging": true,
-				"lengthChange": true,
-				"searching": true,
-				"ordering": true,
-				"info": true,
-				"autoWidth": false,
-				"responsive": false,
-				"order": [[ 6, "desc" ]],
-
-				buttons: [{
-					extend: 'excel',
-					text: '<i class="far fa-file-excel"></i> Export Excel',
-					className: 'btn-success',
-					attr:  {
-						"data-toggle": 'tooltip',
-						"data-placement": 'top',
-						"title": 'Export will consider your filters and search',
-					},
-					title: 'session_attendees_export_'+session_name,
-					action: ajaxExportAction
-				}],
-				initComplete: function() {
-					var api = this.api();
-					// Apply the search
-					api.columns().every(function() {
-						var that = this;
-						$('input', this.header()).on('keyup change', function() {
-							if (that.search() !== this.value) {
-								that.search(this.value).draw();
-							}
-						});
-					});
-				}
-			});
-
-			Swal.close();
-
-			$('#sessionAttendeesModal').modal({
-				backdrop: 'static',
-				keyboard: false
-			});
-		});
-
-
-		$("#sessionAttendeesModal").on('hide.bs.modal', function(){
-			var dTable = $('#attendeesTable').dataTable();
-			dTable.fnDestroy();
-			dTable.fnDraw();
-		});
+		//$('#logsTable').on('click', '.viewAttendees', function () {
+		//
+		//	let session_id 		= $(this).data('session-id');
+		//	let start_time 		= $(this).data('start-time');
+		//	let end_time 		= $(this).data('end-time');
+		//	let session_name 		= $(this).data('session-name');
+		//	console.log('[' + session_id + '-' + start_time + '-' + end_time + ']');
+		//	Swal.fire({
+		//		title: 'Please Wait',
+		//		text: 'Loading session attendees data...',
+		//		imageUrl: '<?//=ycl_root?>///cms_uploads/projects/<?//=$this->project->id?>///theme_assets/loading.gif',
+		//		imageUrlOnError: '<?//=ycl_root?>///ycl_assets/ycl_anime_500kb.gif',
+		//		imageAlt: 'Loading...',
+		//		showCancelButton: false,
+		//		showConfirmButton: false,
+		//		allowOutsideClick: false
+		//	});
+		//
+		//	let attendeesDT = $('#attendeesTable').DataTable({
+		//		"dom": "<'row'<'col-sm-12 col-md-8'l><'#attendeesTableBtns.col-sm-12 col-md-4 text-right'B>>" +
+		//				"<'row'<'col-sm-12'tr>>" +
+		//				"<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+		//
+		//		"serverSide": true,
+		//		"ajax":
+		//				{
+		//					"url": project_admin_url+"/analytics/getLogsDt/",
+		//					"type": "POST",
+		//					"data": function (data) {
+		//						data.logType = "Visit";
+		//						data.logPlace = "Session View";
+		//						data.ref1 = session_id;
+		//						data.startTime = start_time;
+		//						data.endTime = end_time;
+		//						data.logUserUniqueness = 'unique';
+		//						data.logDays = 'all';
+		//					}
+		//				},
+		//		"columns":
+		//				[
+		//					{ "name": "user.id", "data": "user_id", "width": "75px" },
+		//					{ "name": "user.name", "data": "user_fname" },
+		//					{ "name": "user.surname", "data": "user_surname" },
+		//					{ "name": "user.credentials", "data": "credentials" },
+		//					{ "name": "user.email", "data": "email" },
+		//					{ "name": "user.city", "data": "city" },
+		//					{ "name": "logs.date_time", "data": "time_in_session" }
+		//				],
+		//		"paging": true,
+		//		"lengthChange": true,
+		//		"searching": true,
+		//		"ordering": true,
+		//		"info": true,
+		//		"autoWidth": false,
+		//		"responsive": false,
+		//		"order": [[ 6, "desc" ]],
+		//
+		//		buttons: [{
+		//			extend: 'excel',
+		//			text: '<i class="far fa-file-excel"></i> Export Excel',
+		//			className: 'btn-success',
+		//			attr:  {
+		//				"data-toggle": 'tooltip',
+		//				"data-placement": 'top',
+		//				"title": 'Export will consider your filters and search',
+		//			},
+		//			title: 'session_attendees_export_'+session_name,
+		//			action: ajaxExportAction
+		//		}],
+		//		initComplete: function() {
+		//			var api = this.api();
+		//			// Apply the search
+		//			api.columns().every(function() {
+		//				var that = this;
+		//				$('input', this.header()).on('keyup change', function() {
+		//					if (that.search() !== this.value) {
+		//						that.search(this.value).draw();
+		//					}
+		//				});
+		//			});
+		//		}
+		//	});
+		//
+		//	Swal.close();
+		//
+		//	$('#sessionAttendeesModal').modal({
+		//		backdrop: 'static',
+		//		keyboard: false
+		//	});
+		//});
+		//
+		//
+		//$("#sessionAttendeesModal").on('hide.bs.modal', function(){
+		//	var dTable = $('#attendeesTable').dataTable();
+		//	dTable.fnDestroy();
+		//	dTable.fnDraw();
+		//});
 
 	});
 </script>

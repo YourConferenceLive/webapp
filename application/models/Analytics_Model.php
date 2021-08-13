@@ -641,8 +641,8 @@ class Analytics_Model extends CI_Model
 			$this->db->group_by('logs.user_id');
 
 		// Unique session filter
-		if (isset($post['logSessionUniqueness']) && $post['logSessionUniqueness']=='unique')
-			$this->db->group_by('sessions.name');
+	/*	if (isset($post['logSessionUniqueness']) && $post['logSessionUniqueness']=='unique')
+			$this->db->group_by('sessions.name');*/
 
 		// Column Search
 		foreach ($post['columns'] as $column)
