@@ -86,4 +86,8 @@ class Eposters extends CI_Controller
 	{
 		echo json_encode($this->eposters->sendHostChat($this->input->post()));
 	}
+
+	public function downloadAllImages(){
+		$this->eposters->downloadAllImages();
+	}
 }

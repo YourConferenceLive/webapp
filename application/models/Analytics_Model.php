@@ -349,7 +349,7 @@ class Analytics_Model extends CI_Model
 				 ->join('logs', 'sessions.id = logs.ref_1', 'left')
 				 ->where('sessions.project_id', $this->project->id)
 				 ->where('logs.info', 'Session View')
-				 ->where_in('sessions.id', array(38,46,53))
+				 ->where_not_in('sessions.id', array(44,33,28,23,56,51,12,17,7,34))
 				 ->where('logs.date_time BETWEEN sessions.start_date_time and sessions.end_date_time')
 				 ->group_by('sessions.id');
 		// Get total number of rows without filtering
@@ -407,9 +407,14 @@ class Analytics_Model extends CI_Model
 				 ->from('sessions')
 				 ->join('logs', 'sessions.id = logs.ref_1', 'left')
 				 ->where('sessions.project_id', $this->project->id)
+				->group_start()
 				 ->where('logs.info', 'Session Join')
 				 ->where('sessions.session_type', 'zm')
-				 ->or_where(array('sessions.session_type'=>'stc'))
+				->group_end()
+				->or_group_start()
+				->where(array('sessions.session_type'=>'stc'))
+				->where('logs.info', 'Session Join')
+				->group_end()
 				->order_by('sessions.session_type', 'asc')
 				->order_by('sessions.name', 'asc')
 				 ->group_by('sessions.id');
@@ -595,11 +600,19 @@ class Analytics_Model extends CI_Model
 						   user.email,
 						   user.city,
 						   user.credentials,
-						   sponsor_booth.name as company_name')
+						   sponsor_booth.name as company_name,
+						   sessions.name as sessions_name,
+						   sessions.id as sessions_id,
+						   sessions.start_date_time as start_time,
+						   sessions.end_date_time as end_time
+						')
+/*   logs.date_time as attendee_start,
+						   sessions.end_date_time as session_end_time'*/
 				 ->from('logs')
 				 ->join('user','user.id = logs.user_id')
 				 ->join('sponsor_booth_admin', 'logs.user_id = sponsor_booth_admin.user_id', 'left')
 			     ->join('sponsor_booth', 'sponsor_booth_admin.booth_id = sponsor_booth.id', 'left')
+				->join('sessions ', 'logs.ref_1=sessions.id', 'left')
 				 ->where('logs.project_id', $this->project->id);
 
 		if (isset($post['logPlace']) && $post['logPlace'] == 'Booth') // For booth analytics
@@ -631,6 +644,10 @@ class Analytics_Model extends CI_Model
 		// Unique user filter
 		if (isset($post['logUserUniqueness']) && $post['logUserUniqueness']=='unique')
 			$this->db->group_by('logs.user_id');
+
+		// Unique session filter
+	/*	if (isset($post['logSessionUniqueness']) && $post['logSessionUniqueness']=='unique')
+			$this->db->group_by('sessions.name');*/
 
 		// Column Search
 		foreach ($post['columns'] as $column)
@@ -727,10 +744,11 @@ class Analytics_Model extends CI_Model
 
 	function evaluationExport($session_id){
 
-		$this->db->select('*')
-			->from('session_polls')
+		$this->db->select('*, sp.id as session_polls_id')
+			->from('session_polls sp')
 //			->where('session_id', $session_id)
 //			->join('session_poll_answers spa', 'user.id=spa.user_id')
+			->limit(10)
 		;
 		$polls = $this->db->get();
 		$poll_array = array();
@@ -752,9 +770,11 @@ class Analytics_Model extends CI_Model
 
 	function getPollAnswer($poll_id){
 //		print_r($poll_id);exit;
-		$this->db->distinct()->select('user_id')
-			->from('session_poll_answers')
+		$this->db->distinct()->select('user_id, CONCAT(user.name," ", user.surname) as attendee_name')
+			->from('session_poll_answers spa')
+			->join('user', 'spa.user_id=user.id', 'right')
 			->where('poll_id', $poll_id)
+			->limit(100)
 			;
 		$users = $this->db->get();
 		$result_array = array();
@@ -767,10 +787,10 @@ class Analytics_Model extends CI_Model
 	}
 
 	function getUserPollAnswer($user_id){
-		$this->db->select('spa.*, user.id,user.name,user.surname')
+		$this->db->select('spa.id as poll_answer_id, spa.poll_id, spa.user_id, spo.option_text as answer')
 			->from('session_poll_answers spa')
 			->where('user_id', $user_id)
-			->join('user', 'spa.user_id=user.id')
+			->join('session_poll_options spo', 'spa.answer_id=spo.id')
 		;
 		$result = $this->db->get();
 		return $result->result_array();
@@ -784,7 +804,7 @@ class Analytics_Model extends CI_Model
 			->limit(100);
 		$conferenceLogs = $this->db->get();
 		if(!empty($conferenceLogs)){
-			return json_encode($conferenceLogs->result());
+			return json_encode($conferenceLogs->result(), JSON_PRETTY_PRINT);
 		}else{
 			return '';
 		}

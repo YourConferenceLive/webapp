@@ -417,16 +417,65 @@ class Analytics extends CI_Controller
 		array_unshift($headers, "Session Name", "Attendee Name");
 
 		echo "<pre>";
-		print_r($result);exit;
+//		print_r($headers);
+//		print_r($result);exit;
+
+		$user_array = array();
+		$user_answers_array = array();
+		foreach ($result as $index => $user){
+			foreach ($user['answer'] as $answer){
+
+				$user_array[] = array($answer['attendee_name']);
+//				print_r(array($answer[0]));
+				foreach (array($answer[0]) as $val ){
+//					print_r($val);
+					foreach ($val as $data){
+//						print_r($data['answer']);
+//						print_r($data['poll_id']);
+//						$user_answers_array[] = ($data['answer']);
+//						foreach ($data['answer'] as $ans){
+//							print_r($ans);
+//						}
+						$user_answers_array[]= array_fill_keys(array($data['poll_id']) , $data['answer']);
 //
+
+					}
+					array_push($user_array, $user_answers_array);
+//					$maps = (array_map('current', array($map)));
+//					$input = array_map("unserialize", array_unique(array_map("serialize", $user_array)));
+//					print_r($map);
+				}
+
+			}
+		}
+//		$input = array_map("unserialize", array_unique(array_map("serialize", $user_array)));
+
+
+//		print_r($user_array);
+//		foreach ($user_array as $value){
+//			print_r($value);
+//		}
+
+
+//		print_r(array_map('current', $user_array));
+
+
+
+
+//		print_r($user_answers_array);
 //		$file = fopen('php://output', 'w');
-//		$filename = 'Evaluation_report'.date('Y-m-d').'.csv';
+//		$filename = 'Evaluation_export'.date('Y-m-d').'.csv';
 //		header("Content-Description: File Transfer");
 //		header("Content-Disposition: attachment; filename = $filename");
 //		header("Content-Type: application/csv;");
 //
 //
 
+//		fputcsv($file, $headers);
+		foreach ($user_array as $array){
+			print_r($array);
+//			fputcsv($file, $array);
+		}
 //		$final_result = array();
 //		foreach ($result['cat'] as $poll_question){
 //			foreach ( $poll_question['answer'] as $occ => $poll_answer){
@@ -452,6 +501,7 @@ class Analytics extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/overall_report"	)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/analytics/session_attendees_modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 

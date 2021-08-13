@@ -108,7 +108,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								{ "name": "sessions.name", "data": "session_name" },
 								{ "name": "total_attendees", "data": "total_attendees" },
 								{ "name": "action", "data": null, render: function(data, type, row, meta) {
-																			return '<button class="viewAttendees btn btn-sm btn-success" data-session-id="'+ row.session_id +'" data-start-time="'+ row.start_time +'" data-end-time="'+ row.end_time +'"><i class="fas fa-search"></i> View</button>';
+																			return '<button class="viewAttendees btn btn-sm btn-success" data-session-name="'+row.session_name+'" data-session-id="'+ row.session_id +'" data-start-time="'+ row.start_time +'" data-end-time="'+ row.end_time +'"><i class="fas fa-search"></i> View</button>';
 																		 }
 								},
 							],
@@ -156,6 +156,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let session_id 		= $(this).data('session-id');
 			let start_time 		= $(this).data('start-time');
 			let end_time 		= $(this).data('end-time');
+			let session_name 		= $(this).data('session-name');
 console.log('[' + session_id + '-' + start_time + '-' + end_time + ']');
 			Swal.fire({
 				title: 'Please Wait',
@@ -216,7 +217,7 @@ console.log('[' + session_id + '-' + start_time + '-' + end_time + ']');
 							"data-placement": 'top',
 							"title": 'Export will consider your filters and search',
 						},
-						title: 'session_attendees_export',
+						title: 'session_attendees_export_'+session_name,
 						action: ajaxExportAction
 				}],
 				initComplete: function() {

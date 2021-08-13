@@ -334,4 +334,52 @@ class Eposters_Model extends CI_Model
 		return new stdClass();
 	}
 
+	function downloadAllImages(){
+		ini_set('set_time_limit', '3600');
+		ini_set('max_execution_time',3600);
+		ini_set('max_input_time','500');
+		ini_set('memory_limit','512M');
+		ini_set('upload_max_filesize', '3072M');
+		ini_set('post_max_size', '3072M');
+
+		$this->db->select('ep.*, ea.*, user.surname as author, et.track as track_name')
+			->from('eposters ep')
+			->join('eposter_authors ea', ' ep.id=ea.eposter_id')
+			->join('user', 'ea.user_id=user.id')
+			->join('eposter_tracks et', 'ep.track_id = et.id')
+		;
+		$eposter_result = $this->db->get();
+
+		# create new zip opbject
+		$zip = new ZipArchive();
+		$tmp_file = tempnam('.','');
+		$zip->open($tmp_file, ZipArchive::CREATE);
+
+		$image_array = array();
+		if($eposter_result->num_rows() > 0){
+			foreach ($eposter_result->result() as $eposter_images){
+				if($eposter_images->eposter != ''){
+					if (file_exists(FCPATH.'cms_uploads/projects/'.$this->project->id.'/eposters/'.$eposter_images->eposter)) {
+						$file = base_url().'cms_uploads/projects/'.$this->project->id.'/eposters/'.$eposter_images->eposter;
+						# download file
+						$download_file = file_get_contents( $file);
+						#add it to the zip
+						$zip->addFromString(basename($file),$download_file);
+						$zip->renameName(basename($file), $eposter_images->title.'_'.$eposter_images->author.'_'.$eposter_images->track_name.'.jpg');
+					}
+				}
+			}
+			$zip->close();
+			# send the file to the browser as a download
+			header('Content-disposition: attachment; filename=COS_images.zip');
+			header('Content-type: application/zip');
+			readfile($tmp_file);
+
+		}
+	}
+
+
+
 }
+
+
