@@ -323,7 +323,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		Swal.fire({
 			title: 'Are you sure?',
-			html: "You are about to reset <strong>"+userName+"</strong>'s password to 'COS2021' (without quotes)",
+			html: "You are about to reset <strong>"+userName+"</strong>'s password to '12345' (without quotes)",
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
@@ -348,7 +348,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					if (response.status == 'success')
 						Swal.fire(
 								'Done!',
-								userName+"'s password is now reset to COS2021",
+								userName+"'s password is now reset to 12345",
 								'success'
 						);
 					else
