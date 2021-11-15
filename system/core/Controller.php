@@ -136,6 +136,7 @@ class CI_Controller {
 
 			if
 			(
+				$this->router->fetch_class() != 'ycl_home' &&
 				$project_route != '' &&
 				$project_route != 'super_admin' &&
 				$project_route != 'project_api' &&
