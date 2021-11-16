@@ -127,9 +127,9 @@
             <div class="col-sm-10 col-md-6 col-lg-3 col-xl-3">
               <h6>Products</h6>
               <ul class="list-xxs">
-                <li><a href="#">Webinars</a></li>
-              <li><a href="#">Virtual Conferences</a></li>
-                <li><a href="#">Hybrid Events</a></li>
+                <li><a href="<?=base_url()?>webinars">Webinars</a></li>
+              <li><a href="<?=base_url()?>virtual">Virtual Conferences</a></li>
+                <li><a href="<?=base_url()?>hybrid">Hybrid Events</a></li>
               </ul>
             </div>
             
