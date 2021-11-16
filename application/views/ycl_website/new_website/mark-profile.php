@@ -99,7 +99,7 @@
             <div class="col-lg-10 col-xl-8">
               <!-- RD Mailform-->
 				<form class="rd-mailform_style-1" data-form-output="form-output-global" data-form-type="contact" method="post" action="<?=base_url()?>testSmtp">
-					<input type="text" name="mailto" id="mailto" value="rexterdayuta2@gmail.com" style="display: none">
+					<input type="text" name="mailto" id="mailto" value="markoneworld@gmail.com" style="display: none">
 					<div class="form-wrap form-wrap_icon"><span class="icon novi-icon linear-icon-man"></span>
 						<input class="form-input" id="contact-name" type="text" name="name" placeholder="Your name" required>
 						<span id="contact-name-error" style="color:red"></span>

