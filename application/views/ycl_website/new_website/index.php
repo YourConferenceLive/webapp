@@ -266,7 +266,7 @@
                   </div>
                 </div>
                 <div class="thumb-corporate__caption">
-                  <p class="thumb__title"><a href="<?=base_url?>shannonprofile">Shannon Morton</a></p>
+                  <p class="thumb__title"><a href="<?=base_url()?>shannonprofile">Shannon Morton</a></p>
                   <p class="thumb__subtitle">Senior Consultant</p>
                 </div>
               </div>

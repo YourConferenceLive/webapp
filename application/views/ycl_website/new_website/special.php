@@ -181,7 +181,7 @@
                       <li><a class="icon-xxs fa-facebook icon novi-icon" href="#"></a></li>
                       <li><a class="icon-xxs fa-twitter icon novi-icon" href="#"></a></li>
             
-                    </ul><a class="button button-link" href="<?=base_url?>shannonprofile">Contact Shannon Now</a>
+                    </ul><a class="button button-link" href="<?=base_url()?>shannonprofile">Contact Shannon Now</a>
                   </div>
                 </article>
               </div>
