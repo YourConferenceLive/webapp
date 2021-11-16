@@ -1,4 +1,5 @@
 $(function () {
+
 	$('#reg_login').click(function (e) {
 		e.preventDefault();
 
@@ -17,7 +18,12 @@ $(function () {
 		} else if (email == '') {
 			$('#contact-email-error').text("Please Enter Email").fadeIn('slow').fadeOut(5000);
 			return false;
-		} else if (phone == '') {
+		}
+		else if  (!validateEmail($("#contact-email").val().trim())) {
+			$('#contact-email-error').text("Please Enter Valid Email").fadeIn('slow').fadeOut(5000);
+			return false;
+		}
+		else if (phone == '') {
 			$('#contact-phone-error').text("Please Enter Phone").fadeIn('slow').fadeOut(5000);
 			return false;
 		} else if (message == '') {
@@ -67,3 +73,8 @@ $(function () {
 		}
 	})
 })
+
+function validateEmail(sEmail) {
+	var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+	return expr.test(sEmail);
+}

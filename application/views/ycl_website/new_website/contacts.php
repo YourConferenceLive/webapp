@@ -149,7 +149,7 @@
             </div>
 			  <div class="row">
 				  <div class="col-md-6 form-group">
-					  <div class="g-recaptcha" data-callback="recaptchaCallback" style="text-align: -webkit-center;" data-sitekey="6LfbHKQZAAAAAA9nhI-4GNOmLakkRGGaBTJgHFbF"></div>
+					  <div class="g-recaptcha" style="text-align: -webkit-center;" data-sitekey="6LfbHKQZAAAAAA9nhI-4GNOmLakkRGGaBTJgHFbF"></div>
 					  <div class="gaps-2x"></div>
 					  <span id="errorcaptcha" style="color:red"></span>
 				  </div>
@@ -238,10 +238,12 @@
 
 <script>
 	var base_url = '<?=base_url()?>';
+
+
 </script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?=ycl_root?>/ycl_assets/js/homepage_js/contact.js"></script>
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
 </body>
 </html>
 
