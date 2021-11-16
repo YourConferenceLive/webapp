@@ -100,8 +100,8 @@
                 <dd>
                   <ul class="list-semicolon">
                     <li><a href="Toll free: (800) 952-3259"></a></li>
-                       
-                      </ul>
+					  (800) 952-3259
+				  </ul>
                     </dd>
                   </dl>
                 </li>
