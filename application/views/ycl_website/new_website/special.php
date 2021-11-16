@@ -116,90 +116,37 @@
                   <div class="post-classic-title">
                     <h5><a href="single-post.html">Full One-Hour Live Broadcast Production.</a></h5>
                   </div>
-                  <div class="post-meta">
-                    <div class="group"><a href="single-post.html">
-                        
-                  </div>
-                </article>
-              </div>
-              <div class="col-md-6 col-lg-7 col-xl-8">
-                <!-- Post video-->
-                <article class="post-video post-minimal post-video-wrap">
-                  <div class="entry-video embed-responsive embed-responsive-16by9">
-                    <iframe width="886" height="320" src="//www.youtube.com/embed/ccuQoF0vKYU" allowfullscreen=""></iframe>
-                  </div>
-                  
-                  <div class="post-meta">
-                    <div class="group"><a href="single-post.html">
-                        <time datetime="2017"> </time></a><a class="meta-author"> </a></div>
-                  </div>
-                </article>
-              </div>
-              <div class="col-md-6 col-lg-5 col-xl-4">
-                <!-- Post classic-->
-                
-              </div>
-              <div class="col-md-6 col-xl-4">
-                <!-- Post Link-->
-                <article class="post-link novi-background">
-                  <div class="post-classic-title">
-                    <h5><a href="single-post.html">Creating Portfolio.</a></h5>
-                  </div><a href="http://templatemonster.com/">http://templatemonster.com/</a>
-                </article>
-              </div>
-              <div class="col-md-6 col-xl-4">
-                <!-- Post quote-->
-                <article class="post-quote post-minimal">
-                  <!-- Quote default--><a class="quote-default novi-background" href="single-post.html">
-                    <div class="quote-default-icon icon novi-icon linear-icon-quote-open"></div>
-                    <div class="quote-default__text">
-                      <p class="q heading-4">Getting to another  level of design and functionality.</p>
-                    </div>
-                    <p class="quote-default__cite">Adam Smith</p></a>
-                </article>
-              </div>
-              <div class="col-md-6 col-xl-4">
-                <!-- Post standard-->
-                <article class="post-classic post-minimal">
-                  <div class="post-classic-title">
-                    <h5><a href="single-post.html">How to Use Bootstrap Framework</a></h5>
-                  </div>
-                  <div class="post-meta">
-                    <div class="group"><a href="#">
-                        <time datetime="2017">Jan.20, 2018</time></a><a class="meta-author" href="single-post.html">by Brian Williamson</a></div>
-                  </div>
-                  <div class="post-classic-body">
-                    <p>All the HTML templates that we have here have had a vast team of professional designers sketching, working and executing the ultimate visual look for it.</p>
-                  </div>
-                </article>
-              </div>
-              <div class="col-md-6 col-xl-4">
-  
-                  </div>
-                  <div class="post-minimal-footer">
-                    <ul class="list-inline-sm">
-                      <li><a class="icon-xxs fa-facebook icon novi-icon" href="#"></a></li>
-                      <li><a class="icon-xxs fa-twitter icon novi-icon" href="#"></a></li>
-            
-                    </ul><a class="button button-link" href="<?=base_url()?>shannonprofile">Contact Shannon Now</a>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Divider-->
-        <section>
-          <div class="container">
-            <div class="divider"></div>
-          </div>
-        </section>
 
-        <div class="section-md text-center">
-          <div class="container">
-            <!-- Classic Pagination-->
+                </article>
+              </div>
 
-      <!-- Page Footer-->
+				<!-- Presentation -->
+				<section class="section-xl bg-white text-center novi-background bg-cover" id="section-see-features">
+					<div class="container">
+						<div class="row row-fix justify-content-lg-center">
+							<div class="col-lg-10 col-xl-8">
+								<h3>Details</h3>
+								<p>Two Speakers. Up to 100 attendees. High Quality, low latency stream, ARS and Polling, Q&A, Up to One Hour in Duration. We will be giving away one full webinar per week throughout 2022. Talk to our team to see if you qualify.</p>
+							</div>
+						</div>
+					</div>
+				</section>
+
+
+
+
+				<!-- Divider-->
+				<section>
+					<div class="container">
+						<div class="divider"></div>
+					</div>
+				</section>
+
+				<div class="section-md text-center">
+					<div class="container">
+						<!-- Classic Pagination-->
+
+						<!-- Page Footer-->
      <section class="pre-footer-corporate novi-background bg-cover">
         <div class="container">
           <div class="row justify-content-sm-center justify-content-lg-start row-30 row-md-60">
