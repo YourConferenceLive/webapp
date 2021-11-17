@@ -67,7 +67,7 @@
                 <div class="container">
                   <h1 data-caption-animate="fadeInUpSmall text-white"> <span>The Future is Now</span></h1>
                   <h3 data-caption-animate="fadeInUpSmall text-white" data-caption-delay="200">Webinars - Virtual Conferences - Hybrid Meetings</h3>
-                  <div class="group-lg group-middle"><a class="button button-primary" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="#section-see-features" data-custom-scroll-to="section-see-features">See Features</a><a class="button button-black" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="#">Contact Us</a></div>
+                  <div class="group-lg group-middle"><a class="button button-primary" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="#section-see-features" data-custom-scroll-to="section-see-features">See Features</a><a class="button button-black" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="<?=ycl_base_url?>contacts">Contact Us</a></div>
                 </div>
               </div>
             </div>
