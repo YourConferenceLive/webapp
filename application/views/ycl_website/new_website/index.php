@@ -80,7 +80,7 @@
             </div>
             <div class="swiper-slide swiper-slide_video context-dark video-bg-overlay">
                     <!-- RD Video-->
-                    <div class="vide_bg novi-vide" data-vide-bg="video/ycl_header_video" data-vide-options="posterType: jpg">
+                    <div class="vide_bg novi-vide" data-vide-bg="<?=ycl_root?>/ycl_assets/video/ycl_header_video" data-vide-options="posterType: jpg">
                       <div class="swiper-slide-caption text-center">
                         <div class="container">
                           <h2 data-caption-animate="fadeInUpSmall">Built for the future &amp; ready today!</h2>
