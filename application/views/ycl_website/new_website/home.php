@@ -305,7 +305,7 @@
                   </div>
                 </div>
                 <div class="thumb-corporate__caption">
-                  <p class="thumb__title"><a href="https://yourconference.live/temp/site/team-member-profile.html">Mark Rosenthal</a></p>
+                  <p class="thumb__title"><a href="<?=base_url()?>markprofile">Mark Rosenthal</a></p>
                   <p class="thumb__subtitle">Senior Consultant</p>
                 </div>
               </div>

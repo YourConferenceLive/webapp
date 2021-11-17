@@ -248,7 +248,7 @@
                   </div>
                 </div>
                 <div class="thumb-corporate__caption">
-                  <p class="thumb__title"><a href="mark-profile.html">Mark Rosenthal</a></p>
+                  <p class="thumb__title"><a href="<?=base_url()?>markprofile">Mark Rosenthal</a></p>
                   <p class="thumb__subtitle">Senior Consultant</p>
                 </div>
               </div>
@@ -297,35 +297,35 @@
       <section class="section-xl bg-white novi-background novi-section no" data-lightgallery="group">
         <div class="container-fluid">
           <div class="row row-10 row-horizontal-10">
-            <div class="col-md-4 col-xl-3"> <a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/image-original-1-1200x905.jpg">
+            <div class="col-md-4 col-xl-3"> <a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/12.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/12.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/image-original-2-1200x905.jpg">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/13.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/13.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/image-original-3-1200x906.jpg">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/14.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/14.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/image-original-4-1200x905.jpg">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/15.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/15.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/image-original-5-1200x905.jpg">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/17.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/17.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/image-original-6-1200x905.jpg">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/16.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/16.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/image-original-7-1200x906.jpg">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/18.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/18.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/image-original-8-1200x906.jpg">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/19.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/19.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
@@ -342,7 +342,7 @@
               <!-- Post classic-->
               <article class="post-minimal"><img src="<?=base_url()?>ycl_assets/images/homepage_images/post-minimal-1-418x315.jpg" alt="" width="418" height="315"/>
                 <div class="post-classic-title">
-                  <h5><a href="single-post.html">Webinars</a></h5>
+                  <h5><a href="<?=base_url()?>webinars">Webinars</a></h5>
                 </div>
                 <div class="post-meta">
                   <div class="post-classic-body">
@@ -351,14 +351,14 @@
                 <div class="post-classic-body">
                   <p>Specialists in Life Sciences seminars and panel discussions. CME ready learning measurement and time keeping.</p>
                 </div>
-                <div class="post-minimal-footer"><a class="button button-link" href="webinars.html">read more</a></div>
+                <div class="post-minimal-footer"><a class="button button-link" href="<?=base_url()?>webinars">read more</a></div>
               </article>
             </div>
             <div class="col-md-6 col-xl-4">
               <!-- Post classic-->
               <article class="post-minimal"><img src="<?=base_url()?>ycl_assets/images/homepage_images/post-minimal-5-418x315.jpg" alt="" width="418" height="315"/>
                 <div class="post-classic-title">
-                  <h5><a href="single-post.html">Virtual Conference</a></h5>
+                  <h5><a href="<?=base_url()?>virtual">Virtual Conference</a></h5>
                 </div>
                 <div class="post-meta">
                   <div class="post-classic-body">
@@ -374,7 +374,7 @@
               <!-- Post classic-->
               <article class="post-minimal"><img src="<?=base_url()?>ycl_assets/images/homepage_images/post-minimal-2-418x315.jpg" alt="" width="418" height="315"/>
                 <div class="post-classic-title">
-                  <h5><a href="single-post.html">Hybrid Meetings</a></h5>
+                  <h5><a href="<?=base_url()?>hybrid"">Hybrid Meetings</a></h5>
                 </div>
                 <div class="post-meta">
                   <div class="post-classic-body">
@@ -383,7 +383,7 @@
                 <div class="post-classic-body">
                   <p>Ensure the highest degree of participation at your next event. Our onsite app seamlessly integrates with the online participants. Polling, Q&A, Chats are simultaneously available to all. Analytics are instant and comprehensive.</p>
                 </div>
-                <div class="post-minimal-footer"><a class="button button-link" href="hybrid.html">read more</a></div>
+                <div class="post-minimal-footer"><a class="button button-link" href="<?=base_url()?>hybrid">read more</a></div>
               </article>
             </div>
           </div>

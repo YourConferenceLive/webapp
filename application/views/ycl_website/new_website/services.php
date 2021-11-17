@@ -95,30 +95,30 @@
             <div class="col-md-6 col-xl-4">
               <div class="thumbnail-classic"><img src="<?=base_url()?>ycl_assets/images/homepage_images/post-minimal-1-418x315.jpg" alt="" width="418" height="315"/>
                 <div class="caption">
-                  <h5><a class="thumbnail-classic-title" href="webinars.html">Webinars</a></h5>
+                  <h5><a class="thumbnail-classic-title" href="<?=base_url()?>webinars">Webinars</a></h5>
                   <p>Live and On-Demand. We are long-time specialists in Life Sciences seminars and panel discussions. With CM- ready learning measurement and time keeping. Q&amp;A, chats,&nbsp; Live Support </p>
                 </div>
               </div>
-				<div class="post-minimal-footer"><a class="button button-link" href="webinars.html">more</a></div>
+				<div class="post-minimal-footer"><a class="button button-link" href="<?=base_url()?>webinars">more</a></div>
             </div>
             <div class="col-md-6 col-xl-4">
               <div class="thumbnail-classic"><img src="<?=base_url()?>ycl_assets/images/homepage_images/post-minimal-5-418x315.jpg" alt="" width="418" height="315"/>
                 <div class="caption">
-                  <h5><a class="thumbnail-classic-title" href="virtual.html">Virtual Conferences</a></h5>
+                  <h5><a class="thumbnail-classic-title" href="<?=base_url()?>virtual">Virtual Conferences</a></h5>
                   <p>Made popular over the past year, virtual conferences are here to stay. Economical and inclusive, the YCL virtual platform, either 2D or3D, is the perfect meeting space for conferences of all sizes.</p>
                 </div>
               </div>
-				<div class="post-minimal-footer"><a class="button button-link" href="virtual.html">more</a></div>
+				<div class="post-minimal-footer"><a class="button button-link" href="<?=base_url()?>virtual">more</a></div>
             </div>
             
             <div class="col-md-6 col-xl-4">
               <div class="thumbnail-classic"><img src="<?=base_url()?>ycl_assets/images/homepage_images/post-minimal-2-418x315.jpg" alt="" width="418" height="315"/>
                 <div class="caption">
-                  <h5><a class="thumbnail-classic-title" href="hybrid.html">Hybrid Events</a></h5>
+                  <h5><a class="thumbnail-classic-title" href="<?=base_url()?>hybrid">Hybrid Events</a></h5>
                   <p>Ensure the highest degree of participation at your next event. Our onsite app seamlessly integrates with the online participants. Polling, Q&A, Chats are simutaneously avaiable to all. Analytics are instant and comprehensive. </p>
                 </div>
               </div>
-				<div class="post-minimal-footer"><a class="button button-link" href="hybrid.html">more</a></div>
+				<div class="post-minimal-footer"><a class="button button-link" href="<?=base_url()?>hybrid">more</a></div>
             </div>
 			  
           </div>
