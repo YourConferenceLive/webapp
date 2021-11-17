@@ -83,7 +83,7 @@
                 <!-- Post classic-->
                 <article class="post-classic post-minimal"><img src="<?=base_url()?>ycl_assets/images/homepage_images/post-minimal-1-418x315.jpg" alt="" width="418" height="315"/>
                   <div class="post-classic-title">
-                    <h5><a href="single-post.html">Get Your First Webinar for FREE.</a></h5>
+                    <h5><a href="#">Get Your First Webinar for FREE.</a></h5>
                   </div>
 					
 					<div class="post-classic-body">
@@ -114,7 +114,7 @@
                     </div>
                   </div>
                   <div class="post-classic-title">
-                    <h5><a href="single-post.html">Full One-Hour Live Broadcast Production.</a></h5>
+                    <h5><a href="#">Full One-Hour Live Broadcast Production.</a></h5>
                   </div>
 
                 </article>

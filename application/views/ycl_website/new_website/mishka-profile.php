@@ -37,7 +37,7 @@
               <div class="rd-navbar-panel">
                 <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                 <!-- RD Navbar Brand-->
-                <div class="rd-navbar-brand"><a class="brand-name" href="index.html"><img src="<?=ycl_root?>/ycl_assets/images/homepage_images/ycl_logo_header.png" alt="" width="163" height="40"/></a></div>
+                <div class="rd-navbar-brand"><a class="brand-name" href="<?=base_url()?>"><img src="<?=ycl_root?>/ycl_assets/images/homepage_images/ycl_logo_header.png" alt="" width="163" height="40"/></a></div>
               </div>
               <!-- RD Navbar Nav-->
               <div class="rd-navbar-nav-wrap">
