@@ -398,7 +398,7 @@
           <div class="row row-fix justify-content-md-center align-items-lg-end">
             <div class="col-md-8 col-lg-6 section-xl">
               <h3>What's Important to You?</h3>
-              <p>Analytics? Collaboration? Ease of Use? </p>YCL has everything to get you covered. Producers. Technicians. Infrastructure. Global Reach. </p><a class="button button-gray-light-outline" href="#">View now!</a>
+              <p>Analytics? Collaboration? Ease of Use? </p>YCL has everything to get you covered. Producers, technicians, and infrastructure, all with a proven global Reach. </p><a class="button button-gray-light-outline" href="#">View now!</a>
             </div>
             <div class="col-md-8 col-lg-6">
               <div class="cat-img-group">
