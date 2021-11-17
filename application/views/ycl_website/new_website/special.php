@@ -204,7 +204,7 @@
       <footer class="footer-corporate novi-background bg-cover">
         <div class="container">
           <div class="footer-corporate__inner">
-            <p class="rights"><span>YCL</span><span>&nbsp;</span><span class="copyright-year"></span>. Design&nbsp;by&nbsp;<a class="link-primary-inverse" href="https:www.owpm.com">OWPM</a></p>
+            <p class="rights"><span>YCL</span><span>&nbsp;</span><span class="copyright-year"></span>. Design&nbsp;by&nbsp;<a class="link-primary-inverse" href="https://www.owpm.com">OWPM</a></p>
             <ul class="list-inline-xxs">
               <li><a class="novi-icon icon icon-xxs icon-primary fa fa-facebook" href="#"></a></li>
               <li><a class="novi-icon icon icon-xxs icon-primary fa fa-twitter" href="#"></a></li>
