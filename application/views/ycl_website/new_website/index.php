@@ -311,7 +311,7 @@
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/12.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/13.png">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/13_L.jpg">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/13.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
