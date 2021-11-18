@@ -307,7 +307,7 @@
       <section class="section-xl bg-white novi-background novi-section no" data-lightgallery="group">
         <div class="container-fluid">
           <div class="row row-10 row-horizontal-10">
-            <div class="col-md-4 col-xl-3"> <a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/12.png">
+            <div class="col-md-4 col-xl-3"> <a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/12_L.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/12.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
