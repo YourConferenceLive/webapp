@@ -323,8 +323,8 @@
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/15.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/17.png">
-                <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/17_L.jpg" alt="" width="472" height="355"/>
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/17_L.jpg">
+                <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/17.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
             <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/16.png">
