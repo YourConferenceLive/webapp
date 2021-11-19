@@ -107,7 +107,7 @@
         <div class="container">
           <div class="row row-50 justify-content-sm-center">
             <div class="col-md-10">
-              <h5>Control Audience Response From Your Phone</h5>
+              <h5>Manage Audience Response From Your Phone</h5>
               <p>The best solution for onsite meetings, online or hybrids, YCL ARS gives you a level of freedom and control you have never had before with ARS.</p>
             </div>
             <div class="col-md-10">
