@@ -27,7 +27,7 @@ class Ycl_home extends CI_Controller {
 		$this->load->view('ycl_website/new_website/ars');
 	}
 
-	public function learning module()
+	public function learning_module()
 	{
 		$this->load->view('ycl_website/new_website/learning_module');
 	}
