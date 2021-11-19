@@ -28,32 +28,23 @@
       <!-- Page header-->
       <header class="page-header">
         <!-- RD Navbar-->
-        <div class="rd-navbar-wrap">
-          <nav class="rd-navbar novi-background bg-cover" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-sm-device-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-device-layout="rd-navbar-fixed" data-xl-device-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-stick-up-clone="false" data-sm-stick-up="true" data-md-stick-up="true" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true" data-lg-stick-up-offset="69px" data-xl-stick-up-offset="1px" data-xxl-stick-up-offset="1px">
-            <div class="rd-navbar-inner">
-              <!-- RD Navbar Panel -->
-              <div class="rd-navbar-panel">
-                <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
-                <!-- RD Navbar Brand-->
-                <div class="rd-navbar-brand"><a class="brand-name" href="index.html"><img src="images/ycl_logo_header.png" alt="" width="163" height="40"/></a></div>
-              </div>
-              <!-- RD Navbar Nav-->
-              <div class="rd-navbar-nav-wrap">
-                <div class="rd-navbar-nav-wrap__element">
+   <div class="rd-navbar-nav-wrap">
                       <ul class="rd-navbar-nav">
-                        <li><a href="index.html">Home</a>
-                       </li>
-                        <li><a href="services.html">Services</a>
-                          <ul class="rd-navbar-dropdown">
-                            <li><a href="webinars.html">Webinars</a></li>
-              <li><a href="virtual.html">Virtual Conferences</a></li>
-                <li><a href="hybrid.html">Hybrid Events</a></li>
-                            </li>
+                        <li class="active"><a href="<?=base_url()?>">Home</a>
+                        </li>
+						  <li><a href="<?=base_url()?>services">Services</a>
+							  <ul class="rd-navbar-dropdown">
+								  <li><a href="<?=base_url()?>webinars">Webinars</a></li>
+								  <li><a href="<?=base_url()?>virtual">Virtual Conferences</a></li>
+								  <li><a href="<?=base_url()?>hybrid">Hybrid Events</a></li>
+								  <li><a href="<?=base_url()?>ars">Audience Response System</a></li>
+								  <li><a href="<?=base_url()?>learning_module">Learning Modules</a></li>
+								  <li><a href="<?=base_url()?>abstracts">Abstract Management</a></li>
                           </ul>
                         </li>
-                        <li><a href="contacts.html">Contact</a>
+                        <li><a href="<?=ycl_base_url?>contacts">Contact</a>
+							<li><a class="brand-name" href="<?=base_url()?>special"><img src="<?=ycl_root?>/ycl_assets/images/homepage_images/first_free.jpg" alt="" width="163" height="40"/></a>
                         </li>
-				  <li><a class="brand-name" href="special.html"><img src="images/first_free.jpg" alt="" width="163" height="40"/></a>
                       </ul>
               </div>
             </div>
