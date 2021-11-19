@@ -87,7 +87,7 @@
       </section>
       <section class="text-center">
         <!-- RD Parallax-->
-        <div class="parallax-container bg-image parallax-header rd-parallax-light" data-parallax-img="<?=base_url()?>ycl_assets/images/homepage_images/parallax-05.jpg">
+        <div class="parallax-container bg-image parallax-header rd-parallax-light" data-parallax-img="<?=base_url()?>ycl_assets/images/homepage_images/services_learning_module.jpg">
           <div class="parallax-content">
             <div class="parallax-header__inner">
               <div class="parallax-header__content">
