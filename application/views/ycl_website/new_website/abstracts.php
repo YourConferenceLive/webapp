@@ -191,7 +191,7 @@
     <!-- Global Mailform Output-->
     <div class="snackbars" id="form-output-global"></div>
     <!-- Javascript-->
-    <script src="js/core.min.js"></script>
-    <script src="js/script.js"></script>
+   <script src="<?=ycl_root?>/ycl_assets/js/homepage_js/core.min.js"></script>
+    <script src="<?=ycl_root?>/ycl_assets/js/homepage_js/script.js"></script>
   </body>
 </html>
