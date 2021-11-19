@@ -76,7 +76,7 @@
       <section class="breadcrumbs-custom novi-background bg-cover">
         <div class="container">
           <div class="breadcrumbs-custom__inner">
-            <p class="breadcrumbs-custom__title">Abstract Management</p>
+            <p class="breadcrumbs-custom__title">Learning Modules</p>
             <ul class="breadcrumbs-custom__path">
 				<li><a href="<?=base_url()?>">Home</a></li>
 				<li><a href="<?=base_url()?>services">Services</a></li>
