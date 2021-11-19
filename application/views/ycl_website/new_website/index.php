@@ -57,6 +57,9 @@
 								  <li><a href="<?=base_url()?>webinars">Webinars</a></li>
 								  <li><a href="<?=base_url()?>virtual">Virtual Conferences</a></li>
 								  <li><a href="<?=base_url()?>hybrid">Hybrid Events</a></li>
+								  <li><a href="<?=base_url()?>hybrid">Audience Response System</a></li>
+								  <li><a href="<?=base_url()?>hybrid">Learning Modules</a></li>
+								  <li><a href="<?=base_url()?>hybrid">Abstract Management</a></li>
                           </ul>
                         </li>
                         <li><a href="<?=ycl_base_url?>contacts">Contact</a>
