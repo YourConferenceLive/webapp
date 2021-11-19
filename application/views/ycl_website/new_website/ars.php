@@ -107,8 +107,8 @@
         <div class="container">
           <div class="row row-50 justify-content-sm-center">
             <div class="col-md-10">
-              <h5>Fastest Connection</h5>
-              <p>Experience virtually instant, real-time connection with your audience, with none of the long awkward pauses between polls and speakers that are common among other providers. We keep your audience engaged by providing the lowest latency between live speakers and viewers. This means more attendees stay on longer. And that means more data for you to know the effectiveness of your program.</p>
+              <h5>Control Audience Response From Your Phone</h5>
+              <p>The best solution for onsite meetings, online or hybrids, YCL ARS gives you a level of freedom and control you have never had before with ARS.</p>
             </div>
             <div class="col-md-10">
               <h5>Stylish Interface</h5>
