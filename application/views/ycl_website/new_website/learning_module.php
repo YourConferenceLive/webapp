@@ -111,7 +111,7 @@
               <p>Our strategies for online learning will ensure improved engagement and retention. CME, general purpose, company specific... </p>
             </div>
             <div class="col-md-10">
-              <h5>Stylish Interface</h5>
+              <h5>Get Results</h5>
               <p>Good design is not only pleasant on the eye, it helps users absorb information quicker. </p>
             </div>
           </div>
