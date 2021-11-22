@@ -104,8 +104,8 @@
         <div class="container">
           <div class="row row-50 justify-content-sm-center">
             <div class="col-md-10">
-              <h5>Fastest Connection</h5>
-              <p>Experience virtually instant, real-time connection with your audience, with none of the long awkward pauses between polls and speakers that are common among other providers. We keep your audience engaged by providing the lowest latency between live speakers and viewers. This means more attendees stay on longer. And that means more data for you to know the effectiveness of your program.</p>
+              <h5>Live Means LIVE!</h5>
+              <p>Your Conference Live is the only platform where speakers interact in real time with the audience or learners. Experience virtually instant, real-time connection with your audience, with none of the long awkward pauses between polls and speakers that are common among other providers. We keep your audience engaged by providing the lowest latency between live speakers and viewers. This means more attendees stay on longer. And that means more data for you to know the effectiveness of your program.</p>
             </div>
             <div class="col-md-10">
               <h5>Stylish Interface</h5>
