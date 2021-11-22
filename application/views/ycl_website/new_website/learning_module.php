@@ -107,7 +107,7 @@
         <div class="container">
           <div class="row row-50 justify-content-sm-center">
             <div class="col-md-10">
-              <h5>You Need Features and Reliability for Your Membership's Online Learning</h5>
+              <h5>Improve Your Organization's Continuing Education Program</h5>
               <p>Our strategies for online learning will ensure improved engagement and retention. CME, general purpose, company specific... </p>
             </div>
             <div class="col-md-10">
