@@ -2,9 +2,10 @@
 <html class="wide wow-animation" lang="en">
   <head>
     <!-- Site Title-->
-    <title>Your Conference Live</title>
+    <title>Your Conference Live - The Place for Virtual, Hybrid and Live Conferences and Webinars</title>
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	  <meta name="description" content="Webinar Software and Production Service. Full service virtual or hybrid conference platform." />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
     <link rel="icon" href="https://dev.yourconference.live/ycl_assets/ycl_icon.png">
