@@ -93,9 +93,7 @@
               <ul class="list-inline-sm profile-corporate__list">
                 <li><a class="icon-sm fa-facebook icon novi-icon" href="#"></a></li>
                 <li><a class="icon-sm fa-twitter icon novi-icon" href="#"></a></li>
-     
-              </ul>
-          
+		    </ul>
       </section>
 
       <section class="section-xl bg-white text-center novi-background bg-cover">
