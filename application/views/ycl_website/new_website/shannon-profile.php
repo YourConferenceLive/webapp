@@ -95,9 +95,7 @@
                 <li><a class="icon-sm fa-twitter icon novi-icon" href="#"></a></li>
      
               </ul>
-            </div>
-          </article>
-        </div>
+          
       </section>
 
       <section class="section-xl bg-white text-center novi-background bg-cover">
