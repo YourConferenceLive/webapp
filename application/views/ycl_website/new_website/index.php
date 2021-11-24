@@ -118,7 +118,7 @@
         <div class="container">
           <div class="row row-fix justify-content-lg-center">
             <div class="col-lg-10 col-xl-8">
-              <h3>Solutions for Every Event</h3>
+              <h3>Solutions for All of Your Events</h3>
               <p>If "pivot" was the word for 2020, then "flexibility" is where we are looking forward to from here. Your Conference Live has the most modern and flexible solutions, with the experience and track record you need to take your event to where it needs to go. </p>
             </div>
           </div>
@@ -131,7 +131,7 @@
           <div class="container">
             <div class="row row-fix">
               <div class="col-lg-5">
-                <h3>Engagement is the key</h3>
+                <h3>Engagement is Key</h3>
                 <p>Our platform was created by top industry leaders in presentation management to improve audience engagement and loyalty with simple, friendly tools. Your Conference Live knows the take-aways we all benefit from. Whether its the learning and CME credits for the attendees or the insight gleaned from polling and metadata for you, the YCL platform is the perfect place for gathering and collaboration.</p>
               </div>
             </div>
