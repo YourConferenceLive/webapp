@@ -63,7 +63,7 @@
                           </ul>
                         </li>
                         <li><a href="<?=ycl_base_url?>contacts">Contact</a>
-							<li><a class="brand-name" href="<?=base_url()?>special"><img src="<?=ycl_root?>/ycl_assets/images/homepage_images/first_free.jpg" alt="" width="163" height="40"/></a>
+							
                         </li>
                       </ul>
               </div>
