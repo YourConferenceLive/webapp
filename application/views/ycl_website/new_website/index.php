@@ -5,7 +5,7 @@
     <title>Your Conference Live - The Place for Virtual, Hybrid and Live Conferences and Webinars</title>
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	  <meta name="description" content="Webinar Software and Production Service. Full service virtual or hybrid conference platform." />
+	  <meta name="description" content="Webinar Software and Production Service. Full service virtual or hybrid conference platform. Custom webinar solutions avaliable." />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
     <link rel="icon" href="https://dev.yourconference.live/ycl_assets/ycl_icon.png">
@@ -79,7 +79,7 @@
             <div class="swiper-slide bg-gray-lighter" data-slide-bg="<?=base_url()?>ycl_assets/images/homepage_images/slider-slide-1-1920x980.jpg">
               <div class="swiper-slide-caption text-center" style="margin-top: -450px">
                 <div class="container">
-                  <h1 data-caption-animate="fadeInUpSmall text-white"> <span>The Future is Now</span></h1>
+                  <h1 data-caption-animate="fadeInUpSmall text-white"> <span>Webinars that Impress</span></h1>
                   <h3 data-caption-animate="fadeInUpSmall text-white" data-caption-delay="200">Webinars - Virtual Conferences - Hybrid Meetings</h3>
                   <div class="group-lg group-middle"><a class="button button-primary" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="#section-see-features" data-custom-scroll-to="section-see-features">See Features</a><a class="button button-black" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="<?=ycl_base_url?>contacts">Contact Us</a></div>
                 </div>
