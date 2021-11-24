@@ -118,7 +118,7 @@
           <div class="row row-fix justify-content-lg-center">
             <div class="col-lg-10 col-xl-8">
               <h3>Solutions for Every Event</h3>
-              <p>If "pivot" was the word for 2020, then "flexibility" is where we are looking forward from here. Your Conference Live has the most modern and flexible solutions, with the experience and track record you need to take your event to where it needs to go. </p>
+              <p>If "pivot" was the word for 2020, then "flexibility" is where we are looking forward to from here. Your Conference Live has the most modern and flexible solutions, with the experience and track record you need to take your event to where it needs to go. </p>
             </div>
           </div>
         </div>
