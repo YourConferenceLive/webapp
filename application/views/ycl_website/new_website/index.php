@@ -76,7 +76,7 @@
       <section>
         <div class="swiper-container swiper-slider swiper-slider_fullheight" data-simulate-touch="false" data-loop="false" data-autoplay="false">
           <div class="swiper-wrapper">
-            <div class="swiper-slide bg-gray-lighter" data-slide-bg="<?=base_url()?>ycl_assets/images/homepage_images/slider-slide-1-1920x980.jpg">
+            <div class="swiper-slide bg-gray-lighter" data-slide-bg="<?=base_url()?>ycl_assets/images/homepage_images/webinars_that_impress.jpg">
               <div class="swiper-slide-caption text-center" style="margin-top: -450px">
                 <div class="container">
                   <h1 data-caption-animate="fadeInUpSmall text-white"> <span>Webinars that Impress</span></h1>
