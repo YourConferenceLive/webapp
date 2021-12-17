@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<!-- Brand Logo -->
 	<a href="<?=$this->project_url.'/admin/dashboard'?>" class="brand-link">
-		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="Logo" class="brand-image img-circle" style="opacity: .8">
+		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="Logo" class="brand-image" style="opacity: .8; max-width:120px; margin-top: 2px">
 		<span class="brand-text font-weight-light"><?=$this->project->name?> Admin</span>
 	</a>
 
