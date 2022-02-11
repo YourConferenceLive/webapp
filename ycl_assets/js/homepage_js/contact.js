@@ -29,17 +29,19 @@ $(function () {
 		} else if (message == '') {
 			$('#contact-message-error').text("Please Enter Message").fadeIn('slow').fadeOut(5000);
 			return false;
-		} else if (response.length == 0) {
+		}
+		else if (response.length == 0) {
 			$("#errorcaptcha").text("Please check captcha").fadeIn('slow').fadeOut(5000);
 			return false;
 		} else if (response2 == '') {
 			$("#errorcaptcha").text("Please check captcha").fadeIn('slow').fadeOut(5000);
 			return false;
-		} else {
+		}
+		else {
 
-
-			$.post(base_url + 'testSmtp', {'name': name, 'email': email, 'phone': phone, 'message': message, 'mailto':mailto},
+			$.post(base_url + 'testSmtp', {'name': name, 'email': email, 'phone': phone, 'message': message, 'mailto':mailto, 'g-recaptcha-response':response },
 				function (result) {
+					console.log(result);
 					if (result === 'success') {
 
 						swal.fire({

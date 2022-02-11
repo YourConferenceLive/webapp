@@ -116,28 +116,49 @@ class Ycl_home extends CI_Controller {
 	}
 
 //Testing email localhost
-	public function testSmtp(){
+	 function testSmtp(){
 
-		$sendTo = trim($this->input->post('mailto'));
+		$post = $this->input->post();
+//		$siteKey = "6LdK7nEeAAAAAH4QB_UpWGDxvt53HxWz5MiWFHg6";
+		$secretKey = "6LdK7nEeAAAAAH3KmJ1g4qvYR4LcDxz_CJrLj5YM";
 
-			$email_from = trim($this->input->post('email'));
-			$name = trim($this->input->post('name'));
-			$phone = trim($this->input->post('phone'));
-			$message = trim($this->input->post('message'));
+		 if($post['g-recaptcha-response'])
+			 $captcha=$post['g-recaptcha-response'];
 
-			$data['email'] = $email_from;
-			$data['name'] = $name;
-			$data['phone'] = $phone;
-			$data['message'] = $message;
+		 if(!$captcha){
+			 echo '<h2>Please check the the captcha form.</h2>';
+			 exit;
+		 }
 
-			$mail_template = ($this->load->view('ycl_website/new_website/mail_template', $data, true));
-		if($email_from){
-			if($this->common->sendSmtpEmail( array($sendTo,'rexterdayuta@gmail.com'), $name, $mail_template)){
-				echo 'success';
-			}else{
-				echo 'error';
-			}
-		}
+		 $response = json_decode(file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secretKey."&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']), true);
+		 if($response['success'] == true)
+		 {
+			 $sendTo = trim($this->input->post('mailto'));
 
+			 $email_from = trim($this->input->post('email'));
+			 $name = trim($this->input->post('name'));
+			 $phone = trim($this->input->post('phone'));
+			 $message = trim($this->input->post('message'));
+
+			 $data['email'] = $email_from;
+			 $data['name'] = $name;
+			 $data['phone'] = $phone;
+			 $data['message'] = $message;
+
+			 $mail_template = ($this->load->view('ycl_website/new_website/mail_template', $data, true));
+			 if($email_from){
+				 if($this->common->sendSmtpEmail( array($sendTo,'rexterdayuta@gmail.com'), $name, $mail_template)){
+					 echo 'success';
+				 }else{
+					 echo 'error';
+				 }
+			 }
+		 }
+		 else
+		 {
+			 echo json_encode('error');
+		 }
+
+		 exit;
 	}
 }
