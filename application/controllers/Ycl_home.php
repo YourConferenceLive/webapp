@@ -58,43 +58,6 @@ class Ycl_home extends CI_Controller {
 	}
 
 
-
-	function sendEmail() {
-		$sendTo = trim($this->input->post('mailto'));
-		$email_from = trim($this->input->post('email'));
-		$name = trim($this->input->post('name'));
-		$phone = trim($this->input->post('phone'));
-		$message = trim($this->input->post('message'));
-
-		$data['email'] = $email_from;
-		$data['name'] = $name;
-		$data['phone'] = $phone;
-		$data['message'] = $message;
-
-		$mail_template = ($this->load->view('ycl_website/new_website/mail_template', $data, true));
-
-		if($email_from) {
-			$from = "Yourconference.live";
-			$config = array(
-				'mailtype' => 'html',
-				'charset' => 'iso-8859-1',
-				'wordwrap' => TRUE
-			);
-
-			$this->load->library('email', $config);
-			$this->email->set_newline("\r\n");
-			$this->email->from($from, $name);
-			$this->email->to($sendTo);
-//			$this->email->subject('Contact');
-			$this->email->message($mail_template);
-			if ($this->email->send()) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-	}
-
 // To view the email template, For testing only
 	public function mailtemp(){
 		$this->load->view('ycl_website/new_website/mail_template.php');
