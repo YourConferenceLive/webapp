@@ -27,43 +27,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="card-header">
 					Attendee Settings
 				</div>
-<!--				--><?//=print_r($settings[0]->lobby);exit;?>
 				<form id="formAttendeeSettings" action="" method="post">
 				<div class="card-body">
 					<div class="custom-control custom-switch">
-						<input name="lobby" type="checkbox" class="custom-control-input" <?=(isset($settings) && $settings[0]->lobby == 1)?'checked':''?> id="lobbySwitch">
+						<input name="lobby" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->lobby == 1)?'checked':''?> id="lobbySwitch">
 						<label class="custom-control-label" for="lobbySwitch">Lobby</label>
 					</div>
 					<div class="custom-control custom-switch">
-						<input name="agenda" type="checkbox" class="custom-control-input" <?=(isset($settings) && $settings[0]->agenda == 1)?'checked':''?> id="agendaSwitch">
+						<input name="agenda" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->agenda == 1)?'checked':''?> id="agendaSwitch">
 						<label class="custom-control-label" for="agendaSwitch">Agenda</label>
 					</div>
 					<div class="custom-control custom-switch">
-						<input name="eposter" type="checkbox" class="custom-control-input" <?=(isset($settings) && $settings[0]->eposter == 1)?'checked':''?> id="eposterSwitch">
+						<input name="eposter" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->eposter == 1)?'checked':''?> id="eposterSwitch">
 						<label class="custom-control-label" for="eposterSwitch">Eposter</label>
 					</div>
 					<div class="custom-control custom-switch">
-						<input name="lounge" type="checkbox" class="custom-control-input" <?=(isset($settings) && $settings[0]->lounge == 1)?'checked':''?> id="loungeSwitch">
+						<input name="lounge" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->lounge == 1)?'checked':''?> id="loungeSwitch">
 						<label class="custom-control-label" for="loungeSwitch">Lounge</label>
 					</div>
 					<div class="custom-control custom-switch">
-						<input name="exhibitionHall" type="checkbox" class="custom-control-input" <?=(isset($settings) && $settings[0]->exhibition_hall == 1)?'checked':''?> id="exhibitionHallSwitch">
+						<input name="exhibitionHall" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->exhibition_hall == 1)?'checked':''?> id="exhibitionHallSwitch">
 						<label class="custom-control-label" for="exhibitionHallSwitch">Exhibition Hall</label>
 					</div>
 					<div class="custom-control custom-switch">
-						<input name="scavengerHunt" type="checkbox" class="custom-control-input" <?=(isset($settings) && $settings[0]->scavenger_hunt == 1)?'checked':''?> id="scavengerSwitch">
+						<input name="scavengerHunt" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->scavenger_hunt == 1)?'checked':''?> id="scavengerSwitch">
 						<label class="custom-control-label" for="scavengerSwitch">Scavenger Hunt</label>
 					</div>
 					<div class="custom-control custom-switch">
-						<input name="relaxation" type="checkbox" class="custom-control-input" <?=(isset($settings) && $settings[0]->relaxation_zone == 1)?'checked':''?> id="relaxationSwitch">
+						<input name="relaxation" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->relaxation_zone == 1)?'checked':''?> id="relaxationSwitch">
 						<label class="custom-control-label" for="relaxationSwitch">Relaxation Zone</label>
 					</div>
 					<div class="custom-control custom-switch">
-						<input name="evaluation" type="checkbox" class="custom-control-input" <?=(isset($settings) && $settings[0]->evaluation == 1)?'checked':''?> id="evaluationSwitch">
+						<input name="evaluation" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->evaluation == 1)?'checked':''?> id="evaluationSwitch">
 						<label class="custom-control-label" for="evaluationSwitch">Evaluation</label>
 					</div>
 					<div class="custom-control custom-switch">
-						<input name="briefcase" type="checkbox" class="custom-control-input" <?=(isset($settings) && $settings[0]->briefcase == 1)?'checked':''?> id="briefcaseSwitch">
+						<input name="briefcase" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->briefcase == 1)?'checked':''?> id="briefcaseSwitch">
 						<label class="custom-control-label" for="briefcaseSwitch">Briefcase</label>
 					</div>
 					<div class=" my-1">

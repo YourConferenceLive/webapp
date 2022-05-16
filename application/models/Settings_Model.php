@@ -21,7 +21,7 @@ class Settings_Model extends CI_Model
 			return $settings->result();
 		}
 
-		return new stdClass();
+		return '';
 	}
 
 	public function getAttendeeSettings($project_id)
@@ -34,13 +34,14 @@ class Settings_Model extends CI_Model
 			return $settings->result();
 		}
 
-		return new StdClass();
+		return '';
 	}
 
 	function saveAttendeeViewSetting($project_id){
 		$post = $this->input->post();
 		$fieldset = array(
 			'lobby'=>(isset($post['lobby']) && $post['lobby']== 'on')?1:0,
+			'project_id'=>$project_id,
 			'agenda'=>(isset($post['agenda']) && $post['agenda']== 'on')?1:0,
 			'eposter'=>(isset($post['eposter']) && $post['eposter']== 'on')?1:0,
 			'lounge'=>(isset($post['lounge']) && $post['lounge']== 'on')?1:0,

@@ -47,33 +47,31 @@ $ci_method = $this->router->fetch_method();?>
 				</ul>
 
 				<ul class="navbar-nav">
-					<?php if(isset($view_settings) && count(($view_settings)) != 0):?>
 <!--					--><?php //print_r($view_settings);exit;?>
-						<?php if($view_settings[0]->lobby == 1):?>
+						<?php if(empty($view_settings) || $view_settings[0]->lobby == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/lobby"><strong>Lobby</strong></a></li>
 						<?php endif; ?>
-						<?php if($view_settings[0]->agenda == 1):?>
+						<?php if(empty($view_settings) || $view_settings[0]->agenda == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/sessions"><strong>Agenda</strong></a></li>
 						<?php endif;?>
-						<?php if($view_settings[0]->eposter == 1):?>
+						<?php if(empty($view_settings) || $view_settings[0]->eposter == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/eposters"><strong>ePosters</strong></a></li>
 						<?php endif;?>
-						<?php if($view_settings[0]->lounge == 1):?>
+						<?php if(empty($view_settings) || $view_settings[0]->lounge == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/lounge"><strong>Lounge</strong></a></li>
 						<?php endif;?>
-						<?php if($view_settings[0]->exhibition_hall == 1):?>
+						<?php if(empty($view_settings) || $view_settings[0]->exhibition_hall == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/sponsor"><strong>Exhibition Hall</strong></a></li>
 						<?php endif;?>
-						<?php if($view_settings[0]->scavenger_hunt == 1):?>
+						<?php if(empty($view_settings) || $view_settings[0]->scavenger_hunt == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/scavenger_hunt"><strong>Scavenger Hunt</strong></a></li>
 						<?php endif;?>
-						<?php if($view_settings[0]->relaxation_zone == 1):?>
+						<?php if(empty($view_settings) || $view_settings[0]->relaxation_zone == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/relaxation_zone"><strong>Relaxation Zone</strong></a></li>
 						<?php endif;?>
-						<?php if($view_settings[0]->evaluation == 1):?>
+						<?php if(empty($view_settings) || $view_settings[0]->evaluation == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/evaluation"><strong>Evaluation</strong></a></li>
 						<?php endif;?>
-					<?php endif;?>
 					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
 						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color: #487391; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Support</button>
 					<?php endif; ?>
@@ -109,7 +107,7 @@ $ci_method = $this->router->fetch_method();?>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/profile" style="color: rgb(72, 115, 145) !important;"><i class="far fa-id-card"></i> Profile</a>
-							<?php if($view_settings[0]->evaluation == 1):?>
+							<?php if(empty($view_settings) || $view_settings[0]->briefcase == 1):?>
 							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/briefcase" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-briefcase"></i> Briefcase</a>
 							<?php endif;?>
 							<div class="dropdown-divider"></div>
