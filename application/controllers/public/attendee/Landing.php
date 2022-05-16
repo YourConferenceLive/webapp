@@ -14,7 +14,6 @@ class Landing extends CI_Controller
 	public function index()
 	{
 		$data['project'] = $this->project;
-
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/landing", $data)

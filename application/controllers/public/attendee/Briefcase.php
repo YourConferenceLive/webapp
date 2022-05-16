@@ -22,6 +22,7 @@ class Briefcase extends CI_Controller
 		$this->load->model('Briefcase_Model', 'briefcase');
 		$this->load->model('Credits_Model', 'credit');
 		$this->load->model('attendee/Notes_Model', 'note');
+		$this->load->model('Settings_Model', 'settings');
 	}
 
 	public function index()
@@ -39,7 +40,7 @@ class Briefcase extends CI_Controller
 
 		$data['entitiy_type'] 			= 'session';
 		$data['sessions'] 				= $this->briefcase->getAgenda();
-
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)

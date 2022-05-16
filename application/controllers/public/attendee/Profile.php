@@ -12,6 +12,7 @@ class Profile extends CI_Controller
 
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('Users_Model', 'users');
+		$this->load->model('Settings_Model', 'settings');
 		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 	}
 
@@ -23,6 +24,7 @@ class Profile extends CI_Controller
 		$data['project'] = $this->project;
 		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$data['profile_data'] = $this->users->getById($this->user['user_id']);
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)

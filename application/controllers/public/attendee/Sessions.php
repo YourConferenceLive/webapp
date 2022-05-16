@@ -21,6 +21,7 @@ class Sessions extends CI_Controller
 		$this->load->model('Sessions_Model', 'sessions');
 		$this->load->model('attendee/Notes_Model', 'note');
 		$this->load->model('Credits_Model', 'credit');
+		$this->load->model('Settings_Model', 'settings');
 
         $this->load->library("pagination");
         $this->load->helper('form');
@@ -32,7 +33,8 @@ class Sessions extends CI_Controller
 
 		$data['user'] = $this->user;
 		$data['sessions'] = $this->sessions->getAll();
-
+		$data['all_sessions_week'] = $this->sessions->getSessionWeek();
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
@@ -50,7 +52,7 @@ class Sessions extends CI_Controller
 		$data['user'] = $this->user;
 		$data['session'] = $this->sessions->getById($session_id);
 		$data['countdownSeconds'] = $this->countdownInSeconds($data['session']->start_date_time);
-
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
@@ -72,7 +74,7 @@ class Sessions extends CI_Controller
 		$data['session_id'] = $session_id;
 		$data['session'] 	= $session_data;
 		$data['notes'] 		= $this->note->getAll('session', $data['session_id'], $this->user['user_id']);
-
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
@@ -115,6 +117,8 @@ class Sessions extends CI_Controller
 
 		$data['sessions'] 			= $this->sessions->getByDay($day, $data['track_id'], $data['keynote_id'], $data['speaker_id'], $data['keyword']);
 
+		$data['all_sessions_week'] = $this->sessions->getSessionWeek();
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)

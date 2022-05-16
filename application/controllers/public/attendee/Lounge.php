@@ -13,6 +13,7 @@ class Lounge extends CI_Controller
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('Users_Model', 'users');
 		$this->load->model('Lounge_Model', 'lounge');
+		$this->load->model('Settings_Model', 'settings');
 	}
 
 	public function index()
@@ -24,6 +25,7 @@ class Lounge extends CI_Controller
 		$data['lounge_user'] = $this->users->getById($_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']);
 		$data['allUsers'] = $this->users->getAll();
 		$data['allGroupChats'] = $this->lounge->getAllGroupChats();
+		$menu['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header")

@@ -14,11 +14,14 @@ class Sessions_Model extends CI_Model
 
 	public function getAll()
 	{
-		$this->db->select('*');
-		$this->db->from('sessions');
-		$this->db->where('is_deleted', 0);
-		$this->db->where('project_id', $this->project->id);
-		$this->db->order_by('start_date_time', 'ASC');
+		$this->db->select('s.*, st.name as session_track');
+		$this->db->from('sessions s');
+		$this->db->join('session_tracks st', 's.track = st.id');
+		$this->db->where('s.is_deleted', 0);
+		$this->db->where('s.project_id', $this->project->id);
+		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") >=', date('Y-m-d'));
+		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") <', date('Y-m-d', strtotime("+7 days")));
+		$this->db->order_by('s.start_date_time', 'ASC');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 		{
@@ -791,5 +794,20 @@ class Sessions_Model extends CI_Model
 			return $polls->result();
 
 		return new stdClass();
+	}
+
+	public function getSessionWeek(){
+		$this->db->select("s.start_date_time,DAYNAME(s.start_date_time) as dayname");
+		$this->db->from("sessions s");
+		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") >=', date('Y-m-d'));
+		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") <', date('Y-m-d', strtotime("+7 days")));
+		$this->db->group_by('dayname');
+		$this->db->order_by("s.start_date_time", "asc");
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0) {
+			return $sessions->result();
+		}
+		return new stdClass();
+
 	}
 }

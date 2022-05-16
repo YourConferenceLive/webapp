@@ -22,6 +22,7 @@ class Sponsor extends CI_Controller
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('attendee/Sponsor_Model', 'm_sponsor');
 		$this->load->model('sponsor/Scavenger_Hunt_Items_Model', 'hunt_items');
+		$this->load->model('Settings_Model', 'settings');
 
 	}
 
@@ -29,7 +30,7 @@ class Sponsor extends CI_Controller
 	{
 
 		$data['user'] = $this->user;
-
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
