@@ -47,7 +47,7 @@ $ci_method = $this->router->fetch_method();?>
 				</ul>
 
 				<ul class="navbar-nav">
-					<?php if(isset($view_settings) && !empty($view_settings)):?>
+					<?php if(isset($view_settings) && count(($view_settings)) != 0):?>
 <!--					--><?php //print_r($view_settings);exit;?>
 						<?php if($view_settings[0]->lobby == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/lobby"><strong>Lobby</strong></a></li>
