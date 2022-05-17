@@ -32,7 +32,7 @@ class Sessions extends CI_Controller
 		$this->logger->log_visit("Sessions Listing");
 
 		$data['user'] = $this->user;
-		$data['sessions'] = $this->sessions->getAll();
+		$data['sessions'] = $this->sessions->getAllSessionWeek();
 		$data['all_sessions_week'] = $this->sessions->getSessionWeek();
 		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load

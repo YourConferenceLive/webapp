@@ -16,7 +16,33 @@ class Sessions_Model extends CI_Model
 	{
 		$this->db->select('s.*, st.name as session_track');
 		$this->db->from('sessions s');
-		$this->db->join('session_tracks st', 's.track = st.id');
+		$this->db->join('session_tracks st', 's.track = st.id', 'left');
+		$this->db->where('s.is_deleted', 0);
+		$this->db->where('s.project_id', $this->project->id);
+		$this->db->order_by('s.start_date_time', 'ASC');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+		{
+			foreach ($sessions->result() as $session)
+			{
+				$session->briefcase = $this->getUserBriefcasePerSession($session->id);
+				$session->presenters = $this->getPresentersPerSession($session->id);
+				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
+				$session->moderators = $this->getModeratorsPerSession($session->id);
+				$session->invisible_moderators = $this->getInvisibleModeratorsPerSession($session->id);
+			}
+
+			return $sessions->result();
+		}
+
+		return new stdClass();
+	}
+
+	public function getAllSessionWeek()
+	{
+		$this->db->select('s.*, st.name as session_track');
+		$this->db->from('sessions s');
+		$this->db->join('session_tracks st', 's.track = st.id', 'left');
 		$this->db->where('s.is_deleted', 0);
 		$this->db->where('s.project_id', $this->project->id);
 		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") >=', date('Y-m-d'));
@@ -155,7 +181,7 @@ class Sessions_Model extends CI_Model
 			$this->db->or_like('sessions.description',$keyword);
 		}
 
-		$this->db->join('session_tracks', 'session_tracks.id=sessions.track');
+		$this->db->join('session_tracks', 'session_tracks.id=sessions.track', 'left');
 		$this->db->where($where);
 		$this->db->order_by('sessions.start_date_time', 'ASC');
 		$sessions = $this->db->get();
@@ -230,7 +256,7 @@ class Sessions_Model extends CI_Model
 			'agenda' => $session_data['sessionAgenda'],
 			'session_type' => $session_data['sessionType'],
 			'external_meeting_link' => (isset($session_data['sessionExternalUrl']))?$session_data['sessionExternalUrl']:'',
-			'track' => $session_data['sessionTrack'],
+			'track' => (isset($session_data['sessionTrack'])? $session_data['sessionTrack']: ''),
 			'credits' => $session_data['sessionCredits'],
 			'millicast_stream' => $session_data['millicastStream'],
 			'presenter_embed_code' => $session_data['slidesHtml'],
@@ -247,55 +273,55 @@ class Sessions_Model extends CI_Model
 		if ($this->db->affected_rows() > 0)
 		{
 			$session_id = $this->db->insert_id();
+			if(isset($session_data['sessionPresenters']) && !empty($session_data['sessionPresenters'])) {
+				foreach ($session_data['sessionPresenters'] as $presenter_id) {
+					$data = array(
+						'presenter_id' => $presenter_id,
+						'session_id' => $session_id,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
 
-			foreach ($session_data['sessionPresenters'] as $presenter_id)
-			{
-				$data = array(
-					'presenter_id' => $presenter_id,
-					'session_id' => $session_id,
-					'added_on' => date('Y-m-d H:i:s'),
-					'added_by' => $this->user->user_id,
-				);
-
-				$this->db->insert('session_presenters', $data);
+					$this->db->insert('session_presenters', $data);
+				}
 			}
+			if(isset($session_data['sessionKeynoteSpeakers']) && !empty($session_data['sessionKeynoteSpeakers'])) {
+				foreach ($session_data['sessionKeynoteSpeakers'] as $speaker_id) {
+					$data = array(
+						'speaker_id' => $speaker_id,
+						'session_id' => $session_id,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
 
-			foreach ($session_data['sessionKeynoteSpeakers'] as $speaker_id)
-			{
-				$data = array(
-					'speaker_id' => $speaker_id,
-					'session_id' => $session_id,
-					'added_on' => date('Y-m-d H:i:s'),
-					'added_by' => $this->user->user_id,
-				);
-
-				$this->db->insert('session_keynote_speakers', $data);
+					$this->db->insert('session_keynote_speakers', $data);
+				}
 			}
+			if(isset($session_data['sessionModerators']) && !empty($session_data['sessionModerators'])) {
+				foreach ($session_data['sessionModerators'] as $moderator_id) {
+					$data = array(
+						'moderator_id' => $moderator_id,
+						'session_id' => $session_id,
+						'is_invisible' => 0,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
 
-			foreach ($session_data['sessionModerators'] as $moderator_id)
-			{
-				$data = array(
-					'moderator_id' => $moderator_id,
-					'session_id' => $session_id,
-					'is_invisible' => 0,
-					'added_on' => date('Y-m-d H:i:s'),
-					'added_by' => $this->user->user_id,
-				);
-
-				$this->db->insert('session_moderators', $data);
+					$this->db->insert('session_moderators', $data);
+				}
 			}
+			if(isset($session_data['sessionInvisibleModerators']) && !empty($session_data['sessionInvisibleModerators'])) {
+				foreach ($session_data['sessionInvisibleModerators'] as $moderator_id) {
+					$data = array(
+						'moderator_id' => $moderator_id,
+						'session_id' => $session_id,
+						'is_invisible' => 1,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
 
-			foreach ($session_data['sessionInvisibleModerators'] as $moderator_id)
-			{
-				$data = array(
-					'moderator_id' => $moderator_id,
-					'session_id' => $session_id,
-					'is_invisible' => 1,
-					'added_on' => date('Y-m-d H:i:s'),
-					'added_by' => $this->user->user_id,
-				);
-
-				$this->db->insert('session_moderators', $data);
+					$this->db->insert('session_moderators', $data);
+				}
 			}
 
 			return array('status' => 'success', 'session_id' => $session_id);
@@ -339,7 +365,7 @@ class Sessions_Model extends CI_Model
 			'agenda' => $session_data['sessionAgenda'],
 			'session_type' => $session_data['sessionType'],
 			'external_meeting_link' => (isset($session_data['sessionExternalUrl']))?$session_data['sessionExternalUrl']:'',
-			'track' => $session_data['sessionTrack'],
+			'track' => isset($session_data['sessionTrack'])? $session_data['sessionTrack']: '',
 			'credits' => $session_data['sessionCredits'],
 			'millicast_stream' => $session_data['millicastStream'],
 			'presenter_embed_code' => $session_data['slidesHtml'],

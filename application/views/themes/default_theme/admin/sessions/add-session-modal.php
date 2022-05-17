@@ -96,8 +96,9 @@
 									</div>
 
 									<div class="form-group">
-										<label>Track</label>
+										<label>Track or <a href="<?=base_url()?>"><u> Add Track </u></a></label>
 										<select id="sessionTrack" name="sessionTrack" class="form-control">
+											<option value="">Select Track</option>
 											<?php if (isset($tracks)): ?>
 												<?php foreach ($tracks as $track): ?>
 													<option value="<?=$track->id?>"><?=$track->name?></option>
@@ -569,7 +570,7 @@
 				}else if(data.status == 'warning'){
 					toastr.warning(data.msg);
 				}else{
-					toastr.error("Error");
+					toastr.error(data.technical_data);
 				}
 			}
 		});
