@@ -31,6 +31,6 @@ class Settings extends CI_Controller
 	}
 
 	public function saveAttendeeViewSetting(){
-		$this->settings->saveAttendeeViewSetting($this->project->id);
+		echo json_encode($this->settings->saveAttendeeViewSetting($this->project->id));
 	}
 }

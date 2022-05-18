@@ -131,10 +131,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$.ajax({
 				url: "<?=$this->project_url.'/admin/settings/saveAttendeeViewSetting'?>",
 				type: 'post',
-				dataType: 'application/json',
+				dataType: 'json',
 				data: $('#formAttendeeSettings').serialize(),
 				success: function(data) {
-					console.log(data)
+					toastr.success(data.msg)
 				}
 			});
 

@@ -66,9 +66,11 @@ class Settings_Model extends CI_Model
 		if($settings->num_rows()>0){
 			$this->db->where('project_id', $project_id);
 			$result = $this->db->update('attendee_view_settings', $fieldset);
+			return (array('status'=>'success', 'msg'=>'Settings Updated Successfully'));
 		}else{
 			$this->db->where('project_id', $project_id);
 			$result = $this->db->insert('attendee_view_settings', $fieldset);
+			return (array('status'=>'success', 'msg'=>'Settings Saved Successfully'));
 		}
 
 	}
