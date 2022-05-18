@@ -2,8 +2,15 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
+<?= print_r($view_settings) ;?>
+<?php if(isset($view_settings) && !empty($view_settings)):?>
+	<?php if($view_settings[0]->session_background_image == 1):?>
+		<img id="full-screen-background" style="background-image:linear-gradient(#52c4ad, #f78e1e )">
+	<?php else: ?>
+		<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
+<?php endif;?>
+<?php endif;?>
 
-<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
 <div class="sessions-container container-fluid pl-md-6 pr-md-6">
 	<div class="col-12">

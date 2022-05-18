@@ -89,6 +89,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 						</div>
 					</div>
+					<div class="card">
+						<div class="mx-2">
+							<label>Session Listing</label>
+							<div class="custom-control custom-switch">
+								<input name="session_background_image" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->session_background_image == 1)?'checked':''?> id="sessionBackgroundSwitch">
+								<label class="custom-control-label" for="sessionBackgroundSwitch">Set Background</label>
+							</div>
+							<div class=" my-1">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text">Session Background</div>
+									</div>
+									<input  name="session_background_color" show-color="sessionBackground-color-picked" type="text" class="form-control color-pick " style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:'#6D8FA7'?>">
+									<div class="form-control" id="sessionBackground-color-picked" style="max-width:40px; background-image:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:'#6D8FA7'?>"></div>
+								</div>
+							</div>
+						</div>
+					</div>
 				<div>
 					<div class="card">
 
@@ -98,7 +116,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="input-group-prepend">
 								<div class="input-group-text">Live Support Color</div>
 							</div>
-							<input  name="live_support_color" type="color" class="form-control " style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->live_support_color))?$settings[0]->live_support_color:'#6D8FA7'?>">
+							<input  name="live_support_color" show-color="livesupport-color-picked" type="text" class="form-control color-pick" style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->live_support_color))?$settings[0]->live_support_color:'#6D8FA7'?>">
+							<div class="form-control" id="livesupport-color-picked" style="max-width:40px; background-color:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->live_support_color))?$settings[0]->live_support_color:'#6D8FA7'?>"></div>
 						</div>
 					</div>
 					<div class=" my-1">
@@ -108,8 +127,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 							<select name="homepage_redirect" class="custom-select">
 								<option value=""> Select Homepage </option>
-								<option value="lobby"> Lobby </option>
-								<option value="sessions"> Agenda </option>
+								<option value="lobby" <?=(isset($settings) && !empty($settings) && $settings[0]->homepage_redirect == 'lobby')?'selected':''?>> Lobby </option>
+								<option value="sessions" <?=(isset($settings) && !empty($settings) && $settings[0]->homepage_redirect == 'sessions')?'selected':''?> > Agenda </option>
 							</select>
 						</div>
 					</div>
@@ -139,5 +158,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 
 		})
+		$('.color-pick').on('change', function(){
+			let show_color = $(this).attr('show-color');
+			console.log();
+			$('#'+show_color).css('background-color', $(this).val());
+		})
 	})
+
+	function color(){
+
+	}
 </script>
