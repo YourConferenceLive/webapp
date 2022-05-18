@@ -39,6 +39,7 @@ class Settings_Model extends CI_Model
 
 	function saveAttendeeViewSetting($project_id){
 		$post = $this->input->post();
+
 		$fieldset = array(
 			'lobby'=>(isset($post['lobby']) && $post['lobby']== 'on')?1:0,
 			'project_id'=>$project_id,
@@ -50,7 +51,11 @@ class Settings_Model extends CI_Model
 			'relaxation_zone'=>(isset($post['relaxation']) && $post['relaxation']== 'on')?1:0,
 			'evaluation'=>(isset($post['evaluation']) && $post['evaluation']== 'on')?1:0,
 			'briefcase'=>(isset($post['briefcase']) && $post['briefcase']== 'on')?1:0,
+			'mail_menu'=>(isset($post['mail_menu']) && $post['mail_menu']== 'on')?1:0,
+			'profile_menu'=>(isset($post['profile_menu']) && $post['profile_menu']== 'on')?1:0,
+			'profile'=>(isset($post['profile']) && $post['profile']== 'on')?1:0,
 			'homepage_redirect'=>(isset($post['homepage_redirect']) && !empty($post['homepage_redirect']))?$post['homepage_redirect']:'lobby',
+			'live_support_color'=>(isset($post['live_support_color']) && !empty($post['live_support_color']))? trim($post['live_support_color']):'#6D8FA7',
 		);
 
 		$settings = $this->db->select('*')

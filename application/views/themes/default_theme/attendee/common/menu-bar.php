@@ -73,9 +73,9 @@ $ci_method = $this->router->fetch_method();?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/evaluation"><strong>Evaluation</strong></a></li>
 						<?php endif;?>
 					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
-						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color: #487391; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Support</button>
+						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (empty($view_settings) || !empty($view_settings[0]->live_support_color))? $view_settings[0]->live_support_color:'#487391' ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Support</button>
 					<?php endif; ?>
-
+					<?php if(empty($view_settings) || $view_settings[0]->mail_menu == 1):?>
 					<li class="nav-item dropdown">
 						<a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">0</span>
@@ -100,13 +100,15 @@ $ci_method = $this->router->fetch_method();?>
 							<!--<a class="dropdown-item" href="<?/*=base_url($this->project->main_route)*/?>/lounge"><strong>See all messages</strong></a>-->
 						</div>
 					</li>
-
+					<?php endif; ?>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<img class="profile-dp" src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$user['photo'];?>" onerror="this.onerror=null;this.src='<?=ycl_root?>/ycl_assets/images/person_dp_placeholder.png';" alt="<?php echo $user['name'].' '.$user['surname'];?>">
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+							<?php if(empty($view_settings) || $view_settings[0]->profile == 1):?>
 							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/profile" style="color: rgb(72, 115, 145) !important;"><i class="far fa-id-card"></i> Profile</a>
+							<?php endif;?>
 							<?php if(empty($view_settings) || $view_settings[0]->briefcase == 1):?>
 							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/briefcase" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-briefcase"></i> Briefcase</a>
 							<?php endif;?>
