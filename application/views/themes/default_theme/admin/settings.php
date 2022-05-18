@@ -101,8 +101,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="input-group-prepend">
 										<div class="input-group-text">Session Background</div>
 									</div>
-									<input  name="session_background_color" show-color="sessionBackground-color-picked" type="text" class="form-control color-pick " style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:'#6D8FA7'?>">
-									<div class="form-control" id="sessionBackground-color-picked" style="max-width:40px; background-image:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:'#6D8FA7'?>"></div>
+									<input  name="session_background_color" show-color="sessionBackground-color-picked" type="text" class="form-control color-pick " style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:''?>">
+									<div class="form-control" id="sessionBackground-color-picked" style="max-width:40px; background-image:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:''?>"></div>
 								</div>
 							</div>
 						</div>
@@ -161,7 +161,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('.color-pick').on('change', function(){
 			let show_color = $(this).attr('show-color');
 			console.log();
-			$('#'+show_color).css('background-color', $(this).val());
+			$('#'+show_color).css('background-image', $(this).val());
 		})
 	})
 

@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?= print_r($view_settings) ;?>
 <?php if(isset($view_settings) && !empty($view_settings)):?>
 	<?php if($view_settings[0]->session_background_image == 1):?>
-		<img id="full-screen-background" style="background-image:linear-gradient(#52c4ad, #f78e1e )">
+		<img id="full-screen-background" style="background-image:<?=$view_settings[0]->session_background_color?>">
 	<?php else: ?>
 		<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 <?php endif;?>
