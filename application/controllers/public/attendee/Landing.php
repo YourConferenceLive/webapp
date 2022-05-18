@@ -8,7 +8,7 @@ class Landing extends CI_Controller
 		parent::__construct();
 
 		if (isset($_SESSION['project_sessions']["project_{$this->project->id}"]) && $_SESSION['project_sessions']["project_{$this->project->id}"]['is_attendee'] == 1)
-			redirect(base_url().$this->project->main_route."/lobby"); // Already logged-in
+			redirect(base_url().$this->project->main_route."/sessions"); // Already logged-in
 	}
 
 	public function index()

@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<select name="homepage_redirect" class="custom-select">
 								<option value=""> Select Homepage </option>
 								<option value="lobby"> Lobby </option>
-								<option value="agenda"> Agenda </option>
+								<option value="sessions"> Agenda </option>
 							</select>
 						</div>
 					</div>

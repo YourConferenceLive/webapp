@@ -64,6 +64,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 .done(function( data ) {
 
                     data = JSON.parse(data);
+
                     if (data.status == 'success')
 					{
                         Swal.fire({
@@ -76,7 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         });
 
                         setTimeout(() => {
-                            window.location = '<?=$this->project_url.'/lobby/?first_load'?>'
+                            window.location = '<?=$this->project_url?>/'+data.data.homepage_redirect;
 						}, 1000);
 
 					}else{

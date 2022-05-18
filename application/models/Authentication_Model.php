@@ -21,7 +21,6 @@ class Authentication_Model extends CI_Model
 			{
 				$user = $result->row();
 				$user->access_levels = array();
-
 				$this->db->select('level');
 				$this->db->from('user_project_access');
 				$this->db->where('user_id', $user->id);
@@ -38,7 +37,17 @@ class Authentication_Model extends CI_Model
 
 					}
 
-					return array('status'=>true, 'msg'=>"Login successful", 'user'=>$user);
+					$result = $this->db->select('homepage_redirect')
+						->from('attendee_view_settings')
+						->where('project_id',$project_id)
+						->get();
+					if($result->num_rows()>0){
+						$homepage_redirect = $result->result()[0];
+					}else {
+						$homepage_redirect = 'lobby';
+					}
+
+					return array('status'=>true, 'msg'=>"Login successful", 'user'=>$user, 'homepage'=>$homepage_redirect);
 
 				}else{
 					$this->logger->add($project_id, $user->id, 'Access denied', "No access to the project");

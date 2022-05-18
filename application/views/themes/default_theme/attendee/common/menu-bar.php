@@ -97,7 +97,7 @@ $ci_method = $this->router->fetch_method();?>
 <!--							</a>-->
 
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/lounge"><strong>See all messages</strong></a>
+							<!--<a class="dropdown-item" href="<?/*=base_url($this->project->main_route)*/?>/lounge"><strong>See all messages</strong></a>-->
 						</div>
 					</li>
 
