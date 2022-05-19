@@ -23,8 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<!-- Date tabs -->
 <!--		--><?php //print_r($all_sessions_week)?>
-		<?php if(isset($all_sessions_week) && count(($all_sessions_week)) != 0 ):;
-			?>
+		<?php if(isset($all_sessions_week)): ?>
 		<div>
 			<div class="row mb-5">
 
