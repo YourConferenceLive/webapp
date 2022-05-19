@@ -461,4 +461,12 @@ body{overflow: hidden;background-color: #151515;}
 			}
 		});
 	});
+
+	$(function(){
+		Swal.fire(
+			'INFO',
+			'Be sure to unmute the player located on the bottom right side of the page.',
+			'warning'
+		);
+	})
 </script>
