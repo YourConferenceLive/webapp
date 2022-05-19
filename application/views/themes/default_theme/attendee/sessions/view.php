@@ -36,8 +36,8 @@ body{overflow: hidden;background-color: #151515;}
 	</ul>
 </div>
 
-<div class="rightSticykPopup notesSticky" style="display: none">
-	<div class="header"><span>Toolbox</span>
+<div class="rightSticykPopup notesSticky" style="display: none; ">
+	<div class="header"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;" ><span>Toolbox</span>
 		<div class="rightTool">
 			<i class="fa fa-minus" aria-hidden="true"></i>
 			<div class="dropdown">
@@ -51,7 +51,7 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader">Take Notes</div>
+		<div class="contentHeader" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">Take Notes</div>
 		<div id="briefcase_section">
 			<div id="briefcase_section">
 				<div class="col-md-12 input-group">
@@ -59,10 +59,10 @@ body{overflow: hidden;background-color: #151515;}
 					<textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?=isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
 				</div>
 				<div class="col-md-12 pt-1">
-					<a class="button color btn btn-info btn-sm" id="briefcase_send"><i class="fas fa-save"></i> <span>Save</span></a>
+					<a class="button color btn btn-info btn-sm" id="briefcase_send" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><i class="fas fa-save"></i> <span>Save</span></a>
 				</div>
 				<div class="col-md-12">
-					<div class="contentHeader p-0 pt-2 pb-2">Previous Notes</div>
+					<div class="contentHeader p-0 pt-2 pb-2" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">Previous Notes</div>
 					<div id="notes_list_container">
 <?php
 					if($notes != new stdClass()):?>
@@ -77,7 +77,7 @@ body{overflow: hidden;background-color: #151515;}
 						</ul>
 <?php
 					else:?>
-						<div class="alert alert-info mb-1 mt-1 p-1">No previous notes</div>
+						<div class="alert alert-info mb-1 mt-1 p-1" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;">No previous notes</div>
 <?php
 					endif;?>
 					</div>
@@ -87,7 +87,7 @@ body{overflow: hidden;background-color: #151515;}
 	</div>
 </div>
 <div class="rightSticykPopup resourcesSticky" style="display: none">
-	<div class="header"><span>Toolbox</span>
+	<div class="header" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><span>Toolbox</span>
 		<div class="rightTool">
 			<i class="fa fa-minus" aria-hidden="true"></i>
 			<div class="dropdown">
@@ -101,7 +101,7 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader">
+		<div class="contentHeader" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">
 			Resources
 		</div>
 		<div id="resource_section" style="padding: 0px 0px 0px 0px; margin-top: 10px; background-color: #fff; border-radius: 5px;">
@@ -152,7 +152,7 @@ body{overflow: hidden;background-color: #151515;}
 	</div>
 </div>
 <div class="rightSticykPopup questionsSticky" style="display: none">
-	<div class="header"><span>Toolbox</span>
+	<div class="header" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><span>Toolbox</span>
 		<div class="rightTool">
 			<i class="fa fa-minus" aria-hidden="true"></i>
 			<div class="dropdown">
@@ -166,7 +166,7 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader">Questions</div>
+		<div class="contentHeader" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">Questions</div>
 		<div id="questionElement" class="questionElement" style="overflow: scroll;height: 170px;"></div>
 		<div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
 			<div style="padding:5px;">
