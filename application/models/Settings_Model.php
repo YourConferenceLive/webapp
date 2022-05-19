@@ -56,6 +56,7 @@ class Settings_Model extends CI_Model
 			'profile'=>(isset($post['profile']) && $post['profile']== 'on')?1:0,
 			'session_background_image'=>(isset($post['session_background_image']) && $post['session_background_image']== 'on')?1:0,
 			'session_background_color'=>(isset($post['session_background_color']) && $post['session_background_color'] ? trim($post['session_background_color']):''),
+			'stickyIcon_color'=>(isset($post['stickIcon_color']) && $post['stickIcon_color'] ? trim($post['stickIcon_color']):''),
 			'homepage_redirect'=>(isset($post['homepage_redirect']) && !empty($post['homepage_redirect']))?$post['homepage_redirect']:'lobby',
 			'live_support_color'=>(isset($post['live_support_color']) && !empty($post['live_support_color']))? trim($post['live_support_color']):'#6D8FA7',
 		);

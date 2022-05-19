@@ -27,12 +27,12 @@ body{overflow: hidden;background-color: #151515;}
 </div>
 
 <!--bizim-->
-<div class="rightSticky" data-screen="customer">
+<div class="rightSticky" data-screen="customer" >
 	<ul>
-		<li data-type="notesSticky"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
-		<li data-type="resourcesSticky"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
+		<li data-type="notesSticky"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
+		<li data-type="resourcesSticky"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
 		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
-		<li data-type="questionsSticky"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
+		<li data-type="questionsSticky"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
 	</ul>
 </div>
 

@@ -101,8 +101,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="input-group-prepend">
 										<div class="input-group-text">Session Background</div>
 									</div>
-									<input  name="session_background_color" show-color="sessionBackground-color-picked" type="text" class="form-control color-pick " style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:''?>">
+									<input  name="session_background_color" show-color="sessionBackground-color-picked" type="text" class="form-control bgImage-pick " style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:''?>">
 									<div class="form-control" id="sessionBackground-color-picked" style="max-width:40px; background-image:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:''?>"></div>
+								</div>
+							</div>
+							<div class=" my-1">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text">Right Sticky Icon</div>
+									</div>
+									<input  name="stickIcon_color" show-color="stickyIcon-color-picked" type="text" class="form-control bgColor-pick " style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_stickyIcon_color))?$settings[0]->session_stickyIcon_color:''?>">
+									<div class="form-control" id="stickyIcon-color-picked" style="max-width:40px; background-color:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:''?>"></div>
 								</div>
 							</div>
 						</div>
@@ -116,7 +125,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="input-group-prepend">
 								<div class="input-group-text">Live Support Color</div>
 							</div>
-							<input  name="live_support_color" show-color="livesupport-color-picked" type="text" class="form-control color-pick" style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->live_support_color))?$settings[0]->live_support_color:'#6D8FA7'?>">
+							<input  name="live_support_color" show-color="livesupport-color-picked" type="text" class="form-control bgColor-pick" style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->live_support_color))?$settings[0]->live_support_color:'#6D8FA7'?>">
 							<div class="form-control" id="livesupport-color-picked" style="max-width:40px; background-color:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->live_support_color))?$settings[0]->live_support_color:'#6D8FA7'?>"></div>
 						</div>
 					</div>
@@ -158,10 +167,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 
 		})
-		$('.color-pick').on('change', function(){
+		$('.bgImage-pick').on('change', function(){
 			let show_color = $(this).attr('show-color');
 			console.log();
 			$('#'+show_color).css('background-image', $(this).val());
+		})
+
+		$('.bgColor-pick').on('change', function(){
+			let show_color = $(this).attr('show-color');
+			console.log();
+			$('#'+show_color).css('background-color', $(this).val());
 		})
 	})
 
