@@ -45,7 +45,7 @@ class Authentication extends CI_Controller {
 						'surname' => $verification['user']->surname,
 						'email' => $verification['user']->email,
 						'photo' => $verification['user']->photo,
-						'homepage_redirect' => $verification['homepage']->homepage_redirect,
+						'homepage_redirect' => (isset($verification['homepage']->homepage_redirect) ? $verification['homepage']->homepage_redirect: 'lobby'),
 						'is_attendee' => (in_array('attendee', $verification['user']->access_levels))?1:0,
 						'is_moderator' => (in_array('moderator', $verification['user']->access_levels))?1:0,
 						'is_presenter' => (in_array('presenter', $verification['user']->access_levels))?1:0,
