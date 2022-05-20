@@ -397,6 +397,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 				var timeleft = 10;
 				var downloadTimer = setInterval(function(){
+					play_music();
 					if(timeleft <= 0) {
 						stop_music();
 						clearInterval(downloadTimer);
@@ -441,7 +442,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					}
 					timeleft -= 1;
 				}, 1000);
-				play_music();
+
 			}
 		});
 
@@ -498,19 +499,10 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		var audio = document.getElementById("audio_"+<?=$this->project->id?>);
 		audio.play();
 	}
-
-	function play_music_15sec() {
-		var audio = document.getElementById("audio_2");
-		audio.play();
-	}
-
 	function stop_music() {
-		var audio1 = document.getElementById("audio_1");
-		var audio2 = document.getElementById("audio_2");
+		var audio1 = document.getElementById("audio_"+<?=$this->project->id?>);
 		audio1.pause();
 		audio1.currentTime = 0;
-		audio2.pause();
-		audio2.currentTime = 0;
 	}
 
 </script>
