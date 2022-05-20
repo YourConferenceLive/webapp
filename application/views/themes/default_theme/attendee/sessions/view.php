@@ -1,5 +1,7 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');?>
+defined('BASEPATH') OR exit('No direct script access allowed');
+//print_r("audio_".$this->project->id);exit;
+?>
 <style>
 body{overflow: hidden;background-color: #151515;}
 </style>
@@ -193,12 +195,11 @@ body{overflow: hidden;background-color: #151515;}
 
 </div>
 <?php
-
 if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	foreach($view_settings as $music_setting){
 		if ($music_setting->poll_music != "") {
 			?>
-			<audio allow="autoplay" id="audio_<?=$music_setting->id?>" src="<?= $this->project_url.'cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$music_setting->poll_music ?>"></audio>
+			<audio allow="autoplay" id="audio_<?=$this->project->id?>" src="<?= ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$music_setting->poll_music ?>" ></audio>
 			<?php
 		}
 	}
@@ -488,10 +489,14 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		}else{
 			$('#header-toolbox').css('display','block')
 		}
+
+		$('#btnplay').on('click',function(){
+			play_music();
+		})
 	})
 
 	function play_music() {
-		var audio = document.getElementById("audio_1");
+		var audio = document.getElementById("audio_"+<?=$this->project->id?>);
 		audio.play();
 	}
 
