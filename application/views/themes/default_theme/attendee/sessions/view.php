@@ -373,6 +373,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		socket.on('ycl_launch_poll', (data)=>{
 
 			if(data.session_id == sessionId) {
+				play_music();
 				$('#pollId').val(data.session_id);
 				$('#pollQuestion').text(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
@@ -397,7 +398,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 				var timeleft = 10;
 				var downloadTimer = setInterval(function(){
 					if(timeleft <= 0) {
-						play_music();
+						stop_music();
 						clearInterval(downloadTimer);
 						$('#pollModal').modal('hide');
 
@@ -490,9 +491,6 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			$('#header-toolbox').css('display','block')
 		}
 
-		$('#btnplay').on('click',function(){
-			play_music();
-		})
 	})
 
 	function play_music() {

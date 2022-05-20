@@ -73,7 +73,7 @@ class Settings_Model extends CI_Model
 
 			$this->load->library('upload', $poll_music_config);
 			if ( ! $this->upload->do_upload('poll_music'))
-				return array('status' => 'failed', 'msg'=>'Unable to upload the session photo', 'technical_data'=>$this->upload->display_errors());
+				return array('status' => 'failed', 'msg'=>'Unable to upload the poll music', 'technical_data'=>$this->upload->display_errors());
 			else
 				$fieldset['poll_music']=(isset($poll_music_config['file_name']) && !empty($poll_music_config['file_name']))? trim($poll_music_config['file_name']):NULL;
 		}
