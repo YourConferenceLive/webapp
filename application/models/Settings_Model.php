@@ -39,7 +39,7 @@ class Settings_Model extends CI_Model
 
 	function saveAttendeeViewSetting($project_id){
 		$post = $this->input->post();
-
+//		print_r($_FILES['poll_music']['name']);exit;
 		$fieldset = array(
 			'lobby'=>(isset($post['lobby']) && $post['lobby']== 'on')?1:0,
 			'project_id'=>$project_id,
@@ -59,13 +59,24 @@ class Settings_Model extends CI_Model
 			'stickyIcon_color'=>(isset($post['stickIcon_color']) && $post['stickIcon_color'] ? trim($post['stickIcon_color']):''),
 			'homepage_redirect'=>(isset($post['homepage_redirect']) && !empty($post['homepage_redirect']))?$post['homepage_redirect']:'lobby',
 			'live_support_color'=>(isset($post['live_support_color']) && !empty($post['live_support_color']))? trim($post['live_support_color']):'#6D8FA7',
+			'poll_music'=>(isset($_FILES['poll_music']['name']) && !empty($_FILES['poll_music']['name']))? trim($_FILES['poll_music']['name']):NULL,
 		);
 
 		$settings = $this->db->select('*')
 			->from('attendee_view_settings')
 			->where('project_id', $project_id)
 			->get();
+		$poll_music= '';
+		if(isset($_FILES['poll_music']) && !empty($_FILES['poll_music'])){
+//			$this->upload_music($_FILES['poll_music']);
+			$poll_music_config['allowed_types'] = 'mp3';
+			$poll_music_config['file_name'] = $poll_music = rand().'_'.str_replace(' ', '_', $_FILES['poll_music']['name']);
+			$poll_music_config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/music/';
 
+			$this->load->library('upload', $poll_music_config);
+			if ( ! $this->upload->do_upload('poll_music'))
+				return array('status' => 'failed', 'msg'=>'Unable to upload the session photo', 'technical_data'=>$this->upload->display_errors());
+		}
 		if($settings->num_rows()>0){
 			$this->db->where('project_id', $project_id);
 			$result = $this->db->update('attendee_view_settings', $fieldset);
@@ -77,4 +88,33 @@ class Settings_Model extends CI_Model
 		}
 
 	}
+
+
+	function upload_music($music) {
+		$_FILES[$music]['name'] = $_FILES[$music]['name'];
+		$_FILES[$music]['type'] = $_FILES[$music]['type'];
+		$_FILES[$music]['tmp_name'] = $_FILES[$music]['tmp_name'];
+		$_FILES[$music]['error'] = $_FILES[$music]['error'];
+		$_FILES[$music]['size'] = $_FILES[$music]['size'];
+		$this->load->library('upload', $this->set_upload_options());
+
+//		$this->upload->initialize($this->set_upload_options());
+		$this->upload->do_upload('$music');
+		$this->upload->data();
+		return 1;
+	}
+
+	function set_upload_options() {
+
+		$this->load->helper('string');
+		$randname = random_string('numeric', '8');
+		$config = array();
+		$config['upload_path'] = FCPATH.'/cms_uploads/projects/'.$this->project->id.'/sessions/music/';
+		print_r($config['upload_path']);exit;
+		$config['allowed_types'] = '*';
+		$config['overwrite'] = false;
+		$config['file_name'] = "music_" . $randname;
+		return $config;
+	}
+
 }

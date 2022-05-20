@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="card-header">
 					Attendee Settings
 				</div>
-				<form id="formAttendeeSettings" action="" method="post">
+				<form id="formAttendeeSettings" action="" method="post" enctype="multipart/form-data">
 				<div class="card-body">
 					<div class="card">
 						<div class="mx-2 mt-2">
@@ -114,6 +114,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-control" id="stickyIcon-color-picked" style="max-width:40px; background-color:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->stickyIcon_color))?$settings[0]->stickyIcon_color:''?>"></div>
 								</div>
 							</div>
+							<br>
+							<label>Session View</label>
+							<div class=" my-1">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text">Poll Music  &nbsp;</div>
+									</div>
+									<input  name="poll_music" id="poll_music" type="file"  accept=".mp3"  class="form-control bgColor-pick " style="max-width:250px" value="">
+									<span class="form-control" style="max-width:40px"> <i class="fas fa-music"></i></span>
+								</div>
+							</div>
 						</div>
 					</div>
 				<div>
@@ -156,11 +167,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(function(){
 		$('#formAttendeeSettings').on('submit', function(e){
 			e.preventDefault();
+			let formData = new FormData(document.getElementById('formAttendeeSettings'));
+				formData.append('poll_music',$('#poll_music')[0].files[0])
+			console.log(formData);
 			$.ajax({
 				url: "<?=$this->project_url.'/admin/settings/saveAttendeeViewSetting'?>",
 				type: 'post',
 				dataType: 'json',
-				data: $('#formAttendeeSettings').serialize(),
+				data: formData ,
+				processData: false,
+				contentType: false,
 				success: function(data) {
 					toastr.success(data.msg)
 				}

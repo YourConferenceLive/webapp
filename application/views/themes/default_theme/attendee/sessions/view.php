@@ -192,7 +192,18 @@ body{overflow: hidden;background-color: #151515;}
 	</div>
 
 </div>
+<?php
 
+if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
+	foreach($view_settings as $music_setting){
+		if ($music_setting->poll_music != "") {
+			?>
+			<audio allow="autoplay" id="audio_<?=$music_setting->id?>" src="<?= $this->project_url.'cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$music_setting->poll_music ?>"></audio>
+			<?php
+		}
+	}
+}
+?>
 <style>
 .list-group {overflow: auto; height: 100px;}
 .list-group-item:nth-child(odd) {background-color: #FFFFFF;}
@@ -385,6 +396,7 @@ body{overflow: hidden;background-color: #151515;}
 				var timeleft = 10;
 				var downloadTimer = setInterval(function(){
 					if(timeleft <= 0) {
+						play_music();
 						clearInterval(downloadTimer);
 						$('#pollModal').modal('hide');
 
@@ -412,6 +424,7 @@ body{overflow: hidden;background-color: #151515;}
 								var resultTimeleft = 5;
 								var resultTimer = setInterval(function(){
 									if(resultTimeleft <= 0) {
+										stop_music();
 										clearInterval(resultTimer);
 										$('#pollResultModal').modal('hide');
 									} else {
@@ -476,4 +489,24 @@ body{overflow: hidden;background-color: #151515;}
 			$('#header-toolbox').css('display','block')
 		}
 	})
+
+	function play_music() {
+		var audio = document.getElementById("audio_1");
+		audio.play();
+	}
+
+	function play_music_15sec() {
+		var audio = document.getElementById("audio_2");
+		audio.play();
+	}
+
+	function stop_music() {
+		var audio1 = document.getElementById("audio_1");
+		var audio2 = document.getElementById("audio_2");
+		audio1.pause();
+		audio1.currentTime = 0;
+		audio2.pause();
+		audio2.currentTime = 0;
+	}
+
 </script>
