@@ -373,7 +373,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		socket.on('ycl_launch_poll', (data)=>{
 
 			if(data.session_id == sessionId) {
-				play_music();
+
 				$('#pollId').val(data.session_id);
 				$('#pollQuestion').text(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
@@ -441,6 +441,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					}
 					timeleft -= 1;
 				}, 1000);
+				play_music();
 			}
 		});
 
