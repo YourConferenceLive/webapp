@@ -72,6 +72,7 @@ $ci_method = $this->router->fetch_method();?>
 						<?php if(empty($view_settings) || $view_settings[0]->evaluation == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/evaluation"><strong>Evaluation</strong></a></li>
 						<?php endif;?>
+					<?php if($this->router->fetch_class() == 'sessions'  && $this->router->fetch_method() == 'view' ) : ?>
 					<li class="nav-item dropdown " id="header-toolbox">
 						<a class="nav-link dropdown-toggle" style="font-weight:400" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<strong>Toolbox</strong>
@@ -84,6 +85,7 @@ $ci_method = $this->router->fetch_method();?>
 <!--							<a class="dropdown-item stickyMenu" data-sticky="notesSticky" id="notesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-user-tie"></i> Ask A Rep </a>-->
 						</div>
 					</li>
+						<?php endif; ?>
 					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
 						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (isset($view_settings) && !empty($view_settings[0]->live_support_color)? $view_settings[0]->live_support_color:'') ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Support</button>
 					<?php endif; ?>
