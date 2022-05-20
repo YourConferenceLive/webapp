@@ -265,7 +265,8 @@ class Sessions_Model extends CI_Model
 			'start_date_time' => $start_time_mysql,
 			'end_date_time' => $end_time_mysql,
 			'created_by' => $this->user->user_id,
-			'created_on' => date('Y-m-d H:i:s')
+			'created_on' => date('Y-m-d H:i:s'),
+			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
 		);
 
 		$this->db->insert('sessions', $data);
@@ -374,7 +375,8 @@ class Sessions_Model extends CI_Model
 			'start_date_time' => $start_time_mysql,
 			'end_date_time' => $end_time_mysql,
 			'updated_by' => $this->user->user_id,
-			'updated_on' => date('Y-m-d H:i:s')
+			'updated_on' => date('Y-m-d H:i:s'),
+			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
 		);
 
 		if ($session_photo != '')

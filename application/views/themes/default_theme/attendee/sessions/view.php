@@ -29,10 +29,10 @@ body{overflow: hidden;background-color: #151515;}
 <!--bizim-->
 <div class="rightSticky" data-screen="customer" >
 	<ul>
-		<li data-type="notesSticky"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
-		<li data-type="resourcesSticky"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
+		<li data-type="notesSticky" id="notesSticky"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
+		<li data-type="resourcesSticky" id="resourcesSticky"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
 		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
-		<li data-type="questionsSticky"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
+		<li data-type="questionsSticky" id="questionsSticky"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
 	</ul>
 </div>
 
@@ -89,7 +89,7 @@ body{overflow: hidden;background-color: #151515;}
 <div class="rightSticykPopup resourcesSticky" style="display: none">
 	<div class="header" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><span>Toolbox</span>
 		<div class="rightTool">
-			<i class="fa fa-minus" aria-hidden="true"></i>
+			<i class="fa fa-minus" id="resourcesStickyMinimize" aria-hidden="true"></i>
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
@@ -134,7 +134,7 @@ body{overflow: hidden;background-color: #151515;}
 <div class="rightSticykPopup messagesSticky" style="display: none">
 	<div class="header"><span>Toolbox</span>
 		<div class="rightTool">
-			<i class="fa fa-minus" aria-hidden="true"></i>
+			<i class="fa fa-minus" id="messagesStickyMinimize" aria-hidden="true"></i>
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
@@ -154,7 +154,7 @@ body{overflow: hidden;background-color: #151515;}
 <div class="rightSticykPopup questionsSticky" style="display: none">
 	<div class="header" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><span>Toolbox</span>
 		<div class="rightTool">
-			<i class="fa fa-minus" aria-hidden="true"></i>
+			<i class="fa fa-minus" id="questionsStickyMinimize"  aria-hidden="true"></i>
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
@@ -468,5 +468,12 @@ body{overflow: hidden;background-color: #151515;}
 			'Be sure to unmute the player located on the bottom right side of the page.',
 			'warning'
 		);
+
+		let header_toolbox_status = "<?=(isset($session->header_toolbox_status)? $session->header_toolbox_status:'')?>";
+		if(header_toolbox_status == 0){
+			$('#header-toolbox').css('display','none')
+		}else{
+			$('#header-toolbox').css('display','block')
+		}
 	})
 </script>

@@ -72,6 +72,18 @@ $ci_method = $this->router->fetch_method();?>
 						<?php if(empty($view_settings) || $view_settings[0]->evaluation == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/evaluation"><strong>Evaluation</strong></a></li>
 						<?php endif;?>
+					<li class="nav-item dropdown " id="header-toolbox">
+						<a class="nav-link dropdown-toggle" style="font-weight:400" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<strong>Toolbox</strong>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item stickyMenu" data-sticky="questionsSticky" id="notesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-question"></i> Ask Question</a>
+							<a class="dropdown-item stickyMenu" data-sticky="notesSticky" id="notesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-edit"></i> Take Notes</a>
+<!--							<a class="dropdown-item stickyMenu" data-sticky="questionsSticky" id="questionsStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-comments"></i> Chat</a>-->
+							<a class="dropdown-item stickyMenu" data-sticky="resourcesSticky" id="resourcesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-paperclip"></i> Resources </a>
+<!--							<a class="dropdown-item stickyMenu" data-sticky="notesSticky" id="notesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-user-tie"></i> Ask A Rep </a>-->
+						</div>
+					</li>
 					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
 						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (isset($view_settings) && !empty($view_settings[0]->live_support_color)? $view_settings[0]->live_support_color:'') ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Support</button>
 					<?php endif; ?>
@@ -122,3 +134,12 @@ $ci_method = $this->router->fetch_method();?>
 		</nav>
 	</header>
 <?php $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/live_support_chat") ?>
+<script>
+	let previous ='';
+		$('.stickyMenu').on('click', function(){
+		let sticky = $(this).attr('data-sticky');
+		$('#'+previous+'Minimize').trigger('click');
+		$('#'+sticky).trigger('click');
+			previous = sticky;
+	})
+</script>

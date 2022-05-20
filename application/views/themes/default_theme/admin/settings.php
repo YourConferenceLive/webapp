@@ -110,8 +110,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="input-group-prepend">
 										<div class="input-group-text">Right Sticky Icon</div>
 									</div>
-									<input  name="stickIcon_color" show-color="stickyIcon-color-picked" type="text" class="form-control bgColor-pick " style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_stickyIcon_color))?$settings[0]->session_stickyIcon_color:''?>">
-									<div class="form-control" id="stickyIcon-color-picked" style="max-width:40px; background-color:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:''?>"></div>
+									<input  name="stickIcon_color" show-color="stickyIcon-color-picked" type="text" class="form-control bgColor-pick " style="max-width:200px" value="<?=(isset($settings) && !empty($settings) && !empty($settings[0]->stickyIcon_color))?$settings[0]->stickyIcon_color:''?>">
+									<div class="form-control" id="stickyIcon-color-picked" style="max-width:40px; background-color:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->stickyIcon_color))?$settings[0]->stickyIcon_color:''?>"></div>
 								</div>
 							</div>
 						</div>

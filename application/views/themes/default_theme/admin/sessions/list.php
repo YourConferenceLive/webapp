@@ -199,6 +199,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				});
 				$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
 
+
+				//Settings
+				if(session.header_toolbox_status == 1){
+					$('#headerToolboxSwitch').attr('checked','checked')
+				}
+
 				$('#save-session').html('<i class="fas fa-save"></i> Save');
 
 				Swal.close();
