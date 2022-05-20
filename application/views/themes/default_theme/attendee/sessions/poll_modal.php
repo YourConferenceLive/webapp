@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!-- Poll Modal - attendee -->
 <div class="modal fade" id="pollModal" tabindex="-1" role="dialog" aria-labelledby="pollModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-lg" role="document" style="margin: 10rem auto !important;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="pollModalLabel"><span id="pollQuestion"></span></h5>
