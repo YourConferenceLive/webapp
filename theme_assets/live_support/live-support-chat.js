@@ -17,9 +17,11 @@ $(document).ready(function () {
 				supportChatStatus = data.status;
 			if (data.status == 1) {
 				$('.live-support-open-button').show();
+				$('#help-desk').hide();
 			} else {
 				$('.live-support-open-button').hide();
 				$('#liveSupportChatForm').hide();
+				$('#help-desk').show();
 			}
 
 
