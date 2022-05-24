@@ -72,9 +72,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<a href="<?=$this->project_url.'/presenter/sessions/view/'.$session->id?>">
 												<button class="btn btn-sm btn-primary"><i class="fas fa-tv"></i> Join Session</button>
 											</a>
-											<a href="<?=$this->project_url.'/presenter/sessions/view_without_slides/'.$session->id?>">
+											<!--<a href="<?/*=$this->project_url.'/presenter/sessions/view_without_slides/'.$session->id*/?>">
 												<button class="btn btn-sm btn-primary"><i class="fas fa-tools"></i> Toolbox Only</button>
-											</a>
+											</a>-->
 										</td>
 									</tr>
 								<?php endforeach; ?>
