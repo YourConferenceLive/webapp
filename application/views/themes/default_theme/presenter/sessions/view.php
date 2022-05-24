@@ -40,7 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div id="presentationRow" class="row m-0 p-0">
 <!--		<span style="position: absolute;color: white;z-index: 2;left: 15px;"><a class="btn btn-sm btn-info mt-2" href="<?/*=$session->zoom_link*/?>" target="_blank" <?/*=($session->zoom_link == null || $session->zoom_link = '')?'onclick="toastr.warning(`Zoom is not configured yet.`); return false;"':''*/?>><i class="fas fa-video"></i> Join Zoom</a></span>-->
 		<?php if (isset($session->id)): ?>
-			<div id="presentationColumn" class="col-10 m-0 p-0">
+			<div id="presentationColumn" class="col-12 m-0 p-0">
 				<?php if (isset($session->presenter_embed_code) && $session->presenter_embed_code != ''): ?>
 					<?=$session->presenter_embed_code?>
 				<?php else: ?>
@@ -50,9 +50,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 					</div>
 				<?php endif; ?>
-			</div>
-			<div class="col-2 m-0 p-0">
 
+			</div>
+			<div class="ml-2 col-2 show-toolbox" style="z-index:1; position:fixed; right:0px; bottom:57px; height:40px; background-color:#343a40"  title="minimize">Toolbox <span class="float-right mr-2" style="cursor:pointer"><i class="fas fa-window-maximize"></i></span></div>
+			<div class="col-2 m-0 p-0 tool-box-section" >
+				<div class="ml-2 hide-toolbox">Toolbox <span class="float-right mr-2" style="cursor:pointer" title="minimize"><i class="fas fa-window-minimize"></i></span></div>
 				<!-- Host Chat -->
 				<div class="card card-primary card-outline card-tabs" style="height: 45vh;">
 					<div class="card-header p-0 pt-1 border-bottom-0">
@@ -605,5 +607,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		});
 	}
+</script>
+<script>
+	$(function(){
+		$('.hide-toolbox').on('click', function(){
+			$('.tool-box-section').hide();
+			$('#presentationColumn').removeClass('col-10').addClass('col-12');
+			$('.show-toolbox').css('display', 'block');
+		});
+		$('.show-toolbox').on('click', function(){
+			$('.tool-box-section').show();
+			$('#presentationColumn').removeClass('col-12').addClass('col-10');
+			$('.show-toolbox').css('display', 'none');
+		});
+	})
 </script>
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
