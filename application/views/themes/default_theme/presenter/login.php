@@ -42,7 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<button id="login-btn" class="btn btn-lg btn-primary btn-block" type="button">Login</button>
 
 		</form>
-		<small>The login to this portal will be: Username: your email address Password: COS2021 (Passwords can be changed after your first login) </small>
+<!--		<small>The login to this portal will be: Username: your email address Password: COS2021 (Passwords can be changed after your first login) </small>-->
 	</div>
 </div>
 
