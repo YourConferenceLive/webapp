@@ -59,6 +59,8 @@ class Settings_Model extends CI_Model
 			'stickyIcon_color'=>(isset($post['stickIcon_color']) && $post['stickIcon_color'] ? trim($post['stickIcon_color']):''),
 			'homepage_redirect'=>(isset($post['homepage_redirect']) && !empty($post['homepage_redirect']))?$post['homepage_redirect']:'lobby',
 			'live_support_color'=>(isset($post['live_support_color']) && !empty($post['live_support_color']))? trim($post['live_support_color']):'#6D8FA7',
+			'header_logo_width'=>(isset($post['header_logo_width']) && !empty($post['header_logo_width']))? trim($post['header_logo_width']):NULL,
+			'header_logo_height'=>(isset($post['header_logo_height']) && !empty($post['header_logo_height']))? trim($post['header_logo_height']):NULL,
 		);
 
 		$settings = $this->db->select('*')
@@ -66,7 +68,7 @@ class Settings_Model extends CI_Model
 			->where('project_id', $project_id)
 			->get();
 		$poll_music= '';
-		if(isset($_FILES['poll_music']) && !empty($_FILES['poll_music'])){
+		if(isset($_FILES['poll_music']) && !empty($_FILES['poll_music']) && $_FILES['poll_music']['size']!==0){
 			$poll_music_config['allowed_types'] = 'mp3';
 			$poll_music_config['file_name'] = $poll_music = rand().'_'.str_replace(' ', '_', $_FILES['poll_music']['name']);
 			$poll_music_config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/music/';

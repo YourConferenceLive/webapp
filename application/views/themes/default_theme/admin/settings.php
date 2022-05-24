@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="card-body">
 					<div class="card">
 						<div class="mx-2 mt-2">
-							<label>Header Menu</label>
+							<label>Header</label>
 							<div class="custom-control custom-switch">
 								<input name="lobby" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->lobby == 1)?'checked':''?> id="lobbySwitch">
 								<label class="custom-control-label" for="lobbySwitch">Lobby</label>
@@ -87,6 +87,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</li>
 								</ul>
 							</div>
+							<div class=" my-1">
+								<small class="text-danger">Use CSS units for logo size. ex: 240px, 100vh etc. Without white space.</small>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text">Logo Size (Width x Height) </div>
+									</div>
+									<input  name="header_logo_width" type="text" class="form-control" style="max-width:100px" value="">
+									<input  name="header_logo_height" type="text" class="form-control" style="max-width:100px;">
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="card">
@@ -105,6 +115,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-control" id="sessionBackground-color-picked" style="max-width:40px; background-image:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->session_background_color))?$settings[0]->session_background_color:''?>"></div>
 								</div>
 							</div>
+
+							<br>
+							<label>Session View</label>
 							<div class=" my-1">
 								<div class="input-group">
 									<div class="input-group-prepend">
@@ -114,8 +127,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-control" id="stickyIcon-color-picked" style="max-width:40px; background-color:<?=(isset($settings) && !empty($settings) && !empty($settings[0]->stickyIcon_color))?$settings[0]->stickyIcon_color:''?>"></div>
 								</div>
 							</div>
-							<br>
-							<label>Session View</label>
 							<div class=" my-1">
 								<div class="input-group">
 									<div class="input-group-prepend">

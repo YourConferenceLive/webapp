@@ -24,7 +24,7 @@ $ci_method = $this->router->fetch_method();?>
 	</style>
 	<header>
 		<nav id="mainMenu" class="navbar navbar-expand-md navbar-light bg-white <?=(($ci_controller == 'sessions' && $ci_method == 'view') || ($ci_controller == 'sponsor' && $ci_method == 'index'))?'':'fixed-top'?>">
-			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="<?=(($this->project->name)=='Demo')?'max-width: 200px;':'max-width: 80px;'?>"></a>
+			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="width:<?=(isset($view_settings) && $view_settings[0]->header_logo_width)?$view_settings[0]->header_logo_width:''?>;height:<?=(isset($view_settings) && $view_settings[0]->header_logo_height)?$view_settings[0]->header_logo_height:''?>"></a>
 			<button class="navbar-toggler collapsed navbar-light" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
