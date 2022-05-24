@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="row">
 	<div class="col-12">
-		<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/main_banner.jpg" width="100%">
+		<img class="img-fluid banner-image" onerror="$(this).hide()" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/main_banner.jpg"  width="100%" >
 	</div>
 </div>
 
