@@ -93,8 +93,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="input-group-prepend">
 										<div class="input-group-text">Logo Size (Width x Height) </div>
 									</div>
-									<input  name="header_logo_width" type="text" class="form-control" style="max-width:100px" value="">
-									<input  name="header_logo_height" type="text" class="form-control" style="max-width:100px;">
+									<input  name="header_logo_width" type="text" class="form-control" style="max-width:100px" value=" <?=(isset($settings) && !empty($settings) && $settings[0]->header_logo_width)?$settings[0]->header_logo_width:''?> ">
+									<input  name="header_logo_height" type="text" class="form-control" style="max-width:100px;" value="<?=(isset($settings) && !empty($settings) && $settings[0]->header_logo_height)?$settings[0]->header_logo_height:''?> ">
 								</div>
 							</div>
 						</div>
