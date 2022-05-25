@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 						<div class="float-left">
 						<button id="login-btn" class="btn mt-2 text-white px-5" style="background-color:#f78e1e;" type="button">Login</button>
-						<span><a href="#">Forgot password</a></span>
+						<span><a onclick="forgotPassword()" href="#"><i class="fa fa-">Forgot password</a></span>
 						</div>
 						</fieldset>
 				</form>

@@ -23,6 +23,7 @@ class Login extends CI_Controller
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/login")
+			->view("{$this->themes_dir}/{$this->project->theme}/common/forgot_password_modal")
 			//->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer")
 		;
 	}
