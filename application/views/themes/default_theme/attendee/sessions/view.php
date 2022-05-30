@@ -39,7 +39,7 @@ body{overflow: hidden;background-color: #151515;}
 </div>
 
 <div class="rightSticykPopup notesSticky" style="display: none; ">
-	<div class="header"  style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;" ><span>Toolbox</span>
+	<div class="header"  style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>;" ><span>Toolbox</span>
 		<div class="rightTool">
 			<i class="fa fa-minus" aria-hidden="true"></i>
 			<div class="dropdown">
@@ -53,7 +53,7 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">Take Notes</div>
+		<div class="contentHeader" style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:'':''?>;">Take Notes</div>
 		<div id="briefcase_section">
 			<div id="briefcase_section">
 				<div class="col-md-12 input-group">
@@ -61,10 +61,10 @@ body{overflow: hidden;background-color: #151515;}
 					<textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?=isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
 				</div>
 				<div class="col-md-12 pt-1">
-					<a class="button color btn btn-info btn-sm" id="briefcase_send" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><i class="fas fa-save"></i> <span>Save</span></a>
+					<a class="button color btn btn-info btn-sm" id="briefcase_send" style="<?= ($view_settings&& $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><i class="fas fa-save"></i> <span>Save</span></a>
 				</div>
 				<div class="col-md-12">
-					<div class="contentHeader p-0 pt-2 pb-2" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">Previous Notes</div>
+					<div class="contentHeader p-0 pt-2 pb-2" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">Previous Notes</div>
 					<div id="notes_list_container">
 <?php
 					if($notes != new stdClass()):?>
@@ -79,7 +79,7 @@ body{overflow: hidden;background-color: #151515;}
 						</ul>
 <?php
 					else:?>
-						<div class="alert alert-info mb-1 mt-1 p-1" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;">No previous notes</div>
+						<div class="alert alert-info mb-1 mt-1 p-1" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;">No previous notes</div>
 <?php
 					endif;?>
 					</div>
@@ -89,7 +89,7 @@ body{overflow: hidden;background-color: #151515;}
 	</div>
 </div>
 <div class="rightSticykPopup resourcesSticky" style="display: none">
-	<div class="header" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><span>Toolbox</span>
+	<div class="header" style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>;"><span>Toolbox</span>
 		<div class="rightTool">
 			<i class="fa fa-minus" id="resourcesStickyMinimize" aria-hidden="true"></i>
 			<div class="dropdown">
@@ -103,7 +103,7 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader" style="<?= (isset($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">
+		<div class="contentHeader" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">
 			Resources
 		</div>
 		<div id="resource_section" style="padding: 0px 0px 0px 0px; margin-top: 10px; background-color: #fff; border-radius: 5px;">
