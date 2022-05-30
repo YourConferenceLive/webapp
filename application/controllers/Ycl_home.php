@@ -22,6 +22,21 @@ class Ycl_home extends CI_Controller {
 		$this->load->view('ycl_website/new_website/webinars');
 	}
 
+	public function ars()
+	{
+		$this->load->view('ycl_website/new_website/ars');
+	}
+
+	public function learning_module()
+	{
+		$this->load->view('ycl_website/new_website/learning_module');
+	}
+
+	public function abstracts()
+	{
+		$this->load->view('ycl_website/new_website/abstracts');
+	}
+
 	public function special()
 	{
 		$this->load->view('ycl_website/new_website/special');

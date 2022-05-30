@@ -2,9 +2,10 @@
 <html class="wide wow-animation" lang="en">
   <head>
     <!-- Site Title-->
-    <title>Your Conference Live</title>
+    <title>Your Conference Live - The Place for Virtual, Hybrid and Live Conferences and Webinars</title>
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	  <meta name="description" content="Webinar Software and Production Service. Full service virtual or hybrid conference platform. Custom webinar solutions avaliable." />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
     <link rel="icon" href="https://dev.yourconference.live/ycl_assets/ycl_icon.png">
@@ -16,6 +17,16 @@
     <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="<?=base_url()?>ycl_assets/images/homepage_images/ie8-panel/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <script src="<?=base_url()?>ycl_assets/js/html5shiv.min.js"></script>
 		<![endif]-->
+	  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-47271713-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-47271713-3');
+</script>
+
   </head>
   <body>
     <!-- Page -->
@@ -47,10 +58,13 @@
 								  <li><a href="<?=base_url()?>webinars">Webinars</a></li>
 								  <li><a href="<?=base_url()?>virtual">Virtual Conferences</a></li>
 								  <li><a href="<?=base_url()?>hybrid">Hybrid Events</a></li>
+								  <li><a href="<?=base_url()?>ars">Audience Response System</a></li>
+								  <li><a href="<?=base_url()?>learning_module">Learning Modules</a></li>
+								  <li><a href="<?=base_url()?>abstracts">Abstract Management</a></li>
                           </ul>
                         </li>
                         <li><a href="<?=ycl_base_url?>contacts">Contact</a>
-							<li><a class="brand-name" href="<?=base_url()?>special"><img src="<?=ycl_root?>/ycl_assets/images/homepage_images/first_free.jpg" alt="" width="163" height="40"/></a>
+							
                         </li>
                       </ul>
               </div>
@@ -62,10 +76,10 @@
       <section>
         <div class="swiper-container swiper-slider swiper-slider_fullheight" data-simulate-touch="false" data-loop="false" data-autoplay="false">
           <div class="swiper-wrapper">
-            <div class="swiper-slide bg-gray-lighter" data-slide-bg="<?=base_url()?>ycl_assets/images/homepage_images/slider-slide-1-1920x980.jpg">
+            <div class="swiper-slide bg-gray-lighter" data-slide-bg="<?=base_url()?>ycl_assets/images/homepage_images/webinars_that_impress.jpg">
               <div class="swiper-slide-caption text-center" style="margin-top: -450px">
                 <div class="container">
-                  <h1 data-caption-animate="fadeInUpSmall text-white"> <span>The Future is Now</span></h1>
+                  <h1 data-caption-animate="fadeInUpSmall text-white"> <span>Webinars that Impress</span></h1>
                   <h3 data-caption-animate="fadeInUpSmall text-white" data-caption-delay="200">Webinars - Virtual Conferences - Hybrid Meetings</h3>
                   <div class="group-lg group-middle"><a class="button button-primary" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="#section-see-features" data-custom-scroll-to="section-see-features">See Features</a><a class="button button-black" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="<?=ycl_base_url?>contacts">Contact Us</a></div>
                 </div>
@@ -104,8 +118,8 @@
         <div class="container">
           <div class="row row-fix justify-content-lg-center">
             <div class="col-lg-10 col-xl-8">
-              <h3>Solutions for Every Event</h3>
-              <p>If "pivot" was the word for 2020, then "flexibility" is where we are looking forward from here. Your Conference Live has the most modern and flexible solutions, with the experience and track record you need to take your event to where it needs to go. </p>
+              <h3>Solutions for All of Your Events</h3>
+              <p>If "pivot" was the word for 2020, then "flexibility" is where we are looking forward to from here. Your Conference Live has the most modern and flexible solutions, with the experience and track record you need to take your event to where it needs to go. </p>
             </div>
           </div>
         </div>
@@ -117,7 +131,7 @@
           <div class="container">
             <div class="row row-fix">
               <div class="col-lg-5">
-                <h3>Engagement is the key</h3>
+                <h3>Engagement is Key</h3>
                 <p>Our platform was created by top industry leaders in presentation management to improve audience engagement and loyalty with simple, friendly tools. Your Conference Live knows the take-aways we all benefit from. Whether its the learning and CME credits for the attendees or the insight gleaned from polling and metadata for you, the YCL platform is the perfect place for gathering and collaboration.</p>
               </div>
             </div>
@@ -297,11 +311,11 @@
       <section class="section-xl bg-white novi-background novi-section no" data-lightgallery="group">
         <div class="container-fluid">
           <div class="row row-10 row-horizontal-10">
-            <div class="col-md-4 col-xl-3"> <a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/12.png">
+            <div class="col-md-4 col-xl-3"> <a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/12_L.png">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/12.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/13.png">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/13_L.jpg">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/13.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
@@ -313,7 +327,7 @@
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/15.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
-            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/17.png">
+            <div class="col-md-4 col-xl-3"><a class="thumb-modern" data-lightgallery="item" href="<?=base_url()?>ycl_assets/images/homepage_images/17_L.jpg">
                 <figure><img src="<?=base_url()?>ycl_assets/images/homepage_images/17.png" alt="" width="472" height="355"/>
                 </figure>
                 <div class="thumb-modern__overlay"></div></a></div>
@@ -398,7 +412,7 @@
           <div class="row row-fix justify-content-md-center align-items-lg-end">
             <div class="col-md-8 col-lg-6 section-xl">
               <h3>What's Important to You?</h3>
-              <p>Analytics? Collaboration? Ease of Use? </p>YCL has everything to get you covered. Producers. Technicians. Infrastructure. Global Reach. </p><a class="button button-gray-light-outline" href="#">View now!</a>
+              <p>Analytics? Collaboration? Ease of Use? </p>YCL has everything to get you covered. Producers, technicians, and global reach, all on the fastest platform you will find. </p><a class="button button-gray-light-outline" href="contacts">Begin Your Future Now</a>
             </div>
             <div class="col-md-8 col-lg-6">
               <div class="cat-img-group">

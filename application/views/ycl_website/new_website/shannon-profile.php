@@ -17,6 +17,17 @@
     <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="<?=base_url()?>ycl_assets/images/homepage_images/ie8-panel/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <script src="<?=base_url()?>ycl_assets/js/html5shiv.min.js"></script>
 		<![endif]-->
+	  
+	  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-47271713-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-47271713-3');
+</script>
+
   </head>
   <body>
     <!-- Page -->
@@ -52,7 +63,7 @@
 									</ul>
 								</li>
 								<li><a href="<?=ycl_base_url?>contacts">Contact</a>
-								<li><a class="brand-name" href="<?=base_url()?>special"><img src="<?=ycl_root?>/ycl_assets/images/homepage_images/first_free.jpg" alt="" width="163" height="40"/></a>
+
 								</li>
 							</ul>
 						</div>
@@ -82,11 +93,7 @@
               <ul class="list-inline-sm profile-corporate__list">
                 <li><a class="icon-sm fa-facebook icon novi-icon" href="#"></a></li>
                 <li><a class="icon-sm fa-twitter icon novi-icon" href="#"></a></li>
-     
-              </ul>
-            </div>
-          </article>
-        </div>
+		    </ul>
       </section>
 
       <section class="section-xl bg-white text-center novi-background bg-cover">

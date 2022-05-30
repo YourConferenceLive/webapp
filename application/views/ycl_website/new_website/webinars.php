@@ -16,6 +16,17 @@
     <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="<?=base_url()?>ycl_assets/images/homepage_images/ie8-panel/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <script src="<?=base_url()?>ycl_assets/js/html5shiv.min.js"></script>
 		<![endif]-->
+	
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-47271713-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-47271713-3');
+</script>
+
 </head>
 <body>
 <!-- Page -->
@@ -93,8 +104,8 @@
         <div class="container">
           <div class="row row-50 justify-content-sm-center">
             <div class="col-md-10">
-              <h5>Fastest Connection</h5>
-              <p>Experience virtually instant, real-time connection with your audience, with none of the long awkward pauses between polls and speakers that are common among other providers. We keep your audience engaged by providing the lowest latency between live speakers and viewers. This means more attendees stay on longer. And that means more data for you to know the effectiveness of your program.</p>
+              <h5>Live Means LIVE!</h5>
+              <p>Your Conference Live is the only platform where speakers interact in real time with the audience or learners. Experience virtually instant, real-time connection with your audience, with none of the long awkward pauses between polls and speakers that are common among other providers. We keep your audience engaged by providing the lowest latency between live speakers and viewers. This means more attendees stay on longer. And that means more data for you to know the effectiveness of your program.</p>
             </div>
             <div class="col-md-10">
               <h5>Stylish Interface</h5>
