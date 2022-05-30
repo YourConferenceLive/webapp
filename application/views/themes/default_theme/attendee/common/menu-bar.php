@@ -1,4 +1,9 @@
 <?php
+//if($view_settings){
+//	print_r($view_settings);exit;
+//}else{
+//
+//}
 defined('BASEPATH') OR exit('No direct script access allowed');
 $ci_controller = $this->router->fetch_class();
 $ci_method = $this->router->fetch_method();?>
@@ -24,7 +29,7 @@ $ci_method = $this->router->fetch_method();?>
 	</style>
 	<header>
 		<nav id="mainMenu" class="navbar navbar-expand-md navbar-light bg-white <?=(($ci_controller == 'sessions' && $ci_method == 'view') || ($ci_controller == 'sponsor' && $ci_method == 'index'))?'':'fixed-top'?>">
-			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="width:<?=(isset($view_settings) && $view_settings[0]->header_logo_width)?$view_settings[0]->header_logo_width:''?>;height:<?=(isset($view_settings) && $view_settings[0]->header_logo_height)?$view_settings[0]->header_logo_height:''?>"></a>
+			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_width)? 'width:'.$view_settings[0]->header_logo_width:'max-width:80px'?>;height:<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_height)?'height:'.$view_settings[0]->header_logo_height:''?>"></a>
 			<button class="navbar-toggler collapsed navbar-light" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -45,7 +50,6 @@ $ci_method = $this->router->fetch_method();?>
 						</li>
 					<?php endif; ?>
 				</ul>
-
 				<ul class="navbar-nav">
 <!--					--><?php //print_r($view_settings);exit;?>
 						<?php if(empty($view_settings) || $view_settings[0]->lobby == 1):?>
