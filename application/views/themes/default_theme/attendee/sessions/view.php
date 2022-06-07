@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-//print_r($view_settings);exit;
+//print_r($_SESSION['project_sessions']["project_{$this->project->id}"]);exit;
+
 ?>
 <style>
 body{overflow: hidden;background-color: #151515;}
@@ -35,6 +36,7 @@ body{overflow: hidden;background-color: #151515;}
 		<li data-type="resourcesSticky" id="resourcesSticky"  style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
 		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
 		<li data-type="questionsSticky" id="questionsSticky"  style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
+		<li data-type="adminChatSticky" id="adminChatStickyIcon"  style="display:none; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
 	</ul>
 </div>
 
@@ -143,6 +145,7 @@ body{overflow: hidden;background-color: #151515;}
 					<li data-type="resourcesSticky" data-type2="off">Resources</li>
 					<li data-type="questionsSticky" data-type2="off">Questions</li>
 					<li data-type="notesSticky" data-type2="off">Take Notes</li>
+					<li data-type="adminChatSticky" data-type2="off">Chat with admin</li>
 				</ul>
 			</div>
 		</div>
@@ -195,6 +198,43 @@ body{overflow: hidden;background-color: #151515;}
 	</div>
 
 </div>
+
+<div class="rightSticykPopup adminChatSticky" style="display: none">
+	<div class="header" style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>;"><span>Toolbox</span>
+		<div class="rightTool">
+			<i class="fa fa-minus" id="chatWithAdminMinimize"  aria-hidden="true"></i>
+			<div class="dropdown">
+				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
+				<ul class="dropdown-menu">
+					<li data-type="resourcesSticky" data-type2="off">Resources</li>
+					<li data-type="messagesSticky" data-type2="off">Messages</li>
+					<li data-type="notesSticky" data-type2="off">Take Notes</li>
+					<li data-type="notesSticky" data-type2="off">Chat With Admin</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+
+		<div class="contentHeader" style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:'':''?>;">Chat With admin</div>
+		<div id="chat_with_admin_body" class="chat_with_admin_body" style="overflow-y: scroll;height: 170px;">
+
+		</div>
+		<div id="chat_with_admin_footer" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
+			<div style="padding:5px;">
+				<div style="text-align: center; display: flex; " id="">
+					<div class="col-md-12 input-group">
+							<input type="text" id="chat_with_admin_text" class="form-control" placeholder="Press enter to send..." value="">
+					</div>
+					<a class="button color btn" style="margin: 0; padding: 15px 7px;" id="chat_with_admin_send"><span>Send</span></a>
+				</div>
+				<span id='error_chat_with_admin' style='color:red;'></span>
+				<span id='success_chat_with_admin' style='color:green;'></span>
+			</div>
+		</div>
+	</div>
+
+</div>
 <?php
 if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	foreach($view_settings as $music_setting){
@@ -214,10 +254,15 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 <!--<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/dRp5VbWCQ3A?playlist=dRp5VbWCQ3A&controls=1&autoplay=1&mute=1&loop=1"></iframe>-->
 
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sessions.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/common/sessions/attendee_to_admin_chat.js?v=<?=rand()?>"></script>
 
 <script type="application/javascript">
 	let sessionId = "<?=$session->id?>";
 	var note_page = 1;
+   	let attendee_Fname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'] ?>";
+	let attendee_Lname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
+	let attendee_FullName = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'].' '.$_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
+	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
 
 	function loadNotes(entity_type, entity_type_id, note_page) {
 		Swal.fire({
@@ -276,14 +321,21 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					return false;
 				}
 
-				$.post(project_url+"/sessions/askQuestionAjax",{session_id:sessionId,
-																question:question
-															   },
+				$.post(project_url+"/sessions/askQuestionAjax",{
+						session_id:sessionId,
+						question:question,
+					},
 						function (response) {
 							response = JSON.parse(response);
-
+							console.log(response);
 							if (response.status == 'success') {
-								socket.emit("ycl_session_question", {sessionId:sessionId, question:question});
+								socket.emit("ycl_session_question", {
+									sessionId:sessionId,
+									question:question,
+									sender_name: attendee_Fname,
+									sender_surname: attendee_Lname,
+									sender_id: uid
+								});
 
 								$('#questionText').val('');
 								$('#questionElement').prepend('<p>'+question+'</p>');

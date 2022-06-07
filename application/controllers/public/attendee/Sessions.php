@@ -145,4 +145,11 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->getPollResult($poll_id));
 	}
 
+	public function chatAdminajax(){
+		echo json_encode($this->sessions->saveChatAdmin());
+	}
+
+	public function getAdminChatsAjax(){
+		echo json_encode($this->sessions->getAdminChatsAjax());
+	}
 }

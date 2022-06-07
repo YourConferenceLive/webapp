@@ -814,9 +814,10 @@ class Sessions_Model extends CI_Model
 
 	public function getQuestions($session_id)
 	{
-		$this->db->select("*");
-		$this->db->from('session_questions');
-		$this->db->where('session_id', $session_id);
+		$this->db->select("sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id");
+		$this->db->from('session_questions sq');
+		$this->db->join('user u', 'sq.user_id = u.id');
+		$this->db->where('sq.session_id', $session_id);
 		$polls = $this->db->get();
 		if ($polls->num_rows() > 0)
 			return $polls->result();
@@ -838,4 +839,83 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 
 	}
+
+	function getAttendee_question_direct_chat(){
+
+	}
+
+	function save_presenter_attendee_chat(){
+		$post = $this->input->post();
+		$this->db->insert('attendee_direct_chat', array(
+			'session_id'=>$post['session_id'],
+			'from_id'=>$this->user->user_id,
+			'to_id'=>$post['sender_id'],
+			'chats'=>$post['chat'],
+			'date_time'=>date('Y-m-d H:i:s'),
+			'sent_from'=>'presenter',
+		));
+		if($this->db->insert_id()){
+			return array('status'=>'success');
+		}else
+			return '';
+	}
+
+	function saveChatAdmin(){
+		$post = $this->input->post();
+		$this->db->insert('attendee_direct_chat', array(
+			'session_id'=>$post['session_id'],
+			'from_id'=>$this->user->user_id,
+			'to_id'=>'admin',
+			'chats'=>$post['chat'],
+			'date_time'=>date('Y-m-d H:i:s'),
+			'sent_from'=>'attendee',
+		));
+		if($this->db->insert_id()){
+			return array('status'=>'success');
+		}else
+			return array('status'=>'Error, Something went wrong');
+	}
+
+	function getAttendeeChatsAjax(){
+		$post = $this->input->post();
+		$chats = $this->db->select('adc.*, u.name as first_name, u.surname as last_name')
+			->from('attendee_direct_chat adc')
+			->join('user u', 'adc.from_id = u.id')
+			->where('session_id', $post['session_id'])
+			->group_start()
+			->where('from_id', $post['sender_id'])
+			->or_where('to_id', $post['sender_id'])
+			->group_end()
+			->get();
+
+		if($chats->num_rows()>0){
+			return array('status'=>'success', 'chats'=>$chats->result());
+		}else{
+			return array('status'=>'Error, Something went wrong');
+		}
+	}
+
+	function getAdminChatsAjax(){
+		$post = $this->input->post();
+		$uid = $this->user->user_id;
+	$sql =	"SELECT `adc`.*, `u`.`name` as `username`, `u`.`surname` as `surname` FROM `attendee_direct_chat` `adc` LEFT JOIN `user` `u` ON  IF(`adc`.`from_id` != 'admin', adc.from_id = u.id, adc.to_id = u.id ) WHERE `session_id` = ".$post['session_id']." AND ( `to_id` = ".$uid." OR `from_id` = ".$uid." ) ORDER BY `date_time` ASC";
+	$result = $this->db->query($sql);
+//	$result = $this->db->select('adc.*, u.name as username, u.surname as surname')
+//			->from('attendee_direct_chat adc')
+//			->join('user u', " (IF( adc.from_id != 'admin', adc.from_id = u.id, adc.to_id = u.id )) ", 'left')
+//			->where('session_id', $post['session_id'])
+//			->group_start()
+//			->where('to_id', $this->user->user_id)
+//			->or_where('from_id', $this->user->user_id)
+//			->group_end()
+//			->order_by('date_time', 'asc')
+//			->get();
+		if($result->num_rows()>0){
+			return array('status'=>'success', 'data'=>$result->result());
+		}else{
+			return array('status'=>'error', 'data'=>$result->result());
+		}
+
+	}
+
 }

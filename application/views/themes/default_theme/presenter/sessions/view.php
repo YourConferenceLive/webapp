@@ -263,6 +263,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 </div>
 
+<!-- Direct attendee chat modal -->
+<div class="modal fade" id="attendeeChatModal" tabindex="-1" role="dialog" aria-labelledby="attendeeChatModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="attendeeChatModalLabel">Chat with <span id="chatAttendeeName"></span></h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="user-question">Question: <span id="chattAttendeeQuestion" ></span><br></div><br>
+			<div class="attendeeChatmodal-body card " style="max-height: 300px; overflow: auto;">
+				<div class="panel panel-default">
+					<div id="attendeeChatModalBody" style="" class="panel-body attendeeChatModalBody">
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12 mb-2">
+				<div class="input-group">
+					<input id="chatToAttendeeText" type="text" class="form-control" placeholder="Enter your message">
+					<span class="input-group-btn">
+                                <button id="sendMessagetoAttendee" class="btn btn-success" type="button"><i class="fas fa-paper-plane"></i> Send</button>
+                            </span>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="endChatBtn" type="button" class="btn btn-danger" userId=""><i class="fas fa-times-circle"></i> End Chat</button>
+				<button type="button" class="btn btn-info" data-dismiss="modal"><i class="fas fa-folder-minus"></i> Minimize</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 
 	let controllerPath = project_presenter_url;
@@ -282,8 +316,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' '.$gmtOffset ?>";
 	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' '.$gmtOffset ?>";
 
-	console.log(session_start_datetime);
-	console.log(session_end_datetime);
+	//var socket_session_name = "<?//=getAppName('_admin-to-attendee-chat')?>//";
 
 	$(function () {
 		$('#mainTopMenu').css('margin-left', 'unset !important');
@@ -298,6 +331,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		fillQuestions();
 
 		socket.on('ycl_session_question', function (data) {
+			// console.log(data);
 			if (data.sessionId == session_id)
 			{
 				let question = '' +
@@ -316,9 +350,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'</div>' +
-						'<div class="row">' +
+						'<div class="row"><a class="questionList" href="#" style="cursor:pointer" question="'+data.question+'" sender_id="'+data.sender_id+'" sender_name="'+data.sender_name+'" sender_surname="'+data.sender_surname+'">' +
+						'<div class="col-12">'+data.sender_name+' '+ data.sender_surname+'</div>' +
 						'<div class="col-12">'+data.question+'</div>' +
-						'</div>' +
+						'</div></a>' +
 						'</div>' +
 						'<div class="col"><hr></div>';
 
@@ -582,6 +617,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#questions-tab-content').html('');
 			$.each(questions, function (poll_id, question) {
+				// console.log(question)
 				$('#questions-tab-content').prepend('' +
 						'<div class="container-fluid mr-2">' +
 						'<div class="row" style="padding-right: 15px">' +
@@ -599,14 +635,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'</div>' +
 						'</div>' +
 						'<div class="row">' +
+						'<div class="col-12"><a class="questionList" href="#" style="cursor:pointer" question="'+question.question+'" session_id="'+session_id+'" sender_id="'+question.user_id+'" sender_name="'+question.user_name+'" sender_surname="'+question.user_surname+'">'+question.user_name+' '+ question.user_surname+'</a></div>' +
 						'<div class="col-12">'+question.question+'</div>' +
-						'</div>' +
 						'</div>' +
 						'<div class="col"><hr></div>');
 			});
 
 		});
 	}
+
 </script>
 <script>
 	$(function(){
@@ -620,6 +657,137 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#presentationColumn').removeClass('col-12').addClass('col-10');
 			$('.show-toolbox').css('display', 'none');
 		});
+
+		$('#questions-tab-content').on('click','.questionList', function(e){
+			e.preventDefault();
+
+			let sender_id = $(this).attr('sender_id');
+			let sender_name = $(this).attr('sender_name');
+			let sender_surname = $(this).attr('sender_surname');
+			let question_selected = $(this).attr('question');
+
+			// console.log(question_selected);
+			$('#sendMessagetoAttendee').attr(
+				{
+					'sender_id': sender_id,
+					'sender_name': sender_name,
+					'sender_surname': sender_surname
+				});
+
+			$.post(project_presenter_url+'/sessions/getAttendeeChatsAjax/',
+				{
+					'sender_id': sender_id,
+					'session_id': session_id
+				}, function(response){
+					response = JSON.parse(response)
+					$('#attendeeChatModalBody').html();
+					if(response.status == 'success'){
+						$('#attendeeChatModalBody').html('');
+						$.each(response.chats, function(i, chat){
+							// console.log(chat);
+
+							if(chat.sent_from == 'attendee'){
+								$('#attendeeChatModalBody').append('<span class="attendee-to-admin-chat btn btn-primary ml-2 my-1" style="width:90%"><span style="float: left; margin-right:5px"><strong>'+chat.first_name+' '+chat.last_name+': </strong>'+chat.chats+'</span></span>')
+							}else{
+								$('#attendeeChatModalBody').append('<span class="admin-to-attendee-chat btn btn-warning float-right mr-2 my-1" style="width:90%"><span style="float: right; text-right margin-left:5px"><strong>'+chat.first_name+' '+chat.last_name+': </strong>'+chat.chats+'</span></span>')
+								}
+							})
+					}
+				})
+
+
+			$('#attendeeChatModalLabel').html('Chat With: '+sender_name+' '+sender_surname)
+			$('#chattAttendeeQuestion').html(question_selected);
+			$('#attendeeChatModal').modal('show');
+
+			$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
+		})
+
+		$('#sendMessagetoAttendee').on('click', function(){
+			let chat = $('#chatToAttendeeText').val();
+			let sender_id = $(this).attr('sender_id');
+
+			if(chat == ''){
+				toastr.info('Cannot send empty message');
+				return false;
+			}
+			let url = project_presenter_url+"/sessions/save_presenter_attendee_chat";
+
+			$.post(url,
+				{
+					'chat': chat,
+					'sender_id': sender_id,
+					'session_id': session_id
+				}, function(response){
+					// console.log(response);
+					if(response.status == 'success') {
+
+						socket.emit('new-attendee-to-admin-chat', {"session_id":session_id, "sent_from":"admin", "sender_id": sender_id, "chat_text":chat, "from_id": user_id, 'presenter_name': user_name });
+						// socket.emit('update-admin-attendee-chat', {"socket_session_name":socket_session_name, "session_id":session_id, "to_id": sender_id, "to_name":currently_chatting_with_attendee, 'current_question':chat,'replied_status':comment_question_id });
+
+						$('#attendeeChatModalBody').append('<span class="admin-to-attendee-chat btn btn-warning float-right mr-2 my-1" style="width:90%"><span style="float: right; text-right margin-left:5px"><strong>' + user_name + ': </strong>' + chat + '</span></span>')
+						$('#chatToAttendeeText').val('');
+
+
+						$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
+					}else{
+						toastr.error(response.status)
+					}
+			}, 'json')
+		})
+
+		socket.on('new-attendee-to-admin-chat-notification', function (data) {
+			// console.log(data);
+				if (data.sent_from == 'attendee')
+				{
+					admin_chat_presenter_ids=data.cp_ids;
+					if(data.cp_ids.includes(user_id)){
+						attendeeChatPopup(data.from_id, data.user_name);
+					}
+				}
+		});
 	})
+
+	function attendeeChatPopup(attendee_id, attendee_name, attendee_question){
+
+		$('#attendeeChatModalLabel').html("Chat With: "+attendee_name);
+		$('#chattAttendeeQuestion').text(attendee_question);
+		$('#sendMessagetoAttendee').attr('sender_id', attendee_id);
+		$('#endChatBtn').attr('userId', attendee_id);
+
+
+		$.post(project_presenter_url+"/sessions/getAttendeeChatsAjax/",
+
+			{
+				session_id: session_id,
+				sender_id: attendee_id,
+			}
+
+		).done(function(response) {
+				response = JSON.parse(response)
+				if (response.status == 'success') {
+					$('#attendeeChatModalBody').html('');
+					$.each(response.chats, function (i, chat) {
+						if (chat.sent_from == 'admin' || chat.sent_from == 'presenter') {
+							if (chat.sent_from == 'presenter') {
+								$('#attendeeChatModalBody').append('<span class="attendee-to-admin-chat btn btn-warning mr-2 m-1 float-right" style="width:90%"><span style="float: right; margin-left:5px"><strong>'+chat.first_name+' '+chat.last_name+': </strong>'+chat.chats+'</span></span>')
+							} else {
+								$('#attendeeChatModalBody').append('<span class="attendee-to-admin-chat btn btn-warning mr-2 m-1 float-right" style="width:90%"><span style="float: right; margin-left:5px"><strong>'+chat.first_name+' '+chat.last_name+': </strong>'+chat.chats+'</span></span>')
+							}
+						} else {
+							$('#attendeeChatModalBody').append('<span class="admin-to-attendee-chat btn btn-primary float-left ml-2 m-1" style="width:90%"><span style="float: left; text-right margin-right:5px"><strong>'+chat.first_name+' '+chat.last_name+': </strong>'+chat.chats+'</span></span>')
+						}
+					});
+					$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight + 100);
+				}
+			}
+		).fail((error)=>{
+			toastr.error('Unable to load the chat.');
+		});
+
+		$('#attendeeChatModal').modal('show');
+		$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight + 100);
+	}
 </script>
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
+<link rel="stylesheet" href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/presenter/view_session.css" type="text/css">

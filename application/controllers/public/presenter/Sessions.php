@@ -112,5 +112,15 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->getQuestions($session_id));
 	}
 
+	public function attendee_question_direct_chat(){
+		echo json_encode($this->sessions->getAttendee_question_direct_chat());
+	}
 
+	public function save_presenter_attendee_chat(){
+		echo json_encode($this->sessions->save_presenter_attendee_chat());
+	}
+
+	public function getAttendeeChatsAjax(){
+		echo json_encode($this->sessions->getAttendeeChatsAjax());
+	}
 }
