@@ -1,5 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');?>
+defined('BASEPATH') OR exit('No direct script access allowed');
+//print_r($_SESSION['project_sessions']["project_{$this->project->id}"]);exit;
+
+?>
 <style>
 body{overflow: hidden;background-color: #151515;}
 </style>
@@ -27,17 +30,18 @@ body{overflow: hidden;background-color: #151515;}
 </div>
 
 <!--bizim-->
-<div class="rightSticky" data-screen="customer">
+<div class="rightSticky" data-screen="customer" >
 	<ul>
-		<li data-type="notesSticky"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
-		<li data-type="resourcesSticky"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
+		<li data-type="notesSticky" id="notesSticky"  style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
+		<li data-type="resourcesSticky" id="resourcesSticky"  style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
 		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
-		<li data-type="questionsSticky"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
+		<li data-type="questionsSticky" id="questionsSticky"  style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
+		<li data-type="adminChatSticky" id="adminChatStickyIcon"  style="display:none; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
 	</ul>
 </div>
 
-<div class="rightSticykPopup notesSticky" style="display: none">
-	<div class="header"><span>Toolbox</span>
+<div class="rightSticykPopup notesSticky" style="display: none; ">
+	<div class="header"  style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>;" ><span>Toolbox</span>
 		<div class="rightTool">
 			<i class="fa fa-minus" aria-hidden="true"></i>
 			<div class="dropdown">
@@ -51,7 +55,7 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader">Take Notes</div>
+		<div class="contentHeader" style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:'':''?>;">Take Notes</div>
 		<div id="briefcase_section">
 			<div id="briefcase_section">
 				<div class="col-md-12 input-group">
@@ -59,10 +63,10 @@ body{overflow: hidden;background-color: #151515;}
 					<textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?=isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
 				</div>
 				<div class="col-md-12 pt-1">
-					<a class="button color btn btn-info btn-sm" id="briefcase_send"><i class="fas fa-save"></i> <span>Save</span></a>
+					<a class="button color btn btn-info btn-sm" id="briefcase_send" style="<?= ($view_settings&& $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><i class="fas fa-save"></i> <span>Save</span></a>
 				</div>
 				<div class="col-md-12">
-					<div class="contentHeader p-0 pt-2 pb-2">Previous Notes</div>
+					<div class="contentHeader p-0 pt-2 pb-2" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">Previous Notes</div>
 					<div id="notes_list_container">
 <?php
 					if($notes != new stdClass()):?>
@@ -77,7 +81,7 @@ body{overflow: hidden;background-color: #151515;}
 						</ul>
 <?php
 					else:?>
-						<div class="alert alert-info mb-1 mt-1 p-1">No previous notes</div>
+						<div class="alert alert-info mb-1 mt-1 p-1" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;">No previous notes</div>
 <?php
 					endif;?>
 					</div>
@@ -87,9 +91,9 @@ body{overflow: hidden;background-color: #151515;}
 	</div>
 </div>
 <div class="rightSticykPopup resourcesSticky" style="display: none">
-	<div class="header"><span>Toolbox</span>
+	<div class="header" style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>;"><span>Toolbox</span>
 		<div class="rightTool">
-			<i class="fa fa-minus" aria-hidden="true"></i>
+			<i class="fa fa-minus" id="resourcesStickyMinimize" aria-hidden="true"></i>
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
@@ -101,7 +105,7 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader">
+		<div class="contentHeader" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">
 			Resources
 		</div>
 		<div id="resource_section" style="padding: 0px 0px 0px 0px; margin-top: 10px; background-color: #fff; border-radius: 5px;">
@@ -134,13 +138,14 @@ body{overflow: hidden;background-color: #151515;}
 <div class="rightSticykPopup messagesSticky" style="display: none">
 	<div class="header"><span>Toolbox</span>
 		<div class="rightTool">
-			<i class="fa fa-minus" aria-hidden="true"></i>
+			<i class="fa fa-minus" id="messagesStickyMinimize" aria-hidden="true"></i>
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
 					<li data-type="resourcesSticky" data-type2="off">Resources</li>
 					<li data-type="questionsSticky" data-type2="off">Questions</li>
 					<li data-type="notesSticky" data-type2="off">Take Notes</li>
+					<li data-type="adminChatSticky" data-type2="off">Chat with admin</li>
 				</ul>
 			</div>
 		</div>
@@ -152,9 +157,9 @@ body{overflow: hidden;background-color: #151515;}
 	</div>
 </div>
 <div class="rightSticykPopup questionsSticky" style="display: none">
-	<div class="header"><span>Toolbox</span>
+	<div class="header" style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>;"><span>Toolbox</span>
 		<div class="rightTool">
-			<i class="fa fa-minus" aria-hidden="true"></i>
+			<i class="fa fa-minus" id="questionsStickyMinimize"  aria-hidden="true"></i>
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
@@ -166,7 +171,8 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 	<div class="content">
-		<div class="contentHeader">Questions</div>
+
+		<div class="contentHeader" style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:'':''?>;">Questions</div>
 		<div id="questionElement" class="questionElement" style="overflow: scroll;height: 170px;"></div>
 		<div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
 			<div style="padding:5px;">
@@ -193,6 +199,53 @@ body{overflow: hidden;background-color: #151515;}
 
 </div>
 
+<div class="rightSticykPopup adminChatSticky" style="display: none">
+	<div class="header" style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>;"><span>Toolbox</span>
+		<div class="rightTool">
+			<i class="fa fa-minus" id="chatWithAdminMinimize"  aria-hidden="true"></i>
+			<div class="dropdown">
+				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
+				<ul class="dropdown-menu">
+					<li data-type="resourcesSticky" data-type2="off">Resources</li>
+					<li data-type="messagesSticky" data-type2="off">Messages</li>
+					<li data-type="notesSticky" data-type2="off">Take Notes</li>
+					<li data-type="notesSticky" data-type2="off">Chat With Admin</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+
+		<div class="contentHeader" style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:'':''?>;">Chat With admin</div>
+		<div id="chat_with_admin_body" class="chat_with_admin_body" style="overflow-y: scroll;height: 170px;">
+
+		</div>
+		<div id="chat_with_admin_footer" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
+			<div style="padding:5px;">
+				<div style="text-align: center; display: flex; " id="">
+					<div class="col-md-12 input-group">
+							<input type="text" id="chat_with_admin_text" class="form-control" placeholder="Press enter to send..." value="">
+					</div>
+					<a class="button color btn" style="margin: 0; padding: 15px 7px;" id="chat_with_admin_send"><span>Send</span></a>
+				</div>
+				<span id='error_chat_with_admin' style='color:red;'></span>
+				<span id='success_chat_with_admin' style='color:green;'></span>
+			</div>
+		</div>
+	</div>
+
+</div>
+<?php
+if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
+	foreach($view_settings as $music_setting){
+		if ($music_setting->poll_music != "") {
+			?>
+			<audio allow="autoplay" id="audio_<?=$this->project->id?>" src="<?= ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$music_setting->poll_music ?>" ></audio>
+			<?php
+		}
+	}
+}
+?>
 <style>
 .list-group {overflow: auto; height: 100px;}
 .list-group-item:nth-child(odd) {background-color: #FFFFFF;}
@@ -201,10 +254,15 @@ body{overflow: hidden;background-color: #151515;}
 <!--<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/dRp5VbWCQ3A?playlist=dRp5VbWCQ3A&controls=1&autoplay=1&mute=1&loop=1"></iframe>-->
 
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sessions.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/default_theme/js/common/sessions/attendee_to_admin_chat.js?v=<?=rand()?>"></script>
 
 <script type="application/javascript">
 	let sessionId = "<?=$session->id?>";
 	var note_page = 1;
+   	let attendee_Fname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'] ?>";
+	let attendee_Lname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
+	let attendee_FullName = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'].' '.$_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
+	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
 
 	function loadNotes(entity_type, entity_type_id, note_page) {
 		Swal.fire({
@@ -263,14 +321,21 @@ body{overflow: hidden;background-color: #151515;}
 					return false;
 				}
 
-				$.post(project_url+"/sessions/askQuestionAjax",{session_id:sessionId,
-																question:question
-															   },
+				$.post(project_url+"/sessions/askQuestionAjax",{
+						session_id:sessionId,
+						question:question,
+					},
 						function (response) {
 							response = JSON.parse(response);
-
+							console.log(response);
 							if (response.status == 'success') {
-								socket.emit("ycl_session_question", {sessionId:sessionId, question:question});
+								socket.emit("ycl_session_question", {
+									sessionId:sessionId,
+									question:question,
+									sender_name: attendee_Fname,
+									sender_surname: attendee_Lname,
+									sender_id: uid
+								});
 
 								$('#questionText').val('');
 								$('#questionElement').prepend('<p>'+question+'</p>');
@@ -361,6 +426,7 @@ body{overflow: hidden;background-color: #151515;}
 		socket.on('ycl_launch_poll', (data)=>{
 
 			if(data.session_id == sessionId) {
+
 				$('#pollId').val(data.session_id);
 				$('#pollQuestion').text(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
@@ -384,7 +450,9 @@ body{overflow: hidden;background-color: #151515;}
 
 				var timeleft = 10;
 				var downloadTimer = setInterval(function(){
+					play_music();
 					if(timeleft <= 0) {
+						stop_music();
 						clearInterval(downloadTimer);
 						$('#pollModal').modal('hide');
 
@@ -412,6 +480,7 @@ body{overflow: hidden;background-color: #151515;}
 								var resultTimeleft = 5;
 								var resultTimer = setInterval(function(){
 									if(resultTimeleft <= 0) {
+										stop_music();
 										clearInterval(resultTimer);
 										$('#pollResultModal').modal('hide');
 									} else {
@@ -426,6 +495,7 @@ body{overflow: hidden;background-color: #151515;}
 					}
 					timeleft -= 1;
 				}, 1000);
+
 			}
 		});
 
@@ -461,4 +531,31 @@ body{overflow: hidden;background-color: #151515;}
 			}
 		});
 	});
+
+	$(function(){
+		Swal.fire(
+			'INFO',
+			'Be sure to unmute the player located on the bottom right side of the page.',
+			'warning'
+		);
+
+		let header_toolbox_status = "<?=(isset($session->header_toolbox_status)? $session->header_toolbox_status:'')?>";
+		if(header_toolbox_status == 0){
+			$('#header-toolbox').css('display','none')
+		}else{
+			$('#header-toolbox').css('display','block')
+		}
+
+	})
+
+	function play_music() {
+		var audio = document.getElementById("audio_"+<?=$this->project->id?>);
+		audio.play();
+	}
+	function stop_music() {
+		var audio1 = document.getElementById("audio_"+<?=$this->project->id?>);
+		audio1.pause();
+		audio1.currentTime = 0;
+	}
+
 </script>

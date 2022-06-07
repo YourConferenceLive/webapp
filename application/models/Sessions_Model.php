@@ -14,11 +14,40 @@ class Sessions_Model extends CI_Model
 
 	public function getAll()
 	{
-		$this->db->select('*');
-		$this->db->from('sessions');
-		$this->db->where('is_deleted', 0);
-		$this->db->where('project_id', $this->project->id);
-		$this->db->order_by('start_date_time', 'ASC');
+		$this->db->select('s.*, st.name as session_track');
+		$this->db->from('sessions s');
+		$this->db->join('session_tracks st', 's.track = st.id', 'left');
+		$this->db->where('s.is_deleted', 0);
+		$this->db->where('s.project_id', $this->project->id);
+		$this->db->order_by('s.start_date_time', 'ASC');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+		{
+			foreach ($sessions->result() as $session)
+			{
+				$session->briefcase = $this->getUserBriefcasePerSession($session->id);
+				$session->presenters = $this->getPresentersPerSession($session->id);
+				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
+				$session->moderators = $this->getModeratorsPerSession($session->id);
+				$session->invisible_moderators = $this->getInvisibleModeratorsPerSession($session->id);
+			}
+
+			return $sessions->result();
+		}
+
+		return new stdClass();
+	}
+
+	public function getAllSessionWeek()
+	{
+		$this->db->select('s.*, st.name as session_track');
+		$this->db->from('sessions s');
+		$this->db->join('session_tracks st', 's.track = st.id', 'left');
+		$this->db->where('s.is_deleted', 0);
+		$this->db->where('s.project_id', $this->project->id);
+		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") >=', date('Y-m-d'));
+		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") <', date('Y-m-d', strtotime("+7 days")));
+		$this->db->order_by('s.start_date_time', 'ASC');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 		{
@@ -152,7 +181,7 @@ class Sessions_Model extends CI_Model
 			$this->db->or_like('sessions.description',$keyword);
 		}
 
-		$this->db->join('session_tracks', 'session_tracks.id=sessions.track');
+		$this->db->join('session_tracks', 'session_tracks.id=sessions.track', 'left');
 		$this->db->where($where);
 		$this->db->order_by('sessions.start_date_time', 'ASC');
 		$sessions = $this->db->get();
@@ -227,7 +256,7 @@ class Sessions_Model extends CI_Model
 			'agenda' => $session_data['sessionAgenda'],
 			'session_type' => $session_data['sessionType'],
 			'external_meeting_link' => (isset($session_data['sessionExternalUrl']))?$session_data['sessionExternalUrl']:'',
-			'track' => $session_data['sessionTrack'],
+			'track' => (isset($session_data['sessionTrack'])? $session_data['sessionTrack']: ''),
 			'credits' => $session_data['sessionCredits'],
 			'millicast_stream' => $session_data['millicastStream'],
 			'presenter_embed_code' => $session_data['slidesHtml'],
@@ -236,7 +265,8 @@ class Sessions_Model extends CI_Model
 			'start_date_time' => $start_time_mysql,
 			'end_date_time' => $end_time_mysql,
 			'created_by' => $this->user->user_id,
-			'created_on' => date('Y-m-d H:i:s')
+			'created_on' => date('Y-m-d H:i:s'),
+			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
 		);
 
 		$this->db->insert('sessions', $data);
@@ -244,55 +274,55 @@ class Sessions_Model extends CI_Model
 		if ($this->db->affected_rows() > 0)
 		{
 			$session_id = $this->db->insert_id();
+			if(isset($session_data['sessionPresenters']) && !empty($session_data['sessionPresenters'])) {
+				foreach ($session_data['sessionPresenters'] as $presenter_id) {
+					$data = array(
+						'presenter_id' => $presenter_id,
+						'session_id' => $session_id,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
 
-			foreach ($session_data['sessionPresenters'] as $presenter_id)
-			{
-				$data = array(
-					'presenter_id' => $presenter_id,
-					'session_id' => $session_id,
-					'added_on' => date('Y-m-d H:i:s'),
-					'added_by' => $this->user->user_id,
-				);
-
-				$this->db->insert('session_presenters', $data);
+					$this->db->insert('session_presenters', $data);
+				}
 			}
+			if(isset($session_data['sessionKeynoteSpeakers']) && !empty($session_data['sessionKeynoteSpeakers'])) {
+				foreach ($session_data['sessionKeynoteSpeakers'] as $speaker_id) {
+					$data = array(
+						'speaker_id' => $speaker_id,
+						'session_id' => $session_id,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
 
-			foreach ($session_data['sessionKeynoteSpeakers'] as $speaker_id)
-			{
-				$data = array(
-					'speaker_id' => $speaker_id,
-					'session_id' => $session_id,
-					'added_on' => date('Y-m-d H:i:s'),
-					'added_by' => $this->user->user_id,
-				);
-
-				$this->db->insert('session_keynote_speakers', $data);
+					$this->db->insert('session_keynote_speakers', $data);
+				}
 			}
+			if(isset($session_data['sessionModerators']) && !empty($session_data['sessionModerators'])) {
+				foreach ($session_data['sessionModerators'] as $moderator_id) {
+					$data = array(
+						'moderator_id' => $moderator_id,
+						'session_id' => $session_id,
+						'is_invisible' => 0,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
 
-			foreach ($session_data['sessionModerators'] as $moderator_id)
-			{
-				$data = array(
-					'moderator_id' => $moderator_id,
-					'session_id' => $session_id,
-					'is_invisible' => 0,
-					'added_on' => date('Y-m-d H:i:s'),
-					'added_by' => $this->user->user_id,
-				);
-
-				$this->db->insert('session_moderators', $data);
+					$this->db->insert('session_moderators', $data);
+				}
 			}
+			if(isset($session_data['sessionInvisibleModerators']) && !empty($session_data['sessionInvisibleModerators'])) {
+				foreach ($session_data['sessionInvisibleModerators'] as $moderator_id) {
+					$data = array(
+						'moderator_id' => $moderator_id,
+						'session_id' => $session_id,
+						'is_invisible' => 1,
+						'added_on' => date('Y-m-d H:i:s'),
+						'added_by' => $this->user->user_id,
+					);
 
-			foreach ($session_data['sessionInvisibleModerators'] as $moderator_id)
-			{
-				$data = array(
-					'moderator_id' => $moderator_id,
-					'session_id' => $session_id,
-					'is_invisible' => 1,
-					'added_on' => date('Y-m-d H:i:s'),
-					'added_by' => $this->user->user_id,
-				);
-
-				$this->db->insert('session_moderators', $data);
+					$this->db->insert('session_moderators', $data);
+				}
 			}
 
 			return array('status' => 'success', 'session_id' => $session_id);
@@ -336,7 +366,7 @@ class Sessions_Model extends CI_Model
 			'agenda' => $session_data['sessionAgenda'],
 			'session_type' => $session_data['sessionType'],
 			'external_meeting_link' => (isset($session_data['sessionExternalUrl']))?$session_data['sessionExternalUrl']:'',
-			'track' => $session_data['sessionTrack'],
+			'track' => isset($session_data['sessionTrack'])? $session_data['sessionTrack']: '',
 			'credits' => $session_data['sessionCredits'],
 			'millicast_stream' => $session_data['millicastStream'],
 			'presenter_embed_code' => $session_data['slidesHtml'],
@@ -345,7 +375,8 @@ class Sessions_Model extends CI_Model
 			'start_date_time' => $start_time_mysql,
 			'end_date_time' => $end_time_mysql,
 			'updated_by' => $this->user->user_id,
-			'updated_on' => date('Y-m-d H:i:s')
+			'updated_on' => date('Y-m-d H:i:s'),
+			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
 		);
 
 		if ($session_photo != '')
@@ -783,13 +814,108 @@ class Sessions_Model extends CI_Model
 
 	public function getQuestions($session_id)
 	{
-		$this->db->select("*");
-		$this->db->from('session_questions');
-		$this->db->where('session_id', $session_id);
+		$this->db->select("sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id");
+		$this->db->from('session_questions sq');
+		$this->db->join('user u', 'sq.user_id = u.id');
+		$this->db->where('sq.session_id', $session_id);
 		$polls = $this->db->get();
 		if ($polls->num_rows() > 0)
 			return $polls->result();
 
 		return new stdClass();
 	}
+
+	public function getSessionWeek(){
+		$this->db->select("s.start_date_time,DAYNAME(s.start_date_time) as dayname");
+		$this->db->from("sessions s");
+		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") >=', date('Y-m-d'));
+		$this->db->where('DATE_FORMAT(s.start_date_time, "%Y-%m-%d") <', date('Y-m-d', strtotime("+7 days")));
+		$this->db->group_by('dayname');
+		$this->db->order_by("s.start_date_time", "asc");
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0) {
+			return $sessions->result();
+		}
+		return new stdClass();
+
+	}
+
+	function getAttendee_question_direct_chat(){
+
+	}
+
+	function save_presenter_attendee_chat(){
+		$post = $this->input->post();
+		$this->db->insert('attendee_direct_chat', array(
+			'session_id'=>$post['session_id'],
+			'from_id'=>$this->user->user_id,
+			'to_id'=>$post['sender_id'],
+			'chats'=>$post['chat'],
+			'date_time'=>date('Y-m-d H:i:s'),
+			'sent_from'=>'presenter',
+		));
+		if($this->db->insert_id()){
+			return array('status'=>'success');
+		}else
+			return '';
+	}
+
+	function saveChatAdmin(){
+		$post = $this->input->post();
+		$this->db->insert('attendee_direct_chat', array(
+			'session_id'=>$post['session_id'],
+			'from_id'=>$this->user->user_id,
+			'to_id'=>'admin',
+			'chats'=>$post['chat'],
+			'date_time'=>date('Y-m-d H:i:s'),
+			'sent_from'=>'attendee',
+		));
+		if($this->db->insert_id()){
+			return array('status'=>'success');
+		}else
+			return array('status'=>'Error, Something went wrong');
+	}
+
+	function getAttendeeChatsAjax(){
+		$post = $this->input->post();
+		$chats = $this->db->select('adc.*, u.name as first_name, u.surname as last_name')
+			->from('attendee_direct_chat adc')
+			->join('user u', 'adc.from_id = u.id')
+			->where('session_id', $post['session_id'])
+			->group_start()
+			->where('from_id', $post['sender_id'])
+			->or_where('to_id', $post['sender_id'])
+			->group_end()
+			->get();
+
+		if($chats->num_rows()>0){
+			return array('status'=>'success', 'chats'=>$chats->result());
+		}else{
+			return array('status'=>'Error, Something went wrong');
+		}
+	}
+
+	function getAdminChatsAjax(){
+		$post = $this->input->post();
+		$uid = $this->user->user_id;
+	$sql =	"SELECT `adc`.*, `u`.`name` as `username`, `u`.`surname` as `surname` FROM `attendee_direct_chat` `adc` LEFT JOIN `user` `u` ON  IF(`adc`.`from_id` != 'admin', adc.from_id = u.id, adc.to_id = u.id ) WHERE `session_id` = ".$post['session_id']." AND ( `to_id` = ".$uid." OR `from_id` = ".$uid." ) ORDER BY `date_time` ASC";
+	$result = $this->db->query($sql);
+//	$result = $this->db->select('adc.*, u.name as username, u.surname as surname')
+//			->from('attendee_direct_chat adc')
+//			->join('user u', " (IF( adc.from_id != 'admin', adc.from_id = u.id, adc.to_id = u.id )) ", 'left')
+//			->where('session_id', $post['session_id'])
+//			->group_start()
+//			->where('to_id', $this->user->user_id)
+//			->or_where('from_id', $this->user->user_id)
+//			->group_end()
+//			->order_by('date_time', 'asc')
+//			->get();
+		if($result->num_rows()>0){
+			return array('status'=>'success', 'data'=>$result->result());
+		}else{
+			return array('status'=>'error', 'data'=>$result->result());
+		}
+
+	}
+
 }

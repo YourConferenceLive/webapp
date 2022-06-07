@@ -22,6 +22,7 @@ class Eposters extends CI_Controller
 		$this->load->model('attendee/Comments_Model', 'comment');
 		$this->load->model('attendee/Notes_Model', 'note');
 		$this->load->model('attendee/Sessions_Model', 'sessions_model');
+		$this->load->model('Settings_Model', 'settings');
         $this->load->library("pagination");
         $this->load->helper('form');
 	}
@@ -70,7 +71,7 @@ class Eposters extends CI_Controller
 		$data['authors'] 				= $this->eposter->getAllAuthors();
 
 		$data['eposters'] 				= $this->eposter->getAll($config["per_page"], $page, $data['track_id'], $data['author_id'], $data['type'], $data['keyword']);
-
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)

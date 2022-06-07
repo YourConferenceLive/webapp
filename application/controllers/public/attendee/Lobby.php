@@ -12,6 +12,7 @@ class Lobby extends CI_Controller
 
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('Users_Model', 'user');
+		$this->load->model('Settings_Model', 'settings');
 	}
 
 	public function index()
@@ -23,6 +24,7 @@ class Lobby extends CI_Controller
 		$data['user'] 				= $_SESSION['project_sessions']["project_{$this->project->id}"];
 		$data['lobby_menu'] 		= $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/lobby/menu", NULL, TRUE);
 		$data['default_password']   = ((!is_null($first_load)) ? $this->user->defaultPasswordCheck() : false );
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)

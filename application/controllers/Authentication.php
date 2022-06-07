@@ -45,6 +45,7 @@ class Authentication extends CI_Controller {
 						'surname' => $verification['user']->surname,
 						'email' => $verification['user']->email,
 						'photo' => $verification['user']->photo,
+						'homepage_redirect' => (isset($verification['homepage']->homepage_redirect) ? $verification['homepage']->homepage_redirect: 'lobby'),
 						'is_attendee' => (in_array('attendee', $verification['user']->access_levels))?1:0,
 						'is_moderator' => (in_array('moderator', $verification['user']->access_levels))?1:0,
 						'is_presenter' => (in_array('presenter', $verification['user']->access_levels))?1:0,
@@ -69,8 +70,14 @@ class Authentication extends CI_Controller {
 					}
 
 					$this->session->set_userdata(array('project_sessions' => $current_project_sessions));
+					$project_sessions = ($this->session->userdata('project_sessions')['project_' . $this->project->id]['homepage_redirect']);
+					if($project_sessions){
+						$data['homepage_redirect'] = $project_sessions;
+					}else{
+						$data['homepage_redirect'] ='lobby';
+					}
+					$response = array('status'=>'success', 'msg'=>'Login successful', 'data'=>$data);
 
-					$response = array('status'=>'success', 'msg'=>'Login successful');
 					$this->logger->add($project_id, $verification['user']->id, 'Logged-in');
 				}else{
 					$this->logger->add($project_id, $verification['user']->id, 'Access denied', "No {$access_level} level access");

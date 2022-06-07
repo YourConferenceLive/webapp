@@ -11,6 +11,7 @@ class Relaxation_zone extends CI_Controller
 			redirect(base_url().$this->project->main_route."/login"); // Not logged-in
 
 		$this->load->model('Logger_Model', 'logger');
+		$this->load->model('Settings_Model', 'settings');
 	}
 
 	public function index()
@@ -19,7 +20,7 @@ class Relaxation_zone extends CI_Controller
 
 		$data['project'] = $this->project;
 		$data['user'] = $_SESSION['project_sessions']["project_{$this->project->id}"];
-
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)

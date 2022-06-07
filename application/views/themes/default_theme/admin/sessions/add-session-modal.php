@@ -62,7 +62,9 @@
 								<li class="nav-item">
 									<a class="nav-link" id="invisibleModeratorsTab" data-toggle="pill" href="#invisibleModeratorsTabContents" role="tab" aria-controls="invisibleModeratorsTabContents" aria-selected="false"><i class="fas fa-user-secret"></i> Invisible Moderators</a>
 								</li>
-
+								<li class="nav-item">
+									<a class="nav-link" id="sessionSettingsTab" data-toggle="pill" href="#sessionSettingsTabContents" role="tab" aria-controls="sessionSettingsTabContents" aria-selected="false"><i class="fas fa-cog"></i> Settings</a>
+								</li>
 							</ul>
 						</div>
 						<div class="card-body">
@@ -96,8 +98,9 @@
 									</div>
 
 									<div class="form-group">
-										<label>Track</label>
+										<label>Track or <a href="<?=base_url()?>"><u> Add Track </u></a></label>
 										<select id="sessionTrack" name="sessionTrack" class="form-control">
+											<option value="">Select Track</option>
 											<?php if (isset($tracks)): ?>
 												<?php foreach ($tracks as $track): ?>
 													<option value="<?=$track->id?>"><?=$track->name?></option>
@@ -241,6 +244,16 @@
 												<?php endforeach; ?>
 											<?php endif; ?>
 										</select>
+									</div>
+								</div>
+
+								<div class="tab-pane fade" id="sessionSettingsTabContents" role="tabpanel" aria-labelledby="sessionSettingsTab">
+									<div class="form-group">
+										<label>Header Settings</label><br>
+										<div class="custom-control custom-switch">
+											<input name="header_toolbox" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->header_toolbox_status == 1)?'checked':''?> id="headerToolboxSwitch">
+											<label class="custom-control-label" for="headerToolboxSwitch">Header Toolbox</label>
+										</div>
 									</div>
 								</div>
 
@@ -569,7 +582,7 @@
 				}else if(data.status == 'warning'){
 					toastr.warning(data.msg);
 				}else{
-					toastr.error("Error");
+					toastr.error(data.technical_data);
 				}
 			}
 		});
