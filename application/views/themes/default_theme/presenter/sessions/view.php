@@ -329,6 +329,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('[data-toggle="tooltip"]').tooltip();
 
 		fillQuestions();
+		fillSavedQuestions();
 
 		socket.on('ycl_session_question', function (data) {
 			// console.log(data);
@@ -628,10 +629,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<small class="text-secondary"></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary hide-question" id="hide-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary save-question" id="save-question-'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'</div>' +
 						'<div class="row">' +
@@ -644,6 +645,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
+	function fillSavedQuestions() {
+		$.get(project_presenter_url+"/sessions/getSavedQuestions/"+session_id, function (questions) {
+			questions = JSON.parse(questions);
+			// console.log(questions)
+			$('#starred-questions-tab-content').html('');
+			$.each(questions.data, function (poll_id, question) {
+				// console.log(question)
+				$('#starred-questions-tab-content').prepend('' +
+					'<div class="container-fluid mr-2">' +
+					'<div class="row" style="padding-right: 15px">' +
+					'<div class="col-7">' +
+					'<strong></strong>' +
+					'</div>' +
+					'<div class="col-3">' +
+					'<small class="text-secondary"></small>' +
+					'</div>' +
+					'<div class="col-1">' +
+					'<small class="text-secondary hide-question" id="hide-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+					'</div>' +
+					'<div class="col-1">' +
+					'<small class="text-secondary save-question" id="save-question-'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+					'</div>' +
+					'</div>' +
+					'<div class="row">' +
+					'<div class="col-12"><a class="questionList" href="#" style="cursor:pointer" question="'+question.question+'" session_id="'+session_id+'" sender_id="'+question.user_id+'" sender_name="'+question.user_name+'" sender_surname="'+question.user_surname+'">'+question.user_name+' '+ question.user_surname+'</a></div>' +
+					'<div class="col-12">'+question.question+'</div>' +
+					'</div>' +
+					'<div class="col"><hr></div>');
+			});
+
+		});
+	}
 </script>
 <script>
 	$(function(){
@@ -746,6 +779,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					}
 				}
 		});
+
+		$('#questions-tab-content').on('click', '.save-question', function(){
+			let question_id = $(this).attr('question-id');
+
+			$.post(project_presenter_url+'/sessions/saveQuestionAjax/',
+				{
+					'question_id':question_id
+				},function(response){
+					// console.log(response);
+			})
+		})
+
 	})
 
 	function attendeeChatPopup(attendee_id, attendee_name, attendee_question){

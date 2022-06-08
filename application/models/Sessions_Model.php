@@ -900,22 +900,56 @@ class Sessions_Model extends CI_Model
 		$uid = $this->user->user_id;
 	$sql =	"SELECT `adc`.*, `u`.`name` as `username`, `u`.`surname` as `surname` FROM `attendee_direct_chat` `adc` LEFT JOIN `user` `u` ON  IF(`adc`.`from_id` != 'admin', adc.from_id = u.id, adc.to_id = u.id ) WHERE `session_id` = ".$post['session_id']." AND ( `to_id` = ".$uid." OR `from_id` = ".$uid." ) ORDER BY `date_time` ASC";
 	$result = $this->db->query($sql);
-//	$result = $this->db->select('adc.*, u.name as username, u.surname as surname')
-//			->from('attendee_direct_chat adc')
-//			->join('user u', " (IF( adc.from_id != 'admin', adc.from_id = u.id, adc.to_id = u.id )) ", 'left')
-//			->where('session_id', $post['session_id'])
-//			->group_start()
-//			->where('to_id', $this->user->user_id)
-//			->or_where('from_id', $this->user->user_id)
-//			->group_end()
-//			->order_by('date_time', 'asc')
-//			->get();
 		if($result->num_rows()>0){
 			return array('status'=>'success', 'data'=>$result->result());
 		}else{
 			return array('status'=>'error', 'data'=>$result->result());
 		}
 
+	}
+
+	function saveQuestionAjax(){
+		$field_set = array(
+			'question_id'=>$this->input->post('question_id'),
+			'user_id'=>$this->user->user_id,
+			'saved_status'=>'1',
+			'date_time'=>date('Y-m-d H:i:s')
+		);
+
+		$result = $this->db->select('*')
+			->from('session_question_saved')
+			->where('user_id', $this->user->user_id)
+			->where('question_id', $this->input->post('question_id'))
+			->get();
+
+		if ($result->num_rows()>0){
+			$this->db->update('session_question_saved', $field_set);
+		}else
+		$this->db->insert('session_question_saved', $field_set);
+
+		if($this->db->affected_rows() > 0){
+			return array('status'=>'success', 'msg'=>'Save Successfully');
+		}else{
+			return array('status'=>'error', 'msg'=>'Sorry something went wrong');
+		}
+	}
+
+	function getSavedQuestions($session_id){
+		$saved_question = $this->db->select('sqv.*, sq.question as question, sq.asked_on, sq.session_id, u.name as user_name, u.surname as user_surname')
+			->from('session_question_saved sqv')
+			->join('session_questions sq', 'sqv.question_id = sq.id', 'left')
+			->join('user u', 'sqv.user_id = u.id')
+			->where('sq.session_id', $session_id)
+			->where('sqv.user_id', $this->user->user_id)
+			->where('saved_status', '1')
+			->order_by('sq.asked_on', 'asc')
+			->get();
+
+		if($saved_question->num_rows() > 0){
+			return array('status'=>'success', 'data'=>$saved_question->result());
+		}else{
+			return array('status'=>'empty', 'data'=>$saved_question->result());
+		}
 	}
 
 }
