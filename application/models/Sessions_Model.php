@@ -651,7 +651,8 @@ class Sessions_Model extends CI_Model
 			'asked_on' => date('Y-m-d H:i:s')
 		);
 		$this->db->insert('session_questions', $question);
-		return ($this->db->affected_rows() > 0) ? array('status'=>'success'):array('status'=>'failed');
+		$insert_id = $this->db->insert_id();
+		return ($this->db->affected_rows() > 0) ? array('status'=>'success', 'data'=>$insert_id):array('status'=>'failed');
 	}
 
 	public function getCredits($session_id)
@@ -814,11 +815,18 @@ class Sessions_Model extends CI_Model
 
 	public function getQuestions($session_id)
 	{
-		$this->db->select("sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id");
-		$this->db->from('session_questions sq');
-		$this->db->join('user u', 'sq.user_id = u.id');
-		$this->db->where('sq.session_id', $session_id);
-		$polls = $this->db->get();
+		$sql = "SELECT sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id FROM `session_questions` sq left join user u on sq.user_id = u.id where sq.session_id  = $session_id AND sq.id not In (SELECT question_id FROM session_question_stash ) or sq.id IN (SELECT question_id FROM session_question_stash where hidden != 1)";
+//		$this->db->select("sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id");
+//		$this->db->from('session_questions sq');
+//		$this->db->join('user u', 'sq.user_id = u.id');
+//		$this->db->join('session_question_stash sqs', 'sq.id = sqs.question_id', 'left');
+//		$this->db->where('sq.session_id', $session_id);
+//		$this->db->group_start();
+//		$this->db->where('sqs.id', NULL);
+//		$this->db->or_where('sqs.id', !=1);
+//		$this->db->group_end();
+//		$polls = $this->db->get();
+		$polls = $this->db->query($sql);
 		if ($polls->num_rows() > 0)
 			return $polls->result();
 
@@ -878,7 +886,7 @@ class Sessions_Model extends CI_Model
 
 	function getAttendeeChatsAjax(){
 		$post = $this->input->post();
-		$chats = $this->db->select('adc.*, u.name as first_name, u.surname as last_name')
+		$chats = $this->db->select('adc.*, u.name as first_name, u.surname as last_name, DATE_FORMAT(date_time, "%Y-%M-%d %H:%i") as date_time')
 			->from('attendee_direct_chat adc')
 			->join('user u', 'adc.from_id = u.id')
 			->where('session_id', $post['session_id'])
@@ -886,6 +894,7 @@ class Sessions_Model extends CI_Model
 			->where('from_id', $post['sender_id'])
 			->or_where('to_id', $post['sender_id'])
 			->group_end()
+			->order_by('date_time', 'asc')
 			->get();
 
 		if($chats->num_rows()>0){
@@ -935,10 +944,11 @@ class Sessions_Model extends CI_Model
 	}
 
 	function getSavedQuestions($session_id){
-		$saved_question = $this->db->select('sqv.*, sq.question as question, sq.asked_on, sq.session_id, u.name as user_name, u.surname as user_surname')
+		$saved_question = $this->db->select('sqv.*, us.id as user_id, sq.question as question, sq.asked_on, sq.session_id, u.name as user_name, u.surname as user_surname, us.name as q_from_name , us.surname as q_from_surname')
 			->from('session_question_saved sqv')
 			->join('session_questions sq', 'sqv.question_id = sq.id', 'left')
 			->join('user u', 'sqv.user_id = u.id')
+			->join('user us', 'sq.user_id = us.id')
 			->where('sq.session_id', $session_id)
 			->where('sqv.user_id', $this->user->user_id)
 			->where('saved_status', '1')
@@ -949,6 +959,32 @@ class Sessions_Model extends CI_Model
 			return array('status'=>'success', 'data'=>$saved_question->result());
 		}else{
 			return array('status'=>'empty', 'data'=>$saved_question->result());
+		}
+	}
+
+	function hideQuestionAjax(){
+		$field_set = array(
+			'question_id'=>$this->input->post('question_id'),
+			'user_id'=>$this->user->user_id,
+			'hidden'=>'1',
+			'date_time'=>date('Y-m-d H:i:s')
+		);
+
+		$result = $this->db->select('*')
+			->from('session_question_stash')
+			->where('user_id', $this->user->user_id)
+			->where('question_id', $this->input->post('question_id'))
+			->get();
+
+		if ($result->num_rows()>0){
+			$this->db->update('session_question_stash', $field_set);
+		}else
+			$this->db->insert('session_question_stash', $field_set);
+
+		if($this->db->affected_rows() > 0){
+			return array('status'=>'success', 'msg'=>'Question hidden');
+		}else{
+			return array('status'=>'error', 'msg'=>'Sorry something went wrong');
 		}
 	}
 

@@ -327,14 +327,16 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					},
 						function (response) {
 							response = JSON.parse(response);
-							console.log(response);
+							console.log(response.data);
 							if (response.status == 'success') {
 								socket.emit("ycl_session_question", {
 									sessionId:sessionId,
 									question:question,
 									sender_name: attendee_Fname,
 									sender_surname: attendee_Lname,
-									sender_id: uid
+									sender_id: uid,
+									question_id : (response.data)?response.data:''
+
 								});
 
 								$('#questionText').val('');
