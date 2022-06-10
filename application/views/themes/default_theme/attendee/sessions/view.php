@@ -257,6 +257,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/common/sessions/attendee_to_admin_chat.js?v=<?=rand()?>"></script>
 
 <script type="application/javascript">
+	let projectId = "<?=$this->project->id?>";
 	let sessionId = "<?=$session->id?>";
 	var note_page = 1;
    	let attendee_Fname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'] ?>";
@@ -559,5 +560,10 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		audio1.pause();
 		audio1.currentTime = 0;
 	}
+
+	/** Live user count **/
+	$(function () {
+		socket.emit(`ycl_session_active_users`, `${projectId}_${sessionId}`);
+	});
 
 </script>

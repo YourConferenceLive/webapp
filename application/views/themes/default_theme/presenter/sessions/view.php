@@ -303,6 +303,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	let controllerPath = project_presenter_url;
 
+	let projectId = "<?=$this->project->id?>";
 	let session_id = "<?=$session->id?>";
 
 	let user_id = "<?=$user->user_id?>";
@@ -327,7 +328,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		startsIn();
 		$('#presenter_timer').show();
 
-		$('#attendeesOnline').html('<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees watching this session"><i class="fas fa-eye"></i> 0</span>');
+		$('#attendeesOnline').html('<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees on this session page"><i class="fas fa-eye"></i> 0</span>');
 		$('[data-toggle="tooltip"]').tooltip();
 
 		fillQuestions();
@@ -898,6 +899,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
 	}
+
+
+	/** Live users per session **/
+	socket.emit(`ycl_session_active_users`, `${projectId}_${session_id}`);
+	socket.on(`ycl_session_active_users_count`, function (total_users) {
+		$('#attendeesOnline').html(`<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees on this session page"><i class="fas fa-eye"></i> ${total_users}</span>`);
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	/** End of live users per session **/
+
 </script>
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
 <link rel="stylesheet" href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/presenter/view_session.css" type="text/css">
