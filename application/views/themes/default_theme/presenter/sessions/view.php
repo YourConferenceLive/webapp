@@ -335,7 +335,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		fillSavedQuestions();
 
 		socket.on('ycl_session_question', function (data) {
-			console.log(data.question_id);
+			// console.log(data.question_id);
 			if (data.sessionId == session_id)
 			{
 				let question = '' +
@@ -473,6 +473,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#pollResultModal').modal('hide');
 			}
 		});
+
+		$('#starred-questions-tab').on('click', function(){
+			fillSavedQuestions();
+		})
 	});
 
 	function startsIn() {
@@ -807,7 +811,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				{
 					'question_id':question_id
 				},function(response){
-					console.log(response);
+					// console.log(response);
 				if(response){
 					fillQuestions();
 				}
@@ -861,7 +865,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	function questionListClick(sender_id, sender_name, sender_surname, question_selected, question_id)
 	{
 
-		console.log(question_id);
+		// console.log(question_id);
 		$('#sendMessagetoAttendee').attr(
 			{
 				'sender_id': sender_id,
