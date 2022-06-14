@@ -907,7 +907,7 @@ class Sessions_Model extends CI_Model
 	function getAdminChatsAjax(){
 		$post = $this->input->post();
 		$uid = $this->user->user_id;
-	$sql =	"SELECT `adc`.*, `u`.`name` as `username`, `u`.`surname` as `surname` FROM `attendee_direct_chat` `adc` LEFT JOIN `user` `u` ON  IF(`adc`.`from_id` != 'admin', adc.from_id = u.id, adc.to_id = u.id ) WHERE `session_id` = ".$post['session_id']." AND ( `to_id` = ".$uid." OR `from_id` = ".$uid." ) ORDER BY `date_time` ASC";
+		$sql =	"SELECT `adc`.*, `u`.`name` as `username`, `u`.`surname` as `surname` FROM `attendee_direct_chat` `adc` LEFT JOIN `user` `u` ON  IF(`adc`.`from_id` != 'admin', adc.from_id = u.id, adc.to_id = u.id ) WHERE `session_id` = ".$post['session_id']." AND ( `to_id` = ".$uid." OR `from_id` = ".$uid." ) ORDER BY `date_time` ASC";
 	$result = $this->db->query($sql);
 		if($result->num_rows()>0){
 			return array('status'=>'success', 'data'=>$result->result());
@@ -950,7 +950,7 @@ class Sessions_Model extends CI_Model
 			->join('user u', 'sqv.user_id = u.id')
 			->join('user us', 'sq.user_id = us.id')
 			->where('sq.session_id', $session_id)
-			->where('sqv.user_id', $this->user->user_id)
+//			->where('sqv.user_id', $this->user->user_id)
 			->where('saved_status', '1')
 			->order_by('sq.asked_on', 'asc')
 			->get();
