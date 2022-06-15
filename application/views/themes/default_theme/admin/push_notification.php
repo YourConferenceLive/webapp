@@ -89,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 <script>
-	let notification_url = "<?= $this->project_url ?>/admin/push_notification/"
+	let notification_url = "<?= $this->project_url ?>/admin/push_notification_admin/"
 	$(function(){
 		getSessions();
 
