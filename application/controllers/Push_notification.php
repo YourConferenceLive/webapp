@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Push_Notification extends CI_Controller
+class Push_notification extends CI_Controller
 {
 
 	public function __construct()
