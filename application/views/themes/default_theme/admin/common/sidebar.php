@@ -234,7 +234,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					</ul>
 				</li>
 				<li class="nav-item">
-					<a href="<?=$this->project_url.'/admin/push_notification_admin'?>" class="nav-link<?=($this->router->fetch_class()=='push_notification')?' active':''?>">
+					<a href="<?=$this->project_url.'/admin/push_notification'?>" class="nav-link<?=($this->router->fetch_class()=='push_notification')?' active':''?>">
 						<i class="nav-icon fas fa-comment-alt" aria-hidden="true"></i>
 						<p>Push Notification</p>
 					</a>
