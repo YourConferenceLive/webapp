@@ -234,6 +234,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					</ul>
 				</li>
 				<li class="nav-item">
+					<a href="<?=$this->project_url.'/admin/Push_Notification'?>" class="nav-link<?=($this->router->fetch_class()=='Push_Notification')?' active':''?>">
+						<i class="nav-icon fas fa-comment-alt" aria-hidden="true"></i>
+						<p>Push Notification</p>
+					</a>
+				</li>
+				<li class="nav-item">
 					<a href="<?=$this->project_url.'/admin/settings'?>" class="nav-link<?=($this->router->fetch_class()=='settings')?' active':''?>">
 						<i class="nav-icon fas fa fa-cog" aria-hidden="true"></i>
 						<p>Settings</p>
