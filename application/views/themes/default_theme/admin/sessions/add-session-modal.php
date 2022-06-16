@@ -1,6 +1,6 @@
 <?php
 //echo "<pre>";
-//print_r($types);
+//print_r($sessions);
 //exit("</pre>");
 ?>
 <!--Add Session Modal-->
@@ -251,7 +251,7 @@
 									<div class="form-group">
 										<label>Header Settings</label><br>
 										<div class="custom-control custom-switch">
-											<input name="header_toolbox" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->header_toolbox_status == 1)?'checked':''?> id="headerToolboxSwitch">
+											<input name="header_toolbox" type="checkbox" class="custom-control-input headerToolboxSwitch"  id="headerToolboxSwitch">
 											<label class="custom-control-label" for="headerToolboxSwitch">Header Toolbox</label>
 										</div>
 									</div>
@@ -259,17 +259,17 @@
 									<div class="form-group">
 										<label>Right Sticky Toolbox</label><br>
 										<div class="custom-control custom-switch">
-											<input name="right_sticky_notes" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->right_sticky_notes == 1)?'checked':''?> id="rightNotesSwitch">
+											<input name="right_sticky_notes" type="checkbox" class="custom-control-input rightNotesSwitch"  id="rightNotesSwitch">
 											<label class="custom-control-label" for="rightNotesSwitch">Notes</label>
 										</div>
 
 										<div class="custom-control custom-switch">
-											<input name="right_sticky_resources" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->right_sticky_resources == 1)?'checked':''?> id="rightResourcesSwitch">
+											<input name="right_sticky_resources" type="checkbox" class="custom-control-input rightResourcesSwitch"  id="rightResourcesSwitch">
 											<label class="custom-control-label" for="rightResourcesSwitch">Resources</label>
 										</div>
 
 										<div class="custom-control custom-switch">
-											<input name="right_sticky_question" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->right_sticky_question == 1)?'checked':''?> id="rightQuestionSwitch">
+											<input name="right_sticky_question" type="checkbox" class="custom-control-input rightQuestionSwitch"  id="rightQuestionSwitch">
 											<label class="custom-control-label" for="rightQuestionSwitch">Question</label>
 										</div>
 									</div>
