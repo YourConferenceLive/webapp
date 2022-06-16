@@ -133,7 +133,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 			$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
 				session = JSON.parse(session);
-				console.log(session);
 
 				$('#sessionId').val(session.id);
 				$('#sessionName').val(session.name);
