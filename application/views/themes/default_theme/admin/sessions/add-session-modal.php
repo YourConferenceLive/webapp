@@ -255,6 +255,25 @@
 											<label class="custom-control-label" for="headerToolboxSwitch">Header Toolbox</label>
 										</div>
 									</div>
+
+									<div class="form-group">
+										<label>Right Sticky Toolbox</label><br>
+										<div class="custom-control custom-switch">
+											<input name="right_sticky_notes" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->right_sticky_notes == 1)?'checked':''?> id="rightNotesSwitch">
+											<label class="custom-control-label" for="rightNotesSwitch">Notes</label>
+										</div>
+
+										<div class="custom-control custom-switch">
+											<input name="right_sticky_resources" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->right_sticky_resources == 1)?'checked':''?> id="rightResourcesSwitch">
+											<label class="custom-control-label" for="rightResourcesSwitch">Resources</label>
+										</div>
+
+										<div class="custom-control custom-switch">
+											<input name="right_sticky_question" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->right_sticky_question == 1)?'checked':''?> id="rightQuestionSwitch">
+											<label class="custom-control-label" for="rightQuestionSwitch">Question</label>
+										</div>
+									</div>
+
 								</div>
 
 							</div>

@@ -32,10 +32,16 @@ body{overflow: hidden;background-color: #151515;}
 <!--bizim-->
 <div class="rightSticky" data-screen="customer" >
 	<ul>
+		<?php if(isset($session->right_sticky_notes) && $session->right_sticky_notes == 1):?>
 		<li data-type="notesSticky" id="notesSticky"  style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
+		<?php endif; ?>
+		<?php if(isset($session->right_sticky_resources) && $session->right_sticky_resources == 1):?>
 		<li data-type="resourcesSticky" id="resourcesSticky"  style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
+		<?php endif; ?>
 		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
+		<?php if(isset($session->right_sticky_question) && $session->right_sticky_question == 1):?>
 		<li data-type="questionsSticky" id="questionsSticky"  style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
+		<?php endif; ?>
 		<li data-type="adminChatSticky" id="adminChatStickyIcon"  style="display:none; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
 	</ul>
 </div>

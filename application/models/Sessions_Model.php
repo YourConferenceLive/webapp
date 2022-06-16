@@ -267,6 +267,9 @@ class Sessions_Model extends CI_Model
 			'created_by' => $this->user->user_id,
 			'created_on' => date('Y-m-d H:i:s'),
 			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
+			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
+			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
+			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
 		);
 
 		$this->db->insert('sessions', $data);
@@ -377,6 +380,9 @@ class Sessions_Model extends CI_Model
 			'updated_by' => $this->user->user_id,
 			'updated_on' => date('Y-m-d H:i:s'),
 			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
+			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
+			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
+			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
 		);
 
 		if ($session_photo != '')
