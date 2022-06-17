@@ -215,7 +215,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				}
 
 				$("#sessionEndText").summernote("code", session.session_end_text);
-				if (session.session_end_image != '') {
+				if (session.session_end_image != '' && session.session_end_image !== null) {
 					$('#currentSessionEndImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/'+session.session_end_image);
 					$('#currentSessionEndImage').show();
 				}else{
