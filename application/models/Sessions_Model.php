@@ -411,9 +411,11 @@ class Sessions_Model extends CI_Model
 			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
 			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
 			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
-			'session_end_image' => $session_end_image,
 		);
 
+		if($session_end_image != '' && $session_end_image != null){
+			$data['session_end_image'] = $session_end_image;
+		}
 		if ($session_photo != '')
 			$data['thumbnail'] = $session_photo;
 
