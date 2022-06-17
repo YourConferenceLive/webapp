@@ -214,6 +214,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					$('#rightQuestionSwitch').attr('checked','checked')
 				}
 
+				$("#sessionEndText").summernote("code", session.session_end_text);
+				if (session.session_end_image != '') {
+					$('#currentSessionEndImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/'+session.session_end_image);
+					$('#currentSessionEndImage').show();
+				}else{
+					$('#currentSessionEndImage').hide();
+				}
+
+
 				$('#save-session').html('<i class="fas fa-save"></i> Save');
 
 				Swal.close();
