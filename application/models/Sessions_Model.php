@@ -227,9 +227,12 @@ class Sessions_Model extends CI_Model
 	public function add()
 	{
 		$session_data = $this->input->post();
-
+//		print_r(trim($session_data['sessionEndText']));
+//		print_r($_FILES['sessionEndImage']);
+//		exit;
 		// Upload session photo if set
 		$session_photo = '';
+		$session_end_image = '';
 		if (isset($_FILES['sessionPhoto']) && $_FILES['sessionPhoto']['name'] != '')
 		{
 			$photo_config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -239,6 +242,17 @@ class Sessions_Model extends CI_Model
 			$this->load->library('upload', $photo_config);
 			if ( ! $this->upload->do_upload('sessionPhoto'))
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session photo', 'technical_data'=>$this->upload->display_errors());
+		}
+
+		if (isset($_FILES['sessionEndImage']) && $_FILES['sessionEndImage']['name'] != '')
+		{
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['file_name'] = $session_end_image = rand().'_'.str_replace(' ', '_', $_FILES['sessionEndImage']['name']);
+			$config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/images/';
+
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('sessionEndImage'))
+				return array('status' => 'failed', 'msg'=>'Unable to upload the session end image', 'technical_data'=>$this->upload->display_errors());
 		}
 
 		$start_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['startDateTime']);
@@ -270,6 +284,8 @@ class Sessions_Model extends CI_Model
 			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
 			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
 			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
+			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
+			'session_end_image' => $session_end_image,
 		);
 
 		$this->db->insert('sessions', $data);
@@ -344,6 +360,7 @@ class Sessions_Model extends CI_Model
 
 		// Upload session photo if set
 		$session_photo = '';
+		$session_end_image = '';
 		if (isset($_FILES['sessionPhoto']) && $_FILES['sessionPhoto']['name'] != '')
 		{
 			$photo_config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -355,6 +372,16 @@ class Sessions_Model extends CI_Model
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session photo', 'technical_data'=>$this->upload->display_errors());
 		}
 
+		if (isset($_FILES['sessionEndImage']) && $_FILES['sessionEndImage']['name'] != '')
+		{
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['file_name'] = $session_end_image = rand().'_'.str_replace(' ', '_', $_FILES['sessionEndImage']['name']);
+			$config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/images/';
+
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('sessionEndImage'))
+				return array('status' => 'failed', 'msg'=>'Unable to upload the session end image', 'technical_data'=>$this->upload->display_errors());
+		}
 		$start_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['startDateTime']);
 		$start_time_mysql = $start_time_object->format('Y-m-d H:i:s');
 
@@ -383,6 +410,8 @@ class Sessions_Model extends CI_Model
 			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
 			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
 			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
+			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
+			'session_end_image' => $session_end_image,
 		);
 
 		if ($session_photo != '')

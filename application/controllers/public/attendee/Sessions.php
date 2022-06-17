@@ -69,6 +69,12 @@ class Sessions extends CI_Controller
 		$this->claimCredit($session_id, $this->sessions->getCredits($session_id));
 
 		$session_data = $this->sessions->getById($session_id);
+//		print_r($session_data);exit;
+
+		if (date("Y-m-d H:i:s") > date("Y-m-d H:i:s", strtotime( $session_data->end_date_time)) ) {
+			header("location:" . $this->project_url. "/sessions/session_end/".$session_id);
+			die();
+		}
 
 		$data['user'] 		= $this->user;
 		$data['session_id'] = $session_id;
@@ -151,5 +157,19 @@ class Sessions extends CI_Controller
 
 	public function getAdminChatsAjax(){
 		echo json_encode($this->sessions->getAdminChatsAjax());
+	}
+
+	public function session_end($session_id){
+		$data['session'] = $this->sessions->getById($session_id);
+		$data['user'] 		= $this->user;
+		$data['session_id'] = $session_id;
+		$data['notes'] 		= $this->note->getAll('session', $data['session_id'], $this->user['user_id']);
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/session_end", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data);
 	}
 }

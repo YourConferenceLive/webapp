@@ -274,6 +274,31 @@
 										</div>
 									</div>
 
+									<div class="form-group">
+										<label>Session End</label><br>
+										<ul style="list-style: none">
+											<li>
+												<div class="form-group">
+													<label for="sessionEndText">Text</label>
+													<textarea class="form-control" id="sessionEndText" name="sessionEndText" placeholder="Session Ended"></textarea>
+												</div>
+											</li>
+											<li>
+												<div class="form-group">
+													<label for="sessionEndImage">Image</label>
+													<input type="file" accept="image/*" class="form-control" id="sessionEndImage" name="sessionEndImage" placeholder="Session Ended">
+												</div>
+												<div class="form-group" id="currentSessionEndImage" style="display: none;">
+													<label for=""><small>Current Session End Image</small></label>
+													<br>
+													<img id="currentSessionEndImg" src="" width="200px">
+												</div>
+											</li>
+										</ul>
+
+
+									</div>
+
 								</div>
 
 							</div>
@@ -320,6 +345,25 @@
 <script>
 
 	$(function () {
+
+		$('#sessionEndText').summernote({
+			dialogsInBody: true,
+			placeholder: $('#sessionEndText').attr('placeholder'),
+			height: 100,
+			toolbar:
+				[
+					["history", ["undo", "redo"]],
+					["style", ["style"]],
+					["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+					['fontsize', ['fontsize']],
+					["color", ["color"]],
+					["paragraph", ["ul", "ol", "paragraph", "height"]],
+					["table", ["table"]],
+					["insert", ["link", "resizedDataImage", "picture", "video"]],
+					["view", ["codeview"] ]
+				],
+			fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
+		});
 
 		$('#presenterBadge').css('background-color', access_color_codes['presenter']);
 		$('#presenterBadge').html('<i class="'+access_icons['presenter']+'"></i> Presenter');
