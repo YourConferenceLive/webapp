@@ -71,12 +71,21 @@ class Push_Notification_Model extends CI_Model
 
 	function send_notification($pid) {
 		$this->db->update('push_notification', array('status' => 0, 'project_id'=>$this->project->id));
-		$this->db->update('push_notification', array('status' => 1), array('id' => $pid, 'project_id'=>$this->project->id));
-		if($this->db->affected_rows() > 0)
+		$result = $this->db->update('push_notification', array('status' => 1), array('id' => $pid, 'project_id'=>$this->project->id));
+		if($result > 0)
 			return array('status'=>'success');
 		else
 			return array('status'=>'error');
-
 	}
+
+	function close_notification($pid)
+	{
+		$result = $this->db->update('push_notification', array('status' => 0), array('id' => $pid, 'project_id' => $this->project->id));
+		if ($result > 0)
+			return array('status' => 'success');
+		else
+			return array('status' => 'error');
+	}
+
 }
 

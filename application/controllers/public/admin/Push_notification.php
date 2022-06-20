@@ -43,4 +43,8 @@ class Push_notification extends CI_Controller
 	public function send_notification($pid){
 		echo json_encode($this->m_push_notification->send_notification($pid));
 	}
+
+	public function close_notification($pid){
+		echo json_encode($this->m_push_notification->close_notification($pid));
+	}
 }

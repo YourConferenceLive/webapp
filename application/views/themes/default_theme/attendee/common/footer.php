@@ -35,8 +35,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(function(){
 		push_notification();
-		socket.on('push_notification_change', function(){
-			push_notification();
+		socket.on('push_notification_change', function(data){
+			if(data.project_id == <?= $this->project->id ?>){
+				push_notification();
+			}
 		})
 	})
 

@@ -128,21 +128,63 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		getAllPushNotifications();
 
 		$('.push_notification_table_body').on('click', '.sendNotificationBtn', function(){
-			let session_id = $(this).attr('session_id')
 			let project_id = $(this).attr('project_id')
-			let notify_to = $(this).attr('notify_to')
-			let message = $(this).attr('message')
 			let notification_id = $(this).attr('notification_id')
-			$.post(notification_url+'send_notification/'+notification_id,
+			$('.sendNotificationBtn').prop('disabled', true);
+			$(this).hide();
+			$this = $(this);
+
+			$.post(notification_url+'send_notification/'+ notification_id,
 				function(response){
-				console.log(response);
-					socket.emit('send_push_notification', {
-						'notification_id':notification_id
+
+					let timerInterval
+					Swal.fire({
+						title: 'Auto close alert!',
+						html: 'Sending Notification Please Wait...',
+						timer: 3000,
+						timerProgressBar: true,
+						didOpen: () => {
+							Swal.showLoading()
+							const b = Swal.getHtmlContainer().querySelector('b')
+							timerInterval = setInterval(() => {
+								b.textContent = Swal.getTimerLeft()
+							}, 100)
+						},
+						willClose: () => {
+							clearInterval(timerInterval)
+						}
+					}).then((result) => {
+						/* Read more about handling dismissals below */
+						if (result.dismiss === Swal.DismissReason.timer) {
+							console.log('Notification updated')
+						}
 					})
+
+					socket.emit('send_push_notification', {
+						'project_id': project_id
+					})
+
+					var delayInMilliseconds = 3000; //1 second
+					setTimeout(function () {
+						console.log('time');
+						socket.emit('close_push_notification', project_id);
+						$.ajax({
+							url: notification_url+'close_notification/'+ notification_id,
+							type: "post",
+							dataType: "json",
+							success: function (response) {
+								cr_data = response;
+								console.log(cr_data);
+								if (cr_data.status == "success")
+								{
+									$this.show();
+									$('.sendNotificationBtn').prop('disabled', false);
+								}
+								$('.sendNotificationBtn').prop('disabled', false);
+							}
+						});
+					}, delayInMilliseconds);
 				},'json')
-
-
-
 		})
 	})
 
