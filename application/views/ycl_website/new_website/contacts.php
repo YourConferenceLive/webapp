@@ -151,7 +151,7 @@
 				<span id="contact-email-error" style="color:red"></span>
             </div>
             <div class="form-wrap form-wrap_icon"><span class="icon novi-icon linear-icon-telephone"></span>
-              <input class="form-input" id="contact-phone" type="text" name="phone" placeholder="Your phone" >
+              <input class="form-input" id="contact-phone" type="text" name="phone" placeholder="Your phone" required>
 				<span id="contact-phone-error" style="color:red"></span>
             </div>
             <div class="form-wrap form-wrap_icon"><span class="icon novi-icon linear-icon-feather"></span>

@@ -23,11 +23,10 @@ $(function () {
 			$('#contact-email-error').text("Please Enter Valid Email").fadeIn('slow').fadeOut(5000);
 			return false;
 		}
-		// else if (phone == '') {
-		// 	$('#contact-phone-error').text("Please Enter Phone").fadeIn('slow').fadeOut(5000);
-		// 	return false;
-		// }
-		else if (message == '') {
+		else if (phone == '') {
+			$('#contact-phone-error').text("Please Enter Phone").fadeIn('slow').fadeOut(5000);
+			return false;
+		} else if (message == '') {
 			$('#contact-message-error').text("Please Enter Message").fadeIn('slow').fadeOut(5000);
 			return false;
 		}
