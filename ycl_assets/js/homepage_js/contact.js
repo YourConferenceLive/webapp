@@ -23,14 +23,14 @@ $(function () {
 			$('#contact-email-error').text("Please Enter Valid Email").fadeIn('slow').fadeOut(5000);
 			return false;
 		}
-		else if (phone == '') {
-			$('#contact-phone-error').text("Please Enter Phone").fadeIn('slow').fadeOut(5000);
-			return false;
-		}
-		// else if (message == '') {
-		// 	$('#contact-message-error').text("Please Enter Message").fadeIn('slow').fadeOut(5000);
+		// else if (phone == '') {
+		// 	$('#contact-phone-error').text("Please Enter Phone").fadeIn('slow').fadeOut(5000);
 		// 	return false;
 		// }
+		else if (message == '') {
+			$('#contact-message-error').text("Please Enter Message").fadeIn('slow').fadeOut(5000);
+			return false;
+		}
 		else if (response.length == 0) {
 			$("#errorcaptcha").text("Please check captcha").fadeIn('slow').fadeOut(5000);
 			return false;
