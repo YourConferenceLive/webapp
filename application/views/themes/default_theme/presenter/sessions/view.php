@@ -281,7 +281,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12 mb-2">
+			<div class="col-md-12 mb-2" style="height:300px">
+				<div style="height:30px"> <span class="typing-icon" style="display:none">Someone is typing <span style="" class="dot-flashing"></span></span>
+				</div>
 				<div class="input-group">
 					<input id="chatToAttendeeText" type="text" class="form-control" placeholder="Enter your message">
 					<span class="input-group-btn">
@@ -301,6 +303,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	let controllerPath = project_presenter_url;
 
+	let projectId = "<?=$this->project->id?>";
 	let session_id = "<?=$session->id?>";
 
 	let user_id = "<?=$user->user_id?>";
@@ -325,13 +328,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		startsIn();
 		$('#presenter_timer').show();
 
-		$('#attendeesOnline').html('<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees watching this session"><i class="fas fa-eye"></i> 0</span>');
+		$('#attendeesOnline').html('<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees on this session page"><i class="fas fa-eye"></i> 0</span>');
 		$('[data-toggle="tooltip"]').tooltip();
 
 		fillQuestions();
+		fillSavedQuestions();
 
 		socket.on('ycl_session_question', function (data) {
-			// console.log(data);
+			// console.log(data.question_id);
 			if (data.sessionId == session_id)
 			{
 				let question = '' +
@@ -350,7 +354,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'</div>' +
-						'<div class="row"><a class="questionList" href="#" style="cursor:pointer" question="'+data.question+'" sender_id="'+data.sender_id+'" sender_name="'+data.sender_name+'" sender_surname="'+data.sender_surname+'">' +
+						'<div class="row"><a class="questionList" href="#" style="cursor:pointer" question-id="'+data.question_id+'" question="'+data.question+'" sender_id="'+data.sender_id+'" sender_name="'+data.sender_name+'" sender_surname="'+data.sender_surname+'">' +
 						'<div class="col-12">'+data.sender_name+' '+ data.sender_surname+'</div>' +
 						'<div class="col-12">'+data.question+'</div>' +
 						'</div></a>' +
@@ -469,6 +473,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$('#pollResultModal').modal('hide');
 			}
 		});
+
+		$('#starred-questions-tab').on('click', function(){
+			fillSavedQuestions();
+		})
 	});
 
 	function startsIn() {
@@ -617,7 +625,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#questions-tab-content').html('');
 			$.each(questions, function (poll_id, question) {
-				// console.log(question)
+				console.log(question)
 				$('#questions-tab-content').prepend('' +
 						'<div class="container-fluid mr-2">' +
 						'<div class="row" style="padding-right: 15px">' +
@@ -628,14 +636,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<small class="text-secondary"></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary hide-question" id="hide-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary save-question" id="save-question-'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'</div>' +
 						'<div class="row">' +
-						'<div class="col-12"><a class="questionList" href="#" style="cursor:pointer" question="'+question.question+'" session_id="'+session_id+'" sender_id="'+question.user_id+'" sender_name="'+question.user_name+'" sender_surname="'+question.user_surname+'">'+question.user_name+' '+ question.user_surname+'</a></div>' +
+						'<div class="col-12"><a class="questionList" href="#" style="cursor:pointer" question-id="'+question.id+'" question="'+question.question+'" session_id="'+session_id+'" sender_id="'+question.user_id+'" sender_name="'+question.user_name+'" sender_surname="'+question.user_surname+'">'+question.user_name+' '+ question.user_surname+'</a></div>' +
 						'<div class="col-12">'+question.question+'</div>' +
 						'</div>' +
 						'<div class="col"><hr></div>');
@@ -644,6 +652,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
+	function fillSavedQuestions() {
+		$.get(project_presenter_url+"/sessions/getSavedQuestions/"+session_id, function (questions) {
+			questions = JSON.parse(questions);
+			// console.log(questions)
+			$('#starred-questions-tab-content').html('');
+			$.each(questions.data, function (poll_id, question) {
+				// console.log(question)
+				$('#starred-questions-tab-content').prepend('' +
+					'<div class="container-fluid mr-2">' +
+					'<div class="row" style="padding-right: 15px">' +
+					'<div class="col-7">' +
+					'<strong></strong>' +
+					'</div>' +
+					'<div class="col-3">' +
+					'<small class="text-secondary"></small>' +
+					'</div>' +
+					'<div class="col-1">' +
+					'<small class="text-secondary hide-saved-question" id="hide-saved-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+					'</div>' +
+					// '<div class="col-1">' +
+					// '<small class="text-secondary save-question" id="'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+					// '</div>' +
+					'</div>' +
+					'<div class="row">' +
+					'<div class="col-12"><a class="questionList" href="#" style="cursor:pointer" question-id="'+question.id+'" question="'+question.question+'" session_id="'+session_id+'" sender_id="'+question.user_id+'" sender_name="'+question.q_from_name+'" sender_surname="'+question.q_from_surname+'" >'+question.q_from_name+' '+ question.q_from_surname+'</a></div>' +
+					'<div class="col-12">'+question.question+'</div>' +
+					'</div>' +
+					'<div class="col"><hr></div>');
+			});
+
+		});
+	}
 </script>
 <script>
 	$(function(){
@@ -665,42 +705,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let sender_name = $(this).attr('sender_name');
 			let sender_surname = $(this).attr('sender_surname');
 			let question_selected = $(this).attr('question');
+			let question_id = $(this).attr('question-id');
 
-			// console.log(question_selected);
-			$('#sendMessagetoAttendee').attr(
-				{
-					'sender_id': sender_id,
-					'sender_name': sender_name,
-					'sender_surname': sender_surname
-				});
+			questionListClick(sender_id,sender_name,sender_surname,question_selected, question_id)
+		})
 
-			$.post(project_presenter_url+'/sessions/getAttendeeChatsAjax/',
-				{
-					'sender_id': sender_id,
-					'session_id': session_id
-				}, function(response){
-					response = JSON.parse(response)
-					$('#attendeeChatModalBody').html();
-					if(response.status == 'success'){
-						$('#attendeeChatModalBody').html('');
-						$.each(response.chats, function(i, chat){
-							// console.log(chat);
+		$('#starred-questions-tab-content').on('click','.questionList', function(e){
+			e.preventDefault();
 
-							if(chat.sent_from == 'attendee'){
-								$('#attendeeChatModalBody').append('<span class="attendee-to-admin-chat btn btn-primary ml-2 my-1" style="width:90%"><span style="float: left; margin-right:5px"><strong>'+chat.first_name+' '+chat.last_name+': </strong>'+chat.chats+'</span></span>')
-							}else{
-								$('#attendeeChatModalBody').append('<span class="admin-to-attendee-chat btn btn-warning float-right mr-2 my-1" style="width:90%"><span style="float: right; text-right margin-left:5px"><strong>'+chat.first_name+' '+chat.last_name+': </strong>'+chat.chats+'</span></span>')
-								}
-							})
-					}
-				})
+			let sender_id = $(this).attr('sender_id');
+			let sender_name = $(this).attr('sender_name');
+			let sender_surname = $(this).attr('sender_surname');
+			let question_selected = $(this).attr('question');
 
+			questionListClick(sender_id,sender_name,sender_surname,question_selected)
+		})
 
-			$('#attendeeChatModalLabel').html('Chat With: '+sender_name+' '+sender_surname)
-			$('#chattAttendeeQuestion').html(question_selected);
-			$('#attendeeChatModal').modal('show');
+		$('#chatToAttendeeText').on('input', function(){
+			let question_id = $(this).attr('question-id');
+			socket.emit('typing-attendee-admin-chat',{
+				'userType': 'presenter',
+				'user_id': user_id,
+				'project_id': project_id,
+				'question_id': question_id,
+			})
+		})
 
-			$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
+		socket.on('typing-attendee-admin-chat-notification', function(data){
+			// console.log($('#attendeeChatModal').attr('question-id'));
+			if(data.user_id !== user_id && data.project_id === project_id){
+				// console.log(data.question_id);
+				if(data.question_id == $('#attendeeChatModal').attr('question-id')){
+					let timeout = 1000;
+					$('.typing-icon').css('display', 'block')
+					setTimeout(function () {
+						$('.typing-icon').css('display', 'none')
+					}, timeout);
+				}
+
+			}
 		})
 
 		$('#sendMessagetoAttendee').on('click', function(){
@@ -746,12 +789,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					}
 				}
 		});
+
+		$('#questions-tab-content').on('click', '.save-question', function(){
+			let question_id = $(this).attr('question-id');
+
+			$.post(project_presenter_url+'/sessions/saveQuestionAjax/',
+				{
+					'question_id':question_id
+				},function(response){
+				if(response){
+					fillSavedQuestions();
+				}
+					// console.log(response);
+			})
+		})
+
+		$('#questions-tab-content').on('click', '.hide-question', function(){
+			let question_id = $(this).attr('question-id');
+
+			$.post(project_presenter_url+'/sessions/hideQuestionAjax/',
+				{
+					'question_id':question_id
+				},function(response){
+					// console.log(response);
+				if(response){
+					fillQuestions();
+				}
+				})
+		})
+
 	})
 
-	function attendeeChatPopup(attendee_id, attendee_name, attendee_question){
+	function attendeeChatPopup(attendee_id, attendee_name, attendee_question, question_id){
 
 		$('#attendeeChatModalLabel').html("Chat With: "+attendee_name);
 		$('#chattAttendeeQuestion').text(attendee_question);
+		$('#chattAttendeeQuestion').attr('question-id', question_id)
 		$('#sendMessagetoAttendee').attr('sender_id', attendee_id);
 		$('#endChatBtn').attr('userId', attendee_id);
 
@@ -788,6 +861,58 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#attendeeChatModal').modal('show');
 		$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight + 100);
 	}
+
+	function questionListClick(sender_id, sender_name, sender_surname, question_selected, question_id)
+	{
+
+		// console.log(question_id);
+		$('#sendMessagetoAttendee').attr(
+			{
+				'sender_id': sender_id,
+				'sender_name': sender_name,
+				'sender_surname': sender_surname
+			});
+		$('#chatToAttendeeText').attr('question-id', question_id)
+
+		$.post(project_presenter_url+'/sessions/getAttendeeChatsAjax/',
+			{
+				'sender_id': sender_id,
+				'session_id': session_id
+			}, function(response){
+				response = JSON.parse(response)
+				$('#attendeeChatModalBody').html('');
+				if(response.status == 'success'){
+					$('#attendeeChatModalBody').html('');
+					$.each(response.chats, function(i, chat){
+						// console.log(chat);
+
+						if(chat.sent_from == 'attendee'){
+							$('#attendeeChatModalBody').append('<span class="attendee-to-admin-chat btn btn-primary ml-2 my-1" style="width:90%"><span style="float: left; margin-right:5px"><strong>'+chat.first_name+' '+chat.last_name+': </strong>'+chat.chats+'</span></span><br><span class="float-right" style="margin-right:73px; margin-top: -8px">'+chat.date_time+'</span><br>')
+						}else{
+							$('#attendeeChatModalBody').append('<span class="admin-to-attendee-chat btn btn-warning float-right mr-2 my-1" style="width:90%"><span style="float: right; text-right margin-left:5px"><strong>'+chat.first_name+' '+chat.last_name+': </strong>'+chat.chats+'</span></span><br><span class="float-left" style="margin-left:73px; margin-top: -8px; margin-bottom:20px">'+chat.date_time+'</span><br><br>')
+						}
+					})
+				}
+			})
+
+
+		$('#attendeeChatModalLabel').html('Chat With: '+sender_name+' '+sender_surname)
+		$('#chattAttendeeQuestion').html(question_selected);
+		$('#attendeeChatModal').attr('question-id', question_id)
+		$('#attendeeChatModal').modal('show');
+
+		$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
+	}
+
+
+	/** Live users per session **/
+	socket.emit(`ycl_session_active_users`, `${projectId}_${session_id}`);
+	socket.on(`ycl_session_active_users_count`, function (total_users) {
+		$('#attendeesOnline').html(`<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees on this session page"><i class="fas fa-eye"></i> ${total_users}</span>`);
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	/** End of live users per session **/
+
 </script>
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
 <link rel="stylesheet" href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/presenter/view_session.css" type="text/css">

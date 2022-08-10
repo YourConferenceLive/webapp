@@ -133,7 +133,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 			$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
 				session = JSON.parse(session);
-
+				console.log(session);
 				$('#sessionId').val(session.id);
 				$('#sessionName').val(session.name);
 				$('#sessionNameOther').val(session.other_language_name);
@@ -204,6 +204,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				if(session.header_toolbox_status == 1){
 					$('#headerToolboxSwitch').attr('checked','checked')
 				}
+				if(session.right_sticky_notes == 1){
+					$('#rightNotesSwitch').attr('checked','checked')
+				}
+				if(session.right_sticky_resources == 1){
+					$('#rightResourcesSwitch').attr('checked','checked')
+				}
+				if(session.right_sticky_question == 1){
+					$('#rightQuestionSwitch').attr('checked','checked')
+				}
+
+				$("#sessionEndText").summernote("code", session.session_end_text);
+				if (session.session_end_image != '' && session.session_end_image !== null) {
+					$('#currentSessionEndImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/'+session.session_end_image);
+					$('#currentSessionEndImage').show();
+				}else{
+					$('#currentSessionEndImage').hide();
+				}
+
 
 				$('#save-session').html('<i class="fas fa-save"></i> Save');
 

@@ -1,6 +1,6 @@
 <?php
 //echo "<pre>";
-//print_r($types);
+//print_r($sessions);
 //exit("</pre>");
 ?>
 <!--Add Session Modal-->
@@ -251,10 +251,54 @@
 									<div class="form-group">
 										<label>Header Settings</label><br>
 										<div class="custom-control custom-switch">
-											<input name="header_toolbox" type="checkbox" class="custom-control-input" <?=(isset($settings) && !empty($settings) && $settings[0]->header_toolbox_status == 1)?'checked':''?> id="headerToolboxSwitch">
+											<input name="header_toolbox" type="checkbox" class="custom-control-input headerToolboxSwitch"  id="headerToolboxSwitch">
 											<label class="custom-control-label" for="headerToolboxSwitch">Header Toolbox</label>
 										</div>
 									</div>
+
+									<div class="form-group">
+										<label>Right Sticky Toolbox</label><br>
+										<div class="custom-control custom-switch">
+											<input name="right_sticky_notes" type="checkbox" class="custom-control-input rightNotesSwitch"  id="rightNotesSwitch">
+											<label class="custom-control-label" for="rightNotesSwitch">Notes</label>
+										</div>
+
+										<div class="custom-control custom-switch">
+											<input name="right_sticky_resources" type="checkbox" class="custom-control-input rightResourcesSwitch"  id="rightResourcesSwitch">
+											<label class="custom-control-label" for="rightResourcesSwitch">Resources</label>
+										</div>
+
+										<div class="custom-control custom-switch">
+											<input name="right_sticky_question" type="checkbox" class="custom-control-input rightQuestionSwitch"  id="rightQuestionSwitch">
+											<label class="custom-control-label" for="rightQuestionSwitch">Question</label>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label>Session End</label><br>
+										<ul style="list-style: none">
+											<li>
+												<div class="form-group">
+													<label for="sessionEndText">Text</label>
+													<textarea class="form-control" id="sessionEndText" name="sessionEndText" placeholder="Session Ended"></textarea>
+												</div>
+											</li>
+											<li>
+												<div class="form-group">
+													<label for="sessionEndImage">Image</label>
+													<input type="file" accept="image/*" class="form-control" id="sessionEndImage" name="sessionEndImage" placeholder="Session Ended">
+												</div>
+												<div class="form-group" id="currentSessionEndImage" style="display: none;">
+													<label for=""><small>Current Session End Image</small></label>
+													<br>
+													<img id="currentSessionEndImg" src="" width="200px">
+												</div>
+											</li>
+										</ul>
+
+
+									</div>
+
 								</div>
 
 							</div>
@@ -301,6 +345,25 @@
 <script>
 
 	$(function () {
+
+		$('#sessionEndText').summernote({
+			dialogsInBody: true,
+			placeholder: $('#sessionEndText').attr('placeholder'),
+			height: 100,
+			toolbar:
+				[
+					["history", ["undo", "redo"]],
+					["style", ["style"]],
+					["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+					['fontsize', ['fontsize']],
+					["color", ["color"]],
+					["paragraph", ["ul", "ol", "paragraph", "height"]],
+					["table", ["table"]],
+					["insert", ["link", "resizedDataImage", "picture", "video"]],
+					["view", ["codeview"] ]
+				],
+			fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150']
+		});
 
 		$('#presenterBadge').css('background-color', access_color_codes['presenter']);
 		$('#presenterBadge').html('<i class="'+access_icons['presenter']+'"></i> Presenter');

@@ -32,10 +32,16 @@ body{overflow: hidden;background-color: #151515;}
 <!--bizim-->
 <div class="rightSticky" data-screen="customer" >
 	<ul>
+		<?php if(isset($session->right_sticky_notes) && $session->right_sticky_notes == 1):?>
 		<li data-type="notesSticky" id="notesSticky"  style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
+		<?php endif; ?>
+		<?php if(isset($session->right_sticky_resources) && $session->right_sticky_resources == 1):?>
 		<li data-type="resourcesSticky" id="resourcesSticky"  style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
+		<?php endif; ?>
 		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
+		<?php if(isset($session->right_sticky_question) && $session->right_sticky_question == 1):?>
 		<li data-type="questionsSticky" id="questionsSticky"  style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
+		<?php endif; ?>
 		<li data-type="adminChatSticky" id="adminChatStickyIcon"  style="display:none; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
 	</ul>
 </div>
@@ -257,6 +263,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 <script src="<?=ycl_root?>/theme_assets/default_theme/js/common/sessions/attendee_to_admin_chat.js?v=<?=rand()?>"></script>
 
 <script type="application/javascript">
+	let projectId = "<?=$this->project->id?>";
 	let sessionId = "<?=$session->id?>";
 	var note_page = 1;
    	let attendee_Fname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'] ?>";
@@ -327,14 +334,16 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					},
 						function (response) {
 							response = JSON.parse(response);
-							console.log(response);
+							console.log(response.data);
 							if (response.status == 'success') {
 								socket.emit("ycl_session_question", {
 									sessionId:sessionId,
 									question:question,
 									sender_name: attendee_Fname,
 									sender_surname: attendee_Lname,
-									sender_id: uid
+									sender_id: uid,
+									question_id : (response.data)?response.data:''
+
 								});
 
 								$('#questionText').val('');
@@ -557,5 +566,10 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		audio1.pause();
 		audio1.currentTime = 0;
 	}
+
+	/** Live user count **/
+	$(function () {
+		socket.emit(`ycl_session_active_users`, `${projectId}_${sessionId}`);
+	});
 
 </script>

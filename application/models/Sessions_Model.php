@@ -227,9 +227,12 @@ class Sessions_Model extends CI_Model
 	public function add()
 	{
 		$session_data = $this->input->post();
-
+//		print_r(trim($session_data['sessionEndText']));
+//		print_r($_FILES['sessionEndImage']);
+//		exit;
 		// Upload session photo if set
 		$session_photo = '';
+		$session_end_image = '';
 		if (isset($_FILES['sessionPhoto']) && $_FILES['sessionPhoto']['name'] != '')
 		{
 			$photo_config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -239,6 +242,17 @@ class Sessions_Model extends CI_Model
 			$this->load->library('upload', $photo_config);
 			if ( ! $this->upload->do_upload('sessionPhoto'))
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session photo', 'technical_data'=>$this->upload->display_errors());
+		}
+
+		if (isset($_FILES['sessionEndImage']) && $_FILES['sessionEndImage']['name'] != '')
+		{
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['file_name'] = $session_end_image = rand().'_'.str_replace(' ', '_', $_FILES['sessionEndImage']['name']);
+			$config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/images/';
+
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('sessionEndImage'))
+				return array('status' => 'failed', 'msg'=>'Unable to upload the session end image', 'technical_data'=>$this->upload->display_errors());
 		}
 
 		$start_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['startDateTime']);
@@ -267,6 +281,11 @@ class Sessions_Model extends CI_Model
 			'created_by' => $this->user->user_id,
 			'created_on' => date('Y-m-d H:i:s'),
 			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
+			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
+			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
+			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
+			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
+			'session_end_image' => $session_end_image,
 		);
 
 		$this->db->insert('sessions', $data);
@@ -341,6 +360,7 @@ class Sessions_Model extends CI_Model
 
 		// Upload session photo if set
 		$session_photo = '';
+		$session_end_image = '';
 		if (isset($_FILES['sessionPhoto']) && $_FILES['sessionPhoto']['name'] != '')
 		{
 			$photo_config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -352,6 +372,16 @@ class Sessions_Model extends CI_Model
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session photo', 'technical_data'=>$this->upload->display_errors());
 		}
 
+		if (isset($_FILES['sessionEndImage']) && $_FILES['sessionEndImage']['name'] != '')
+		{
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['file_name'] = $session_end_image = rand().'_'.str_replace(' ', '_', $_FILES['sessionEndImage']['name']);
+			$config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/images/';
+
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('sessionEndImage'))
+				return array('status' => 'failed', 'msg'=>'Unable to upload the session end image', 'technical_data'=>$this->upload->display_errors());
+		}
 		$start_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['startDateTime']);
 		$start_time_mysql = $start_time_object->format('Y-m-d H:i:s');
 
@@ -377,8 +407,15 @@ class Sessions_Model extends CI_Model
 			'updated_by' => $this->user->user_id,
 			'updated_on' => date('Y-m-d H:i:s'),
 			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
+			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
+			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
+			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
+			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
 		);
 
+		if($session_end_image != '' && $session_end_image != null){
+			$data['session_end_image'] = $session_end_image;
+		}
 		if ($session_photo != '')
 			$data['thumbnail'] = $session_photo;
 
@@ -651,7 +688,8 @@ class Sessions_Model extends CI_Model
 			'asked_on' => date('Y-m-d H:i:s')
 		);
 		$this->db->insert('session_questions', $question);
-		return ($this->db->affected_rows() > 0) ? array('status'=>'success'):array('status'=>'failed');
+		$insert_id = $this->db->insert_id();
+		return ($this->db->affected_rows() > 0) ? array('status'=>'success', 'data'=>$insert_id):array('status'=>'failed');
 	}
 
 	public function getCredits($session_id)
@@ -814,11 +852,18 @@ class Sessions_Model extends CI_Model
 
 	public function getQuestions($session_id)
 	{
-		$this->db->select("sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id");
-		$this->db->from('session_questions sq');
-		$this->db->join('user u', 'sq.user_id = u.id');
-		$this->db->where('sq.session_id', $session_id);
-		$polls = $this->db->get();
+		$sql = "SELECT sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id FROM `session_questions` sq left join user u on sq.user_id = u.id where sq.session_id  = $session_id AND sq.id not In (SELECT question_id FROM session_question_stash ) or sq.id IN (SELECT question_id FROM session_question_stash where hidden != 1)";
+//		$this->db->select("sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id");
+//		$this->db->from('session_questions sq');
+//		$this->db->join('user u', 'sq.user_id = u.id');
+//		$this->db->join('session_question_stash sqs', 'sq.id = sqs.question_id', 'left');
+//		$this->db->where('sq.session_id', $session_id);
+//		$this->db->group_start();
+//		$this->db->where('sqs.id', NULL);
+//		$this->db->or_where('sqs.id', !=1);
+//		$this->db->group_end();
+//		$polls = $this->db->get();
+		$polls = $this->db->query($sql);
 		if ($polls->num_rows() > 0)
 			return $polls->result();
 
@@ -878,7 +923,7 @@ class Sessions_Model extends CI_Model
 
 	function getAttendeeChatsAjax(){
 		$post = $this->input->post();
-		$chats = $this->db->select('adc.*, u.name as first_name, u.surname as last_name')
+		$chats = $this->db->select('adc.*, u.name as first_name, u.surname as last_name, DATE_FORMAT(date_time, "%Y-%M-%d %H:%i") as date_time')
 			->from('attendee_direct_chat adc')
 			->join('user u', 'adc.from_id = u.id')
 			->where('session_id', $post['session_id'])
@@ -886,6 +931,7 @@ class Sessions_Model extends CI_Model
 			->where('from_id', $post['sender_id'])
 			->or_where('to_id', $post['sender_id'])
 			->group_end()
+			->order_by('date_time', 'asc')
 			->get();
 
 		if($chats->num_rows()>0){
@@ -898,24 +944,85 @@ class Sessions_Model extends CI_Model
 	function getAdminChatsAjax(){
 		$post = $this->input->post();
 		$uid = $this->user->user_id;
-	$sql =	"SELECT `adc`.*, `u`.`name` as `username`, `u`.`surname` as `surname` FROM `attendee_direct_chat` `adc` LEFT JOIN `user` `u` ON  IF(`adc`.`from_id` != 'admin', adc.from_id = u.id, adc.to_id = u.id ) WHERE `session_id` = ".$post['session_id']." AND ( `to_id` = ".$uid." OR `from_id` = ".$uid." ) ORDER BY `date_time` ASC";
+		$sql =	"SELECT `adc`.*, `u`.`name` as `username`, `u`.`surname` as `surname` FROM `attendee_direct_chat` `adc` LEFT JOIN `user` `u` ON  IF(`adc`.`from_id` != 'admin', adc.from_id = u.id, adc.to_id = u.id ) WHERE `session_id` = ".$post['session_id']." AND ( `to_id` = ".$uid." OR `from_id` = ".$uid." ) ORDER BY `date_time` ASC";
 	$result = $this->db->query($sql);
-//	$result = $this->db->select('adc.*, u.name as username, u.surname as surname')
-//			->from('attendee_direct_chat adc')
-//			->join('user u', " (IF( adc.from_id != 'admin', adc.from_id = u.id, adc.to_id = u.id )) ", 'left')
-//			->where('session_id', $post['session_id'])
-//			->group_start()
-//			->where('to_id', $this->user->user_id)
-//			->or_where('from_id', $this->user->user_id)
-//			->group_end()
-//			->order_by('date_time', 'asc')
-//			->get();
 		if($result->num_rows()>0){
 			return array('status'=>'success', 'data'=>$result->result());
 		}else{
 			return array('status'=>'error', 'data'=>$result->result());
 		}
 
+	}
+
+	function saveQuestionAjax(){
+		$field_set = array(
+			'question_id'=>$this->input->post('question_id'),
+			'user_id'=>$this->user->user_id,
+			'saved_status'=>'1',
+			'date_time'=>date('Y-m-d H:i:s')
+		);
+
+		$result = $this->db->select('*')
+			->from('session_question_saved')
+			->where('user_id', $this->user->user_id)
+			->where('question_id', $this->input->post('question_id'))
+			->get();
+
+		if ($result->num_rows()>0){
+			$this->db->update('session_question_saved', $field_set);
+		}else
+		$this->db->insert('session_question_saved', $field_set);
+
+		if($this->db->affected_rows() > 0){
+			return array('status'=>'success', 'msg'=>'Save Successfully');
+		}else{
+			return array('status'=>'error', 'msg'=>'Sorry something went wrong');
+		}
+	}
+
+	function getSavedQuestions($session_id){
+		$saved_question = $this->db->select('sqv.*, us.id as user_id, sq.question as question, sq.asked_on, sq.session_id, u.name as user_name, u.surname as user_surname, us.name as q_from_name , us.surname as q_from_surname')
+			->from('session_question_saved sqv')
+			->join('session_questions sq', 'sqv.question_id = sq.id', 'left')
+			->join('user u', 'sqv.user_id = u.id')
+			->join('user us', 'sq.user_id = us.id')
+			->where('sq.session_id', $session_id)
+//			->where('sqv.user_id', $this->user->user_id)
+			->where('saved_status', '1')
+			->order_by('sq.asked_on', 'asc')
+			->get();
+
+		if($saved_question->num_rows() > 0){
+			return array('status'=>'success', 'data'=>$saved_question->result());
+		}else{
+			return array('status'=>'empty', 'data'=>$saved_question->result());
+		}
+	}
+
+	function hideQuestionAjax(){
+		$field_set = array(
+			'question_id'=>$this->input->post('question_id'),
+			'user_id'=>$this->user->user_id,
+			'hidden'=>'1',
+			'date_time'=>date('Y-m-d H:i:s')
+		);
+
+		$result = $this->db->select('*')
+			->from('session_question_stash')
+			->where('user_id', $this->user->user_id)
+			->where('question_id', $this->input->post('question_id'))
+			->get();
+
+		if ($result->num_rows()>0){
+			$this->db->update('session_question_stash', $field_set);
+		}else
+			$this->db->insert('session_question_stash', $field_set);
+
+		if($this->db->affected_rows() > 0){
+			return array('status'=>'success', 'msg'=>'Question hidden');
+		}else{
+			return array('status'=>'error', 'msg'=>'Sorry something went wrong');
+		}
 	}
 
 }
