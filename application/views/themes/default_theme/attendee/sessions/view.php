@@ -184,18 +184,18 @@ body{overflow: hidden;background-color: #151515;}
 			<div style="padding:5px;">
 				<div style="text-align: center; display: flex; " id="questions_section">
 					<div class="col-md-12 input-group">
-						<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
+						<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
 						<input type="text" id="questionText" class="form-control" placeholder="Press enter to send..." value="">
 					</div>
 					<a id="askQuestionBtn" class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>
 				</div>
 				<div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
-					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/sad.png" title="Sad" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/laughing.png" title="Laughing" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/thumbs_up.png" title="Thumbs Up" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/thumbs_down.png" title="Thumbs Down" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/default_theme/images/emoji/clapping.png" title="Clapping" id="questions_clapping" data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/sad.png" title="Sad" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/laughing.png" title="Laughing" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/thumbs_up.png" title="Thumbs Up" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/thumbs_down.png" title="Thumbs Down" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/clapping.png" title="Clapping" id="questions_clapping" data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
 				</div>
 				<span id='error_questions' style='color:red;'></span>
 				<span id='success_questions' style='color:green;'></span>
@@ -259,8 +259,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 </style>
 <!--<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/dRp5VbWCQ3A?playlist=dRp5VbWCQ3A&controls=1&autoplay=1&mute=1&loop=1"></iframe>-->
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sessions.js?v=<?=rand()?>"></script>
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/common/sessions/attendee_to_admin_chat.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/sponsor/sessions.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/attendee_to_admin_chat.js?v=<?=rand()?>"></script>
 
 <script type="application/javascript">
 	let projectId = "<?=$this->project->id?>";

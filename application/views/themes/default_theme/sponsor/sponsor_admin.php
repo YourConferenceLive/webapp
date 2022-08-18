@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //exit;
 ?>
 
-<link href="<?=ycl_root?>/theme_assets/default_theme/css/admin_booth.css?v=5" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/admin_booth.css?v=5" rel="stylesheet">
 
 <!-- Full Calendar-->
 <link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.css">
@@ -522,4 +522,4 @@ if(!file_exists($cover_photo_url)){
 
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/default_theme/js/sponsor/sponsor_admin.js?v=5"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/sponsor/sponsor_admin.js?v=5"></script>

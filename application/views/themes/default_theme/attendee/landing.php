@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php endif; ?>
 </style>
 
-<link href="<?=ycl_root?>/theme_assets/default_theme/css/landing.css" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/landing.css" rel="stylesheet">
 <body class="text-center">
 <div class="cover-container d-flex h-100 p-3 mx-auto flex-column" style="padding-top: 15% !important;">
 	<main role="main" class="inner cover">

@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php endif; ?>
 </style>
 
-<link href="<?=ycl_root?>/theme_assets/default_theme/css/login.css" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/login.css" rel="stylesheet">
 <body class="text-center ">
 <div class="row">
 	<div class="col">

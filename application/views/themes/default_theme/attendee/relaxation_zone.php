@@ -19,13 +19,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			<div class="custom-write diamond">Diamond/Diamant</div>
 			<div class="custom-write platinum">Platinum/Platine</div>
 			<div class="top">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/relaxation_zone/Allergan.png">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/relaxation_zone/Bayer.png">
+				<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/relaxation_zone/Allergan.png">
+				<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/relaxation_zone/Bayer.png">
 			</div>
 			<div class="bottom">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/relaxation_zone/alcon.png">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/relaxation_zone/Novartis.png">
-				<img src="<?= ycl_root ?>/theme_assets/default_theme/images/relaxation_zone/Santen.png">
+				<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/relaxation_zone/alcon.png">
+				<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/relaxation_zone/Novartis.png">
+				<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/relaxation_zone/Santen.png">
 			</div>
 		</div>
 	</div>
