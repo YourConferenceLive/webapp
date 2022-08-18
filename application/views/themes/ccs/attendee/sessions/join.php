@@ -60,7 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<?php endforeach; ?><br>
 						<?php endif; ?>
 						<?php if($session->presenters != new stdClass()):?>
-							
+
 							<?php
 							foreach ($session->presenters as $index=>$presenter):
 								echo ((isset($index) && ($index>=1))?", ":'').trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?' '.trim($presenter->credentials):'');

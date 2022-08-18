@@ -9,7 +9,8 @@ $ci_controller = $this->router->fetch_class();
 $ci_method = $this->router->fetch_method();?>
 	<style>
 		.navbar-light .navbar-nav .nav-link {
-			color: rgb(72, 115, 145);
+			color: #000;
+			text-transform: uppercase;
 		}
 		.profile-dp {
 			border-radius: 50%;
@@ -29,7 +30,7 @@ $ci_method = $this->router->fetch_method();?>
 	</style>
 	<header>
 		<nav id="mainMenu" class="navbar navbar-expand-md navbar-light bg-white <?=(($ci_controller == 'sessions' && $ci_method == 'view') || ($ci_controller == 'sponsor' && $ci_method == 'index'))?'':'fixed-top'?>">
-			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_width)? 'width:'.$view_settings[0]->header_logo_width:'max-width:80px'?>;height:<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_height)?'height:'.$view_settings[0]->header_logo_height:''?>"></a>
+			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_width)? 'width:'.$view_settings[0]->header_logo_width:'max-width:80px'?>;height:<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_height)?'height:'.$view_settings[0]->header_logo_height:''?>"></a>
 			<button class="navbar-toggler collapsed navbar-light" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -92,7 +93,7 @@ $ci_method = $this->router->fetch_method();?>
 						<?php endif; ?>
 					<li class="nav-item" id="help-desk" style=" display: <?=(liveSupportChatStatus())?'none':'block'?>"><a class="nav-link" href="https://yourconference.live/support/" target="_blank"><strong>Help Desk</strong></a></li>
 					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
-						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (isset($view_settings) && !empty($view_settings[0]->live_support_color)? $view_settings[0]->live_support_color:'') ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Support</button>
+						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (isset($view_settings) && !empty($view_settings[0]->live_support_color)? $view_settings[0]->live_support_color:'') ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Technical Support</button>
 					<?php endif; ?>
 					<?php if(empty($view_settings) || $view_settings[0]->mail_menu == 1):?>
 					<li class="nav-item dropdown">
@@ -120,21 +121,21 @@ $ci_method = $this->router->fetch_method();?>
 						</div>
 					</li>
 					<?php endif; ?>
-					<li class="nav-item dropdown">
+					<!--<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<img class="profile-dp" src="<?=ycl_root?>/cms_uploads/user_photo/profile_pictures/<?=$user['photo'];?>" onerror="this.onerror=null;this.src='<?=ycl_root?>/ycl_assets/images/person_dp_placeholder.png';" alt="<?php echo $user['name'].' '.$user['surname'];?>">
+							<img class="profile-dp" src="<?/*=ycl_root*/?>/cms_uploads/user_photo/profile_pictures/<?/*=$user['photo'];*/?>" onerror="this.onerror=null;this.src='<?/*=ycl_root*/?>/ycl_assets/images/person_dp_placeholder.png';" alt="<?php /*echo $user['name'].' '.$user['surname'];*/?>">
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-							<?php if(empty($view_settings) || $view_settings[0]->profile == 1):?>
-							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/profile" style="color: rgb(72, 115, 145) !important;"><i class="far fa-id-card"></i> Profile</a>
-							<?php endif;?>
-							<?php if(empty($view_settings) || $view_settings[0]->briefcase == 1):?>
-							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/briefcase" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-briefcase"></i> Briefcase</a>
-							<?php endif;?>
+							<?php /*if(empty($view_settings) || $view_settings[0]->profile == 1):*/?>
+							<a class="dropdown-item" href="<?/*=base_url($this->project->main_route)*/?>/profile" style="color: rgb(72, 115, 145) !important;"><i class="far fa-id-card"></i> Profile</a>
+							<?php /*endif;*/?>
+							<?php /*if(empty($view_settings) || $view_settings[0]->briefcase == 1):*/?>
+							<a class="dropdown-item" href="<?/*=base_url($this->project->main_route)*/?>/briefcase" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-briefcase"></i> Briefcase</a>
+							<?php /*endif;*/?>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?=base_url($this->project->main_route)?>/authentication/logout" style="color: rgb(72, 115, 145) !important;">Logout <i class="nav-icon fas fa-sign-out-alt"></i></a>
+							<a class="dropdown-item" href="<?/*=base_url($this->project->main_route)*/?>/authentication/logout" style="color: rgb(72, 115, 145) !important;">Logout <i class="nav-icon fas fa-sign-out-alt"></i></a>
 						</div>
-					</li>
+					</li>-->
 
 				</ul>
 			</div>
