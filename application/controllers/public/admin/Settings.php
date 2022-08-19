@@ -20,6 +20,7 @@ class Settings extends CI_Controller
 	public function index(){
 		$sidebar_data['user'] = $this->user;
 		$data['settings'] = $this->settings->attendeeSettings($this->project->id);
+		$data['presenter_settings'] = $this->settings->presenterSettings($this->project->id);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
@@ -32,5 +33,9 @@ class Settings extends CI_Controller
 
 	public function saveAttendeeViewSetting(){
 		echo json_encode($this->settings->saveAttendeeViewSetting($this->project->id));
+	}
+
+	public function savePresenterViewSetting(){
+		echo json_encode($this->settings->savePresenterViewSetting($this->project->id));
 	}
 }

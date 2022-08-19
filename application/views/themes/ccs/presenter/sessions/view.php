@@ -315,9 +315,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$time_in_project = new DateTime('now', $dtz);
 	$gmtOffset = $dtz->getOffset( $time_in_project ) / 3600;
 	$gmtOffset = "GMT" . ($gmtOffset < 0 ? $gmtOffset : "+".$gmtOffset);
+	$timezone = (isset($settings->time_zone) && !empty($settings->time_zone)) ? $settings->time_zone:'';
+
 	?>
-	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' '.$gmtOffset ?>";
-	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' '.$gmtOffset ?>";
+	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' '.(($timezone != '') ? $timezone : $gmtOffset ) ?>";
+	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' '.(($timezone != '') ? $timezone : $gmtOffset ) ?>";
 
 	//var socket_session_name = "<?//=getAppName('_admin-to-attendee-chat')?>//";
 
