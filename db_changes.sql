@@ -614,3 +614,9 @@ ALTER TABLE `session_polls` ADD `added_by` INT NOT NULL AFTER `added_on`;
 -- Session table change
 -- 1st July, 2021
 ALTER TABLE `sessions` ADD `video_url` VARCHAR(255) NULL DEFAULT NULL AFTER `zoom_link`;
+
+
+-- Add field Session table for sticky menu
+ALTER TABLE `sessions` ADD `header_notes` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_toolbox_status`, ADD `header_resources` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_notes`, ADD `header_question` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_resources`;
+
+-- End field Session table
