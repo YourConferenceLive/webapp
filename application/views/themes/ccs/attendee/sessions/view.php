@@ -549,6 +549,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		let right_sticky_resources = "<?=(isset($session->right_sticky_resources)? $session->right_sticky_resources:'') ?>"
 		let right_sticky_question = "<?=(isset($session->right_sticky_question)? $session->right_sticky_question:'') ?>"
 		let right_sticky_notes = "<?=(isset($session->right_sticky_notes)? $session->right_sticky_notes:'') ?>"
+		let claim_credit_link = "<?=(isset($session->claim_credit_link)? $session->claim_credit_link:'') ?>"
+		let claim_credit_url = "<?=(isset($session->claim_credit_url)? $session->claim_credit_url:'') ?>"
 
 		// console.log('res'+header_resources);
 		if(header_toolbox_status == 0){
@@ -594,6 +596,14 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			$('li[data-type][data-type="notesSticky"]').hide();
 		}else{
 			$('#notesSticky').css('display','block')
+		}
+
+		if(claim_credit_link !== ''){
+			$('#header_claim_credit').css('display','block')
+			$('.claim_credit_href').attr('href', claim_credit_url);
+			$('#header_claim_credit_link').html(claim_credit_link);
+		}else{
+			$('#header_claim_credit').css('display','none')
 		}
 
 	})

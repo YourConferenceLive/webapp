@@ -91,6 +91,11 @@ $ci_method = $this->router->fetch_method();?>
 						</div>
 					</li>
 						<?php endif; ?>
+
+					<li class="nav-item" id="header_claim_credit" style="display:none">
+						<a class="nav-link claim_credit_href" href="" target="_blank"><strong id="header_claim_credit_link"></strong></a>
+					</li>
+
 					<li class="nav-item" id="help-desk" style=" display: <?=(liveSupportChatStatus())?'none':'block'?>"><a class="nav-link" href="https://yourconference.live/support/" target="_blank"><strong>Help Desk</strong></a></li>
 					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
 						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (isset($view_settings) && !empty($view_settings[0]->live_support_color)? $view_settings[0]->live_support_color:'') ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Technical Support</button>
