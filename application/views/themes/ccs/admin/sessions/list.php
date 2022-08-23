@@ -167,6 +167,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#sessionVideo').val(session.video_url);
 				$('#slidesHtml').html(session.presenter_embed_code);
 
+				$('#sessionClaimCreditLink').val(session.claim_credit_link);
+				$('#sessionClaimCreditUrl').val(session.claim_credit_url);
+
 				// Moderators
 				$('select[name="sessionModerators[]"] option').prop('selected', false);
 				$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);

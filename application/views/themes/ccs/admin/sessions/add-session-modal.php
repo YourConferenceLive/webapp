@@ -97,6 +97,20 @@
 										<input type="text" class="form-control" id="sessionExternalUrl" name="sessionExternalUrl" placeholder="This link will open in a new tab (unless user blocked pop opening windows) once the meeting starts (always prefix the URL with protocol ie; http/https)">
 									</div>
 
+									<div class="form-group" id="sessionClaimCreditDiv">
+										<label for="sessionExternalUrl">Claim Credit</label>
+										<div class="input-group mb-3">
+											<span class="input-group-text" id="basic-addon1"> Link</span>
+											<input type="text" name="claim_credit_link" class="form-control" id="sessionClaimCreditLink" placeholder="Claim Credit Link" aria-label="Link" aria-describedby="basic-addon1" value="Claim Credit">
+										</div>
+										<div class="input-group mb-3">
+											<span class="input-group-text" id="basic-addon1"> Url</span>
+											<input type="text" name="claim_credit_url" class="form-control" id="sessionClaimCreditUrl" placeholder="Claim Credit Url ex: https://www.claimcredit.com" aria-label="Link" aria-describedby="basic-addon1" value="">
+										</div>
+									</div>
+
+									<hr style="height:3px;">
+
 									<div class="form-group">
 										<label>Track or <a href="<?=base_url()?>"><u> Add Track </u></a></label>
 										<select id="sessionTrack" name="sessionTrack" class="form-control">
