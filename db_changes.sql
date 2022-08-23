@@ -618,5 +618,7 @@ ALTER TABLE `sessions` ADD `video_url` VARCHAR(255) NULL DEFAULT NULL AFTER `zoo
 
 -- Add field Session table for sticky menu
 ALTER TABLE `sessions` ADD `header_notes` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_toolbox_status`, ADD `header_resources` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_notes`, ADD `header_question` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_resources`;
+-- Add claim credit
+ALTER TABLE `sessions` ADD `claim_credit_link` VARCHAR(255) NULL DEFAULT NULL AFTER `zoom_link`, ADD `claim_credit_url` VARCHAR(255) NULL DEFAULT NULL AFTER `claim_credit_link`;
 
 -- End field Session table
