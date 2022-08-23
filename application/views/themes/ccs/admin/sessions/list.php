@@ -213,6 +213,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				if(session.right_sticky_question == 1){
 					$('#rightQuestionSwitch').attr('checked','checked')
 				}
+				if(session.header_question == 1){
+					$('#headerQuestion').attr('checked','checked')
+				}
+				if(session.header_notes == 1){
+					$('#headerNotes').attr('checked','checked')
+				}
+				if(session.header_resources == 1){
+					$('#headerResources').attr('checked','checked')
+				}
 
 				$("#sessionEndText").summernote("code", session.session_end_text);
 				if (session.session_end_image != '' && session.session_end_image !== null) {

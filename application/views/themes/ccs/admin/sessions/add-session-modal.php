@@ -254,6 +254,20 @@
 											<input name="header_toolbox" type="checkbox" class="custom-control-input headerToolboxSwitch"  id="headerToolboxSwitch">
 											<label class="custom-control-label" for="headerToolboxSwitch">Header Toolbox</label>
 										</div>
+										<div class="custom-control custom-switch">
+											<input name="header_notes" type="checkbox" class="custom-control-input headerNotes"  id="headerNotes">
+											<label class="custom-control-label" for="headerNotes">Header Notes</label>
+										</div>
+
+										<div class="custom-control custom-switch">
+											<input name="header_resources" type="checkbox" class="custom-control-input headerResources"  id="headerResources">
+											<label class="custom-control-label" for="headerResources">Header Resources</label>
+										</div>
+
+										<div class="custom-control custom-switch">
+											<input name="header_question" type="checkbox" class="custom-control-input headerQuestion"  id="headerQuestion">
+											<label class="custom-control-label" for="headerQuestion">Header Question</label>
+										</div>
 									</div>
 
 									<div class="form-group">
