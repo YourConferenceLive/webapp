@@ -32,16 +32,10 @@ body{overflow: hidden;background-color: #151515;}
 <!--bizim-->
 <div class="rightSticky" data-screen="customer" >
 	<ul>
-		<?php if(isset($session->right_sticky_notes) && $session->right_sticky_notes == 1):?>
 		<li data-type="notesSticky" id="notesSticky"  style="<?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fas fa-edit" aria-hidden="true"></i> <span>TAKE NOTES</span></li>
-		<?php endif; ?>
-		<?php if(isset($session->right_sticky_resources) && $session->right_sticky_resources == 1):?>
 		<li data-type="resourcesSticky" id="resourcesSticky"  style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span>RESOURCES</span></li>
-		<?php endif; ?>
 		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
-		<?php if(isset($session->right_sticky_question) && $session->right_sticky_question == 1):?>
 		<li data-type="questionsSticky" id="questionsSticky"  style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-question" aria-hidden="true"></i> <span>QUESTIONS</span></li>
-		<?php endif; ?>
 		<li data-type="adminChatSticky" id="adminChatStickyIcon"  style="display:none; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
 	</ul>
 </div>
@@ -549,10 +543,57 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		);
 
 		let header_toolbox_status = "<?=(isset($session->header_toolbox_status)? $session->header_toolbox_status:'')?>";
+		let header_question = "<?=(isset($session->header_question)? $session->header_question:'') ?>"
+		let header_notes = "<?=(isset($session->header_notes)? $session->header_notes:'') ?>"
+		let header_resources = "<?=(isset($session->header_resources)? $session->header_resources:'') ?>"
+		let right_sticky_resources = "<?=(isset($session->right_sticky_resources)? $session->right_sticky_resources:'') ?>"
+		let right_sticky_question = "<?=(isset($session->right_sticky_question)? $session->right_sticky_question:'') ?>"
+		let right_sticky_notes = "<?=(isset($session->right_sticky_notes)? $session->right_sticky_notes:'') ?>"
+
+		// console.log('res'+header_resources);
 		if(header_toolbox_status == 0){
 			$('#header-toolbox').css('display','none')
 		}else{
 			$('#header-toolbox').css('display','block')
+		}
+
+		if(header_question == 0){
+			$('#questionStickyMenu').css('display','none')
+		}else{
+			$('#questionStickyMenu').css('display','block')
+		}
+
+		if(header_notes == 0){
+			$('#notesStickyMenu').css('display','none')
+		}else{
+			$('#notesStickyMenu').css('display','block')
+		}
+
+		if(header_resources == 0){
+			$('#resourcesStickyMenu').css('display','none')
+		}else{
+			$('#resourcesStickyMenu').css('display','block')
+		}
+
+		if(right_sticky_resources == 0){
+			$('#resourcesSticky').css('display','none')
+			$('li[data-type][data-type="resourcesSticky"]').hide();
+		}else{
+			$('#resourcesSticky').css('display','block')
+		}
+
+		if(right_sticky_question == 0){
+			$('#questionsSticky').css('display','none')
+			$('li[data-type][data-type="questionsSticky"]').hide();
+		}else{
+			$('#questionsSticky').css('display','block')
+		}
+
+		if(right_sticky_notes == 0){
+			$('#notesSticky').css('display','none')
+			$('li[data-type][data-type="notesSticky"]').hide();
+		}else{
+			$('#notesSticky').css('display','block')
 		}
 
 	})

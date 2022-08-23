@@ -83,7 +83,7 @@ $ci_method = $this->router->fetch_method();?>
 							<strong>Toolbox</strong>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item stickyMenu" data-sticky="questionsSticky" id="notesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-question"></i> Ask Question</a>
+							<a class="dropdown-item stickyMenu" data-sticky="questionsSticky" id="questionStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-question"></i> Ask Question</a>
 							<a class="dropdown-item stickyMenu" data-sticky="notesSticky" id="notesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-edit"></i> Take Notes</a>
 <!--							<a class="dropdown-item stickyMenu" data-sticky="questionsSticky" id="questionsStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-comments"></i> Chat</a>-->
 							<a class="dropdown-item stickyMenu" data-sticky="resourcesSticky" id="resourcesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-paperclip"></i> Resources </a>
