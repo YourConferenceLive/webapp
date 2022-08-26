@@ -74,7 +74,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-12 text-center">
 					<div class="container border border-dark">
 						<div class="row">
-							<div class="col-12 pt-5 pb-5">
+							<div class="col-12 pt-5 pb-5 bg-white">
 								<p>You will automatically enter the session 15 minutes before it is due to begin.</p>
 								<p>Entry will be enabled in <strong><span id="countdown_timer">...</span></strong></p>
 							</div>
