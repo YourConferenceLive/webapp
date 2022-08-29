@@ -284,13 +284,19 @@ class Sessions_Model extends CI_Model
 			'header_notes' => (isset($session_data['header_notes']) && ($session_data['header_notes']=='on') ? 1:0),
 			'header_question' => (isset($session_data['header_question']) && ($session_data['header_question']=='on') ? 1:0),
 			'header_resources' => (isset($session_data['header_resources']) && ($session_data['header_resources']=='on') ? 1:0),
+			'header_askrep' => (isset($session_data['header_askrep']) && ($session_data['header_askrep']=='on') ? 1:0),
 			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
 			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
 			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
+			'right_sticky_askrep' => (isset($session_data['right_sticky_askrep']) && ($session_data['right_sticky_askrep']=='on') ? 1:0),
 			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
 			'session_end_image' => $session_end_image,
 			'claim_credit_link' => (isset($session_data['claim_credit_link'])?trim($session_data['claim_credit_link']):''),
 			'claim_credit_url' => (isset($session_data['claim_credit_url'])?trim($session_data['claim_credit_url']):''),
+			'toolbox_note_text' => (isset($session_data['notes_text'])?trim($session_data['notes_text']):''),
+			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
+			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
+			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
 		);
 
 		$this->db->insert('sessions', $data);
@@ -415,12 +421,18 @@ class Sessions_Model extends CI_Model
 			'header_notes' => (isset($session_data['header_notes']) && ($session_data['header_notes']=='on') ? 1:0),
 			'header_question' => (isset($session_data['header_question']) && ($session_data['header_question']=='on') ? 1:0),
 			'header_resources' => (isset($session_data['header_resources']) && ($session_data['header_resources']=='on') ? 1:0),
+			'header_askrep' => (isset($session_data['header_askrep']) && ($session_data['header_askrep']=='on') ? 1:0),
 			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
 			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
 			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
+			'right_sticky_askrep' => (isset($session_data['right_sticky_askrep']) && ($session_data['right_sticky_askrep']=='on') ? 1:0),
 			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
 			'claim_credit_link' => (isset($session_data['claim_credit_link'])?trim($session_data['claim_credit_link']):''),
 			'claim_credit_url' => (isset($session_data['claim_credit_url'])?trim($session_data['claim_credit_url']):''),
+			'toolbox_note_text' => (isset($session_data['notes_text'])?trim($session_data['notes_text']):''),
+			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
+			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
+			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
 
 		);
 

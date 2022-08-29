@@ -282,6 +282,11 @@
 											<input name="header_question" type="checkbox" class="custom-control-input headerQuestion"  id="headerQuestion">
 											<label class="custom-control-label" for="headerQuestion">Header Question</label>
 										</div>
+
+										<div class="custom-control custom-switch">
+											<input name="header_askrep" type="checkbox" class="custom-control-input headerQuestion"  id="headerAskRep">
+											<label class="custom-control-label" for="headerAskRep">Header Ask a Rep</label>
+										</div>
 									</div>
 
 									<div class="form-group">
@@ -289,16 +294,37 @@
 										<div class="custom-control custom-switch">
 											<input name="right_sticky_notes" type="checkbox" class="custom-control-input rightNotesSwitch"  id="rightNotesSwitch">
 											<label class="custom-control-label" for="rightNotesSwitch">Notes</label>
+											<div class="input-group mb-3">
+												<span class="input-group-text" id="basic-addon1">Notes Text</span>
+												<input type="text" name="notes_text" class="form-control" placeholder="Notes" aria-label="Notes" aria-describedby="basic-addon1">
+											</div>
 										</div>
 
 										<div class="custom-control custom-switch">
 											<input name="right_sticky_resources" type="checkbox" class="custom-control-input rightResourcesSwitch"  id="rightResourcesSwitch">
 											<label class="custom-control-label" for="rightResourcesSwitch">Resources</label>
+											<div class="input-group mb-3">
+												<span class="input-group-text" id="basic-addon1">Resources Text</span>
+												<input type="text" name="resource_text" class="form-control" placeholder="Resources" aria-label="Resources" aria-describedby="basic-addon1">
+											</div>
 										</div>
 
 										<div class="custom-control custom-switch">
 											<input name="right_sticky_question" type="checkbox" class="custom-control-input rightQuestionSwitch"  id="rightQuestionSwitch">
 											<label class="custom-control-label" for="rightQuestionSwitch">Question</label>
+											<div class="input-group mb-3">
+												<span class="input-group-text" id="basic-addon1">Question Text</span>
+												<input type="text" name="question_text" class="form-control" placeholder="Question" aria-label="Question" aria-describedby="basic-addon1">
+											</div>
+										</div>
+
+										<div class="custom-control custom-switch">
+											<input name="right_sticky_askrep" type="checkbox" class="custom-control-input rightAskARepSwitch"  id="rightAskARepSwitch">
+											<label class="custom-control-label" for="rightAskARepSwitch">Ask a Rep</label>
+											<div class="input-group mb-3">
+												<span class="input-group-text" id="basic-addon1">Ask a Rep</span>
+												<input type="text" name="ask_a_rep_text" class="form-control" placeholder="Question" aria-label="Question" aria-describedby="basic-addon1">
+											</div>
 										</div>
 									</div>
 
