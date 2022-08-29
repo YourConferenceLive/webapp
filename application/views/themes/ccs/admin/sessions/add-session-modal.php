@@ -296,7 +296,7 @@
 											<label class="custom-control-label" for="rightNotesSwitch">Notes</label>
 											<div class="input-group mb-3">
 												<span class="input-group-text" id="basic-addon1">Notes Text</span>
-												<input type="text" name="notes_text" class="form-control" placeholder="Notes" aria-label="Notes" aria-describedby="basic-addon1">
+												<input type="text" name="notes_text" id="notes_text" class="form-control" placeholder="Notes" aria-label="Notes" aria-describedby="basic-addon1">
 											</div>
 										</div>
 
@@ -305,7 +305,7 @@
 											<label class="custom-control-label" for="rightResourcesSwitch">Resources</label>
 											<div class="input-group mb-3">
 												<span class="input-group-text" id="basic-addon1">Resources Text</span>
-												<input type="text" name="resource_text" class="form-control" placeholder="Resources" aria-label="Resources" aria-describedby="basic-addon1">
+												<input type="text" name="resource_text" id="resource_text" class="form-control" placeholder="Resources" aria-label="Resources" aria-describedby="basic-addon1">
 											</div>
 										</div>
 
@@ -314,7 +314,7 @@
 											<label class="custom-control-label" for="rightQuestionSwitch">Question</label>
 											<div class="input-group mb-3">
 												<span class="input-group-text" id="basic-addon1">Question Text</span>
-												<input type="text" name="question_text" class="form-control" placeholder="Question" aria-label="Question" aria-describedby="basic-addon1">
+												<input type="text" name="question_text" id="question_text" class="form-control" placeholder="Question" aria-label="Question" aria-describedby="basic-addon1">
 											</div>
 										</div>
 
@@ -323,7 +323,7 @@
 											<label class="custom-control-label" for="rightAskARepSwitch">Ask a Rep</label>
 											<div class="input-group mb-3">
 												<span class="input-group-text" id="basic-addon1">Ask a Rep</span>
-												<input type="text" name="ask_a_rep_text" class="form-control" placeholder="Question" aria-label="Question" aria-describedby="basic-addon1">
+												<input type="text" name="ask_a_rep_text" id="ask_a_rep_text" class="form-control" placeholder="Question" aria-label="Question" aria-describedby="basic-addon1">
 											</div>
 										</div>
 									</div>

@@ -170,6 +170,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#sessionClaimCreditLink').val(session.claim_credit_link);
 				$('#sessionClaimCreditUrl').val(session.claim_credit_url);
 
+				$('#notes_text').val(session.toolbox_note_text);
+				$('#resource_text').val(session.toolbox_resource_text);
+				$('#question_text').val(session.toolbox_question_text);
+				$('#ask_a_rep_text').val(session.toolbox_askrep_text);
+
 				// Moderators
 				$('select[name="sessionModerators[]"] option').prop('selected', false);
 				$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
@@ -216,6 +221,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				if(session.right_sticky_question == 1){
 					$('#rightQuestionSwitch').attr('checked','checked')
 				}
+				if(session.right_sticky_askrep == 1){
+					$('#rightAskARepSwitch').attr('checked','checked')
+				}
+
+
 				if(session.header_question == 1){
 					$('#headerQuestion').attr('checked','checked')
 				}
@@ -225,6 +235,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				if(session.header_resources == 1){
 					$('#headerResources').attr('checked','checked')
 				}
+				if(session.header_askrep == 1){
+					$('#headerAskRep').attr('checked','checked')
+				}
+
+
 
 				$("#sessionEndText").summernote("code", session.session_end_text);
 				if (session.session_end_image != '' && session.session_end_image !== null) {
