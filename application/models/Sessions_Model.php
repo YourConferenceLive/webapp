@@ -1048,4 +1048,36 @@ class Sessions_Model extends CI_Model
 		}
 	}
 
+	function save_ask_a_rep()
+	{
+
+		$post = $this->input->post();
+
+		$data = array(
+			'session_id' => $post['session_id'],
+			'user_id' => $post['user_id'],
+			'rep_type' => $post['rep_type'],
+			'date_time' => date('Y-m-d H:i:s'),
+			'project_id' => $this->project->id
+		);
+
+		$this->db->select('*');
+		$this->db->from('ask_a_rep');
+		$this->db->where(array('session_id' => $post['session_id'], 'user_id' => $post['user_id'], 'rep_type' => $post['rep_type']));
+		$this->db->where('project_id', $this->project->id);
+		$response = $this->db->get();
+		if ($response->num_rows() > 0)
+			echo json_encode(array('status' => 'failed', 'msg' => "You have already requested to be contacted by a representative ({$post['rep_type']}).<br> A representative will contact you shortly."));
+		else {
+			$this->db->insert('ask_a_rep', $data);
+			if ($this->db->affected_rows() > 0)
+				echo json_encode(array('status' => 'success', 'msg' => "Thank you for your request. <br> A representative will contact you shortly."));
+			else
+				echo json_encode(array('status' => 'failed', 'msg' => "Unable to request, please try again."));
+		}
+
+		return;
+	}
+
+
 }

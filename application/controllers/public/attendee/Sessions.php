@@ -172,4 +172,8 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/session_end", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data);
 	}
+
+	public function ask_a_rep(){
+		$this->sessions->save_ask_a_rep();
+	}
 }
