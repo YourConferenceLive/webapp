@@ -15,16 +15,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<input type="hidden" id="push_notification_id" value="">
 	<div class="modal-dialog ml-5 shadow" style="position: fixed; bottom:0; max-width:500px; min-width:300px">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title " id="pushNotificationModalTitle" style="color: orangered"><i class="fas fa-bell"></i> Notification </h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+			<div class="mb-3">
+<!--				<h5 class="modal-title " id="pushNotificationModalTitle" style="color: orangered"><i class="fas fa-bell"></i> Notification </h5>-->
+<!--				<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--					<span aria-hidden="true">&times;</span>-->
+<!--				</button>-->
 			</div>
 			<div class="pushNotificationModalBody" style="min-height:100px">
-				<div id="pushNotificationMessage" style="color:#000000; font-size: 16px; font-weight: 600" class="ml-2"></div>
+				<div id="pushNotificationMessage" style="color:#000000; font-size: 16px; font-weight: 600" class="ml-3"></div>
 			</div>
-			<div class="modal-footer">
+			<div class="mb-3 mr-3 text-right">
 				<button type="button" class="btn btn-sm btn-info" data-dismiss="modal">Close</button>
 			</div>
 		</div>

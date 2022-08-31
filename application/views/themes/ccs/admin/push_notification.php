@@ -119,6 +119,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							response.msg,
 							'success'
 						)
+						getAllPushNotifications();
 					}else{
 						toastr.error(response.msg);
 					}
@@ -140,7 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					let timerInterval
 					Swal.fire({
 						title: 'Auto close alert!',
-						html: 'Sending Notification Please Wait...',
+						html: 'Sending Notification <br>Please Wait...<b>',
 						timer: 3000,
 						timerProgressBar: true,
 						didOpen: () => {
@@ -173,7 +174,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							type: "post",
 							dataType: "json",
 							success: function (response) {
-								cr_data = response;
+								let cr_data = response;
 								console.log(cr_data);
 								if (cr_data.status == "success")
 								{
@@ -203,7 +204,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			if(response.status == 'success'){
 
+				if ($.fn.DataTable.isDataTable('.push_notification_table')) {
+					$('.push_notification_table').DataTable().destroy();
+				}
+
 				if(response.data.length > 0){
+					$('.push_notification_table_body').html('');
 					$.each(response.data, function(i, data){
 						console.log(data.session_id);
 						let sendNotificationBtn = '<button class="btn btn-success btn-sm sendNotificationBtn" notification_id="'+data.id+'" session_id="'+data.session_id+'" project_id="'+data.project_id+'" notify_to="'+data.notify_to+'" message="'+data.message+'" ><i class="fas fa-paper-plane" aria-hidden="true"></i> Send Notification</button>'
