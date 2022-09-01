@@ -176,4 +176,13 @@ class Sessions extends CI_Controller
 	public function ask_a_rep(){
 		$this->sessions->save_ask_a_rep();
 	}
+
+	public function saveTimeSpentOnSession($session_id, $user_id)
+	{
+		$this->sessions->saveTimeSpentOnSession($session_id, $user_id);
+	}
+
+	public function getTimeSpentOnSession($session_id, $user_id){
+		$this->sessions->getTimeSpentOnSession($session_id, $user_id);
+	}
 }

@@ -1079,5 +1079,39 @@ class Sessions_Model extends CI_Model
 		return;
 	}
 
+	function saveTimeSpentOnSession($session_id, $user_id){
+		$this->db->where(array('session_id'=>$session_id, 'user_id'=>$user_id, 'project_id'=>$this->project->id));
+		$response = $this->db->get('total_time_on_session');
+
+		if ( $response->num_rows() > 0 )
+		{
+			$this->db->where(array('session_id'=>$session_id, 'user_id'=>$user_id, 'project_id'=>$this->project->id));
+			$this->db->update('total_time_on_session', array('total_time'=>$this->input->post()['time']));
+		} else {
+			$this->db->set(array('session_id'=>$session_id, 'user_id'=>$user_id, 'project_id'=>$this->project->id));
+			$this->db->insert('total_time_on_session', array('total_time'=>$this->input->post()['time']));
+		}
+
+		echo 1;
+		return;
+	}
+
+	function getTimeSpentOnSession($session_id, $user_id)
+	{
+		$this->db->select('*');
+		$this->db->from('total_time_on_session');
+		$this->db->where(array('session_id'=>$session_id, 'user_id'=>$user_id, 'project_id'=>$this->project->id));
+
+		$response = $this->db->get();
+		if ($response->num_rows() > 0)
+		{
+			echo $response->result_array()[0]['total_time'];
+		}else{
+			echo 0;
+		}
+
+		return;
+	}
+
 
 }

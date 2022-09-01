@@ -320,6 +320,19 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	let attendee_FullName = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'].' '.$_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
 
+	var timeSpentOnSessionFromDb;
+	var timeSpentUntilNow;
+
+	<?php
+	$dtz = new DateTimeZone($this->project->timezone);
+	$time_in_project = new DateTime('now', $dtz);
+	$gmtOffset = $dtz->getOffset( $time_in_project ) / 3600;
+	$gmtOffset = "GMT" . ($gmtOffset < 0 ? $gmtOffset : "+".$gmtOffset);
+	?>
+
+	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' '. $gmtOffset ?>";
+	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' '. $gmtOffset ?>";
+
 	function loadNotes(entity_type, entity_type_id, note_page) {
 		Swal.fire({
 			title: 'Please Wait',
@@ -670,7 +683,126 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			$('#header_claim_credit').css('display','none')
 		}
 
+		socket.on('reload-attendee-signal', function () {
+				update_viewsessions_history_open();
+				saveTimeSpentOnSessionAfterSessionFinished();
+
+		});
+
 	})
+
+
+	/******* Saving time spent on session - by Rexter ************/
+
+	function saveTimeSpentOnSessionAfterSessionFinished(){
+		$.ajax({
+			url: project_url+"/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
+			type: "post",
+			data: {'time': timeSpentUntilNow},
+			dataType: "json",
+			success: function (data) {
+				location.reload();
+			}
+		});
+	}
+
+	function getTimeSpentOnSiteFromLocalStorage(){
+		timeSpentOnSite = parseInt(localStorage.getItem('timeSpentOnSite'));
+		timeSpentOnSite = isNaN(timeSpentOnSite) ? 0 : timeSpentOnSite;
+		return timeSpentOnSite;
+	}
+
+	function saveTimeSpentOnSession(){
+		// console.log(timeSpentUntilNow)
+		$.ajax({
+			url: project_url+"/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
+			type: "post",
+			data: {'time': timeSpentUntilNow},
+			dataType: "json",
+			success: function (data) {
+				update_viewsessions_history_open();
+			}
+		});
+
+	}
+
+	function getTimeSpentOnSession(){
+		$.ajax({
+			url: project_url+"/sessions/getTimeSpentOnSession/"+sessionId+'/'+uid,
+			type: "post",
+			dataType: "json",
+			success: function (data) {
+				timeSpentOnSessionFromDb = parseInt(data);
+				startCounting();
+				saveTimeSpentOnSession();
+				return parseInt(data);
+			}
+		});
+
+	}
+
+	function startCounting(){
+		timeSpentUntilNow = timeSpentOnSessionFromDb;
+		onSessiontimer = setInterval(function(){
+			var datetime_now_newyork = calcTime('-5');
+			if(datetime_now_newyork >= session_start_datetime && datetime_now_newyork <= session_end_datetime)
+				timeSpentUntilNow = timeSpentUntilNow+1;
+			if (datetime_now_newyork > session_end_datetime){
+				saveTimeSpentOnSession();
+			}
+
+
+		},1000);
+		Swal.fire(
+			'INFO',
+			'Be sure to unmute the player located on the bottom right side of the page.',
+			'warning'
+		);
+
+	}
+
+	setInterval(saveTimeSpentOnSession, 300000); //Saving total time every 5 minutes as a backup
+
+	function initiateTimerRecorder() {
+		getTimeSpentOnSession();
+	}
+
+	initiateTimerRecorder();
+
+	/******* End of saving time spent on session - by Rexter ************/
+
+	/******* Update session history - by Rexter ************/
+	function update_viewsessions_history_open()
+	{
+		$.ajax({
+			url: base_url+"sessions/update_viewsessions_history_open",
+			type: "post",
+			data: {'view_sessions_history_id': $("#view_sessions_history_id").val()},
+			dataType: "json",
+			success: function (data) {
+
+			}
+		});
+	}
+
+
+	function calcTime(offset) {
+		// create Date object for current location
+		var d = new Date();
+
+		// convert to msec
+		// subtract local time zone offset
+		// get UTC time in msec
+		var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+
+		// create new Date object for different city
+		// using supplied offset
+		var nd = new Date(utc + (3600000*offset));
+
+		return nd;
+	}
+
+	/******* End of saving time spent on session - by Rexter ************/
 
 	function play_music() {
 		var audio = document.getElementById("audio_"+<?=$this->project->id?>);

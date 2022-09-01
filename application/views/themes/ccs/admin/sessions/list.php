@@ -449,6 +449,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		<a target="_blank" href="'+project_admin_url+'/sessions/polls/'+session.id+'">' +
 					'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
 					'		</a>' +
+					'		<button class="reload_attendee btn btn-sm btn-danger m-1"><i class="fas fa-sync"></i> Reload Atendee</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
@@ -479,4 +480,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			Swal.close();
 		});
 	}
+
+	$(function(){
+		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire(
+						'Success',
+						'Attendee Reloaded',
+						'success'
+					)
+					socket.emit('reload-attendee');
+				}
+			})
+		})
+	})
 </script>
