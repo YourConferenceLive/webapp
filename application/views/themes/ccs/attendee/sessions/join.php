@@ -43,7 +43,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<?php if($session->moderators != new stdClass()):?>
 
 							<?php foreach ($session->moderators as $index=> $moderator):?>
-								<?=(isset($index) && ($index >= 1))?',':''?>
 								<?=$moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?' '.$moderator->credentials:'')?>
 							<?php endforeach; ?><br>
 						<?php endif;?>
@@ -51,9 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<?php if($session->keynote_speakers != new stdClass()):?>
 
 							<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
-								<?=(isset($index) && ($index >= 1))?',':''?>
 								<a style="cursor: pointer" class="keynote-link" keynote-id="<?=$keynote->id?>" keynote-photo="<?=$keynote->photo?>" speaker-name="<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>">
-									<?=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' ,'.$keynote->credentials:'')?>
+									<?=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'')?>
 								</a>
 								<bio style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->bio?></bio>
 								<disclosure style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->disclosures?></disclosure>
@@ -63,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 							<?php
 							foreach ($session->presenters as $index=>$presenter):
-								echo ((isset($index) && ($index>=1))?", ":'').trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?' '.trim($presenter->credentials):'');
+								echo " ".trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?', '.trim($presenter->credentials):'');
 							endforeach;?><br>
 						<?php endif; ?>
 					</p>
