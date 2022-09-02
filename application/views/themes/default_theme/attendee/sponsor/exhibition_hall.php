@@ -146,7 +146,7 @@
 
 
 <button id="enterButton" class="btn btn-primary xy-center">ENTER</button>
-<img id="full-screen-background" src="<?=ycl_root?>/theme_assets/default_theme/images/exhibition/bg.jpg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">
+<img id="full-screen-background" src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/exhibition/bg.jpg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">
 <!--<img id="full-screen-background" src="https://dev.yourconference.live/cms_uploads/projects/3/other_images/exhibition_landing.jpeg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">-->
 
 <div class="vertical-center" id="loadingScreen">Loading<br>

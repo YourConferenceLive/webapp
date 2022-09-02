@@ -33,13 +33,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </script>
 
 <img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/lobby.jpeg" usemap="#workmap">
-<!--<img id="full-screen-background" src="--><?//=ycl_root?><!--/theme_assets/default_theme/images/background-images/lobby_bg.png" usemap="#workmap">-->
+<!--<img id="full-screen-background" src="--><?//=ycl_root?><!--/theme_assets/<?=$this->project->theme?>/images/background-images/lobby_bg.png" usemap="#workmap">-->
 
 <div class="lobby-content">
 	<div class="custom-container">
 		<div class="middle">
 			<div class="top-banner">
-				<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_top.png">
+				<img src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/lobby/banner_top.png">
 			</div>
 			<div class="menu">
 <?php
@@ -55,14 +55,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}?>
 			</div>
 			<div class="bottom-peoples">
-				<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/peoples.png">
+				<img src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/lobby/peoples.png">
 			</div>
 		</div>
 		<div class="left">
-			<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_left.png">
+			<img src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/lobby/banner_left.png">
 		</div>
 		<div class="right">
-			<img src="<?=ycl_root?>/theme_assets/default_theme/images/lobby/banner_right.png">
+			<img src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/lobby/banner_right.png">
 			<a href="#" class="support-button"></a>
 		</div>
 	</div>

@@ -91,4 +91,43 @@ class Settings_Model extends CI_Model
 
 	}
 
+	function presenterSettings($project_id){
+		//		print_r($project_id);exit;
+		$settings = $this->db->select('*')
+			->from('presenter_view_settings')
+			->where('project_id', $project_id)
+			->get();
+		if($settings->num_rows()>0){
+			return $settings->result();
+		}
+
+		return '';
+	}
+
+	function savePresenterViewSetting($project_id){
+		$post = $this->input->post();
+		$fieldset = array(
+			'project_id'=>$project_id,
+			'time_zone' =>(isset($post['presenter_timezone']) && $post['presenter_timezone'] ? trim($post['presenter_timezone']):'')
+		);
+
+		$settings = $this->db->select('*')
+			->from('presenter_view_settings')
+			->where('project_id', $project_id)
+			->get();
+
+		if($settings->num_rows() > 0){
+			$this->db->where('project_id', $project_id);
+			$this->db->update('presenter_view_settings', $fieldset);
+			return (array('status'=>'success', 'msg'=>'Settings Updated Successfully'));
+		}else{
+			$this->db->insert('presenter_view_settings', $fieldset);
+			if($this->db->insert_id()) {
+				return (array('status' => 'success', 'msg' => 'Settings Saved Successfully'));
+			}else{
+				return (array('status' => 'error', 'msg' => 'Save failed!'));
+			}
+		}
+
+	}
 }

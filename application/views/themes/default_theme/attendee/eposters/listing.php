@@ -119,7 +119,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
 						if ($eposter->prize) {?>
 					  	<img data-toggle="tooltip" data-placement="right" title="<?php echo (($eposter->prize != 'hot topic') ? 'Won ' : '' ).ucwords($eposter->prize);?>" class="img-fluid img-prize img-thumbnail"
-					  		 src="<?= ycl_root ?>/theme_assets/default_theme/images/eposters/thumb/<?=str_replace(' ', '_', $eposter->prize).'.png';?>">
+					  		 src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/eposters/thumb/<?=str_replace(' ', '_', $eposter->prize).'.png';?>">
 						<div class="clearfix"></div>
 <?php
 						}?>

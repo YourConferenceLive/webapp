@@ -281,11 +281,22 @@ class Sessions_Model extends CI_Model
 			'created_by' => $this->user->user_id,
 			'created_on' => date('Y-m-d H:i:s'),
 			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
+			'header_notes' => (isset($session_data['header_notes']) && ($session_data['header_notes']=='on') ? 1:0),
+			'header_question' => (isset($session_data['header_question']) && ($session_data['header_question']=='on') ? 1:0),
+			'header_resources' => (isset($session_data['header_resources']) && ($session_data['header_resources']=='on') ? 1:0),
+			'header_askrep' => (isset($session_data['header_askrep']) && ($session_data['header_askrep']=='on') ? 1:0),
 			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
 			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
 			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
+			'right_sticky_askrep' => (isset($session_data['right_sticky_askrep']) && ($session_data['right_sticky_askrep']=='on') ? 1:0),
 			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
 			'session_end_image' => $session_end_image,
+			'claim_credit_link' => (isset($session_data['claim_credit_link'])?trim($session_data['claim_credit_link']):''),
+			'claim_credit_url' => (isset($session_data['claim_credit_url'])?trim($session_data['claim_credit_url']):''),
+			'toolbox_note_text' => (isset($session_data['notes_text'])?trim($session_data['notes_text']):''),
+			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
+			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
+			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
 		);
 
 		$this->db->insert('sessions', $data);
@@ -407,10 +418,22 @@ class Sessions_Model extends CI_Model
 			'updated_by' => $this->user->user_id,
 			'updated_on' => date('Y-m-d H:i:s'),
 			'header_toolbox_status' => (isset($session_data['header_toolbox']) && ($session_data['header_toolbox']=='on') ? 1:0),
+			'header_notes' => (isset($session_data['header_notes']) && ($session_data['header_notes']=='on') ? 1:0),
+			'header_question' => (isset($session_data['header_question']) && ($session_data['header_question']=='on') ? 1:0),
+			'header_resources' => (isset($session_data['header_resources']) && ($session_data['header_resources']=='on') ? 1:0),
+			'header_askrep' => (isset($session_data['header_askrep']) && ($session_data['header_askrep']=='on') ? 1:0),
 			'right_sticky_notes' => (isset($session_data['right_sticky_notes']) && ($session_data['right_sticky_notes']=='on') ? 1:0),
 			'right_sticky_resources' => (isset($session_data['right_sticky_resources']) && ($session_data['right_sticky_resources']=='on') ? 1:0),
 			'right_sticky_question' => (isset($session_data['right_sticky_question']) && ($session_data['right_sticky_question']=='on') ? 1:0),
+			'right_sticky_askrep' => (isset($session_data['right_sticky_askrep']) && ($session_data['right_sticky_askrep']=='on') ? 1:0),
 			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
+			'claim_credit_link' => (isset($session_data['claim_credit_link'])?trim($session_data['claim_credit_link']):''),
+			'claim_credit_url' => (isset($session_data['claim_credit_url'])?trim($session_data['claim_credit_url']):''),
+			'toolbox_note_text' => (isset($session_data['notes_text'])?trim($session_data['notes_text']):''),
+			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
+			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
+			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
+
 		);
 
 		if($session_end_image != '' && $session_end_image != null){
@@ -1024,5 +1047,71 @@ class Sessions_Model extends CI_Model
 			return array('status'=>'error', 'msg'=>'Sorry something went wrong');
 		}
 	}
+
+	function save_ask_a_rep()
+	{
+
+		$post = $this->input->post();
+
+		$data = array(
+			'session_id' => $post['session_id'],
+			'user_id' => $post['user_id'],
+			'rep_type' => $post['rep_type'],
+			'date_time' => date('Y-m-d H:i:s'),
+			'project_id' => $this->project->id
+		);
+
+		$this->db->select('*');
+		$this->db->from('ask_a_rep');
+		$this->db->where(array('session_id' => $post['session_id'], 'user_id' => $post['user_id'], 'rep_type' => $post['rep_type']));
+		$this->db->where('project_id', $this->project->id);
+		$response = $this->db->get();
+		if ($response->num_rows() > 0)
+			echo json_encode(array('status' => 'failed', 'msg' => "You have already requested to be contacted by a representative ({$post['rep_type']}).<br> A representative will contact you shortly."));
+		else {
+			$this->db->insert('ask_a_rep', $data);
+			if ($this->db->affected_rows() > 0)
+				echo json_encode(array('status' => 'success', 'msg' => "Thank you for your request. <br> A representative will contact you shortly."));
+			else
+				echo json_encode(array('status' => 'failed', 'msg' => "Unable to request, please try again."));
+		}
+
+		return;
+	}
+
+	function saveTimeSpentOnSession($session_id, $user_id){
+		$this->db->where(array('session_id'=>$session_id, 'user_id'=>$user_id, 'project_id'=>$this->project->id));
+		$response = $this->db->get('total_time_on_session');
+
+		if ( $response->num_rows() > 0 )
+		{
+			$this->db->where(array('session_id'=>$session_id, 'user_id'=>$user_id, 'project_id'=>$this->project->id));
+			$this->db->update('total_time_on_session', array('total_time'=>$this->input->post()['time']));
+		} else {
+			$this->db->set(array('session_id'=>$session_id, 'user_id'=>$user_id, 'project_id'=>$this->project->id));
+			$this->db->insert('total_time_on_session', array('total_time'=>$this->input->post()['time']));
+		}
+
+		echo 1;
+		return;
+	}
+
+	function getTimeSpentOnSession($session_id, $user_id)
+	{
+		$this->db->select('*');
+		$this->db->from('total_time_on_session');
+		$this->db->where(array('session_id'=>$session_id, 'user_id'=>$user_id, 'project_id'=>$this->project->id));
+
+		$response = $this->db->get();
+		if ($response->num_rows() > 0)
+		{
+			echo $response->result_array()[0]['total_time'];
+		}else{
+			echo 0;
+		}
+
+		return;
+	}
+
 
 }

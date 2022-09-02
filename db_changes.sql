@@ -614,3 +614,18 @@ ALTER TABLE `session_polls` ADD `added_by` INT NOT NULL AFTER `added_on`;
 -- Session table change
 -- 1st July, 2021
 ALTER TABLE `sessions` ADD `video_url` VARCHAR(255) NULL DEFAULT NULL AFTER `zoom_link`;
+
+
+-- Add field Session table for sticky menu
+ALTER TABLE `sessions` ADD `header_notes` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_toolbox_status`, ADD `header_resources` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_notes`, ADD `header_question` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_resources`;
+-- Add claim credit
+ALTER TABLE `sessions` ADD `claim_credit_link` VARCHAR(255) NULL DEFAULT NULL AFTER `zoom_link`, ADD `claim_credit_url` VARCHAR(255) NULL DEFAULT NULL AFTER `claim_credit_link`;
+
+-- End field Session table
+
+-- create ask rep table
+CREATE TABLE `ask_a_rep` ( `id` INT NOT NULL AUTO_INCREMENT , `project_id` INT NOT NULL , `session_id` INT NOT NULL , `user_id` INT NOT NULL , `rep_type` VARCHAR(255) NOT NULL , `date_time` DATE NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+-- add session field table
+ALTER TABLE `sessions` ADD `header_askrep` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_question`;
+ALTER TABLE `sessions` ADD `toolbox_question_text` VARCHAR(255) NOT NULL AFTER `right_sticky_question`, ADD `toolbox_resource_text` VARCHAR(255) NOT NULL AFTER `toolbox_question_text`, ADD `toolbox_note_text` VARCHAR(255) NOT NULL AFTER `toolbox_resource_text`, ADD `toolbox_askrep_text` VARCHAR(255) NOT NULL AFTER `toolbox_note_text`, ADD `toolbox_chat_admin_text` VARCHAR(255) NOT NULL AFTER `toolbox_askrep_text`;

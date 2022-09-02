@@ -41,7 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			if ($eposter->prize) :?>
 		<div class="tool-btns prize hide">
 			<a><img data-toggle="tooltip" data-placement="left" title="<?php echo (($eposter->prize != 'hot topic') ? 'Won ' : '' ).ucwords($eposter->prize);?>" class="img-fluid img-prize-detail img-thumbnail"
-				  		 src="<?= ycl_root ?>/theme_assets/default_theme/images/eposters/thumb/<?=str_replace(' ', '_', $eposter->prize).'.png';?>"
+				  		 src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/eposters/thumb/<?=str_replace(' ', '_', $eposter->prize).'.png';?>"
 						 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/default.jpg'"></a>
 		</div>
 <?php
