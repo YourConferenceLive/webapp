@@ -119,13 +119,13 @@ body{overflow: hidden;background-color: #151515;}
 						<div class="row" style="margin-bottom: 10px; padding-bottom: 5px">
 <?php
 							if ($resource->resource_type == "url") {?>
-								<div class="col-md-12"><a href="<?=$resource->resource_path?>" target="_blank"><?=$resource->resource_name?></a></div>
+								<div class="col-md-12"><a href="<?=$resource->resource_path?>" target="_blank"><i class="fas fa-globe"></i> <?=$resource->resource_name?></a></div>
 <?php
 							}?>
 <?php
 							if ($resource->resource_type == "file") {
 								if ($resource->resource_path != "") {?>
-									<div class="col-md-12"><a href="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/resources/<?=$resource->resource_path?>" download> <?=$resource->resource_name?> </a></div>
+									<div class="col-md-12"><a href="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/resources/<?=$resource->resource_path?>" download><i class="fas fa-file-alt text-info"></i>  <?=$resource->resource_name?> </a></div>
 <?php
 								}
 							}?>
