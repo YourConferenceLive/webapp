@@ -152,6 +152,19 @@
 											</div>
 										</div>
 									</div>
+									<div class="row">
+										<div class="col-md-6 col-sm-12">
+											<div class="input-group mb-3">
+												<div class="input-group-prepend">
+													<span class="input-group-text" id="basic-addon1">Time Zone</span>
+												</div>
+												<select name="time_zone" id="timeZone" class="form-control" placeholder="Select Time Zone" aria-label="Select Time Zone" aria-describedby="basic-addon1">
+													<option value="EST">Eastern Standard Time</option>
+													<option value="EDT">Eastern Day Time</option>
+												</select>
+											</div>
+										</div>
+									</div>
 
 								</div>
 
