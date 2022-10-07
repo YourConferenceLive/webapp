@@ -163,7 +163,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="col-md-9 col-sm-12 pl-0 pt-2">
 								<div class="col-12 text-md-left text-sm-center">
 									<div class="col-6 text-left float-left p-0">
-										<span><?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?> EST</span>
+										<span><?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?>  <?=$session->time_zone?></span>
 									</div>
 									<?php if(isset($session->session_track)):?>
 									<div class="col-4 text-right float-right p-0 ">

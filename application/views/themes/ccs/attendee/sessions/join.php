@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<div class="col-8">
 							<div>
-								<small><?=date("l jS M, Y g:iA", strtotime($session->start_date_time))?> ET</small>
+								<small><?=date("l jS M, Y g:iA", strtotime($session->start_date_time))?> <?=$session->time_zone?></small>
 								<h4><?=$session->name?></h4>
 								<p><?=$session->description?></p>
 							</div>

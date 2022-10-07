@@ -450,6 +450,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
 					'		</a>' +
 					'		<button class="reload_attendee btn btn-sm btn-danger m-1"><i class="fas fa-sync"></i> Reload Atendee</button>' +
+					'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
+					'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
@@ -501,6 +503,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					socket.emit('reload-attendee');
 				}
 			})
+		})
+
+		$('#sessionsTableBody').on('click', '.session_resources', function(){
+			let session_id = $(this).attr('session-id')
+			$('#addResourceModal').modal('show')
+			$('#save-resource').attr('session-id', session_id);
+
+			getSessionResources(session_id);
+		});
+
+		$('#sessionsTableBody').on('click', '.mobileSessionQR', function(e){
+			e.preventDefault();
+			let session_id = $(this).attr('session-id');
+			// var session_id = $(this).attr('data-session_id');
+			$.post('<?= $this->project_url?>/admin/sessions/generateQRCode/'+session_id,
+				{}, function(success){
+					if(success=="success"){
+						Swal.fire({
+							text:'<?=$this->project_url?>/mobile/sessions/id/'+session_id,
+							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/qrcode/qr_'+session_id+'.png',
+							imageHeight: 300,
+							imageAlt: 'QRCODE'
+						})
+					}
+				})
 		})
 	})
 </script>
