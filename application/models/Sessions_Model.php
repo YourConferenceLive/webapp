@@ -297,6 +297,7 @@ class Sessions_Model extends CI_Model
 			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
 			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
 			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
+			'time_zone' => (isset($session_data['time_zone'])?trim($session_data['time_zone']):''),
 		);
 
 		$this->db->insert('sessions', $data);
@@ -433,7 +434,7 @@ class Sessions_Model extends CI_Model
 			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
 			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
 			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
-
+			'time_zone' => (isset($session_data['time_zone'])?trim($session_data['time_zone']):''),
 		);
 
 		if($session_end_image != '' && $session_end_image != null){
@@ -987,11 +988,12 @@ class Sessions_Model extends CI_Model
 
 		$result = $this->db->select('*')
 			->from('session_question_saved')
-			->where('user_id', $this->user->user_id)
+//			->where('user_id', $this->user->user_id)
 			->where('question_id', $this->input->post('question_id'))
 			->get();
 
 		if ($result->num_rows()>0){
+			$this->db->where('question_id', $this->input->post('question_id'));
 			$this->db->update('session_question_saved', $field_set);
 		}else
 		$this->db->insert('session_question_saved', $field_set);
