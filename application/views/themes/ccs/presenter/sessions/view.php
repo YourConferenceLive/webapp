@@ -486,6 +486,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		var countDownDate = new Date(session_start_datetime).getTime();
 
 		console.log("session_start_datetime: " + session_start_datetime);
+		console.log("countDateTime: " + countDownDate);
 
 		// Update the count down every 1 second
 		var x = setInterval(function() {
@@ -800,7 +801,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'question_id':question_id
 				},function(response){
 				if(response){
+					console.log(response);
 					fillSavedQuestions();
+					socket.emit('presenter_like_questions', {
+						"type": "like",
+						"question": response,
+					});
 				}
 					// console.log(response);
 			})
