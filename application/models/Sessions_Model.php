@@ -1050,6 +1050,17 @@ class Sessions_Model extends CI_Model
 		}
 	}
 
+	function hideSavedQuestionAjax(){
+			$this->db->where('question_id', $this->input->post('question_id'));
+			$this->db->update('session_question_saved', array('saved_status'=>0));
+
+		if($this->db->affected_rows() > 0){
+			return array('status'=>'success', 'msg'=>'Question removed from starred');
+		}else{
+			return array('status'=>'error', 'msg'=>'Sorry something went wrong');
+		}
+	}
+
 	function save_ask_a_rep()
 	{
 
@@ -1113,6 +1124,71 @@ class Sessions_Model extends CI_Model
 		}
 
 		return;
+	}
+
+	function addSessionResources(){
+		$post = $this->input->post();
+		if($post['resource_url'] == '' && empty($_FILES)){
+			return array('status'=>'error', 'msg'=>'File or URL cannot be empty');
+		}
+			$insert_field = array(
+				'session_id'=>$post['session-id'],
+				'resource_type'=>'url',
+				'resource_path'=>$post['resource_url'],
+				'resource_name'=>$post['resource_name']
+			);
+			$this->db->insert('session_resources', $insert_field);
+			$id = $this->db->insert_id();
+			if($id > 0) {
+				if (!empty($_FILES)) {
+					$_FILES['resource_file']['name'] = $_FILES['resource_file']['name'];
+					$_FILES['resource_file']['type'] = $_FILES['resource_file']['type'];
+					$_FILES['resource_file']['tmp_name'] = $_FILES['resource_file']['tmp_name'];
+					$_FILES['resource_file']['error'] = $_FILES['resource_file']['error'];
+					$_FILES['resource_file']['size'] = $_FILES['resource_file']['size'];
+					$this->load->library('upload');
+					$this->upload->initialize($this->set_upload_options_resource($post['resource_name']));
+					$this->upload->do_upload('resource_file');
+					$file_upload_name = $this->upload->data();
+					$this->db->update('session_resources', array('resource_path' => $file_upload_name['file_name'], 'resource_type' => 'file'), array('id' => $id));
+				}
+				return array('status'=>'success', 'msg'=>'Resource Added Successfully');
+			}
+		}
+
+	function set_upload_options_resource($name) {
+		$this->load->helper('string');
+		$randname = random_string('numeric', '8');
+		$config = array();
+		$config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/resources/';
+		$config['allowed_types'] = '*';
+		$config['overwrite'] = FALSE;
+		$config['file_name'] = $name.'_'.$randname;
+		return $config;
+	}
+
+	function getSessionResources($session_id){
+		$post = $this->input->post();
+		$result = $this->db->select('*')
+			->from('session_resources')
+			->where('session_id', $session_id)
+			->where('is_active', 1)
+			->get();
+		if($result->num_rows() > 0){
+			return array('status'=>'success', 'data'=>$result->result());
+		}else
+			return array('status'=>'error');
+	}
+
+	function updateSessionResource(){
+		$post = $this->input->post();
+//		print_r($post);exit;
+		$this->db->where('id', $post['resource_id']);
+		$this->db->update('session_resources', array('is_active'=>$post['is_active']));
+		if($this->db->affected_rows() > 0){
+			return array('status'=>'success', 'msg'=>'Resource has been removed');
+		}else
+			return array('status'=>'error', 'msg'=>'Something went wrong');
 	}
 
 
