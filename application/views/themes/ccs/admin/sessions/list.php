@@ -238,7 +238,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				if(session.header_askrep == 1){
 					$('#headerAskRep').attr('checked','checked')
 				}
-
+				if(session.time_zone == "EDT"){
+					$('#timeZone').val("EDT")
+				}else{
+					$('#timeZone').val("EST")
+				}
 
 
 				$("#sessionEndText").summernote("code", session.session_end_text);
