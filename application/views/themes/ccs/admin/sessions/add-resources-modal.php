@@ -87,6 +87,10 @@
 					}else{
 						toastr.error(response.msg);
 					}
+
+					$('#resource_name').val('');
+					$('#resource_url').val('');
+					$('#resource_file').val('');
 					getSessionResources(session_id);
 				}
 			});
