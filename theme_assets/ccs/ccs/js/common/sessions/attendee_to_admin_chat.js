@@ -109,5 +109,16 @@ $(function(){
 
 		});
 
+		socket.on('end-attendee-to-admin-chat-notification', function (data) {
+				if ((data.from_id == user_id) || data.to_id == user_id)
+				{
+					if (data.to_id == user_id)
+					{
+						$('#adminChatStickyIcon').hide();
+						$('#chatWithAdminMinimize').click();
+					}
+				}
+		});
+
 
 

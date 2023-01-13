@@ -707,6 +707,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
 	}
 
+	$('#endChatBtn').on('click', function () {
+
+		let userId = $(this).attr('userId');
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "Ending chat will disable attendee from sending you texts until you texts attendee.",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, end it!'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				socket.emit('end-attendee-to-admin-chat', {"session_id":session_id, "from_id":"admin", "to_id":userId});
+
+				$('#attendeeChatModal').modal('hide');
+			}
+		})
+	});
+
 </script>
 
 <script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
