@@ -87,7 +87,7 @@ $ci_method = $this->router->fetch_method();?>
 							<a class="dropdown-item stickyMenu" data-sticky="notesSticky" id="notesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-edit"></i> Take Notes</a>
 <!--							<a class="dropdown-item stickyMenu" data-sticky="questionsSticky" id="questionsStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-comments"></i> Chat</a>-->
 							<a class="dropdown-item stickyMenu" data-sticky="resourcesSticky" id="resourcesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-paperclip"></i> Resources </a>
-<!--							<a class="dropdown-item stickyMenu" data-sticky="notesSticky" id="notesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-user-tie"></i> Ask A Rep </a>-->
+							<a class="dropdown-item stickyMenu" data-sticky="askARepSticky" id="askARepStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-user-tie"></i> Ask A Rep </a>
 						</div>
 					</li>
 						<?php endif; ?>
