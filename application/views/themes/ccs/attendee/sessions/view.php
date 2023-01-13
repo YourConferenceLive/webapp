@@ -753,11 +753,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 
 		},1000);
-		Swal.fire(
-			'INFO',
-			'Be sure to unmute the player located on the bottom right side of the page.',
-			'warning'
-		);
+		// Swal.fire(
+		// 	'INFO',
+		// 	'Be sure to unmute the player located on the bottom right side of the page.',
+		// 	'warning'
+		// );
 
 	}
 
