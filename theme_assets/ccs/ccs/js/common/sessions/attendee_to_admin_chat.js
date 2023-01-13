@@ -94,7 +94,7 @@ $(function(){
 						'<span class="admin_chat_section btn btn-primary float-left text-left m-1" style="width:90%"><strong style="margin-right: 10px">'+data.presenter_name+'</strong>'+data.chat_text+'</span>');
 				}else{
 					$('.chat_with_admin_body').append('' +
-						'<span class="admin_chat_section btn float-right text-right m1-1" style="width:90%"><strong style="margin-right: 10px">Admin</strong>'+data.chat_text+'</span>');
+						'<span class="admin_chat_section btn float-right text-right m1-1" style="width:90%"><strong style="margin-right: 10px">'+data.presenter_name+'</strong>'+data.chat_text+'</span>');
 				}
 				$('#adminChatStickyIcon').show();
 				$('#adminChatStickyIcon').click();
