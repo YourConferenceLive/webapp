@@ -629,3 +629,10 @@ CREATE TABLE `ask_a_rep` ( `id` INT NOT NULL AUTO_INCREMENT , `project_id` INT N
 -- add session field table
 ALTER TABLE `sessions` ADD `header_askrep` TINYINT(1) NOT NULL DEFAULT '1' AFTER `header_question`;
 ALTER TABLE `sessions` ADD `toolbox_question_text` VARCHAR(255) NOT NULL AFTER `right_sticky_question`, ADD `toolbox_resource_text` VARCHAR(255) NOT NULL AFTER `toolbox_question_text`, ADD `toolbox_note_text` VARCHAR(255) NOT NULL AFTER `toolbox_resource_text`, ADD `toolbox_askrep_text` VARCHAR(255) NOT NULL AFTER `toolbox_note_text`, ADD `toolbox_chat_admin_text` VARCHAR(255) NOT NULL AFTER `toolbox_askrep_text`;
+
+
+-- time zone
+ALTER TABLE `sessions` ADD `time_zone` VARCHAR(255) NOT NULL DEFAULT 'EST' AFTER `session_end_image`;
+
+-- start date time for logs
+ALTER TABLE `logs` ADD `start_date_time` DATETIME NULL AFTER `date_time`, ADD `end_date_time` DATETIME NULL AFTER `start_date_time`;
