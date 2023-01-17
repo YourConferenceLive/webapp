@@ -301,6 +301,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	}
 }
 ?>
+
+<input type="hidden" id="logs_id" value="">
 <style>
 .list-group {overflow: auto; height: 100px;}
 .list-group-item:nth-child(odd) {background-color: #FFFFFF;}
@@ -435,6 +437,9 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	}
 
 	$(function () {
+
+		get_sessions_history_open(sessionId);
+
 		$('#notes_list_container').on('click', '.note_detail', function (e) {
 			$('#noteModal').modal('hide');
   			let note_text = $(this).data('note-text');
@@ -761,7 +766,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 	}
 
-	setInterval(saveTimeSpentOnSession, 300000); //Saving total time every 5 minutes as a backup
+	setInterval(saveTimeSpentOnSession, 1000); //Saving total time every 5 minutes as a backup
 
 	function initiateTimerRecorder() {
 		getTimeSpentOnSession();
@@ -775,9 +780,9 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	function update_viewsessions_history_open()
 	{
 		$.ajax({
-			url: base_url+"sessions/update_viewsessions_history_open",
+			url: base_url+"/sessions/update_viewsessions_history_open/"+sessionId,
 			type: "post",
-			data: {'view_sessions_history_id': $("#view_sessions_history_id").val()},
+			data: {'logs_id': $("#logs_id").val()},
 			dataType: "json",
 			success: function (data) {
 
@@ -800,6 +805,21 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		var nd = new Date(utc + (3600000*offset));
 
 		return nd;
+	}
+
+	function get_sessions_history_open(sessionId){
+		var resolution = screen.width + "x " + screen.height + "y";
+		$.ajax({
+			url: project_url+"/sessions/add_viewsessions_history_open",
+			type: "post",
+			data: {'sessions_id': sessionId, 'resolution': resolution},
+			dataType: "json",
+			success: function (data) {
+				console.log('get_sessions_history_open');
+				$("#logs_id").val(data.logs_id);
+			}
+		});
+		return false;
 	}
 
 	/******* End of saving time spent on session - by Rexter ************/

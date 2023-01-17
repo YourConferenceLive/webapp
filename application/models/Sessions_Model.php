@@ -1191,5 +1191,111 @@ class Sessions_Model extends CI_Model
 			return array('status'=>'error', 'msg'=>'Something went wrong');
 	}
 
+	function update_viewsessions_history_open($session_id){
+		$post = $this->input->post();
+		$session_his_arr = array(
+			'end_date_time' => date("Y-m-d H:i:s")
+		);
+		$this->db->update('logs', $session_his_arr, array("id" => $post['logs_id']));
+
+		$logs_history = $this->db->get_where('logs', array("logs_id" => $post['logs_id']))->row();
+		if (!empty($view_sessions_history)) {
+			$where_session_his_arr = array(
+				'ref_1' => $logs_history->session_id,
+				'user_id' => $this->user->user_id,
+				'name' => 'Attend',
+				'info' => 'Session View'
+			);
+			$logs_history = $this->db->get_where('logs', $where_session_his_arr)->row();
+			if (!empty($login_sessions_history)) {
+				$sessions_details = $this->db->get_where('sessions', array("id" => $logs_history->session_id))->row();
+
+				if (date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time)) < date("Y-m-d H:i:s") && date("Y-m-d H:i:s") < date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time))) {
+					if (date("Y-m-d H:i:s") < date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time))) {
+						$end_date_time = date("Y-m-d H:i:s");
+					} else {
+						$end_date_time = date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time));
+					}
+				} else {
+					if (date("Y-m-d H:i:s") < date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time))) {
+						$end_date_time = date("Y-m-d H:i:s", strtotime($sessions_details->start_date_time));
+					} else {
+						$end_date_time = date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time));
+					}
+				}
+
+				$session_his_array = array(
+					'end_date_time' => $end_date_time
+				);
+				$this->db->update('logs', $session_his_array, array("id" => $logs_history->id));
+			}
+		}
+		echo json_encode(array("status" => "success"));
+	}
+
+	function add_viewsessions_history_open(){
+		$post = $this->input->post();
+		$this->load->library('user_agent');
+
+		$session_his_arr = array(
+			'name'=> 'Attend',
+			'project_id' =>$this->project->id,
+			'ref_1' => $post['sessions_id'],
+			'user_id' => $this->user->user_id,
+			'os' => $this->agent->platform(),
+			'browser' => $this->agent->browser(),
+			'info' => 'Session View',
+			'ip' => $this->input->ip_address(),
+			'start_date_time' => date("Y-m-d H:i:s"),
+			'date_time' => date("Y-m-d H:i:s"),
+		);
+
+//		print_r($session_his_arr);exit;
+		$this->db->insert('logs', $session_his_arr);
+		$insert_id = $this->db->insert_id();
+//		print_r($insert_id);exit;
+		$where_session_his_arr = array(
+			'project_id'=>$this->project->id,
+			'ref_1' => $post['sessions_id'],
+			'user_id' => $this->user->user_id,
+			'name' => 'Attend',
+			'info' => 'Session View'
+		);
+
+		$login_sessions_history = $this->db->get_where('logs', $where_session_his_arr)->row();
+
+		$sessions_details = $this->db->get_where('sessions', array("id" => $post['sessions_id']))->row();
+		if (!empty($login_sessions_history)) {
+
+		} else {
+			if (date("Y-m-d H:i:s", strtotime($sessions_details->start_date_time)) < date("Y-m-d H:i:s") && date("Y-m-d H:i:s") < date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time))) {
+				if (date("Y-m-d H:i:s") < date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time))) {
+					$start_date_time = date("Y-m-d H:i:s");
+				} else {
+					$start_date_time = date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time));
+				}
+			} else {
+				if (date("Y-m-d H:i:s") < date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time))) {
+					$start_date_time = date("Y-m-d H:i:s", strtotime($sessions_details->start_date_time));
+				} else {
+					$start_date_time = date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time));
+				}
+			}
+
+			$session_his_array = array(
+				'ref_1' => $post['sessions_id'],
+				'user_id' => $this->user->user_id,
+				'os' => $this->agent->platform(),
+				'browser' => $post['browser'],
+				'ip' => $this->input->ip_address(),
+				'start_date_time' => $start_date_time,
+				'status' => 0
+			);
+			$this->db->insert('logs', $session_his_array);
+		}
+
+		echo json_encode(array("status" => "success", "logs_id" => $insert_id));
+	}
+
 
 }

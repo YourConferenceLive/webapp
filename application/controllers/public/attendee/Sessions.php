@@ -198,6 +198,14 @@ class Sessions extends CI_Controller
 		$this->sessions->saveTimeSpentOnSession($session_id, $user_id);
 	}
 
+	public function update_viewsessions_history_open($session_id){
+		$this->sessions->update_viewsessions_history_open($session_id);
+	}
+
+	public function add_viewsessions_history_open(){
+		$this->sessions->add_viewsessions_history_open();
+	}
+
 	public function getTimeSpentOnSession($session_id, $user_id){
 		$this->sessions->getTimeSpentOnSession($session_id, $user_id);
 	}
