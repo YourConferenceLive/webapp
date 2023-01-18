@@ -36,7 +36,7 @@ body{overflow: hidden;background-color: #151515;}
 		<li data-type="resourcesSticky" id="resourcesSticky"  style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?> </span></li>
 		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
 		<li data-type="questionsSticky" id="questionsSticky"  style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-question" aria-hidden="true"></i> <span><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></span></li>
-		<li data-type="adminChatSticky" id="adminChatStickyIcon"  style="display:none; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
+		<li data-type="adminChatSticky" id="adminChatStickyIcon"  style="display:none" class="bg-primary"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
 		<li data-type="askARepSticky" id="askARepSticky"  style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/conversation_icon.png" style="height:25px; width:25px"> <span><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></span></li>
 	</ul>
 </div>
@@ -203,7 +203,7 @@ body{overflow: hidden;background-color: #151515;}
 </div>
 
 <div class="rightSticykPopup adminChatSticky" style="display: none">
-	<div class="header" style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>;"><span>Toolbox</span>
+	<div class="header bg-primary" style=""><span>Toolbox</span>
 		<div class="rightTool">
 			<i class="fa fa-minus" id="chatWithAdminMinimize"  aria-hidden="true"></i>
 			<div class="dropdown">
