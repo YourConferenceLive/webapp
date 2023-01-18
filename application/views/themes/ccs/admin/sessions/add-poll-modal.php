@@ -68,6 +68,18 @@
 						<label>Type</label>
 						<select class="form-control" name="poll_type">
 							<option value="poll">Poll</option>
+							<option value="presurvey">Presurvey</option>
+							<option value="assessment">Assessment</option>
+						</select>
+					</div>
+
+					<div class="form-group mt-5">
+						<label>Poll Comparison with Us: </label>
+						<select class="form-control" name="poll_comparison">
+							<option value="">None</option>
+							<option value="poll">Poll</option>
+							<option value="presurvey">Presurvey</option>
+							<option value="assessment">Assessment</option>
 						</select>
 					</div>
 
@@ -84,7 +96,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button id="save-poll" type="button" class="btn btn-success"><i class="fas fa-plus"></i> Add</button>
+				<button id="save-poll" type="button" class="btn btn-success save-poll-btn"><i class="fas fa-plus"></i> Add</button>
 			</div>
 		</div>
 	</div>
@@ -117,11 +129,27 @@
 		});
 
 		$('#pollsTable').on('click', '.edit-poll-btn', function () {
-			toastr.warning('Under development'); return false;
+			// toastr.warning('Under development'); return false;
+			$('.save-poll-btn').removeAttr('id')
+			$('.save-poll-btn').attr('id', 'update-poll')
 
 			$.get(project_admin_url+"/sessions/getPollByIdJson/"+$(this).attr('poll-id'), function (poll) {
-
-			}).fail((error)=>{
+				if(poll){
+					console.log(poll)
+					$('#addPollModal').modal('show');
+					$('#pollOptionsInputDiv').html('');
+					$.each(poll.options, function(i, obj){
+						$('#pollOptionsInputDiv').append(
+							'<div class="input-group input-group-sm mb-2">' +
+							'<input type="text" name="pollOptionsInput[]" class="form-control" value="'+obj.option_text+'"> ' +
+							'<span class="input-group-append"> ' +
+							'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>' +
+							'</span>' +
+							'</div>'
+						);
+					})
+				}
+			}, 'json').fail((error)=>{
 				Swal.fire(
 						'Error!',
 						error,

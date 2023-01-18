@@ -841,6 +841,7 @@ class Sessions_Model extends CI_Model
 	public function addPoll($session_id)
 	{
 		$post = $this->input->post();
+//		print_r($post);exit;
 
 		$data = array(
 			'session_id' => $session_id,
@@ -866,12 +867,46 @@ class Sessions_Model extends CI_Model
 				$this->db->insert('session_poll_options', $options_array);
 			}
 
+			if($post['poll_comparison'] !== ''){
+				$this->addPollComparison($session_id, $post, $poll_id);
+			}
+
 			return array('status'=>'success', 'msg'=>'Poll created');
 
 		}else{
 			return array('status'=>'error', 'msg'=>'Unable to create poll');
 		}
 
+	}
+
+	function addPollComparison($session_id, $post, $pollParentId){
+		$post = $this->input->post();
+
+		$data = array(
+			'session_id' => $session_id,
+			'poll_question' => $post['pollQuestionInput'],
+			'poll_type' => $post['poll_comparison'],
+			'poll_comparison_id' => $pollParentId,
+			'show_result' => (isset($post['autoPollResult']))?1:0,
+			'is_active' => 1,
+			'added_on' => date('Y-m-d H:i:s'),
+			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
+		);
+		$this->db->insert('session_polls', $data);
+
+		if ($this->db->affected_rows() > 0)
+		{
+			$poll_id = $this->db->insert_id();
+
+			foreach ($post['pollOptionsInput'] as $option)
+			{
+				$options_array = array(
+					'poll_id' => $poll_id,
+					'option_text' => $option
+				);
+				$this->db->insert('session_poll_options', $options_array);
+			}
+		}
 	}
 
 	public function getQuestions($session_id)
