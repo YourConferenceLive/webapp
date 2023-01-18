@@ -188,4 +188,24 @@ class Sessions extends CI_Controller
 	public function updateSessionResource(){
 		echo json_encode($this->sessions->updateSessionResource());
 	}
+
+	public function flash_report($session_id){
+		$sidebar_data['user'] = $this->user;
+		$session = $this->sessions->getById($session_id);
+
+		$data['session'] = $session;
+		$data['polls'] = $this->sessions->getAllPolls($session_id);
+		$data['flash_report_list'] = $this->sessions->get_flash_report($session_id);
+//		echo '<pre>';
+//		print_r($data['flash_report_list']);exit;
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/flash_report", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer");
+
+	}
+
+
 }

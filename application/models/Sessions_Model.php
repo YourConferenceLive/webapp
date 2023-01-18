@@ -1297,5 +1297,68 @@ class Sessions_Model extends CI_Model
 		echo json_encode(array("status" => "success", "logs_id" => $insert_id));
 	}
 
+	function get_flash_report($sessions_id) {
+		$this->db->select('*, u.id as user_id, s.id as session_id, l.start_date_time as view_start_time, l.end_date_time as view_end_time');
+		$this->db->from('logs l');
+		$this->db->join('sessions s', 'l.ref_1 = s.id');
+		$this->db->join('user u', 'u.id = l.user_id');
+		$this->db->where("l.ref_1", $sessions_id);
+		$this->db->where("l.project_id", $this->project->id);
+		$this->db->where('l.name','Attend');
+		$this->db->where('l.info','Session View');
+		$logs = $this->db->get();
+
+		if ($logs->num_rows() > 0) {
+			$return_array = array();
+			foreach ($logs->result() as $value) {
+//
+//				$this->db->select('*');
+//				$this->db->from('sessions_group_chat');
+//				$this->db->where(array("sessions_id" => $sessions_id, 'user_id' => $value->user_id));
+//				$sessions_group_chat_msg = $this->db->get();
+//				$messages = 0;
+//				if ($sessions_group_chat_msg->num_rows() > 0) {
+//					$messages = $sessions_group_chat_msg->num_rows();
+//				}
+
+				$this->db->select('*');
+				$this->db->from('session_questions');
+				$this->db->where(array("session_id" => $sessions_id, "user_id" => $value->user_id));
+				$session_questions = $this->db->get();
+				$questions = 0;
+				if ($session_questions->num_rows() > 0) {
+					$questions = $session_questions->num_rows();
+				}
+
+				$value->total_time_new = $this->getTimeSpentOnSession($sessions_id, $value->user_id);
+
+//				$value->total_chat = $messages;
+				$value->total_questions = $questions;
+//				$value->total_polls = $polls;
+				$return_array[] = $value;
+			}
+		}else{
+			return array();
+		}
+		return $return_array;
+	}
+
+	function getAllAttendee(){
+		$this->db->select('*')
+			->from('user')
+			->get();
+	}
+	function get_user_question($sessions_id, $user_id){
+		$question = $this->db->select('*')
+			->from('session_questions')
+			->where('session_id', $sessions_id)
+			->where('user_id', $user_id)
+			->get()->result();
+
+		if(!empty($question))
+			return $question;
+		else
+			return '';
+	}
 
 }
