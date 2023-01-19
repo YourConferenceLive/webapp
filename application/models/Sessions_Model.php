@@ -1284,7 +1284,7 @@ class Sessions_Model extends CI_Model
 		);
 		$this->db->update('logs', $session_his_arr, array("id" => $post['logs_id']));
 
-		$logs_history = $this->db->get_where('logs', array("logs_id" => $post['logs_id']))->row();
+		$logs_history = $this->db->get_where('logs', array("id" => $post['logs_id']))->row();
 		if (!empty($view_sessions_history)) {
 			$where_session_his_arr = array(
 				'ref_1' => $logs_history->session_id,
