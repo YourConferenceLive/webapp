@@ -107,7 +107,7 @@
 <script>
 
 	$(function () {
-
+		let pollOptionsDeleted;
 		$('[data-toggle="tooltip"]').tooltip();
 
 		$('.add-new-option-btn').on('click', function () {
@@ -120,8 +120,11 @@
 					'</div>');
 		});
 
-		$('#pollOptionsInputDiv').on('click', '.delete-option-button', function () {
+		$('#pollOptionsInputDiv').on('click', '.delete-option-button', function (e) {
+			e.preventDefault();
+			pollOptionsDeleted.push($(this).attr('option_id'))
 			$(this).parent().parent().remove();
+			console.log((pollOptionsDeleted));
 		});
 
 		$('#pollsTable').on('click', '.remove-poll-btn', function () {
@@ -129,21 +132,24 @@
 		});
 
 		$('#pollsTable').on('click', '.edit-poll-btn', function () {
+			pollOptionsDeleted = [];
 			// toastr.warning('Under development'); return false;
-			$('.save-poll-btn').removeAttr('id')
-			$('.save-poll-btn').attr('id', 'update-poll')
-
+			$('#pollId').val($(this).attr('poll-id'));
+			$('#save-poll').html('Update');
 			$.get(project_admin_url+"/sessions/getPollByIdJson/"+$(this).attr('poll-id'), function (poll) {
 				if(poll){
-					console.log(poll)
+					// console.log(poll.poll_question)
 					$('#addPollModal').modal('show');
 					$('#pollOptionsInputDiv').html('');
+					$('#pollQuestionInput').html('');
 					$.each(poll.options, function(i, obj){
+
+						$('#pollQuestionInput').val(poll.poll_question);
 						$('#pollOptionsInputDiv').append(
 							'<div class="input-group input-group-sm mb-2">' +
-							'<input type="text" name="pollOptionsInput[]" class="form-control" value="'+obj.option_text+'"> ' +
+							'<input type="text" name="pollOptionsInput[]" option_id="'+obj.id+'" class="form-control pollOptions" value="'+obj.option_text+'"> ' +
 							'<span class="input-group-append"> ' +
-							'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>' +
+							'<button type="button" class="delete-option-button btn btn-danger btn-flat" option_id="'+obj.id+'" ><i class="fas fa-trash"></i></button>' +
 							'</span>' +
 							'</div>'
 						);
@@ -161,7 +167,7 @@
 			if ($('#pollId').val() == 0)
 				addPoll();
 			else
-				updatePoll();
+				updatePoll(pollOptionsDeleted);
 		});
 
 	});
@@ -184,6 +190,61 @@
 		$.ajax({
 			type: "POST",
 			url: project_admin_url+"/sessions/addPollJson/<?=$session->id?>",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				Swal.close();
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				Swal.close();
+
+				data = JSON.parse(data);
+
+				if (data.status == 'success')
+				{
+					listPolls();
+					toastr.success(data.msg);
+					$('#addPollModal').modal('hide');
+
+				}else{
+					toastr.error(data.msg);
+				}
+			}
+		});
+	}
+
+	function updatePoll(pollOptionsDeleted){
+		console.log(pollOptionsDeleted);
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Updating the poll...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+
+		let formData = new FormData(document.getElementById('addPollForm'));
+
+		$('.pollOptions').each(function(i){
+			formData.append('option_'+i, $(this).attr('option_id'))
+		})
+		if(pollOptionsDeleted.length > 0) {
+			$.each(pollOptionsDeleted, function (i, val) {
+				formData.append('option_deleted[]', val);
+			})
+		}
+
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/sessions/updatePollJson/<?=$session->id?>",
 			data: formData,
 			processData: false,
 			contentType: false,

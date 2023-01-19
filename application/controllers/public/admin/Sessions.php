@@ -129,6 +129,10 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->addPoll($session_id));
 	}
 
+	public function updatePollJson($session_id){
+		echo json_encode($this->sessions->updatePoll($session_id));
+	}
+	
 	public function generateQRCode($session_id){
 
 		$this->load->library('ciqrcode');

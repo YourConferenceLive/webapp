@@ -909,6 +909,57 @@ class Sessions_Model extends CI_Model
 		}
 	}
 
+	public function updatePoll($session_id)
+	{
+		$post = $this->input->post();
+//		print_r($post);exit;
+		$data = array(
+			'poll_question' => $post['pollQuestionInput'],
+			'poll_type' => $post['poll_type'],
+			'show_result' => (isset($post['autoPollResult']))?1:0,
+			'is_active' => 1,
+			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
+		);
+		if($post['pollId'] != 0) {
+
+			$this->db->where('id', $post['pollId']);
+			$this->db->update('session_polls', $data);
+
+			foreach ($post['pollOptionsInput'] as $i => $option) {
+				$options_array = array(
+					'option_text' => $option
+				);
+				if (isset($post['option_' . $i])) {
+					$this->db->where('id', $post['option_' . $i]);
+					$this->db->update('session_poll_options', $options_array);
+				} else {
+					$options_array = array(
+						'poll_id' => $post['pollId'],
+						'option_text' => $option
+					);
+					$this->db->insert('session_poll_options', $options_array);
+				}
+			}
+			if(isset($post['option_deleted']) && !empty($post['option_deleted'])) {
+				foreach ($post['option_deleted'] as $deleted) {
+					$this->deletePollOption($deleted);
+				}
+			}
+
+			return array('status' => 'success', 'msg' => 'Poll updated');
+
+		} else {
+			return array('status' => 'error2', 'msg' => 'Unable to update poll');
+		}
+
+
+	}
+
+	public function deletePollOption($option_id){
+		$this->db->delete('session_poll_options', array('id'=>$option_id));
+		return true;
+	}
+
 	public function getQuestions($session_id)
 	{
 		$sql = "SELECT sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id FROM `session_questions` sq left join user u on sq.user_id = u.id where sq.session_id  = $session_id AND sq.id not In (SELECT question_id FROM session_question_stash ) or sq.id IN (SELECT question_id FROM session_question_stash where hidden != 1)";
