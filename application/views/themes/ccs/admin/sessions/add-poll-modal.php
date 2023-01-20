@@ -66,7 +66,7 @@
 
 					<div class="form-group mt-5">
 						<label>Type</label>
-						<select class="form-control" name="poll_type">
+						<select class="form-control" name="poll_type" id="poll_type_select">
 							<option value="poll">Poll</option>
 							<option value="presurvey">Presurvey</option>
 							<option value="assessment">Assessment</option>
@@ -75,7 +75,7 @@
 
 					<div class="form-group mt-5">
 						<label>Poll Comparison with Us: </label>
-						<select class="form-control" name="poll_comparison">
+						<select class="form-control" name="poll_comparison" id="poll_comparison_select">
 							<option value="">None</option>
 							<option value="poll">Poll</option>
 							<option value="presurvey">Presurvey</option>
@@ -134,11 +134,13 @@
 		$('#pollsTable').on('click', '.edit-poll-btn', function () {
 			pollOptionsDeleted = [];
 			// toastr.warning('Under development'); return false;
+			$('#poll_comparison_select').css('display', 'none')
 			$('#pollId').val($(this).attr('poll-id'));
 			$('#save-poll').html('Update');
 			$.get(project_admin_url+"/sessions/getPollByIdJson/"+$(this).attr('poll-id'), function (poll) {
 				if(poll){
-					// console.log(poll.poll_question)
+					console.log(poll)
+					$('#poll_type_select').val(poll.poll_type)
 					$('#addPollModal').modal('show');
 					$('#pollOptionsInputDiv').html('');
 					$('#pollQuestionInput').html('');

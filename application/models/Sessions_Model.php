@@ -764,6 +764,10 @@ class Sessions_Model extends CI_Model
 		if ($polls->num_rows() > 0)
 		{
 			$polls->result()[0]->options = $this->getPollOptions($polls->result()[0]->id);
+			if($polls->result()[0]->poll_comparison_id != 0){
+				$polls->result()[0]->poll_compare = $this->getPollOptions($polls->result()[0]->poll_comparison_id);
+			}
+
 			return $polls->result()[0];
 		}
 
@@ -816,24 +820,48 @@ class Sessions_Model extends CI_Model
 	public function getPollResult($poll_id)
 	{
 		$poll = $this->getPollById($poll_id);
-
 		$total_votes = 0;
+		$total_comp_votes = 0;
 		$results_array = array();
-		foreach ($poll->options as $option)
+		$result_compere = array();
+		$result_obj = new stdClass();
+		foreach ($poll->options as $index=>$option)
 		{
 			$results = $this->getResultByOptionId($option->id);
 			$total_votes += count((array)$results);
 
 			$results_array[$option->id] = array(
 				'option_name' => $option->option_text,
-				'number_of_answers' => count((array)$results)
+				'poll_id' => $option->poll_id,
+				'number_of_answers' => count((array)$results),
+				'poll_index'=> $index
 			);
 		}
+		if(isset($poll->poll_compare)) {
+			foreach ($poll->poll_compare as $index=> $compare) {
+				$results = $this->getResultByOptionId($compare->id);
+				$total_comp_votes += count((array)$results);
 
-		foreach ($results_array as $option_id => $result)
-			$results_array[$option_id]['vote_percentage'] = round(($result['number_of_answers']/$total_votes)*100);
+				$result_compere[$compare->id] = array(
+					'option_name' => $compare->option_text,
+					'poll_id' => $compare->poll_id,
+					'number_of_answers' => count((array)$results),
+					'poll_index'=> $index
+				);
+			}
+		}
 
-		return $results_array;
+		foreach ($results_array as $option_id => $result) {
+			$results_array[$option_id]['vote_percentage'] = round(($result['number_of_answers'] / $total_votes) * 100);
+		}
+		foreach ($result_compere as $option_id => $result) {
+			$result_compere[$option_id]['vote_percentage_compare'] = round(($result['number_of_answers'] / $total_comp_votes) * 100);
+		}
+
+		$result_obj->poll = $results_array;
+		$result_obj->compere = $result_compere;
+		$result_obj->poll_type = $poll->poll_type;
+		return $result_obj;
 
 
 	}

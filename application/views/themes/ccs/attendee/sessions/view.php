@@ -577,22 +577,45 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		});
 
 		socket.on('ycl_launch_poll_result', (data)=>{
-			console.log(data)
+
 			if(data.session_id == sessionId) {
 				$('#pollResultModalLabel').text(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
 
 					$('#pollResults').html('');
-					$.each(results, function (poll_id, option_details) {
-						$('#pollResults').append('' +
+
+					if(results.poll_type === 'poll' || results.poll_type === 'presurvey') {
+						$.each(results.poll, function (poll_id, option_details) {
+							$('#pollResults').append('' +
 								'<div class="form-group">' +
 								'  <label class="form-check-label">'+option_details.option_name+'</label>' +
 								'  <div class="progress" style="height: 25px;">' +
 								'    <div class="progress-bar" role="progressbar" style="width: '+option_details.vote_percentage+'%;" aria-valuenow="'+option_details.vote_percentage+'" aria-valuemin="0" aria-valuemax="100">'+option_details.vote_percentage+'%</div>' +
 								'  </div>' +
 								'</div>');
-					});
+						});
+					}else {
+						$.each(results.poll, function (poll_id, option_details) {
+							$('#pollResults').append('' +
+								'<div class="form-group">' +
+								'  <label class="form-check-label">' + option_details.option_name + '</label>' +
+								' <div class="progress_section" id="progress-section-'+option_details.poll_index+'"> ' +
+								'	<div class="progress mb-1" style="height: 25px;">' +
+								'    	<div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage + '%;" aria-valuenow="' + option_details.vote_percentage + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage + '%</div>' +
+								'	</div> ' +
+								'</div>' +
+								'</div>');
+
+						});
+						$.each(results.compere, function (poll_id, option_details) {
+							$('#progress-section-'+option_details.poll_index).prepend(
+								'	<div class="progress mb-1" style="height: 25px;">' +
+								'    	<div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage_compare + '%;" aria-valuenow="' + option_details.vote_percentage_compare + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage_compare + '%</div>' +
+								'	</div> '
+							);
+						});
+					}
 
 					$('#pollResultModal').modal({
 						backdrop: 'static',
@@ -725,7 +748,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			data: {'time': timeSpentUntilNow},
 			dataType: "json",
 			success: function (data) {
-				update_viewsessions_history_open();
+				// update_viewsessions_history_open();
 			}
 		});
 
@@ -739,7 +762,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			success: function (data) {
 				timeSpentOnSessionFromDb = parseInt(data);
 				startCounting();
-				saveTimeSpentOnSession();
+				// saveTimeSpentOnSession();
 				return parseInt(data);
 			}
 		});
@@ -753,7 +776,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			if(datetime_now_newyork >= session_start_datetime && datetime_now_newyork <= session_end_datetime)
 				timeSpentUntilNow = timeSpentUntilNow+1;
 			if (datetime_now_newyork > session_end_datetime){
-				saveTimeSpentOnSession();
+				// saveTimeSpentOnSession();
 			}
 
 
@@ -766,7 +789,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 	}
 
-	setInterval(saveTimeSpentOnSession, 1000); //Saving total time every 5 minutes as a backup
+	// setInterval(saveTimeSpentOnSession, 1000); //Saving total time every 5 minutes as a backup
 
 	function initiateTimerRecorder() {
 		getTimeSpentOnSession();
