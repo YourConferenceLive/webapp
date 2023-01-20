@@ -611,7 +611,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 						$.each(results.compere, function (poll_id, option_details) {
 							$('#progress-section-'+option_details.poll_index).prepend(
 								'	<div class="progress mb-1" style="height: 25px;">' +
-								'    	<div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage_compare + '%;" aria-valuenow="' + option_details.vote_percentage_compare + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage_compare + '%</div>' +
+								'    	<div class="progress-bar bg-info" role="progressbar" style="width: ' + option_details.vote_percentage_compare + '%;" aria-valuenow="' + option_details.vote_percentage_compare + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage_compare + '%</div>' +
 								'	</div> '
 							);
 						});
