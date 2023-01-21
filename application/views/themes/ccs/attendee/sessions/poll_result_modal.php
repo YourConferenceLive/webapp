@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- Poll Result Modal - attendee -->
 <div class="modal fade" id="pollResultModal" tabindex="-1" role="dialog" aria-labelledby="pollResultModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
+		<div class="modal-content" style="background-color: #F1F3F4" >
 			<div class="modal-header">
 				<h5 class="modal-title" id="pollResultModalLabel">What would you do next?</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">

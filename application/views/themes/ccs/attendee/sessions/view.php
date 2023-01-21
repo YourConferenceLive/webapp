@@ -166,6 +166,7 @@ body{overflow: hidden;background-color: #151515;}
 				<ul class="dropdown-menu">
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
+					<li data-type="askARepSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></li>
 				</ul>
 			</div>
 		</div>
@@ -577,36 +578,40 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 				$('#pollResultModalLabel').text(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
-
 					$('#pollResults').html('');
+					console.log(results);
 
 					if(results.poll_type === 'poll' || results.poll_type === 'presurvey') {
 						$.each(results.poll, function (poll_id, option_details) {
 							$('#pollResults').append('' +
-								'<div class="form-group">' +
-								'  <label class="form-check-label">'+option_details.option_name+'</label>' +
-								'  <div class="progress" style="height: 25px;">' +
-								'    <div class="progress-bar" role="progressbar" style="width: '+option_details.vote_percentage+'%;" aria-valuenow="'+option_details.vote_percentage+'" aria-valuemin="0" aria-valuemax="100">'+option_details.vote_percentage+'%</div>' +
+								'<div class="form-group" id="group-'+option_details.option_order+'">' +
+								'  <label class="form-check-label progress-label">'+option_details.option_name+'</label>' +
+								'  <div class="progress" style="height: 20px;">' +
+								'    <div class="progress-bar" role="progressbar" style="width: '+((option_details.vote_percentage !== undefined)? option_details.vote_percentage  : 0 )+'%;" aria-valuenow="'+((option_details.vote_percentage !== undefined)? option_details.vote_percentage : 0) +'" aria-valuemin="0" aria-valuemax="100">'+((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0)+'%</div>' +
+								'    <div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity:0.2; width: '+((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage  : 100 )+'%;" aria-valuenow="'+((option_details.vote_percentage !== undefined)? 100-option_details.vote_percentage : 100) +'" aria-valuemin="0" aria-valuemax="100"></div>' +
 								'  </div>' +
 								'</div>');
 						});
 					}else {
 						$.each(results.poll, function (poll_id, option_details) {
+							// console.log(option_details);
 							$('#pollResults').append('' +
-								'<div class="form-group">' +
-								'  <label class="form-check-label">' + option_details.option_name + '</label>' +
-								' <div class="progress_section" id="progress-section-'+option_details.poll_index+'"> ' +
-								'	<div class="progress mb-1" style="height: 25px;">' +
-								'    	<div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage + '%;" aria-valuenow="' + option_details.vote_percentage + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage + '%</div>' +
+								'<div class="form-group " id="group-'+option_details.option_order+'" >' +
+								'  <label class="form-check-label progress-label">' + option_details.option_name + '</label>' +
+								' <div class="progress_section" id="progress-section-'+option_details.option_order+'"> ' +
+								'	<div class="progress  mb-1" style="height: 20px;">' +
+								'    	<div class="progress-bar" role="progressbar" style="width: ' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0)+ '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0) + '" aria-valuemin="0" aria-valuemax="100">' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0) + '%</div>' +
+								'    	<div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity: 0.2; width: ' + ((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage: 100)+ '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage: 100) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
 								'	</div> ' +
 								'</div>' +
 								'</div>');
 
 						});
 						$.each(results.compere, function (poll_id, option_details) {
-							$('#progress-section-'+option_details.poll_index).prepend(
-								'	<div class="progress mb-1" style="height: 25px;">' +
+							$('#progress-section-'+option_details.option_order).prepend(
+								'	<div class="progress mb-1" style="height: 20px;">' +
 								'    	<div class="progress-bar bg-info" role="progressbar" style="width: ' + option_details.vote_percentage_compare + '%;" aria-valuenow="' + option_details.vote_percentage_compare + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage_compare + '%</div>' +
+								'    	<div class="progress-bar" role="progressbar" style="background-color:#17A2B8; opacity: 0.2; width: ' + (100-option_details.vote_percentage_compare) + '%;" aria-valuenow="' + (100-option_details.vote_percentage_compare) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
 								'	</div> '
 							);
 						});
@@ -616,6 +621,22 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 						backdrop: 'static',
 						keyboard: false
 					});
+				}).then(function(obj,results){
+					obj = JSON.parse(obj);
+					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
+						$('.progress-label').attr('style', 'margin-left:30px')
+					}else{
+						$('.progress-label').attr('style', '')
+					}
+					if(obj.poll_correct_answer1 || obj.poll_correct_answer2) {
+						console.log('tdsadsa');
+						//
+						$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>');
+						$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>');
+
+						$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
+						$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+					}
 				});
 			}
 		});

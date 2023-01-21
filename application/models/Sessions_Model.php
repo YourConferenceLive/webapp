@@ -834,7 +834,7 @@ class Sessions_Model extends CI_Model
 				'option_name' => $option->option_text,
 				'poll_id' => $option->poll_id,
 				'number_of_answers' => count((array)$results),
-				'poll_index'=> $index
+				'option_order'=> $option->option_order
 			);
 		}
 		if(isset($poll->poll_compare)) {
@@ -846,21 +846,31 @@ class Sessions_Model extends CI_Model
 					'option_name' => $compare->option_text,
 					'poll_id' => $compare->poll_id,
 					'number_of_answers' => count((array)$results),
-					'poll_index'=> $index
+					'option_order'=> $compare->option_order
 				);
 			}
 		}
 
 		foreach ($results_array as $option_id => $result) {
+			if($result['number_of_answers']  == '0'){
+				$results_array[$option_id]['vote_percentage_compare'] = 0;
+			}else
 			$results_array[$option_id]['vote_percentage'] = round(($result['number_of_answers'] / $total_votes) * 100);
 		}
-		foreach ($result_compere as $option_id => $result) {
-			$result_compere[$option_id]['vote_percentage_compare'] = round(($result['number_of_answers'] / $total_comp_votes) * 100);
+		if($result_compere) {
+			foreach ($result_compere as $option_id => $result) {
+				if($result['number_of_answers']  == '0'){
+					$result_compere[$option_id]['vote_percentage_compare'] = 0;
+				}else
+					$result_compere[$option_id]['vote_percentage_compare'] = round(($result['number_of_answers'] / $total_comp_votes) * 100);
+			}
 		}
 
 		$result_obj->poll = $results_array;
 		$result_obj->compere = $result_compere;
 		$result_obj->poll_type = $poll->poll_type;
+		$result_obj->poll_correct_answer1 = $poll->correct_answer1;
+		$result_obj->poll_correct_answer2 = $poll->correct_answer2;
 		return $result_obj;
 
 
