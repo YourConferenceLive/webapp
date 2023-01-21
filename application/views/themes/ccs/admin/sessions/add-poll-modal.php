@@ -49,14 +49,14 @@
 					<div id="pollOptionsInputDiv">
 
 						<div class="input-group input-group-sm mb-2">
-							<input type="text" name="pollOptionsInput[]" class="form-control">
+							<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()">
 							<span class="input-group-append">
 								<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>
 							</span>
 						</div>
 
 						<div class="input-group input-group-sm mb-2">
-							<input type="text" name="pollOptionsInput[]" class="form-control">
+							<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1()">
 							<span class="input-group-append">
 								<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>
 							</span>
@@ -70,6 +70,20 @@
 							<option value="poll">Poll</option>
 							<option value="presurvey">Presurvey</option>
 							<option value="assessment">Assessment</option>
+						</select>
+					</div>
+
+					<div class="form-group mt-5">
+						<label>Poll Answer 1</label>
+						<select class="form-control" name="poll_answer1" id="poll_answer1">
+							<option value="">None</option>
+						</select>
+					</div>
+
+					<div class="form-group mt-1">
+						<label>Poll Answer 2</label>
+						<select class="form-control" name="poll_answer2" id="poll_answer2">
+							<option value="">None</option>
 						</select>
 					</div>
 
@@ -89,6 +103,7 @@
 							<label class="custom-control-label" for="autoPollResult">Automatically show result (for 5 seconds)</label>
 						</div>
 					</div>
+
 
 					<input type="hidden" id="pollId" name="pollId" value="0">
 				</form>
@@ -113,18 +128,24 @@
 		$('.add-new-option-btn').on('click', function () {
 			$('#pollOptionsInputDiv').append('' +
 					'<div class="input-group input-group-sm mb-2">' +
-					'  <input type="text" name="pollOptionsInput[]" class="form-control">' +
+					'  <input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()">' +
 					'  <span class="input-group-append">' +
 					'    <button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>' +
 					'  </span>' +
 					'</div>');
-		});
+			appendCorrectAnswer1();
+			appendCorrectAnswer2();
+		})
+
 
 		$('#pollOptionsInputDiv').on('click', '.delete-option-button', function (e) {
 			e.preventDefault();
-			pollOptionsDeleted.push($(this).attr('option_id'))
+			if(pollOptionsDeleted) {
+				pollOptionsDeleted.push($(this).attr('option_id'))
+			}
 			$(this).parent().parent().remove();
-			console.log((pollOptionsDeleted));
+			appendCorrectAnswer1();
+			appendCorrectAnswer2();
 		});
 
 		$('#pollsTable').on('click', '.remove-poll-btn', function () {
@@ -139,7 +160,7 @@
 			$('#save-poll').html('Update');
 			$.get(project_admin_url+"/sessions/getPollByIdJson/"+$(this).attr('poll-id'), function (poll) {
 				if(poll){
-					console.log(poll)
+					// console.log(poll)
 					$('#poll_type_select').val(poll.poll_type)
 					$('#addPollModal').modal('show');
 					$('#pollOptionsInputDiv').html('');
@@ -149,7 +170,7 @@
 						$('#pollQuestionInput').val(poll.poll_question);
 						$('#pollOptionsInputDiv').append(
 							'<div class="input-group input-group-sm mb-2">' +
-							'<input type="text" name="pollOptionsInput[]" option_id="'+obj.id+'" class="form-control pollOptions" value="'+obj.option_text+'"> ' +
+							'<input type="text" name="pollOptionsInput[]" option_id="'+obj.id+'" class="form-control pollOptions" value="'+obj.option_text+'" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"> ' +
 							'<span class="input-group-append"> ' +
 							'<button type="button" class="delete-option-button btn btn-danger btn-flat" option_id="'+obj.id+'" ><i class="fas fa-trash"></i></button>' +
 							'</span>' +
@@ -162,8 +183,12 @@
 						'Error!',
 						error,
 						'error');
+			}).then(function(){
+				appendCorrectAnswer1()
+				appendCorrectAnswer2()
 			});
-		});
+
+		})
 
 		$('#save-poll').on('click', function () {
 			if ($('#pollId').val() == 0)
@@ -173,6 +198,30 @@
 		});
 
 	});
+
+
+	function appendCorrectAnswer1(){
+		$('#poll_answer1').html(
+			'<option value="0">None</option>'
+		);
+		$('.pollOptions').each(function(i, obj){
+			$('#poll_answer1').append(
+				'<option option_id="'+(i+1)+'" value="'+(i+1)+'">'+obj.value+'</option>'
+			)
+		})
+	}
+
+	function appendCorrectAnswer2(){
+		$('#poll_answer2').html(
+			'<option value="0">None</option>'
+		);
+		$('.pollOptions').each(function(i, obj){
+			console.log(obj)
+			$('#poll_answer2').append(
+				'<option option_id="'+(i+1)+'" value="'+(i+1)+'">'+obj.value+'</option>'
+			)
+		})
+	}
 
 	function addPoll()
 	{
@@ -221,7 +270,7 @@
 	}
 
 	function updatePoll(pollOptionsDeleted){
-		console.log(pollOptionsDeleted);
+		// console.log(pollOptionsDeleted);
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Updating the poll...',

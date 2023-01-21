@@ -878,19 +878,23 @@ class Sessions_Model extends CI_Model
 			'show_result' => (isset($post['autoPollResult']))?1:0,
 			'is_active' => 1,
 			'added_on' => date('Y-m-d H:i:s'),
-			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
+			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
+			'correct_answer1' => $post['poll_answer1'],
+			'correct_answer2' => $post['poll_answer2']
 		);
 		$this->db->insert('session_polls', $data);
 
 		if ($this->db->affected_rows() > 0)
 		{
 			$poll_id = $this->db->insert_id();
-
+			$order = 0;
 			foreach ($post['pollOptionsInput'] as $option)
 			{
+				$order ++;
 				$options_array = array(
 					'poll_id' => $poll_id,
-					'option_text' => $option
+					'option_text' => $option,
+					'option_order' => $order
 				);
 				$this->db->insert('session_poll_options', $options_array);
 			}
@@ -918,19 +922,23 @@ class Sessions_Model extends CI_Model
 			'show_result' => (isset($post['autoPollResult']))?1:0,
 			'is_active' => 1,
 			'added_on' => date('Y-m-d H:i:s'),
-			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
+			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
+			'correct_answer1' => $post['poll_answer1'],
+			'correct_answer2' => $post['poll_answer2']
 		);
 		$this->db->insert('session_polls', $data);
 
 		if ($this->db->affected_rows() > 0)
 		{
 			$poll_id = $this->db->insert_id();
-
+			$order = 0;
 			foreach ($post['pollOptionsInput'] as $option)
 			{
+				$order ++;
 				$options_array = array(
 					'poll_id' => $poll_id,
-					'option_text' => $option
+					'option_text' => $option,
+					'option_order' => $order
 				);
 				$this->db->insert('session_poll_options', $options_array);
 			}
@@ -947,23 +955,29 @@ class Sessions_Model extends CI_Model
 			'show_result' => (isset($post['autoPollResult']))?1:0,
 			'is_active' => 1,
 			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
+			'correct_answer1' => $post['poll_answer1'],
+			'correct_answer2' => $post['poll_answer2']
 		);
 		if($post['pollId'] != 0) {
 
 			$this->db->where('id', $post['pollId']);
 			$this->db->update('session_polls', $data);
-
+			$order = 0;
 			foreach ($post['pollOptionsInput'] as $i => $option) {
+				$order ++;
 				$options_array = array(
-					'option_text' => $option
+					'option_text' => $option,
+					'option_order' => $order
 				);
-				if (isset($post['option_' . $i])) {
+				if (isset($post['option_' . $i]) && $post['option_' . $i] !== 'undefined' ) {
 					$this->db->where('id', $post['option_' . $i]);
 					$this->db->update('session_poll_options', $options_array);
+
 				} else {
 					$options_array = array(
 						'poll_id' => $post['pollId'],
-						'option_text' => $option
+						'option_text' => $option,
+						'option_order' => $order,
 					);
 					$this->db->insert('session_poll_options', $options_array);
 				}
