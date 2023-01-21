@@ -49,7 +49,6 @@ body{overflow: hidden;background-color: #151515;}
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="askARepSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></li>
 				</ul>
@@ -99,7 +98,6 @@ body{overflow: hidden;background-color: #151515;}
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
 					<li data-type="askARepSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></li>
@@ -167,7 +165,6 @@ body{overflow: hidden;background-color: #151515;}
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
 				</ul>
 			</div>
@@ -210,7 +207,6 @@ body{overflow: hidden;background-color: #151515;}
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
 					<li data-type="askARepSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></li>
 				</ul>
@@ -247,10 +243,9 @@ body{overflow: hidden;background-color: #151515;}
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
+					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
-					<li data-type="askARepSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></li>
 				</ul>
 			</div>
 		</div>
