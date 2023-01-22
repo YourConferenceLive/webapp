@@ -871,6 +871,8 @@ class Sessions_Model extends CI_Model
 		$result_obj->poll_type = $poll->poll_type;
 		$result_obj->poll_correct_answer1 = $poll->correct_answer1;
 		$result_obj->poll_correct_answer2 = $poll->correct_answer2;
+		$result_obj->poll_instruction = $poll->poll_instruction;
+		$result_obj->slide_number = $poll->slide_number;
 		return $result_obj;
 
 
@@ -890,7 +892,9 @@ class Sessions_Model extends CI_Model
 			'added_on' => date('Y-m-d H:i:s'),
 			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
 			'correct_answer1' => $post['poll_answer1'],
-			'correct_answer2' => $post['poll_answer2']
+			'correct_answer2' => $post['poll_answer2'],
+			'poll_instruction' => $post['pollInstructionInput'],
+			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
 		);
 		$this->db->insert('session_polls', $data);
 
@@ -934,7 +938,9 @@ class Sessions_Model extends CI_Model
 			'added_on' => date('Y-m-d H:i:s'),
 			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
 			'correct_answer1' => $post['poll_answer1'],
-			'correct_answer2' => $post['poll_answer2']
+			'correct_answer2' => $post['poll_answer2'],
+			'poll_instruction' => $post['pollInstructionInput'],
+			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
 		);
 		$this->db->insert('session_polls', $data);
 
@@ -966,7 +972,9 @@ class Sessions_Model extends CI_Model
 			'is_active' => 1,
 			'added_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
 			'correct_answer1' => $post['poll_answer1'],
-			'correct_answer2' => $post['poll_answer2']
+			'correct_answer2' => $post['poll_answer2'],
+			'poll_instruction' => $post['pollInstructionInput'],
+			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
 		);
 		if($post['pollId'] != 0) {
 

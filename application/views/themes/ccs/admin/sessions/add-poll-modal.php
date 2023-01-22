@@ -44,6 +44,17 @@
 						<input type="text" class="form-control form-control-border" id="pollQuestionInput" name="pollQuestionInput" placeholder="Enter the poll question">
 					</div>
 
+					<h4>Slide Number</h4>
+					<div class="form-group m">
+						<input type="text" class="form-control form-control-border" id="slideNumberInput" name="slideNumberInput" placeholder="Enter how many slides">
+					</div>
+
+					<h4>Poll Instruction</h4>
+					<div class="form-group m">
+						<textarea type="text" class="form-control form-control" id="pollInstructionInput" name="pollInstructionInput" placeholder="Poll Instruction"></textarea>
+					</div>
+
+
 					<h5 class="mb-3">Poll Options
 						<button type="button" class="add-new-option-btn btn btn-sm btn-outline-success ml-1" data-toggle="tooltip" data-placement="right" title="Click to add one more option"><i class="fas fa-plus"></i></button></h5>
 					<div id="pollOptionsInputDiv">
@@ -61,6 +72,8 @@
 								<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>
 							</span>
 						</div>
+
+
 
 					</div>
 
@@ -160,13 +173,15 @@
 			$('#save-poll').html('Update');
 			$.get(project_admin_url+"/sessions/getPollByIdJson/"+$(this).attr('poll-id'), function (poll) {
 				if(poll){
-					// console.log(poll)
+
 					$('#poll_type_select').val(poll.poll_type)
 					$('#addPollModal').modal('show');
 					$('#pollOptionsInputDiv').html('');
 					$('#pollQuestionInput').html('');
-					$.each(poll.options, function(i, obj){
+					$('#slideNumberInput').val(poll.slide_number);
+					$('#pollInstructionInput').val(poll.poll_instruction);
 
+					$.each(poll.options, function(i, obj){
 						$('#pollQuestionInput').val(poll.poll_question);
 						$('#pollOptionsInputDiv').append(
 							'<div class="input-group input-group-sm mb-2">' +
@@ -216,7 +231,6 @@
 			'<option value="0">None</option>'
 		);
 		$('.pollOptions').each(function(i, obj){
-			console.log(obj)
 			$('#poll_answer2').append(
 				'<option option_id="'+(i+1)+'" value="'+(i+1)+'">'+obj.value+'</option>'
 			)
