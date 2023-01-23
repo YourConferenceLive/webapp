@@ -138,6 +138,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#sessionId').val(session.id);
 				$('#sessionName').val(session.name);
 				$('#sessionNameOther').val(session.other_language_name);
+				$('#eventID').val(session.event_id);
 				$(`#sessionTrack option[value="${session.track}"]`).prop('selected', true);
 
 				$('#sessionExternalUrl').val('');
