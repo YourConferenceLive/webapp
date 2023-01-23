@@ -500,7 +500,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 			if(data.session_id == sessionId) {
 
-				$('#pollId').val(data.session_id);
+				$('#pollId').val(data.id);
 				$('#pollQuestion').text(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
 
