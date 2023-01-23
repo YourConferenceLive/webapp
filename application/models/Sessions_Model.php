@@ -1330,7 +1330,7 @@ class Sessions_Model extends CI_Model
 
 	function updateSessionResource(){
 		$post = $this->input->post();
-//		print_r($post);exit;
+
 		$this->db->where('id', $post['resource_id']);
 		$this->db->update('session_resources', array('is_active'=>$post['is_active']));
 		if($this->db->affected_rows() > 0){
@@ -1347,18 +1347,20 @@ class Sessions_Model extends CI_Model
 		$this->db->update('logs', $session_his_arr, array("id" => $post['logs_id']));
 
 		$logs_history = $this->db->get_where('logs', array("id" => $post['logs_id']))->row();
-		if (!empty($view_sessions_history)) {
+		if (!empty($logs_history)) {
 			$where_session_his_arr = array(
-				'ref_1' => $logs_history->session_id,
+				'project_id' => $this->project->id,
+				'ref_1' => $logs_history->ref_1,
 				'user_id' => $this->user->user_id,
 				'name' => 'Attend',
 				'info' => 'Session View'
 			);
-			$logs_history = $this->db->get_where('logs', $where_session_his_arr)->row();
-			if (!empty($login_sessions_history)) {
-				$sessions_details = $this->db->get_where('sessions', array("id" => $logs_history->session_id))->row();
+			$logs_attend_history = $this->db->get_where('logs', $where_session_his_arr)->row();
+			if (!empty($logs_attend_history)) {
+				$sessions_details = $this->db->get_where('sessions', array("id" => $logs_history->ref_1))->row();
 
-				if (date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time)) < date("Y-m-d H:i:s") && date("Y-m-d H:i:s") < date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time))) {
+
+				if (date("Y-m-d H:i:s", strtotime($sessions_details->start_date_time)) < date("Y-m-d H:i:s") && date("Y-m-d H:i:s") < date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time))) {
 					if (date("Y-m-d H:i:s") < date("Y-m-d H:i:s", strtotime($sessions_details->end_date_time))) {
 						$end_date_time = date("Y-m-d H:i:s");
 					} else {
@@ -1375,7 +1377,8 @@ class Sessions_Model extends CI_Model
 				$session_his_array = array(
 					'end_date_time' => $end_date_time
 				);
-				$this->db->update('logs', $session_his_array, array("id" => $logs_history->id));
+				$this->db->update('logs', $session_his_array, array("id" => $logs_attend_history->id));
+
 			}
 		}
 		echo json_encode(array("status" => "success"));
@@ -1386,7 +1389,7 @@ class Sessions_Model extends CI_Model
 		$this->load->library('user_agent');
 
 		$session_his_arr = array(
-			'name'=> 'Attend',
+			'name'=> 'View',
 			'project_id' =>$this->project->id,
 			'ref_1' => $post['sessions_id'],
 			'user_id' => $this->user->user_id,
@@ -1398,12 +1401,11 @@ class Sessions_Model extends CI_Model
 			'date_time' => date("Y-m-d H:i:s"),
 		);
 
-//		print_r($session_his_arr);exit;
 		$this->db->insert('logs', $session_his_arr);
 		$insert_id = $this->db->insert_id();
-//		print_r($insert_id);exit;
+
 		$where_session_his_arr = array(
-			'project_id'=>$this->project->id,
+			'project_id' =>$this->project->id,
 			'ref_1' => $post['sessions_id'],
 			'user_id' => $this->user->user_id,
 			'name' => 'Attend',
@@ -1431,13 +1433,16 @@ class Sessions_Model extends CI_Model
 			}
 
 			$session_his_array = array(
+				'name'=> 'Attend',
+				'info'=> 'Session View',
 				'ref_1' => $post['sessions_id'],
 				'user_id' => $this->user->user_id,
 				'os' => $this->agent->platform(),
-				'browser' => $post['browser'],
+				'browser' => $this->agent->browser(),
 				'ip' => $this->input->ip_address(),
 				'start_date_time' => $start_date_time,
-				'status' => 0
+				'project_id' =>$this->project->id,
+				'date_time' =>date('Y-m-d H:i:s'),
 			);
 			$this->db->insert('logs', $session_his_array);
 		}
@@ -1459,6 +1464,7 @@ class Sessions_Model extends CI_Model
 		if ($logs->num_rows() > 0) {
 			$return_array = array();
 			foreach ($logs->result() as $value) {
+//				print_r($value);
 //
 //				$this->db->select('*');
 //				$this->db->from('sessions_group_chat');
@@ -1467,6 +1473,15 @@ class Sessions_Model extends CI_Model
 //				$messages = 0;
 //				if ($sessions_group_chat_msg->num_rows() > 0) {
 //					$messages = $sessions_group_chat_msg->num_rows();
+//				}
+
+//				$polls = 0;
+//				$this->db->select('*');
+//				$this->db->from('session_poll_answers');
+//				$this->db->where(array("sessions_id" => $sessions_id, "cust_id" => $value->cust_id));
+//				$tbl_poll_voting = $this->db->get();
+//				if ($tbl_poll_voting->num_rows() > 0) {
+//					$polls = $tbl_poll_voting->num_rows();
 //				}
 
 				$this->db->select('*');
@@ -1485,6 +1500,7 @@ class Sessions_Model extends CI_Model
 //				$value->total_polls = $polls;
 				$return_array[] = $value;
 			}
+//			exit;
 		}else{
 			return array();
 		}

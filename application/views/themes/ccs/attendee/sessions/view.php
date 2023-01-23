@@ -772,7 +772,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			data: {'time': timeSpentUntilNow},
 			dataType: "json",
 			success: function (data) {
-				// update_viewsessions_history_open();
+				update_viewsessions_history_open();
 			}
 		});
 
@@ -786,7 +786,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			success: function (data) {
 				timeSpentOnSessionFromDb = parseInt(data);
 				startCounting();
-				// saveTimeSpentOnSession();
+				saveTimeSpentOnSession();
 				return parseInt(data);
 			}
 		});
@@ -800,7 +800,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			if(datetime_now_newyork >= session_start_datetime && datetime_now_newyork <= session_end_datetime)
 				timeSpentUntilNow = timeSpentUntilNow+1;
 			if (datetime_now_newyork > session_end_datetime){
-				// saveTimeSpentOnSession();
+				saveTimeSpentOnSession();
 			}
 
 
@@ -813,7 +813,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 	}
 
-	// setInterval(saveTimeSpentOnSession, 1000); //Saving total time every 5 minutes as a backup
+	setInterval(saveTimeSpentOnSession, 30000); //Saving total time every 5 minutes as a backup
 
 	function initiateTimerRecorder() {
 		getTimeSpentOnSession();
@@ -862,7 +862,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			data: {'sessions_id': sessionId, 'resolution': resolution},
 			dataType: "json",
 			success: function (data) {
-				console.log('get_sessions_history_open');
+
+				console.log(data);
 				$("#logs_id").val(data.logs_id);
 			}
 		});
