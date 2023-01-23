@@ -570,6 +570,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 				}, 1000);
 
 			}
+
+			markLaunchedPoll(data.id)
 		});
 
 		socket.on('ycl_launch_poll_result', (data)=>{
@@ -647,6 +649,12 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			}
 		});
 	});
+
+	function markLaunchedPoll(poll_id){
+		$.post(project_url+"/sessions/markLaunchedPoll/"+poll_id, function (results) {
+			console.log(results)
+		});
+	}
 
 	$(function(){
 		Swal.fire(

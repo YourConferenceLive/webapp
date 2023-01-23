@@ -209,4 +209,8 @@ class Sessions extends CI_Controller
 	public function getTimeSpentOnSession($session_id, $user_id){
 		$this->sessions->getTimeSpentOnSession($session_id, $user_id);
 	}
+
+	public function markLaunchedPoll($poll_id){
+		$this->sessions->markLaunchedPoll($poll_id);
+	}
 }

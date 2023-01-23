@@ -1507,4 +1507,8 @@ class Sessions_Model extends CI_Model
 			return '';
 	}
 
+	function markLaunchedPoll($poll_id){
+		$this->db->update('session_polls', array('is_launched'=>'1'), "id = $poll_id");
+	}
+
 }

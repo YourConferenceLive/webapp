@@ -132,7 +132,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			// $('#logo_label').text('');
 			// $('#banner_preview').hide();
 			// $('#banner_label').text('');
-			
+
 			$('#save-poll').html('<i class="fas fa-plus"></i> Create');
 
 			$('#addPollModal').modal({
