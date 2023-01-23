@@ -299,7 +299,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#pollsTable').on('click', '.launch-poll-btn', function () {
 
 			let pollId = $(this).attr('poll-id');
-
+			let that = this;
 			Swal.fire({
 				title: 'Please Wait',
 				html: '<span class="text-white">Launching the poll ['+pollId+']...</span>',
@@ -320,6 +320,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'Poll ['+pollId+'] launch initiated',
 						'success'
 				)
+				$(that).html('<i class="fas fa-sync-alt"></i> Launch Again').removeClass('btn-info').addClass('btn-warning');
+
 			}).fail((error)=>{
 				Swal.fire(
 						'Error!',
@@ -371,7 +373,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$.each(polls, function(key, poll)
 			{
 				let show_result = (poll.show_result==1)?'Yes':'No';
-
+				let launchPollBtn = ((poll.is_launched === '0')?'<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' : '<button class="launch-poll-btn btn btn-sm btn-warning" poll-id="'+poll.id+'"><i class="fas fa-sync-alt"></i> Launch Again</button>' );
 				$('#pollsTableBody').append(
 					'<tr>' +
 					'	<td>' +
@@ -387,7 +389,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+show_result+
 					'	</td>' +
 					'	<td>' +
-					'		<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' +
+					'		'+launchPollBtn+
 					'	</td>' +
 					'   <td>' +
 					'		<button class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" poll-question="'+poll.poll_question+'"><i class="fas fa-poll-h"></i> Show Result</button>' +
