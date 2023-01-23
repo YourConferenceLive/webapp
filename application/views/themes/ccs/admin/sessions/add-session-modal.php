@@ -83,6 +83,11 @@
 									</div>
 
 									<div class="form-group">
+										<label for="sessionNameOther"><?=$this->project->name?> Event ID</label>
+										<input type="text" class="form-control" id="eventID" name="eventID" placeholder="">
+									</div>
+
+									<div class="form-group">
 										<label>Type</label>
 										<select id="sessionType" name="sessionType" class="form-control">
 											<?php if (isset($types)): ?>

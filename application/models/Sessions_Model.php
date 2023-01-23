@@ -298,6 +298,7 @@ class Sessions_Model extends CI_Model
 			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
 			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
 			'time_zone' => (isset($session_data['time_zone'])?trim($session_data['time_zone']):''),
+			'event_id' => (isset($session_data['eventID'])?trim($session_data['eventID']):''),
 		);
 
 		$this->db->insert('sessions', $data);
@@ -435,6 +436,7 @@ class Sessions_Model extends CI_Model
 			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
 			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
 			'time_zone' => (isset($session_data['time_zone'])?trim($session_data['time_zone']):''),
+			'event_id' => (isset($session_data['eventID'])?trim($session_data['eventID']):''),
 		);
 
 		if($session_end_image != '' && $session_end_image != null){
