@@ -469,7 +469,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'	</td>' +
 					'<td>' +
 					'		<a href="'+project_admin_url+'/sessions/flash_report/'+session.id+'" style="width:80px; height:50px" class="flashReport btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Flash Report</a><br>' +
-					'		<button style="width:80px; height:50px" class="pollingReport btn btn-sm btn-success m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Polling Report</button><br>' +
+					'		<a href="'+project_admin_url+'/sessions/polling_report/'+session.id+'" style="width:80px; height:50px" class="pollingReport btn btn-sm btn-success m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Polling Report</a><br>' +
 					'		<button style="width:80px; height:50px" class="pollingChart btn btn-sm btn-warning m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Polling Chart</button><br>' +
 					'		<button style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Ask a Rep</button><br>' +
 					'</td>'+

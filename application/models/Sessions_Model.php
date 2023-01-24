@@ -1529,4 +1529,78 @@ class Sessions_Model extends CI_Model
 		$this->db->update('session_polls', array('is_launched'=>'1'), "id = $poll_id");
 	}
 
+	function getPollingData($session_id, $poll_list){
+		$this->db->select('*');
+		$this->db->from('logs l');
+		$this->db->join('user u', 'u.id = l.user_id');
+		$this->db->where("l.ref_1", $session_id);
+		$this->db->where("l.name", 'Attend');
+		$this->db->where("info", 'Session View');
+		$sessions_history = $this->db->get();
+		if ($sessions_history->num_rows() > 0) {
+			$return_array = array();
+			foreach ($sessions_history->result() as $value) {
+				if (!empty($poll_list)) {
+					foreach ($poll_list as $val) {
+						$value->polling_answer[] = $this->get_polling_answer($val['poll_id'], $value->user_id);
+					}
+				}
+				$return_array[] = $value;
+			}
+			return $return_array;
+		} else {
+			return "";
+		}
+	}
+
+	function get_polling_answer($poll_id, $user_id) {
+		$this->db->select('*');
+		$this->db->from('session_poll_answers');
+		$this->db->where(array("poll_id" => $poll_id, "user_id" => $user_id));
+		$tbl_poll_voting = $this->db->get();
+		if ($tbl_poll_voting->num_rows() > 0) {
+			$tbl_poll_voting = $tbl_poll_voting->row();
+			$option = $this->db->get_where("session_poll_options", array("id" => $tbl_poll_voting->answer_id))->row()->option_text;
+			return $option;
+		} else {
+			return "";
+		}
+	}
+
+	function getPollList($session_id){
+		$this->db->select('*');
+		$this->db->from('session_polls s');
+		$this->db->where("s.session_id", $session_id);
+		$sessions_poll_question = $this->db->get();
+
+		$polls = array();
+
+		if ($sessions_poll_question->num_rows() > 0) {
+			$presurvey = 0;
+			$poll = 0;
+			$assessment = 0;
+			foreach ($sessions_poll_question->result() as $sessions_poll_question) {
+				if ($sessions_poll_question->poll_type == 'presurvey') {
+					$presurvey = $presurvey + 1;
+					$polls[] = array(
+						'poll_id' => (int) $sessions_poll_question->id,
+						'text' => $sessions_poll_question->poll_type . " " . $presurvey . " : " . $sessions_poll_question->poll_question,
+					);
+				} else if ($sessions_poll_question->poll_type == 'poll') {
+					$poll = $poll + 1;
+					$polls[] = array(
+						'poll_id' => (int) $sessions_poll_question->id,
+						'text' => $sessions_poll_question->poll_type . " " . $poll . " : " . $sessions_poll_question->poll_question,
+					);
+				} else if ($sessions_poll_question->poll_type == 'assessment') {
+					$assessment = $assessment + 1;
+					$polls[] = array(
+						'poll_id' => (int) $sessions_poll_question->id,
+						'text' => $sessions_poll_question->poll_type . " " . $assessment . " : " . $sessions_poll_question->poll_question,
+					);
+				}
+			}
+		}
+		return $polls;
+	}
 }
