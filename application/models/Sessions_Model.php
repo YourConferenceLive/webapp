@@ -1461,9 +1461,12 @@ class Sessions_Model extends CI_Model
 		$this->db->where('l.info','Session View');
 		$logs = $this->db->get();
 
+//		echo"<pre>";
+
 		if ($logs->num_rows() > 0) {
 			$return_array = array();
 			foreach ($logs->result() as $value) {
+//				print_r($value);
 //				print_r($value);
 //
 //				$this->db->select('*');
@@ -1500,7 +1503,6 @@ class Sessions_Model extends CI_Model
 //				$value->total_polls = $polls;
 				$return_array[] = $value;
 			}
-//			exit;
 		}else{
 			return array();
 		}
@@ -1797,5 +1799,38 @@ class Sessions_Model extends CI_Model
 
 		}
 		return $poll_questions;
+	}
+
+	function attendee_question_report($session_id){
+		$result = $this->db->select('CONCAT(u.name, " ",u.surname) as name, sq.question')
+			->from('session_questions sq')
+			->join('user u', 'u.id = sq.user_id')
+			->where('session_id', $session_id)
+			->get();
+
+		if($result->num_rows()>0) {
+			$questionData = $result;
+			$file_name = 'Attendee Questions/' . date('Y-m-d') . '.csv';
+			header("Content-Description: File Transfer");
+			header("Content-Disposition: attachment; filename=$file_name");
+			header("Content-Type: application/csv;");
+			// get data
+			// file creation
+			$file = fopen('php://output', 'w');
+			$header = array("Attendee Name", "Question");
+			fputcsv($file, $header);
+			if ($questionData) {
+				foreach ($questionData->result_array() as $value) {
+					fputcsv($file, $value);
+				}
+			} else {
+				$content = array('', '');
+				fputcsv($file, $content);
+			}
+
+			fclose($file);
+			exit;
+		}
+
 	}
 }

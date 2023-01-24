@@ -231,4 +231,8 @@ class Sessions extends CI_Controller
 		$chart = $this->sessions->createPollChart($session_id);
 	}
 
+	public function attendee_question_report($session_id){
+		echo  $this->sessions->attendee_question_report($session_id);
+	}
+
 }
