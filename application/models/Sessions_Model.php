@@ -1603,4 +1603,199 @@ class Sessions_Model extends CI_Model
 		}
 		return $polls;
 	}
+
+	function createPollChart($session_id){
+		ob_start();
+		$sesstion_title = $this->getSessionName($session_id);
+		$poll_data = $this->getPollData($session_id);
+
+		$this->load->library('Pdf');
+		$pdf = new Pdf('L', 'mm', 'A4', true, 'UTF-8', false);
+
+		$pdf->SetTitle($sesstion_title);
+		$pdf->SetHeaderMargin(30);
+		$pdf->SetTopMargin(20);
+		$pdf->setFooterMargin(20);
+		$pdf->SetAutoPageBreak(true);
+		$pdf->SetAuthor('Your Conference Live');
+		$pdf->AddFont('dejavusans', '', 'DejaVuSans.ttf', true);
+		$pdf->AddFont('dejavusans', 'B', 'DejaVuSans-Bold.ttf', true);
+		$pdf->AddFont('dejavusans', 'I', 'DejaVuSans-Oblique.ttf', true);
+		$pdf->AddFont('dejavusans', 'BI', 'DejaVuSans-BoldOblique.ttf', true);
+		$pdf->AddPage('L', 'A4');
+
+		$chart_title = $sesstion_title;
+//        $pdf->SetFont('helvetica', '', 45);
+		$pdf->SetFont('helvetica', '', 45);
+		$pdf->SetXY(10, 40);
+		$pdf->Write(0, $chart_title, '', 0, 'C', true, 0, false, false, 0);
+
+		$pdf->SetFont('helvetica', '', 30);
+		$pdf->SetXY(10, 120);
+		$pdf->Write(0, 'Polling Overview', '', 0, 'C', true, 0, false, false, 0);
+
+		$pdf->SetFont('helvetica', 'B', 12);
+		$pdf->SetXY(10, 135);
+		$pdf->Write(0, 'Produced by Your Conference Live Platform', '', 0, 'C', true, 0, false, false, 0);
+
+		$pdf->SetFont('helvetica', '', 15);
+		$pdf->SetXY(10, 142);
+		$pdf->Write(0, date("F j, Y, g:i A").' ET', '', 0, 'C', true, 0, false, false, 0);
+
+		foreach ($poll_data as $poll)
+		{
+			$pdf->AddPage('L', 'A4');
+
+			$pdf->SetTextColor(79, 79, 79);
+			$pdf->SetFont('helvetica', '', 6);
+			$pdf->SetXY(4, 4);
+			$pdf->Write(0, 'Report generated on', '', 0, '', true, 0, false, false, 0);
+
+			$pdf->SetFont('helvetica', '', 7);
+			$pdf->SetXY(4, 7);
+			$pdf->Write(0, date("F j, Y, g:i A").' ET', '', 0, '', true, 0, false, false, 0);
+
+			$pdf->SetFont('helvetica', '', 8);
+			$pdf->SetXY(5, 5);
+			$pdf->WriteHTML($sesstion_title, '', 0, 'C', true, 0, false, false, 0);
+
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetFont('helvetica', 'B', 20);
+			$pdf->SetXY(10, 30);
+
+			$pdf->WriteHTML(trim($poll->poll_question), '', 0, '', true, 'C', false, false, 0);
+
+
+
+			$xc = 80;
+			$yc = 90;
+			$r = 30;
+
+			$color_sets = array();
+			$color_sets[] = array(85, 149, 255);
+			$color_sets[] = array(220, 57, 18);
+			$color_sets[] = array(153, 0, 153);
+			$color_sets[] = array(16, 150, 24);
+			$color_sets[] = array(0, 202, 202);
+			$color_sets[] = array(255, 153, 0);
+
+			$pie_current_degree = 0;
+			$color_set = 0;
+			$desc_y = 75;
+			foreach ($poll->options as $option)
+			{
+
+				if ($poll->total_votes != 0)
+				{
+					$percent = number_format(($option->total_votes*100)/$poll->total_votes, 2);
+					$pie_degree = number_format((($percent/100)*360)+$pie_current_degree, 2);
+
+					$color_r = $color_sets[$color_set][0];
+					$color_g = $color_sets[$color_set][1];
+					$color_b = $color_sets[$color_set][2];
+
+					$pdf->SetFillColor($color_r, $color_g, $color_b);
+					$pdf->PieSector($xc, $yc, $r, $pie_current_degree, $pie_degree, 'FD', false, 0, 2);
+
+					if ($percent != 0)
+					{
+						$pdf->Circle(140, $desc_y, 2, 0, 360, 'DF', null, array($color_r, $color_g, $color_b));
+						$desc_y = $desc_y+10;
+
+//                        $pdf->SetFont('helvetica', 'I', 10);
+						$pdf->SetFont('dejavusans', '', 8,'', true);
+						$pdf->SetTextColor(0,0,0);
+
+						$pdf->SetXY(142, $desc_y - 12);
+						$pdf->WriteHTML( trim($option->option_text), '', 0, true, true, 'left', false, false, 0);
+
+
+					}
+
+					$pie_current_degree = $pie_degree;
+					$color_set++;
+				}
+			}
+
+
+			$pdf->SetXY(30, 130);
+			$pdf->SetFont('helvetica', 'B', 12);
+			$result_table =
+				'<table cellspacing="0" cellpadding="5">
+                    <tr>
+                        <td style="width: 500px;">Option</td>
+                        <td style="width: 100px;">Votes</td>
+                        <td style="width: 100px;">Percentage</td>
+                    </tr>
+                 </table>';
+			$pdf->writeHTML($result_table, true, false, false, false, 'center');
+
+			$pdf->SetXY(30, 136);
+			$pdf->SetFont('helvetica', '', 12);
+			$result_table =
+				'<table cellpadding="5">';
+
+			foreach ($poll->options as $option)
+			{
+
+				if ($poll->total_votes != 0)
+				{
+					$result_table .= '<tr>
+
+                                    <td style="width: 500px; height: 10px;">'.trim($option->option_text).'</td>
+
+                                    <td style="width: 100px;">'.$option->total_votes.'</td>
+                                    <td style="width: 100px;">'.number_format(($option->total_votes*100)/$poll->total_votes, 1).'%</td>
+                                  </tr>';
+				}
+
+			}
+
+			$result_table .= '</table>';
+			$pdf->SetFont('dejavusans', '', 10,'', true);
+			$pdf->writeHTML($result_table, true, false, false, false, 'center');
+
+			$pdf->SetXY(30, 180);
+			$pdf->SetFont('helvetica', 'B', 12);
+			$result_table =
+				'<table cellspacing="0" cellpadding="5">
+                    <tr>
+                        <td style="width: 465px;"></td>
+                        <td style="width: 200px;">Total '.$poll->total_votes.'</td>
+                        <td style="width: 100px;"></td>
+                    </tr>
+                 </table>';
+			$pdf->writeHTML($result_table, true, false, false, false, 'center');
+		}
+		ob_end_clean();
+		$pdf->Output(__DIR__.'/Poll Overview - '.$sesstion_title.'.pdf', 'FD');
+
+		return;
+	}
+
+	function getSessionName($session_id){
+		return $this->db->select('*')
+			->from('sessions')
+			->where('id', $session_id)
+			->get()->result()[0]->name;
+
+	}
+
+	private function getPollData($session_id)
+	{
+		$poll_questions = $this->db->query("SELECT * FROM `session_polls` WHERE `session_id` = '{$session_id}'")->result();
+
+		foreach ($poll_questions as $question)
+		{
+			$question->options = $this->db->query("SELECT * FROM `session_poll_options` WHERE `poll_id` = '{$question->id}'")->result();
+
+			foreach ($question->options as $options)
+			{
+				$question->total_votes = count($this->db->select('*')->from('session_poll_answers')->where('poll_id', $options->poll_id)->get()->result());
+				$options->total_votes = count($this->db->select('*')->from('session_poll_answers')->where('answer_id', $options->id)->get()->result());
+			}
+
+		}
+		return $poll_questions;
+	}
 }

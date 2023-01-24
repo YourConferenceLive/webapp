@@ -227,4 +227,8 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer");
 	}
 
+	public function poll_chart($session_id){
+		$chart = $this->sessions->createPollChart($session_id);
+	}
+
 }

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <?php
 //echo '<pre>';
 //print_r($polls);
-//print_r($flash_report_list);
+//print_r($session->id);
 //exit;?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -118,12 +118,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		var pollReportSessionNumber = $("#pollReportSessionNumber").val();
 		$('#pollingReportTable').DataTable({
 			dom: 'Bfrtip',
-			buttons: [{
-				extend: 'csv',
-				title: 'Poll report session('+pollReportSessionNumber+')'
+			buttons: [
+				{
+					extend: 'csv',
+					title: 'Poll report session('+pollReportSessionNumber+')'
+				},
+				{
+					extend: 'excel',
+					text: '<i class="fa fa-table" aria-hidden="true"></i> Export Excel',
+					attr: {class: 'btn btn-success'}
+				},
+				{
+					text: '<i class="fa fa-pie-chart" aria-hidden="true"></i> Export Chart',
+					attr: {class: 'export-charts btn btn-warning'}
+				}
+
+			],
+			"initComplete": function( settings, json ) {
+				$('.export-charts').on('click', function () {
+					exportCharts(<?=$session->id?>);
+				});
 			}
-			]
 		});
 		$('.buttons-csv').text('Export CSV');
 	});
+
+	function exportCharts(session_id) {
+		location.href = project_url+"/admin/sessions/poll_chart/"+session_id;
+	}
 </script>
