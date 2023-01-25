@@ -50,6 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Name</th>
 									<th>Type</th>
 									<th>Comparison ID</th>
+									<th>Instruction</th>
 									<th>Auto-show Result</th>
 									<th>Poll Triggers</th>
 									<th>Result Triggers</th>
@@ -388,6 +389,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'	</td>' +
 					'	<td>' +
 					'		'+((poll.poll_comparison_id !=='0')? poll.poll_comparison_id :'')+
+					'	</td>' +
+					'	<td>' +
+					'		'+((poll.poll_instruction !== null)? poll.poll_instruction : '')+
 					'	</td>' +
 					'	<td>' +
 					'		'+show_result+
