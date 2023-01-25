@@ -928,7 +928,6 @@ class Sessions_Model extends CI_Model
 	}
 
 	function addPollComparison($session_id, $post, $pollParentId){
-		$post = $this->input->post();
 
 		$data = array(
 			'session_id' => $session_id,
@@ -945,9 +944,10 @@ class Sessions_Model extends CI_Model
 			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
 		);
 		$this->db->insert('session_polls', $data);
-
+		$insert_id = $this->db->insert_id();
 		if ($this->db->affected_rows() > 0)
 		{
+			$this->db->update("session_polls", array("poll_comparison_id" => $insert_id), array("id" => $pollParentId));
 			$poll_id = $this->db->insert_id();
 			$order = 0;
 			foreach ($post['pollOptionsInput'] as $option)
