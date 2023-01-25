@@ -630,14 +630,16 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					}else{
 						$('.progress-label').attr('style', '')
 					}
-					if(obj.poll_correct_answer1 || obj.poll_correct_answer2) {
-						console.log('tdsadsa');
-						//
-						$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>');
-						$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>');
+					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
+						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
+							console.log('tdsadsa');
+							//
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>');
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>');
 
-						$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
-						$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
+							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+						}
 					}
 				});
 			}
