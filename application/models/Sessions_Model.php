@@ -1538,6 +1538,7 @@ class Sessions_Model extends CI_Model
 		$this->db->where("l.ref_1", $session_id);
 		$this->db->where("l.name", 'Attend');
 		$this->db->where("info", 'Session View');
+		$this->db->where("project_id", $this->project->id);
 		$sessions_history = $this->db->get();
 		if ($sessions_history->num_rows() > 0) {
 			$return_array = array();
