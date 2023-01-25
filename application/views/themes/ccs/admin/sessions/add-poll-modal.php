@@ -198,9 +198,10 @@
 						'Error!',
 						error,
 						'error');
-			}).then(function(){
-				appendCorrectAnswer1()
-				appendCorrectAnswer2()
+			}).then(function(poll){
+				console.log(poll.correct_answer1)
+				appendCorrectAnswer1(poll.correct_answer1)
+				appendCorrectAnswer2(poll.correct_answer2)
 			});
 
 		})
@@ -215,24 +216,32 @@
 	});
 
 
-	function appendCorrectAnswer1(){
+	function appendCorrectAnswer1(answer1 = null){
+		let selected1 = "";
 		$('#poll_answer1').html(
 			'<option value="0">None</option>'
 		);
 		$('.pollOptions').each(function(i, obj){
+
+			if(answer1 == (i+1)) selected1 = "selected";
+			else selected1 = "";
+
 			$('#poll_answer1').append(
-				'<option option_id="'+(i+1)+'" value="'+(i+1)+'">'+obj.value+'</option>'
+				'<option option_id="'+(i+1)+'" value="'+(i+1)+'" '+selected1+'>'+obj.value+'</option>'
 			)
 		})
 	}
 
-	function appendCorrectAnswer2(){
+	function appendCorrectAnswer2(answer2 = null){
+		let selected2 = "";
 		$('#poll_answer2').html(
 			'<option value="0">None</option>'
 		);
 		$('.pollOptions').each(function(i, obj){
+			if(answer2 == (i+1)) selected2 = "selected";
+			else selected2 = "";
 			$('#poll_answer2').append(
-				'<option option_id="'+(i+1)+'" value="'+(i+1)+'">'+obj.value+'</option>'
+				'<option option_id="'+(i+1)+'" value="'+(i+1)+'" '+selected2+'>'+obj.value+'</option>'
 			)
 		})
 	}
