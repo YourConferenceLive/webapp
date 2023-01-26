@@ -47,6 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<th>People</th>
 										<th>Credits</th>
 										<th>Name</th>
+										<th>Notes</th>
 										<th>Actions</th>
 										<th>Manage</th>
 										<th>Export</th>
@@ -176,6 +177,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#resource_text').val(session.toolbox_resource_text);
 				$('#question_text').val(session.toolbox_question_text);
 				$('#ask_a_rep_text').val(session.toolbox_askrep_text);
+				$('#sessionNotes').val(session.notes);
 
 				// Moderators
 				$('select[name="sessionModerators[]"] option').prop('selected', false);
@@ -447,6 +449,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'	</td>' +
 					'	<td>' +
 					'		'+session.name+
+					'	</td>' +
+					'	<td>' +
+					'		'+session.notes+
 					'	</td>' +
 					'	<td>' +
 					'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +

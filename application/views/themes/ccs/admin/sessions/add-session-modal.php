@@ -81,7 +81,10 @@
 										<label for="sessionNameOther">Other name (alternative language)</label>
 										<input type="text" class="form-control" id="sessionNameOther" name="sessionNameOther" placeholder="Enter alternative session title/name eg; French">
 									</div>
-
+									<div class="form-group">
+										<label for="sessionNameOther">Session Notes</label>
+										<input type="text" class="form-control" id="sessionNotes" name="sessionNotes" placeholder="Enter your notes here...">
+									</div>
 									<div class="form-group">
 										<label for="sessionNameOther"><?=$this->project->name?> Event ID</label>
 										<input type="text" class="form-control" id="eventID" name="eventID" placeholder="">

@@ -299,6 +299,7 @@ class Sessions_Model extends CI_Model
 			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
 			'time_zone' => (isset($session_data['time_zone'])?trim($session_data['time_zone']):''),
 			'event_id' => (isset($session_data['eventID'])?trim($session_data['eventID']):''),
+			'notes' => (isset($session_data['sessionNotes'])?trim($session_data['sessionNotes']):''),
 		);
 
 		$this->db->insert('sessions', $data);
@@ -437,6 +438,7 @@ class Sessions_Model extends CI_Model
 			'toolbox_askrep_text' => (isset($session_data['ask_a_rep_text'])?trim($session_data['ask_a_rep_text']):''),
 			'time_zone' => (isset($session_data['time_zone'])?trim($session_data['time_zone']):''),
 			'event_id' => (isset($session_data['eventID'])?trim($session_data['eventID']):''),
+			'notes' => (isset($session_data['sessionNotes'])?trim($session_data['sessionNotes']):''),
 		);
 
 		if($session_end_image != '' && $session_end_image != null){
