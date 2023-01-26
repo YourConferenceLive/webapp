@@ -38,12 +38,12 @@
 
 					<div class="card">
 						<div class="card-header">
-							<i class="far fa-address-card"></i> COS Membership
+							<i class="far fa-address-card"></i> <?=$this->project->name?> Membership
 						</div>
 						<div class="card-body">
 							<div class="form-group">
-								<label>COS Party ID</label>
-								<input name="idFromApi" id="idFromApi" class="form-control" type="text" placeholder="User's ID in COS database">
+								<label><?=$this->project->name?> Party ID</label>
+								<input name="idFromApi" id="idFromApi" class="form-control" type="text" placeholder="User's ID in <?=$this->project->name?> database">
 							</div>
 							<div class="form-group">
 								<label>Membership Type</label>
