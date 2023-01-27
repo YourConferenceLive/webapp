@@ -178,11 +178,12 @@ body{overflow: hidden;background-color: #151515;}
 		<div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
 			<div style="padding:5px;">
 				<div style="text-align: center; display: flex; " id="questions_section">
-					<div class="col-md-12 input-group">
+					<div class="col-md-12 input-group p-0">
 						<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
 						<input type="text" id="questionText" class="form-control" placeholder="Press enter to send..." value="">
+						<span class="btn sendQuestionBtn css-color text-white"><i class="fas fa-paper-plane"></i> Send</span>
 					</div>
-					<a id="askQuestionBtn" class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>
+<!--					<a id="askQuestionBtn" class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>-->
 				</div>
 				<div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
 					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
@@ -376,6 +377,12 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		$(window).on('resize', function(){
 			iframeResize();
 		});
+
+		$('.sendQuestionBtn').on('click', function(){
+			var e = $.Event("keyup");
+			e.keyCode = 13;
+			$('#questionText').trigger(e);
+		})
 
 		$('#questionText').on('keyup', function (e) {
 			if (e.key === 'Enter' || e.keyCode === 13) {
@@ -911,5 +918,127 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 		});
 	}
+	//######## Emoji functions
+	$(function(){
+		$(document).on("click", "#questions_clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_happy", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#happy", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+	})
 
 </script>
