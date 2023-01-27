@@ -178,20 +178,23 @@ body{overflow: hidden;background-color: #151515;}
 		<div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
 			<div style="padding:5px;">
 				<div style="text-align: center; display: flex; " id="questions_section">
-					<div class="col-md-12 input-group p-0">
-						<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
-						<input type="text" id="questionText" class="form-control" placeholder="Press enter to send..." value="">
-						<span class="btn sendQuestionBtn css-color text-white"><i class="fas fa-paper-plane"></i> Send</span>
+					<div class="input-group p-0">
+						<div class="input-group-prepend">
+							<span class="input-group-text btn" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
+						</div>
+						<input type="text" id="questionText" class="form-control" placeholder="Enter Question" value="">
+						<div class="input-group-append">
+							<span class="btn sendQuestionBtn css-color text-white p-1"><i class="fas fa-paper-plane"></i> Send</span>
+						</div>
 					</div>
-<!--					<a id="askQuestionBtn" class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>-->
 				</div>
 				<div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/sad.png" title="Sad" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/laughing.png" title="Laughing" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_up.png" title="Thumbs Up" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_down.png" title="Thumbs Down" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/clapping.png" title="Clapping" id="questions_clapping" data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" title="Happy" class="btn" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/sad.png" title="Sad" class="btn" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/laughing.png" title="Laughing" class="btn" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_up.png" title="Thumbs Up" class="btn" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_down.png" title="Thumbs Down" class="btn" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/clapping.png" title="Clapping" class="btn" id="questions_clapping"  data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
 				</div>
 				<span id='error_questions' style='color:red;'></span>
 				<span id='success_questions' style='color:green;'></span>
