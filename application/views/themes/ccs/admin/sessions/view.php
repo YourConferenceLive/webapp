@@ -623,7 +623,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 	function attendeeChatPopup(attendee_id, attendee_name, attendee_question, question_id){
 
-		$('#attendeeChatModalLabel').html("Chat With: "+attendee_name);
+		$('#attendeeChatModalLabel').html("Chat with: "+attendee_name);
 		$('#chattAttendeeQuestion').text(attendee_question);
 		$('#chattAttendeeQuestion').attr('question-id', question_id)
 		$('#sendMessagetoAttendee').attr('sender_id', attendee_id);
@@ -699,7 +699,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			})
 
 
-		$('#attendeeChatModalLabel').html('Chat With: '+sender_name+' '+sender_surname)
+		$('#attendeeChatModalLabel').html('Chat with: '+sender_name+' '+sender_surname)
 		$('#chattAttendeeQuestion').html(question_selected);
 		$('#attendeeChatModal').attr('question-id', question_id)
 		$('#attendeeChatModal').modal('show');
