@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--					<span aria-hidden="true">&times;</span>-->
 <!--				</button>-->
 			</div>
-			<div class="pushNotificationModalBody" style="min-height:100px">
+			<div class="pushNotificationModalBody" style="min-height:100px; min-width:700px">
 				<div id="pushNotificationMessage" style="color:#000000; font-size: 16px; font-weight: 600" class="ml-3"></div>
 			</div>
 			<div class="mb-3 mr-3 text-right">
