@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div id="pushNotificationMessage" style="color:#000000; font-size: 16px; font-weight: 600" class="ml-3"></div>
 			</div>
 			<div class="mb-3 mr-3 text-right">
-				<button type="button" class="btn btn-sm btn-info" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-sm text-white" style="background-color: #F78E1E" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
