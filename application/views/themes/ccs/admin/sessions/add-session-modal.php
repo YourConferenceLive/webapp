@@ -191,6 +191,27 @@
 										<img id="currentPhotoImg" src="" width="200px">
 									</div>
 
+									<div class="form-group">
+										<label for="customFile">Sponsor Logo</label>
+										<div class="custom-file">
+											<input type="file" class="custom-file-input" id="sessionSponsorLogo" name="sessionSponsorLogo">
+											<label class="custom-file-label" for="sessionSponsorLogo">Choose file</label>
+										</div>
+										<div class="mt-2">
+										<label for="sponsorLogoWidth"> Width: </label><input type="text" name="sponsorLogoWidth" id="sponsorLogoWidth" placeholder="100px">
+										<label for="sponsorLogoHeight"> Height: </label><input type="text" name="sponsorLogoHeight" id="sponsorLogoHeight" placeholder="50px">
+										</div>
+									</div>
+									<div class="form-group" id="currentSponsorLogoDiv" style="display: none;">
+										<label for="customFile"><small>Current Sponsor Logo</small></label>
+										<br>
+										<img id="currentSponsorLogo" src="" width="200px">
+										<div class="mt-2">
+											<input type="hidden" name="isSponsorLogoRemoved" id="isSponsorLogoRemoved" value="0">
+											<a class="btn btn-danger removeSponsorLogo"> Remove</a>
+										</div>
+									</div>
+
 								</div>
 
 								<div class="tab-pane fade" id="agendaTabContents" role="tabpanel" aria-labelledby="agendaTab">
@@ -573,6 +594,18 @@
 		$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox({
 			selectorMinimalHeight : 300
 		});
+
+		$('.removeSponsorLogo').on('click', function(){
+			$('#isSponsorLogoRemoved').val('1');
+			$('#currentSponsorLogoDiv').hide();
+		})
+
+		$('#sessionSponsorLogo').on('change', function(){
+			$('#isSponsorLogoRemoved').val('0');
+			previewUpload(this);
+			$('#currentSponsorLogoDiv').show();
+
+		})
 	});
 
 	$('#logo, #banner').on('change',function(){
@@ -630,6 +663,17 @@
 	});
 
 
+	function previewUpload(input){
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('#currentSponsorLogo').attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
 
 	function addSession()
 	{
@@ -709,11 +753,16 @@
 				Swal.close();
 
 				data = JSON.parse(data);
-
 				if (data.status == 'success')
 				{
 					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+data.session.thumbnail);
 					$('#currentPhotoDiv').show();
+
+					if(data.session.sponsor_logo  !== '') {
+						$('#currentSponsorLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/' + data.session.sponsor_logo);
+						$('#currentSponsorLogoDiv').show();
+					}else
+						$('#currentSponsorLogoDiv').hide();
 
 					listSessions();
 					toastr.success('Session updated');

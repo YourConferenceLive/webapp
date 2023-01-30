@@ -103,6 +103,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 			$('#addSessionForm')[0].reset();
 			$('#currentPhotoDiv').hide();
+			$('#currentSponsorLogoDiv').hide();
+			$('#sponsorLogoWidth').val('');
+			$('#sponsorLogoHeight').val('');
 			$('#sessionDescription').summernote('reset');
 			$('.removeall').click();
 			// $('#sponsorId').val(0);
@@ -162,6 +165,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					$('#currentPhotoDiv').show();
 				}else{
 					$('#currentPhotoDiv').hide();
+				}
+
+				$('#sessionSponsorLogo').val('');
+				if ((session.sponsor_logo) !== "" ) {
+					$('#currentSponsorLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.sponsor_logo);
+					$('#currentSponsorLogoDiv').show();
+				}else{
+					$('#currentSponsorLogoDiv').hide();
 				}
 
 				$("#sessionAgenda").summernote("code", session.agenda);

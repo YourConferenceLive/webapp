@@ -243,6 +243,20 @@ class Sessions_Model extends CI_Model
 			if ( ! $this->upload->do_upload('sessionPhoto'))
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session photo', 'technical_data'=>$this->upload->display_errors());
 		}
+		$sessionSponsorLogo = '';
+		if($session_data['isSponsorLogoRemoved'] == 0) {
+			if (isset($_FILES['sessionSponsorLogo']) && $_FILES['sessionSponsorLogo']['name'] != '') {
+				$photo_config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$photo_config['file_name'] = $sessionSponsorLogo = rand() . '_' . str_replace(' ', '_', $_FILES['sessionSponsorLogo']['name']);
+				$photo_config['upload_path'] = FCPATH . 'cms_uploads/projects/' . $this->project->id . '/sessions/thumbnails/';
+
+				$this->load->library('upload', $photo_config);
+				if (!$this->upload->do_upload('sessionSponsorLogo'))
+					return array('status' => 'failed', 'msg' => 'Unable to upload the session sponsor logo', 'technical_data' => $this->upload->display_errors());
+			}
+		}else{
+
+		}
 
 		if (isset($_FILES['sessionEndImage']) && $_FILES['sessionEndImage']['name'] != '')
 		{
@@ -267,6 +281,8 @@ class Sessions_Model extends CI_Model
 			'other_language_name' => $session_data['sessionNameOther'],
 			'description' => $session_data['sessionDescription'],
 			'thumbnail' => $session_photo,
+			'sponsor_logo_width' => $session_data['sponsorLogoWidth'],
+			'sponsor_logo_height' => $session_data['sponsorLogoHeight'],
 			'agenda' => $session_data['sessionAgenda'],
 			'session_type' => $session_data['sessionType'],
 			'external_meeting_link' => (isset($session_data['sessionExternalUrl']))?$session_data['sessionExternalUrl']:'',
@@ -301,6 +317,10 @@ class Sessions_Model extends CI_Model
 			'event_id' => (isset($session_data['eventID'])?trim($session_data['eventID']):''),
 			'notes' => (isset($session_data['sessionNotes'])?trim($session_data['sessionNotes']):''),
 		);
+
+		if($session_data['isSponsorLogoRemoved'] == 0){
+			$data['sponsor_logo'] = $sessionSponsorLogo;
+		}
 
 		$this->db->insert('sessions', $data);
 
@@ -386,6 +406,22 @@ class Sessions_Model extends CI_Model
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session photo', 'technical_data'=>$this->upload->display_errors());
 		}
 
+		$sessionSponsorLogo = '';
+		if($session_data['isSponsorLogoRemoved'] == 0) {
+			if (isset($_FILES['sessionSponsorLogo']) && $_FILES['sessionSponsorLogo']['name'] != '') {
+				$photo_config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$photo_config['file_name'] = $sessionSponsorLogo = rand() . '_' . str_replace(' ', '_', $_FILES['sessionSponsorLogo']['name']);
+				$photo_config['upload_path'] = FCPATH . 'cms_uploads/projects/' . $this->project->id . '/sessions/thumbnails/';
+
+				$this->load->library('upload', $photo_config);
+				if (!$this->upload->do_upload('sessionSponsorLogo'))
+					return array('status' => 'failed', 'msg' => 'Unable to upload the session sponsor logo', 'technical_data' => $this->upload->display_errors());
+			}
+		}else{
+			$path = FCPATH . 'cms_uploads/projects/' . $this->project->id . '/sessions/thumbnails/';
+			$this->unbind_sponsor_logo( $session_data['sessionId'], $path);
+		}
+
 		if (isset($_FILES['sessionEndImage']) && $_FILES['sessionEndImage']['name'] != '')
 		{
 			$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -439,6 +475,8 @@ class Sessions_Model extends CI_Model
 			'time_zone' => (isset($session_data['time_zone'])?trim($session_data['time_zone']):''),
 			'event_id' => (isset($session_data['eventID'])?trim($session_data['eventID']):''),
 			'notes' => (isset($session_data['sessionNotes'])?trim($session_data['sessionNotes']):''),
+			'sponsor_logo_width' => $session_data['sponsorLogoWidth'],
+			'sponsor_logo_height' =>  $session_data['sponsorLogoHeight'],
 		);
 
 		if($session_end_image != '' && $session_end_image != null){
@@ -446,6 +484,14 @@ class Sessions_Model extends CI_Model
 		}
 		if ($session_photo != '')
 			$data['thumbnail'] = $session_photo;
+
+		if($session_data['isSponsorLogoRemoved'] !== 0){
+			if ($sessionSponsorLogo != '')
+				$data['sponsor_logo'] = $sessionSponsorLogo;
+			else
+				$data['sponsor_logo'] = '';
+		}else
+			$data['sponsor_logo'] = '';
 
 		$this->db->set($data);
 		$this->db->where('id', $session_data['sessionId']);
@@ -540,6 +586,20 @@ class Sessions_Model extends CI_Model
 
 	}
 
+	function unbind_sponsor_logo($session_id, $path){
+		$result = $this->db->select('*')
+			->from('sessions')
+			->where('id',  $session_id)
+			->get();
+
+		if($result->num_rows() >0){
+			$sponsor_logo = $result->result()[0]->sponsor_logo;
+			if($sponsor_logo){
+				unlink( $path.$sponsor_logo);
+			}
+		}
+		return true;
+	}
 	public function removeSession($session_id)
 	{
 		$this->db->set('is_deleted', 1);
@@ -1835,5 +1895,266 @@ class Sessions_Model extends CI_Model
 			exit;
 		}
 
+	}
+
+	function getSponsorLogo($session_id){
+		return $this->db->select('sponsor_logo')
+			->from('sessions')
+			->where('id', $session_id)
+			->get()->result();
+	}
+
+	function view_json($sessions_id){
+		$this->db->select('*');
+		$this->db->from('sessions');
+		$this->db->where("id", $sessions_id);
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0) {
+			$result_sessions = $sessions->row();
+			$this->db->select('*');
+			$this->db->from('logs v');
+			$this->db->join('user u', 'u.id=v.user_id');
+//			$this->db->where("v.session_id", $sessions_id);
+			$this->db->where("v.ref_1", $sessions_id);
+			$this->db->where("v.project_id", $this->project->id);
+			$this->db->where("v.name", "Attend");
+			$this->db->where("v.info", "View Session");
+//			$this->db->where("v.sessions_id", $sessions_id);
+			$sessions_history = $this->db->get();
+			$sessions_history_login = array();
+			if ($sessions_history->num_rows() > 0) {
+				foreach ($sessions_history->result() as $val) {
+					$start_date_time = strtotime($val->start_date_time);
+					$end_date_time = strtotime($val->end_date_time);
+					if ($end_date_time != "") {
+						if ($end_date_time >= $start_date_time) {
+							$total_time = $end_date_time - $start_date_time;
+						} else {
+							$total_time = $start_date_time - $end_date_time;
+						}
+					} else {
+						$end_date_time = 0;
+						$total_time = 0;
+					}
+
+					$private_notes = array();
+					$this->db->select('*');
+					$this->db->from('sessions_cust_briefcase');
+					$this->db->where(array("cust_id" => $val->cust_id, "sessions_id"=>$sessions_id));
+					$sessions_cust_briefcase = $this->db->get();
+					if ($sessions_cust_briefcase->num_rows() > 0) {
+						foreach ($sessions_cust_briefcase->result() as $note_row)
+							$private_notes[] = $note_row->note;
+						//$private_notes = $sessions_cust_briefcase->row()->note;
+					}
+
+					$sessions_history_login[] = array(
+						'uuid' => $val->cust_id,
+						'access' => 50,
+						'created_time' => $start_date_time,
+						'last_connected' => $end_date_time,
+						'total_time' => $total_time,
+						//'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
+						'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
+						'alertness' => array("checks_returned" => "", "understood" => ""),
+						'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
+						'identity' => array("uuid" => $val->cust_id, 'identifier' => $val->identifier_id, 'name' => $val->first_name . ' ' . $val->last_name, 'email' => $val->email, 'profile_org_name' => $val->company_name, 'profile_org_title' => $val->company_name, 'profile_org_website' => "", 'profile_bio' => $val->topic, 'profile_twitter' => $val->twitter_id, 'profile_linkedin' => "", 'profile_country' => $val->country, 'profile_picture_url' => "", 'profile_last_updated' => ""),
+						'state_changes' => array("0" => array("timestamp" => 1592865240, "state" => 0))
+					);
+				}
+			}
+
+			$this->db->select('*');
+			$this->db->from('session_polls s');
+//			$this->db->join('poll_type p', 's.poll_type_id=p.poll_type_id');
+			$this->db->where("s.session_id", $sessions_id);
+			$sessions_poll_question = $this->db->get();
+			$polls = array();
+
+			if ($sessions_poll_question->num_rows() > 0) {
+				$presurvey = 0;
+				$poll = 0;
+				$assessment = 0;
+				foreach ($sessions_poll_question->result() as $sessions_poll_question) {
+					$options = array();
+					$this->db->select('*');
+					$this->db->from('session_poll_options');
+					$this->db->where("poll_id", $sessions_poll_question->id);
+					$poll_question_option = $this->db->get();
+					if ($poll_question_option->num_rows() > 0) {
+						foreach ($poll_question_option->result() as $val) {
+//							print_r($val);exit;
+							$votes = array();
+							$this->db->select('*');
+							$this->db->from('session_poll_answers');
+							$this->db->where("answer_id", $val->id);
+							$tbl_poll_voting = $this->db->get();
+							if ($tbl_poll_voting->num_rows() > 0) {
+								foreach ($tbl_poll_voting->result() as $tbl_poll_voting) {
+									$votes[] = (int) $tbl_poll_voting->user_id;
+								}
+							}
+							$options[] = array(
+								'option_id' => (int) $val->id,
+								'text' => $val->option_text,
+								'total_votes' => ($this->db->select('*')->from('session_poll_answers')->where('answer_id', $val->id)->get()->num_rows()),
+								'votes' => $votes
+							);
+
+							$total_votes = 0;
+							$this->db->select('*');
+							$this->db->from('session_poll_answers');
+							$this->db->where("poll_id", $val->poll_id);
+							$tbl_poll_voting_2 = $this->db->get();
+							if ($tbl_poll_voting_2->num_rows() > 0) {
+								$total_votes = $tbl_poll_voting_2->num_rows();
+							}
+						}
+					}
+					if ($sessions_poll_question->poll_type == 'presurvey') {
+						$presurvey = $presurvey + 1;
+						$polls[] = array(
+							'uuid' => '',
+							'status' => 4000,
+							'external_reference' => "",
+							'poll_id' => (int) $sessions_poll_question->id,
+							'text' => $sessions_poll_question->poll_question,
+							'options' => $options,
+							'total_votes' => $total_votes,
+							'response_type' => 0,
+							'text_responses' => array()
+						);
+					} else if ($sessions_poll_question->poll_type == 'poll') {
+						$poll = $poll + 1;
+						$polls[] = array(
+							'uuid' => '',
+							'text' => $sessions_poll_question->poll_question,
+							'status' => 4000,
+							'external_reference' => "",
+							'poll_id' => (int) $sessions_poll_question->id,
+							'options' => $options,
+							'total_votes' => $total_votes,
+							'response_type' => 0,
+							'text_responses' => array()
+						);
+					} else if ($sessions_poll_question->poll_type == 'assessment') {
+						$assessment = $assessment + 1;
+						$polls[] = array(
+							'uuid' => '',
+							'status' => 4000,
+							'external_reference' => "",
+							'poll_id' => (int) $sessions_poll_question->id,
+							'text' => $sessions_poll_question->poll_question,
+							'options' => $options,
+							'total_votes' => $total_votes,
+							'response_type' => 0,
+							'text_responses' => array()
+						);
+					}
+				}
+			}
+
+
+			$this->db->select('*');
+			$this->db->from('session_questions');
+			$this->db->where("session_id", $sessions_id);
+			$sessions_cust_question = $this->db->get();
+			$questions = array();
+			if ($sessions_cust_question->num_rows() > 0) {
+				foreach ($sessions_cust_question->result() as $key => $val) {
+					$questions[] = array(
+						'uuid'=>$val->user_id,
+						'index' => (int) $key,
+						'login' => (int) $val->user_id,
+						'body' => $val->question,
+						'timestamp' => strtotime($val->asked_on),
+						'upvotes'=>array()
+//                        'question' => $val->question,
+//                        'reply_login_id' => ($val->answer_by_id != "") ? $val->answer_by_id : "",
+//                        'reply' => ($val->answer != "") ? $val->answer : ""
+					);
+				}
+			}
+			$charting[] = array(
+				'online' => 0,
+				'timestamp' => 0,
+				'total_logins' => 0
+			);
+
+//			$this->db->select('*');
+//			$this->db->from('sessions_group_chat_msg');
+//			$this->db->where("sessions_id", $sessions_id);
+//			$sessions_group_chat_msg = $this->db->get();
+//			$messages = array();
+//			if ($sessions_group_chat_msg->num_rows() > 0) {
+//				foreach ($sessions_group_chat_msg->result() as $key => $val) {
+//					$messages[] = array(
+//						'uuid' => $val->user_id,
+//						'login' => $val->user_id,
+//						'timestamp' => strtotime($val->message_date),
+//						'message' => $val->message,
+//						'status' => 0,
+//						'is_positive' => FALSE,
+//						'deleted_reason' => 0
+//					);
+//				}
+//			}
+
+			$this->db->select('*');
+			$this->db->from('session_resources');
+			$this->db->where("session_id", $sessions_id);
+			$session_resource = $this->db->get();
+			$files = array();
+			$hyperlinks = array();
+			if ($session_resource->num_rows() > 0) {
+				foreach ($session_resource->result() as $key => $val) {
+					$files[] = array(
+						'uuid' => "",
+						'name' => $val->resource_name,
+						'about' => "",
+						'size' => 1000,
+						'clicks' =>array(array('login'=>"",'player_timestamp'=>"",'eos_timestamp'=>""))
+					);
+					$hyperlinks[] = array(
+						'uuid' => "",
+						'name' => "",
+						'url' => $val->resource_path,
+						'clicks' =>array(array('login'=>"",'player_timestamp'=>"",'eos_timestamp'=>""))
+					);
+				}
+			}
+
+
+
+			$create_array = array(
+				'actual_end_time' => strtotime($result_sessions->end_date_time),
+//				'cssid' => $result_sessions->cco_envent_id,
+				'end_time' => strtotime($result_sessions->end_date_time),
+				'name' => $result_sessions->name,
+				'reference' => $result_sessions->id,
+				'session_id' => (int) $result_sessions->id,
+				'start_time' => strtotime($result_sessions->start_date_time),
+				'logins' => $sessions_history_login,
+				'alertness' => array('count' => 0, 'checks' => array(), 'template' => array('alertness_template_id' => 1, 'name' => "", 'feature_name' => "", 'briefing_preface' => "", 'briefing_text' => "", 'briefing_accept_button' => "", 'briefing_optout_enabled' => "", 'prompt_title' => "", 'prompt_text' => "", 'prompt_audio_file' => "", 'prompt_duration' => "", 'show_failure_notifications' => "", 'aai_variance' => "", 'aai_starting_boundary' => "", 'aai_ending_boundary' => "", 'aai_setup_delay' => "")),
+//				'chat' => array('enabled' => true,'messages' => $messages),
+//				'hostschat' => array('messages' => $messages),
+				'jpc' => array('conversations' => array()),
+				'presentation' => array('decks' => array(array("uuid"=>"","name"=>"","thumbnail_url"=>'',"slides"=>array("image_url"=>"","index"=>"","notes"=>"",'title'=>"","thumbnail_url"=>"","uuid"=>""))), 'slide_events' => array(array("slide_uuid"=>"","timestamp"=>""))),
+				'polling' => array("enabled" => true, "polls" => $polls),
+				'questions' => array("enabled"=>true,'submitted'=>$questions),
+				'resources'=>array("files"=>$files,'hyperlinks'=>$hyperlinks),
+				'charting' => $charting
+			);
+
+
+			$json_array = array("data" => json_encode($create_array), "session_reference" => (int) $result_sessions->id, "session_id" => (int) $result_sessions->id, "source" => "gravity");
+
+			$data_to_post = "data=" . json_encode($create_array) . "&session_reference=" . (int) $result_sessions->id . "&session_id=" . (int) $result_sessions->id . "&source=gravity"; //if http_build_query causes any problem with JSON data, send this parameter directly in post.
+
+			echo json_encode($create_array, JSON_PRETTY_PRINT);
+//			return true;
+		} else {
+			return FALSE;
+		}
 	}
 }

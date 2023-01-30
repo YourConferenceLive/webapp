@@ -235,4 +235,7 @@ class Sessions extends CI_Controller
 		echo  $this->sessions->attendee_question_report($session_id);
 	}
 
+	public function view_json($session_id){
+		echo  $this->sessions->view_json($session_id);
+	}
 }
