@@ -6,7 +6,7 @@
 
 .sessions-listing-item
 {
-	background-color: #e9ecef8c;
+	background-color: #EFE8D7;
 	box-shadow: 0px 5px 30px 10px #aaaaaa8c;
 }
 
@@ -37,6 +37,14 @@
 	color: #555;
 	font-size: 1.3rem;
 	font-weight: bold;
+}
+
+.css-color{
+	background-color: #F78E1E;
+}
+
+.sendQuestionBtn{
+	height:38px;
 }
 
 /************** View Page *************/
@@ -346,3 +354,9 @@ a.keynote-link {
 	display: none !important;
 }
 
+.correct_answer{
+	border: 3px solid #00a87d !important;
+	border-radius: 10px;
+	padding:3px;
+	margin-left: -30px !important;
+}
