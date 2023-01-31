@@ -16,7 +16,7 @@
 
 	<link rel="stylesheet" href="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/index.css">
 	<link rel="stylesheet" href="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/main.css">
-	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/exhibition_hall.css?v=<?=rand()?>" rel="stylesheet">
+	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/exhibition_hall.css?v=<?=rand()?>" rel="stylesheet">
 	<script src="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/pep.min.js"></script>
 	<style>
 		[touch-action="none"]{ -ms-touch-action: none; touch-action: none; touch-action-delay: none; }

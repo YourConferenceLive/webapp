@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
 
 <?php if(isset($view_settings) && !empty($view_settings)):?>
 	<?php if($view_settings[0]->session_background_image == 1):?>

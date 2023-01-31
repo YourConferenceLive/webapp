@@ -739,4 +739,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </script>
 
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
-<link rel="stylesheet" href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/admin/view_session.css" type="text/css">
+<link rel="stylesheet" href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/admin/view_session.css" type="text/css">

@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //exit("</pre>");
 ?>
 
-<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/lounge.css?v=<?=rand()?>" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/lounge.css?v=<?=rand()?>" rel="stylesheet">
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/lounge_chats/group_chat.css?v=<?=rand()?>" rel="stylesheet">
 
 <div class="loung-container">

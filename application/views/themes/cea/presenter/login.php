@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php endif; ?>
 </style>
 
-<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/css/login.css?v=3" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/login.css?v=3" rel="stylesheet">
 <body class="text-center">
 
 <div class="row">
