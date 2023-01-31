@@ -1,0 +1,284 @@
+.lobby-container
+{
+	padding-bottom: 50px;
+}
+
+.banner
+{
+	border: 5px solid #f0f0f0;
+}
+
+.main-banner
+{
+
+}
+
+.side-banner-1
+{
+
+}
+
+.side-banner-2
+{
+
+}
+
+.lobby-content{
+	background-image: url("/theme_assets/default_theme/images/lobby/lobby_bg.png");
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	position: fixed;
+	width: 100%;
+	overflow-y: auto;
+}
+
+
+.lobby-content .custom-container{
+	width: 1580px;
+	max-width: 100%;
+	height: max-content;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 105px;
+	justify-content: center;
+}
+
+.lobby-content .custom-container .middle .menu .circle{
+	width: 320px;
+	max-width: 100%;
+	color: white;
+	text-align: center;
+	display: inline-block;
+	margin-bottom: 50px;
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+.lobby-content .custom-container .middle .menu .circle .icon{
+	width: 100%;
+	height: 160px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(1) .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/1.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(1):hover .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/1.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(2) .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/2.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(2):hover .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/2.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(3) .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/3.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(3):hover .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/3.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(4) .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/4.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(4):hover .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/4.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(5) .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/5.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(5):hover .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/5.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(6) .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/6.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle:nth-of-type(6):hover .icon{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/6.png");
+}
+
+.lobby-content .custom-container .middle .menu .circle h3{
+	margin-bottom: 0;
+	margin-top: 2px;
+	color: #16354a;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 150%;
+	/*text-shadow: 0 0 6px white;*/
+}
+
+.lobby-content .custom-container .middle .bottom-peoples{
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: auto;
+	bottom: 0;
+	z-index: -1;
+	margin-bottom: -150px;
+}
+.lobby-content .custom-container .left{
+	order: -1;
+}
+
+.lobby-content .custom-container .right{
+	position: relative;
+}
+
+.lobby-content .support-button{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_normal/support.png");
+	background-repeat: no-repeat;
+	background-size: 180px;
+	width: 180px;
+	height: 54px;
+	position: absolute;
+	bottom: -70px;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.lobby-content .support-button:hover{
+	background-image: url("/theme_assets/default_theme/images/lobby/Buttons_active/support.png");
+}
+
+@media screen and (max-width: 1500px) {
+	.lobby-content .custom-container .middle .menu .circle{
+		width: 250px;
+	}
+
+	.lobby-content .custom-container .middle .menu .circle .icon{
+		height: 110px;
+	}
+
+	.lobby-content .custom-container .middle{
+		width: 760px;
+	}
+
+	.lobby-content .custom-container .middle .top-banner img{
+		width: 740px;
+	}
+
+	.lobby-content .custom-container .left img,.lobby-content .custom-container .right img{
+		width: 230px;
+	}
+}
+
+@media screen and (max-width: 1230px) {
+	.lobby-content .custom-container .middle .menu .circle{
+		width: 190px;
+	}
+	.lobby-content .custom-container .middle .top-banner img{
+		width: 610px;
+	}
+	.lobby-content .custom-container .middle{
+		width: 610px;
+	}
+	.lobby-content .custom-container .left img, .lobby-content .custom-container .right img{
+		width: 200px;
+	}
+}
+
+@media screen and (max-width: 1005px) {
+	.lobby-content .custom-container .middle .top-banner img{
+		max-width: 100%;
+	}
+
+	.lobby-content .custom-container .left, .lobby-content .custom-container .right{
+		max-width: 100%;
+		display: inline-block;
+		width: 49%;
+	}
+
+	.lobby-content .custom-container .left img, .lobby-content .custom-container .right img{
+		width: 80%;
+	}
+
+
+	.lobby-content .custom-container{
+		display: block;
+	}
+
+	.lobby-content .custom-container .middle{
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 100%;
+	}
+
+	.lobby-content .custom-container .middle .menu .circle {
+		margin-bottom: 20px;
+	}
+
+	.lobby-content .support-button{
+		left: -200px;
+	}
+
+	.lobby-content .custom-container .middle .menu .circle{
+		width: 49%;
+	}
+	.lobby-content .custom-container .middle .menu .circle h3{
+		font-size: 16px;
+	}
+}
+
+
+/* Not for mobiles */
+@media screen and (max-width: 768px)
+{
+	.not-for-mobile
+	{
+		display: none;
+	}
+}
+
+/* Only for mobiles */
+@media screen and (min-width: 769px)
+{
+	.only-for-mobile
+	{
+		display: none;
+	}
+}
+
+/* sm screen */
+@media (min-width: 576px)
+{
+
+}
+
+/* md screen */
+@media (min-width: 768px)
+{
+
+}
+
+/* lg screen */
+@media (min-width: 992px)
+{
+
+}
+
+/* xl screen */
+@media (min-width: 1200px)
+{
+
+}

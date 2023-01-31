@@ -1,0 +1,95 @@
+.bg{
+	background-image: url("/theme_assets/default_theme/images/relaxation_zone/bg.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+
+}
+.custom-container{
+	width: 100%;
+	max-width: 100%;
+	height: 100vh;
+	margin-top: 68px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.custom-container .content{
+	max-width: 100%;
+	margin-top: 10px
+}
+
+.custom-container .content .video{
+	width: 600px;
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.custom-container .content .blurred-area{
+	background-image: url("/theme_assets/default_theme/images/relaxation_zone/blurred_bg.png");
+	width: 810px;
+	min-height: 302px;
+	max-width: 100%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 25px 0;
+	position: relative;
+	top: 275px;
+	border-radius: 40px;
+}
+
+.custom-container .content .blurred-area img{
+	margin-right: 40px;
+	margin-bottom: 40px;
+	max-width: 100%;
+}
+
+.custom-container .content .blurred-area .custom-write{
+	color: #2A4A57;
+	font-weight: bold;
+	position: absolute;
+}
+
+.custom-container .content .blurred-area .diamond{
+	left: 20px;
+	top: 40px;
+}
+
+.custom-container .content .blurred-area .platinum{
+	left: 20px;
+}
+
+
+@media screen and (max-width: 800px) {
+	.custom-container .content .blurred-area{
+		top: 55px;
+	}
+
+	.custom-container .content .blurred-area img{
+		object-fit: contain;
+		width: 210px;
+		height: 100px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	.custom-container .content{
+		padding: 15px;
+	}
+
+	.custom-container .content .blurred-area .custom-write{
+		position: unset;
+	}
+}

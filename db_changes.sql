@@ -636,3 +636,6 @@ ALTER TABLE `sessions` ADD `time_zone` VARCHAR(255) NOT NULL DEFAULT 'EST' AFTER
 
 -- start date time for logs
 ALTER TABLE `logs` ADD `start_date_time` DATETIME NULL AFTER `date_time`, ADD `end_date_time` DATETIME NULL AFTER `start_date_time`;
+
+-- add launched status
+ALTER TABLE `session_polls` ADD `is_launched` INT(1) NOT NULL DEFAULT '0' AFTER `is_active`;
