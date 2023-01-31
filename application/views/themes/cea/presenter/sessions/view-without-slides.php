@@ -605,4 +605,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 </script>
-<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/host_chat.js"></script>

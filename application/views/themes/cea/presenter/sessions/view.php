@@ -944,5 +944,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	/** End of live users per session **/
 
 </script>
-<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/host_chat.js"></script>
 <link rel="stylesheet" href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/presenter/view_session.css" type="text/css">
