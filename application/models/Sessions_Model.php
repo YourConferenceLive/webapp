@@ -227,7 +227,8 @@ class Sessions_Model extends CI_Model
 	public function add()
 	{
 		$session_data = $this->input->post();
-//		print_r(trim($session_data['sessionEndText']));
+//		print_r(trim($session_data));
+//		exit;
 //		print_r($_FILES['sessionEndImage']);
 //		exit;
 		// Upload session photo if set
@@ -2016,7 +2017,7 @@ class Sessions_Model extends CI_Model
 						$polls[] = array(
 							'uuid' => '',
 							'status' => 4000,
-							'external_reference' => "",
+							'external_reference' => $sessions_poll_question->external_reference,
 							'poll_id' => (int) $sessions_poll_question->id,
 							'text' => $sessions_poll_question->poll_question,
 							'options' => $options,
@@ -2030,7 +2031,7 @@ class Sessions_Model extends CI_Model
 							'uuid' => '',
 							'text' => $sessions_poll_question->poll_question,
 							'status' => 4000,
-							'external_reference' => "",
+							'external_reference' => $sessions_poll_question->external_reference,
 							'poll_id' => (int) $sessions_poll_question->id,
 							'options' => $options,
 							'total_votes' => $total_votes,
@@ -2042,7 +2043,7 @@ class Sessions_Model extends CI_Model
 						$polls[] = array(
 							'uuid' => '',
 							'status' => 4000,
-							'external_reference' => "",
+							'external_reference' => $sessions_poll_question->external_reference,
 							'poll_id' => (int) $sessions_poll_question->id,
 							'text' => $sessions_poll_question->poll_question,
 							'options' => $options,
@@ -2081,24 +2082,24 @@ class Sessions_Model extends CI_Model
 				'total_logins' => 0
 			);
 
-//			$this->db->select('*');
-//			$this->db->from('sessions_group_chat_msg');
-//			$this->db->where("sessions_id", $sessions_id);
-//			$sessions_group_chat_msg = $this->db->get();
-//			$messages = array();
-//			if ($sessions_group_chat_msg->num_rows() > 0) {
-//				foreach ($sessions_group_chat_msg->result() as $key => $val) {
-//					$messages[] = array(
-//						'uuid' => $val->user_id,
-//						'login' => $val->user_id,
-//						'timestamp' => strtotime($val->message_date),
-//						'message' => $val->message,
-//						'status' => 0,
-//						'is_positive' => FALSE,
-//						'deleted_reason' => 0
-//					);
-//				}
-//			}
+			$this->db->select('*');
+			$this->db->from('session_host_chat');
+			$this->db->where("session_id", $sessions_id);
+			$sessions_group_chat_msg = $this->db->get();
+			$messages = array();
+			if ($sessions_group_chat_msg->num_rows() > 0) {
+				foreach ($sessions_group_chat_msg->result() as $key => $val) {
+					$messages[] = array(
+						'uuid' => $val->from_id,
+						'login' => $val->from_id,
+						'timestamp' => strtotime($val->date_time),
+						'message' => $val->message,
+						'status' => 0,
+						'is_positive' => FALSE,
+						'deleted_reason' => 0
+					);
+				}
+			}
 
 			$this->db->select('*');
 			$this->db->from('session_resources');
@@ -2128,7 +2129,7 @@ class Sessions_Model extends CI_Model
 
 			$create_array = array(
 				'actual_end_time' => strtotime($result_sessions->end_date_time),
-//				'cssid' => $result_sessions->cco_envent_id,
+				'cssid' => $result_sessions->event_id,
 				'end_time' => strtotime($result_sessions->end_date_time),
 				'name' => $result_sessions->name,
 				'reference' => $result_sessions->id,
@@ -2136,8 +2137,8 @@ class Sessions_Model extends CI_Model
 				'start_time' => strtotime($result_sessions->start_date_time),
 				'logins' => $sessions_history_login,
 				'alertness' => array('count' => 0, 'checks' => array(), 'template' => array('alertness_template_id' => 1, 'name' => "", 'feature_name' => "", 'briefing_preface' => "", 'briefing_text' => "", 'briefing_accept_button' => "", 'briefing_optout_enabled' => "", 'prompt_title' => "", 'prompt_text' => "", 'prompt_audio_file' => "", 'prompt_duration' => "", 'show_failure_notifications' => "", 'aai_variance' => "", 'aai_starting_boundary' => "", 'aai_ending_boundary' => "", 'aai_setup_delay' => "")),
-//				'chat' => array('enabled' => true,'messages' => $messages),
-//				'hostschat' => array('messages' => $messages),
+				'chat' => array('enabled' => true,'messages' => $messages),
+				'hostschat' => array('messages' => $messages),
 				'jpc' => array('conversations' => array()),
 				'presentation' => array('decks' => array(array("uuid"=>"","name"=>"","thumbnail_url"=>'',"slides"=>array("image_url"=>"","index"=>"","notes"=>"",'title'=>"","thumbnail_url"=>"","uuid"=>""))), 'slide_events' => array(array("slide_uuid"=>"","timestamp"=>""))),
 				'polling' => array("enabled" => true, "polls" => $polls),
