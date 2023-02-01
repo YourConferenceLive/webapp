@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-12">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="text-center btn card mb-5" style="height: 80px;color:#487391;"><h1>Agenda</h1></div>
+<!--				<div class="text-center btn card mb-5" style="height: 80px;color:#487391;"><h1>Agenda</h1></div>-->
 			</div>
 		</div>
 		<!-- Date tabs -->
@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="card">
 								<?php $current_date = $this->uri->segment(4)?>
 								<?php if ($current_date == (date('Y-m-d', strtotime($session_day->start_date_time)))):?>
-								<div class="card-body p-0 pt-4 text-white text-center rounded" style="height: 130px; background-color: #487391">
+								<div class="card-body p-0 pt-4 text-white text-center rounded" style="height: 130px; background-color: #F78E1E">
 									<?php else:?>
 									<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
 										<?php endif;?>
@@ -163,41 +163,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="col-md-9 col-sm-12 pl-0 pt-2">
 								<div class="col-12 text-md-left text-sm-center">
 									<div class="col-6 text-left float-left p-0">
-										<span><?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?> EST</span>
+										<span><?=date("l, jS F, Y g:iA", strtotime($session->start_date_time))?> - <?=date("g:iA", strtotime($session->end_date_time))?>  <?=$session->time_zone?></span>
 									</div>
 									<?php if(isset($session->session_track)):?>
-									<div class="col-4 text-right float-right p-0 ">
-										<span class="badge badge-pill badge-primary pull-right"><?php echo $session->session_track;?></span>
-									</div>
+								<!--	<div class="col-4 text-right float-right p-0 ">
+										<span class="badge badge-pill badge-primary pull-right"><?php /*echo $session->session_track;*/?></span>
+									</div>-->
 									<div class="clearfix"></div>
-									<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="p-0 mt-1" style="color:#487391"><?=$session->name?></a></h4>
-									<h4 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="" style="color: #284050;"><?=$session->other_language_name?></a></h4>
+									<h3 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="p-0 mt-1" style="color:#F78E1E; font-weight:800"><?=$session->name?></a></h3>
+									<h3 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="" style="color: #284050;"><?=$session->other_language_name?></a></h3>
 									<?php endif;?>
 									<p>
-										<?php if($session->moderators != new stdClass()):?>
-											<span><strong>Moderator:</strong></span>
-										<?php foreach ($session->moderators as $index=> $moderator):?>
-											<?=(isset($index) && ($index >= 1))?',':''?>
-											<?=$moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?' '.$moderator->credentials:'')?>
-										<?php endforeach; ?><br>
-										<?php endif;?>
+										<?php /*if($session->moderators != new stdClass()):*/?><!--
+										<span><strong>Moderator:</strong></span>
+										<?php /*foreach ($session->moderators as $index=> $moderator):*/?>
+										<?/*=(isset($index) && ($index >= 1))?',':''*/?>
+										<?/*=$moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?' '.$moderator->credentials:'')*/?>
+										<?php /*endforeach; */?><br>
+										<?php /*endif;*/?>
 
-										<?php if($session->keynote_speakers != new stdClass()):?>
-											<span><strong>Keynote:</strong></span>
-										<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
-											<?=(isset($index) && ($index >= 1))?',':''?>
-											<a style="cursor: pointer" class="keynote-link" keynote-id="<?=$keynote->id?>" keynote-photo="<?=$keynote->photo?>" speaker-name="<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>">
-												<?=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>
-											</a>
-												<bio style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->bio?></bio>
-												<disclosure style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->disclosures?></disclosure>
-										<?php endforeach; ?><br>
-										<?php endif; ?>
+										<?php /*if($session->keynote_speakers != new stdClass()):*/?>
+										<span><strong>Keynote:</strong></span>
+										<?php /*foreach ($session->keynote_speakers as $index=> $keynote):*/?>
+										<?/*=(isset($index) && ($index >= 1))?',':''*/?>
+										<a style="cursor: pointer" class="keynote-link" keynote-id="<?/*=$keynote->id*/?>" keynote-photo="<?/*=$keynote->photo*/?>" speaker-name="<?/*= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')*/?>">
+											<?/*=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')*/?>
+										</a>
+										<bio style="display: none;" session-id="<?/*=$keynote->id*/?>"><?/*=$keynote->bio*/?></bio>
+										<disclosure style="display: none;" session-id="<?/*=$keynote->id*/?>"><?/*=$keynote->disclosures*/?></disclosure>
+										<?php /*endforeach; */?><br>
+										--><?php /*endif; */?>
 										<?php if($session->presenters != new stdClass()):?>
-											<span><strong>Speakers:</strong></span>
+											<!--<span><strong>Speakers:</strong></span>-->
 	<?php
 											foreach ($session->presenters as $index=>$presenter):
-												echo ((isset($index) && ($index>=1))?", ":'').trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?' '.trim($presenter->credentials):'');
+												echo trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials)) ?' '.trim($presenter->credentials):'');
+												echo '<br>';
 											endforeach;?><br>
 										<?php endif; ?>
 									</p>
@@ -206,13 +207,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 
 								<div class="col-12 text-md-right text-sm-center" style="position: relative;bottom: 0;">
+<!--	<?php
+/*									if (isset($session->session_track) &&  $session->session_track != 'Exhibit Hall'):*/?>
+									<a class="btn btn-sm btn-primary m-1 rounded-0 agenda-btn" session-id ="<?/*=$session->id*/?>" session-title ="<?/*=$session->name*/?>" ><i class="fas fa-clipboard-list"></i> Agenda</a>
 	<?php
-									if (isset($session->session_track) &&  $session->session_track != 'Exhibit Hall'):?>
-									<a class="btn btn-sm btn-primary m-1 rounded-0 agenda-btn" session-id ="<?=$session->id?>" session-title ="<?=$session->name?>" ><i class="fas fa-clipboard-list"></i> Agenda</a>
-	<?php
-									endif;?>
-									<a class="btn btn-sm btn-success m-1 rounded-0<?php echo (($session->briefcase != new stdClass()) ? ' disabled not-allowed' : ' briefcase-btn' );?>" data-session-id ="<?=$session->id?>" data-session-title ="<?=$session->name?>"><i class="fas fa-calendar-check"></i> <?php echo (($session->briefcase != new stdClass()) ? 'Already in the Briefcase' : 'Add to Briefcase' );?></a>
-	<?php
+/*									endif;*/?>
+									<a class="btn btn-sm btn-success m-1 rounded-0<?php /*echo (($session->briefcase != new stdClass()) ? ' disabled not-allowed' : ' briefcase-btn' );*/?>" data-session-id ="<?/*=$session->id*/?>" data-session-title ="<?/*=$session->name*/?>"><i class="fas fa-calendar-check"></i> <?php /*echo (($session->briefcase != new stdClass()) ? 'Already in the Briefcase' : 'Add to Briefcase' );*/?></a>
+	--><?php
 									if (isset($session->session_track) &&  $session->session_track != 'Exhibit Hall'):
 										if ($session->end_date_time < date('Y-m-d H:i:s') && $session->video_url == ''):?>
 											<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-secondary m-1 rounded-0 disabled"><i class="far fa-play-circle"></i> Recording Coming Soon</a>
@@ -221,7 +222,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<a href="<?=$this->project_url?>/sessions/view/<?=$session->id?>" class="btn btn-sm btn-warning m-1 rounded-0"><i class="fas fa-search"></i> View Recording</a>
 	<?php
 										else:?>
-											<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn btn-sm btn-success m-1 rounded-0"><i class="fas fa-plus"></i> Join</a>
+											<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn m-1 rounded-0 text-white" style="background-color: #F78E1E"><!--<i class="fas fa-plus"></i>--> Attend</a>
 	<?php
 										endif;
 									endif;?>

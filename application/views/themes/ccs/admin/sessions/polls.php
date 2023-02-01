@@ -49,6 +49,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Poll ID</th>
 									<th>Name</th>
 									<th>Type</th>
+									<th>Comparison ID</th>
+									<th>Slide Number</th>
+									<th>Instruction</th>
 									<th>Auto-show Result</th>
 									<th>Poll Triggers</th>
 									<th>Result Triggers</th>
@@ -107,6 +110,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#addPollForm')[0].reset();
 			$('#pollId').val(0);
+			$('#poll_comparison_select').css('display', 'block')
+			$('#pollOptionsInputDiv').html(
+				'<div class="input-group input-group-sm mb-2"> ' +
+				'<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"> ' +
+				'<span class="input-group-append"> ' +
+				'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button> ' +
+				'</span>' +
+				'</div> ' +
+				'<div class="input-group input-group-sm mb-2">' +
+				'<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1()">' +
+				'<span class="input-group-append">' +
+				'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button> ' +
+				'</span>' +
+				'</div>'
+			)
+			$('#pollQuestionInput').val('');
+			$('#slideNumberInput').val('');
+			$('#pollInstructionInput').val('');
 			//$('#sessionDescription').summernote('reset');
 			//$('.removeall').click();
 			// $('#sponsorId').val(0);
@@ -114,6 +135,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			// $('#logo_label').text('');
 			// $('#banner_preview').hide();
 			// $('#banner_label').text('');
+
 			$('#save-poll').html('<i class="fas fa-plus"></i> Create');
 
 			$('#addPollModal').modal({
@@ -280,7 +302,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#pollsTable').on('click', '.launch-poll-btn', function () {
 
 			let pollId = $(this).attr('poll-id');
-
+			let that = this;
 			Swal.fire({
 				title: 'Please Wait',
 				html: '<span class="text-white">Launching the poll ['+pollId+']...</span>',
@@ -301,6 +323,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'Poll ['+pollId+'] launch initiated',
 						'success'
 				)
+				$(that).html('<i class="fas fa-sync-alt"></i> Launch Again').removeClass('btn-info').addClass('btn-warning');
+
 			}).fail((error)=>{
 				Swal.fire(
 						'Error!',
@@ -352,7 +376,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$.each(polls, function(key, poll)
 			{
 				let show_result = (poll.show_result==1)?'Yes':'No';
-
+				let launchPollBtn = ((poll.is_launched === '0')?'<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' : '<button class="launch-poll-btn btn btn-sm btn-warning" poll-id="'+poll.id+'"><i class="fas fa-sync-alt"></i> Launch Again</button>' );
 				$('#pollsTableBody').append(
 					'<tr>' +
 					'	<td>' +
@@ -365,10 +389,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+poll.poll_type+
 					'	</td>' +
 					'	<td>' +
+					'		'+((poll.poll_comparison_id !=='0')? poll.poll_comparison_id :'')+
+					'	</td>' +
+					'	<td>' +
+					'		'+((poll.slide_number !== null)? poll.slide_number : '')+
+					'	</td>' +
+					'	<td>' +
+					'		'+((poll.poll_instruction !== null)? poll.poll_instruction : '')+
+					'	</td>' +
+					'	<td>' +
 					'		'+show_result+
 					'	</td>' +
 					'	<td>' +
-					'		<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' +
+					'		'+launchPollBtn+
 					'	</td>' +
 					'   <td>' +
 					'		<button class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" poll-question="'+poll.poll_question+'"><i class="fas fa-poll-h"></i> Show Result</button>' +

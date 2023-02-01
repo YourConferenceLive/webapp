@@ -29,7 +29,9 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/list")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/add-resources-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/add-session-modal", $create_modal)
+
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
 	}
@@ -125,5 +127,115 @@ class Sessions extends CI_Controller
 	public function addPollJson($session_id)
 	{
 		echo json_encode($this->sessions->addPoll($session_id));
+	}
+
+	public function updatePollJson($session_id){
+		echo json_encode($this->sessions->updatePoll($session_id));
+	}
+	
+	public function generateQRCode($session_id){
+
+		$this->load->library('ciqrcode');
+
+		$params['data'] = $this->project_url.'/mobile/sessions/id/'.$session_id;
+		$params['level'] = 'H';
+		$params['size'] = 10;
+		$params['savename'] = FCPATH.'/cms_uploads/projects/'.$this->project->id.'/qrcode/qr_'.$session_id.'.png';
+
+		if($this->ciqrcode->generate($params)){
+			echo 'success';
+		}else{
+			echo 'error';
+		}
+
+//        echo '<img src="'.base_url().'assets/qrcode/qrcode.png" />';
+	}
+
+	public function getQuestionsAjax($session_id)
+	{
+		echo json_encode($this->sessions->getQuestions($session_id));
+	}
+
+
+	public function attendee_question_direct_chat(){
+		echo json_encode($this->sessions->getAttendee_question_direct_chat());
+	}
+
+	public function getAttendeeChatsAjax(){
+		echo json_encode($this->sessions->getAttendeeChatsAjax());
+	}
+
+	public function saveQuestionAjax(){
+		echo json_encode($this->sessions->saveQuestionAjax());
+	}
+
+	public function getSavedQuestions($session_id){
+		echo json_encode($this->sessions->getSavedQuestions($session_id));
+	}
+
+	public function hideQuestionAjax(){
+		echo json_encode($this->sessions->hideQuestionAjax());
+	}
+
+	public function hideSavedQuestionAjax(){
+		echo json_encode($this->sessions->hideSavedQuestionAjax());
+	}
+
+	public function getSessionResources($session_id){
+		echo json_encode($this->sessions->getSessionResources($session_id));
+	}
+
+	public function addSessionResources(){
+		echo json_encode($this->sessions->addSessionResources());
+	}
+
+	public function updateSessionResource(){
+		echo json_encode($this->sessions->updateSessionResource());
+	}
+
+	public function flash_report($session_id){
+		$sidebar_data['user'] = $this->user;
+		$session = $this->sessions->getById($session_id);
+
+		$data['session'] = $session;
+		$data['polls'] = $this->sessions->getAllPolls($session_id);
+		$data['flash_report_list'] = $this->sessions->get_flash_report($session_id);
+//		echo '<pre>';
+//		print_r($data['flash_report_list']);exit;
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/flash_report", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer");
+
+	}
+
+	public function polling_report($session_id) {
+		$sidebar_data['user'] = $this->user;
+		$session = $this->sessions->getById($session_id);
+
+		$data['session'] = $session;
+		$data['polls'] = $this->sessions->getAllPolls($session_id);
+		$polls = $this->sessions->getPollList($session_id);
+		$data['flash_report_list'] = $this->sessions->getPollingData($session_id, $polls);
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/polling_report", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer");
+	}
+
+	public function poll_chart($session_id){
+		$chart = $this->sessions->createPollChart($session_id);
+	}
+
+	public function attendee_question_report($session_id){
+		echo  $this->sessions->attendee_question_report($session_id);
+	}
+
+	public function view_json($session_id){
+		echo  $this->sessions->view_json($session_id);
 	}
 }

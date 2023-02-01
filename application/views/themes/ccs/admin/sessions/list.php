@@ -43,12 +43,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<th>Session ID</th>
 										<th>Day</th>
 										<th>Start Time</th>
-										<th>End Time</th>
+										<th>Name</th>
 										<th>People</th>
 										<th>Credits</th>
-										<th>Name</th>
+										<th>End Time</th>
+										<th>Notes</th>
 										<th>Actions</th>
 										<th>Manage</th>
+										<th>Export</th>
 									</tr>
 								</thead>
 								<tbody id="sessionsTableBody">
@@ -101,6 +103,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 			$('#addSessionForm')[0].reset();
 			$('#currentPhotoDiv').hide();
+			$('#currentSponsorLogoDiv').hide();
+			$('#sponsorLogoWidth').val('');
+			$('#sponsorLogoHeight').val('');
 			$('#sessionDescription').summernote('reset');
 			$('.removeall').click();
 			// $('#sponsorId').val(0);
@@ -137,6 +142,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#sessionId').val(session.id);
 				$('#sessionName').val(session.name);
 				$('#sessionNameOther').val(session.other_language_name);
+				$('#eventID').val(session.event_id);
 				$(`#sessionTrack option[value="${session.track}"]`).prop('selected', true);
 
 				$('#sessionExternalUrl').val('');
@@ -161,6 +167,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					$('#currentPhotoDiv').hide();
 				}
 
+				$('#sessionSponsorLogo').val('');
+				if ((session.sponsor_logo) !== "" ) {
+					$('#currentSponsorLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.sponsor_logo);
+					$('#currentSponsorLogoDiv').show();
+				}else{
+					$('#currentSponsorLogoDiv').hide();
+				}
+
 				$("#sessionAgenda").summernote("code", session.agenda);
 				$('#millicastStream').val(session.millicast_stream);
 				$('#zoomLink').val(session.zoom_link);
@@ -174,6 +188,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#resource_text').val(session.toolbox_resource_text);
 				$('#question_text').val(session.toolbox_question_text);
 				$('#ask_a_rep_text').val(session.toolbox_askrep_text);
+				$('#sessionNotes').val(session.notes);
 
 				// Moderators
 				$('select[name="sessionModerators[]"] option').prop('selected', false);
@@ -238,7 +253,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				if(session.header_askrep == 1){
 					$('#headerAskRep').attr('checked','checked')
 				}
-
+				if(session.time_zone == "EDT"){
+					$('#timeZone').val("EDT")
+				}else{
+					$('#timeZone').val("EST")
+				}
 
 
 				$("#sessionEndText").summernote("code", session.session_end_text);
@@ -431,7 +450,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
-					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
+					'		'+session.name+
 					'	</td>' +
 					'	<td>' +
 					'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+' '+invisibleModeratorsBadge+
@@ -440,7 +459,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		'+session.credits+
 					'	</td>' +
 					'	<td>' +
-					'		'+session.name+
+					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
+					'	</td>' +
+					'	<td>' +
+					'		'+session.notes+
 					'	</td>' +
 					'	<td>' +
 					'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +
@@ -450,6 +472,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
 					'		</a>' +
 					'		<button class="reload_attendee btn btn-sm btn-danger m-1"><i class="fas fa-sync"></i> Reload Atendee</button>' +
+					'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
+					'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
@@ -459,6 +483,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
 					'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
 					'	</td>' +
+					'<td>' +
+					'		<a href="'+project_admin_url+'/sessions/flash_report/'+session.id+'" style="width:80px; height:50px" class="flashReport btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Flash Report</a><br>' +
+					'		<a href="'+project_admin_url+'/sessions/polling_report/'+session.id+'" style="width:80px; height:50px" class="pollingReport btn btn-sm btn-success m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Polling Report</a><br>' +
+					'		<a  style="width:80px; height:50px" class="pollingChart btn btn-sm btn-warning m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Ask a Rep - Report</a><br>' +
+					'		<a href="'+project_admin_url+'/sessions/attendee_question_report/'+session.id+'" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Question Report</a><br>' +
+					'</td>'+
 					'</tr>'
 				);
 			});
@@ -501,6 +531,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					socket.emit('reload-attendee');
 				}
 			})
+		})
+
+		$('#sessionsTableBody').on('click', '.session_resources', function(){
+			let session_id = $(this).attr('session-id')
+			$('#addResourceModal').modal('show')
+			$('#save-resource').attr('session-id', session_id);
+
+			getSessionResources(session_id);
+		});
+
+		$('#sessionsTableBody').on('click', '.mobileSessionQR', function(e){
+			e.preventDefault();
+			let session_id = $(this).attr('session-id');
+			// var session_id = $(this).attr('data-session_id');
+			$.post('<?= $this->project_url?>/admin/sessions/generateQRCode/'+session_id,
+				{}, function(success){
+					if(success=="success"){
+						Swal.fire({
+							text:'<?=$this->project_url?>/mobile/sessions/id/'+session_id,
+							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/qrcode/qr_'+session_id+'.png',
+							imageHeight: 300,
+							imageAlt: 'QRCODE'
+						})
+					}
+				})
 		})
 	})
 </script>

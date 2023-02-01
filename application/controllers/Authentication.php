@@ -18,6 +18,7 @@ class Authentication extends CI_Controller {
 		$username = $this->input->post()['email'];
 		$password = $this->input->post()['password'];
 		$access_level = $this->input->post()['access_level'];
+//		print_r($username);exit;
 
 //		$email_org = explode('@', $username);
 //		if(ycl_env == 'production' && $access_level == 'attendee' && $email_org[1] != 'cos-sco.ca') // Only staff have access for now on prod
@@ -50,7 +51,8 @@ class Authentication extends CI_Controller {
 						'is_moderator' => (in_array('moderator', $verification['user']->access_levels))?1:0,
 						'is_presenter' => (in_array('presenter', $verification['user']->access_levels))?1:0,
 						'is_admin' => (in_array('admin', $verification['user']->access_levels))?1:0,
-						'is_exhibitor' => (in_array('exhibitor', $verification['user']->access_levels))?1:0
+						'is_exhibitor' => (in_array('exhibitor', $verification['user']->access_levels))?1:0,
+						'is_mobile_attendee' => (in_array('mobile_attendee', $verification['user']->access_levels))?1:0
 					);
 
 					if (in_array('exhibitor', $verification['user']->access_levels))

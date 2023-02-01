@@ -486,6 +486,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		var countDownDate = new Date(session_start_datetime).getTime();
 
 		console.log("session_start_datetime: " + session_start_datetime);
+		console.log("countDateTime: " + countDownDate);
 
 		// Update the count down every 1 second
 		var x = setInterval(function() {
@@ -800,7 +801,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'question_id':question_id
 				},function(response){
 				if(response){
+					console.log(response);
 					fillSavedQuestions();
+					socket.emit('presenter_like_questions', {
+						"type": "like",
+						"question": response,
+					});
 				}
 					// console.log(response);
 			})
@@ -905,6 +911,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
 	}
+
+	$('#endChatBtn').on('click', function () {
+
+		let userId = $(this).attr('userId');
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "Ending chat will disable attendee from sending you texts until you texts attendee.",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, end it!'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				socket.emit('end-attendee-to-admin-chat', {"session_id":session_id, "from_id":"admin", "to_id":userId});
+
+				$('#attendeeChatModal').modal('hide');
+			}
+		})
+	});
+
 
 
 	/** Live users per session **/

@@ -26,6 +26,9 @@ class Lobby extends CI_Controller
 		$data['default_password']   = ((!is_null($first_load)) ? $this->user->defaultPasswordCheck() : false );
 		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 
+		if(($data['view_settings'][0]->lobby) == 0){
+			redirect($this->project_url.'/sessions/');
+		}
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)

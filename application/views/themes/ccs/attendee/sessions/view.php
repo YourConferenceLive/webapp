@@ -36,7 +36,7 @@ body{overflow: hidden;background-color: #151515;}
 		<li data-type="resourcesSticky" id="resourcesSticky"  style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?> </span></li>
 		<!--<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>-->
 		<li data-type="questionsSticky" id="questionsSticky"  style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-question" aria-hidden="true"></i> <span><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></span></li>
-		<li data-type="adminChatSticky" id="adminChatStickyIcon"  style="display:none; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
+		<li data-type="adminChatSticky" id="adminChatStickyIcon"  style="display:none" class="bg-primary"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
 		<li data-type="askARepSticky" id="askARepSticky"  style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/conversation_icon.png" style="height:25px; width:25px"> <span><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></span></li>
 	</ul>
 </div>
@@ -49,7 +49,6 @@ body{overflow: hidden;background-color: #151515;}
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="askARepSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></li>
 				</ul>
@@ -99,7 +98,6 @@ body{overflow: hidden;background-color: #151515;}
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
 					<li data-type="askARepSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></li>
@@ -119,13 +117,13 @@ body{overflow: hidden;background-color: #151515;}
 						<div class="row" style="margin-bottom: 10px; padding-bottom: 5px">
 <?php
 							if ($resource->resource_type == "url") {?>
-								<div class="col-md-12"><a href="<?=$resource->resource_path?>" target="_blank"><?=$resource->resource_name?></a></div>
+								<div class="col-md-12"><a href="<?=$resource->resource_path?>" target="_blank"><i class="fas fa-globe"></i> <?=$resource->resource_name?></a></div>
 <?php
 							}?>
 <?php
 							if ($resource->resource_type == "file") {
 								if ($resource->resource_path != "") {?>
-									<div class="col-md-12"><a href="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/resources/<?=$resource->resource_path?>" download> <?=$resource->resource_name?> </a></div>
+									<div class="col-md-12"><a href="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/resources/<?=$resource->resource_path?>" download><i class="fas fa-file-alt text-info"></i>  <?=$resource->resource_name?> </a></div>
 <?php
 								}
 							}?>
@@ -148,7 +146,7 @@ body{overflow: hidden;background-color: #151515;}
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
 					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
-					<li data-type="adminChatSticky" data-type2="off">Chat with admin</li>
+					<li data-type="adminChatSticky" data-type2="off">Ask a Rep</li>
 				</ul>
 			</div>
 		</div>
@@ -167,8 +165,8 @@ body{overflow: hidden;background-color: #151515;}
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
+					<li data-type="askARepSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></li>
 				</ul>
 			</div>
 		</div>
@@ -180,19 +178,23 @@ body{overflow: hidden;background-color: #151515;}
 		<div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
 			<div style="padding:5px;">
 				<div style="text-align: center; display: flex; " id="questions_section">
-					<div class="col-md-12 input-group">
-						<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
-						<input type="text" id="questionText" class="form-control" placeholder="Press enter to send..." value="">
+					<div class="input-group p-0">
+						<div class="input-group-prepend">
+							<span class="input-group-text btn" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
+						</div>
+						<input type="text" id="questionText" class="form-control" placeholder="Enter Question" value="">
+						<div class="input-group-append">
+							<span class="btn sendQuestionBtn css-color text-white p-1"><i class="fas fa-paper-plane"></i> Send</span>
+						</div>
 					</div>
-					<a id="askQuestionBtn" class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>
 				</div>
 				<div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/sad.png" title="Sad" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/laughing.png" title="Laughing" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_up.png" title="Thumbs Up" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_down.png" title="Thumbs Down" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/clapping.png" title="Clapping" id="questions_clapping" data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" title="Happy" class="btn" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/sad.png" title="Sad" class="btn" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/laughing.png" title="Laughing" class="btn" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_up.png" title="Thumbs Up" class="btn" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_down.png" title="Thumbs Down" class="btn" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/clapping.png" title="Clapping" class="btn" id="questions_clapping"  data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
 				</div>
 				<span id='error_questions' style='color:red;'></span>
 				<span id='success_questions' style='color:green;'></span>
@@ -203,16 +205,15 @@ body{overflow: hidden;background-color: #151515;}
 </div>
 
 <div class="rightSticykPopup adminChatSticky" style="display: none">
-	<div class="header" style="<?=  ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>;"><span>Toolbox</span>
+	<div class="header bg-primary" style=""><span>Toolbox</span>
 		<div class="rightTool">
 			<i class="fa fa-minus" id="chatWithAdminMinimize"  aria-hidden="true"></i>
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
-					<li data-type="notesSticky" data-type2="off">Chat With Admin</li>
+					<li data-type="askARepSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a Rep'?></li>
 				</ul>
 			</div>
 		</div>
@@ -247,10 +248,9 @@ body{overflow: hidden;background-color: #151515;}
 			<div class="dropdown">
 				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
 				<ul class="dropdown-menu">
+					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
-					<li data-type="messagesSticky" data-type2="off"><?=(isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text))? $session->toolbox_chat_admin_text: 'Chat With admin'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
-					<li data-type="notesSticky" data-type2="off">Chat With Admin</li>
 				</ul>
 			</div>
 		</div>
@@ -301,6 +301,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	}
 }
 ?>
+
+<input type="hidden" id="logs_id" value="">
 <style>
 .list-group {overflow: auto; height: 100px;}
 .list-group-item:nth-child(odd) {background-color: #FFFFFF;}
@@ -379,6 +381,12 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			iframeResize();
 		});
 
+		$('.sendQuestionBtn').on('click', function(){
+			var e = $.Event("keyup");
+			e.keyCode = 13;
+			$('#questionText').trigger(e);
+		})
+
 		$('#questionText').on('keyup', function (e) {
 			if (e.key === 'Enter' || e.keyCode === 13) {
 				$('#questionText').prop('disabled', true);
@@ -435,6 +443,9 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	}
 
 	$(function () {
+
+		get_sessions_history_open(sessionId);
+
 		$('#notes_list_container').on('click', '.note_detail', function (e) {
 			$('#noteModal').modal('hide');
   			let note_text = $(this).data('note-text');
@@ -499,7 +510,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 			if(data.session_id == sessionId) {
 
-				$('#pollId').val(data.session_id);
+				$('#pollId').val(data.id);
 				$('#pollQuestion').text(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
 
@@ -569,30 +580,77 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 				}, 1000);
 
 			}
+
+			markLaunchedPoll(data.id)
 		});
 
 		socket.on('ycl_launch_poll_result', (data)=>{
-			console.log(data)
+
 			if(data.session_id == sessionId) {
 				$('#pollResultModalLabel').text(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
-
 					$('#pollResults').html('');
-					$.each(results, function (poll_id, option_details) {
-						$('#pollResults').append('' +
-								'<div class="form-group">' +
-								'  <label class="form-check-label">'+option_details.option_name+'</label>' +
-								'  <div class="progress" style="height: 25px;">' +
-								'    <div class="progress-bar" role="progressbar" style="width: '+option_details.vote_percentage+'%;" aria-valuenow="'+option_details.vote_percentage+'" aria-valuemin="0" aria-valuemax="100">'+option_details.vote_percentage+'%</div>' +
+					console.log(results);
+
+					if(results.poll_type === 'poll' || results.poll_type === 'presurvey') {
+						$.each(results.poll, function (poll_id, option_details) {
+							$('#pollResults').append('' +
+								'<div class="form-group" id="group-'+option_details.option_order+'">' +
+								'  <label class="form-check-label progress-label">'+option_details.option_name+'</label>' +
+								'  <div class="progress" style="height: 20px;">' +
+								'    <div class="progress-bar" role="progressbar" style="width: '+((option_details.vote_percentage !== undefined)? option_details.vote_percentage  : 0 )+'%;" aria-valuenow="'+((option_details.vote_percentage !== undefined)? option_details.vote_percentage : 0) +'" aria-valuemin="0" aria-valuemax="100">'+((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0)+'%</div>' +
+								'    <div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity:0.2; width: '+((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage  : 100 )+'%;" aria-valuenow="'+((option_details.vote_percentage !== undefined)? 100-option_details.vote_percentage : 100) +'" aria-valuemin="0" aria-valuemax="100"></div>' +
 								'  </div>' +
 								'</div>');
-					});
+						});
+					}else {
+						$.each(results.poll, function (poll_id, option_details) {
+							// console.log(option_details);
+							$('#pollResults').append('' +
+								'<div class="form-group " id="group-'+option_details.option_order+'" >' +
+								'  <label class="form-check-label progress-label">' + option_details.option_name + '</label>' +
+								' <div class="progress_section" id="progress-section-'+option_details.option_order+'"> ' +
+								'	<div class="progress  mb-1" style="height: 20px;">' +
+								'    	<div class="progress-bar" role="progressbar" style="width: ' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0)+ '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0) + '" aria-valuemin="0" aria-valuemax="100">' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0) + '%</div>' +
+								'    	<div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity: 0.2; width: ' + ((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage: 100)+ '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage: 100) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+								'	</div> ' +
+								'</div>' +
+								'</div>');
+
+						});
+						$.each(results.compere, function (poll_id, option_details) {
+							$('#progress-section-'+option_details.option_order).prepend(
+								'	<div class="progress mb-1" style="height: 20px;">' +
+								'    	<div class="progress-bar bg-info" role="progressbar" style="width: ' + option_details.vote_percentage_compare + '%;" aria-valuenow="' + option_details.vote_percentage_compare + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage_compare + '%</div>' +
+								'    	<div class="progress-bar" role="progressbar" style="background-color:#17A2B8; opacity: 0.2; width: ' + (100-option_details.vote_percentage_compare) + '%;" aria-valuenow="' + (100-option_details.vote_percentage_compare) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+								'	</div> '
+							);
+						});
+					}
 
 					$('#pollResultModal').modal({
 						backdrop: 'static',
 						keyboard: false
 					});
+				}).then(function(obj,results){
+					obj = JSON.parse(obj);
+					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
+						$('.progress-label').attr('style', 'margin-left:30px')
+					}else{
+						$('.progress-label').attr('style', '')
+					}
+					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
+						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
+							console.log('tdsadsa');
+							//
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>');
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>');
+
+							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
+							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+						}
+					}
 				});
 			}
 		});
@@ -603,6 +661,12 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			}
 		});
 	});
+
+	function markLaunchedPoll(poll_id){
+		$.post(project_url+"/sessions/markLaunchedPoll/"+poll_id, function (results) {
+			console.log(results)
+		});
+	}
 
 	$(function(){
 		Swal.fire(
@@ -753,15 +817,15 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 
 		},1000);
-		Swal.fire(
-			'INFO',
-			'Be sure to unmute the player located on the bottom right side of the page.',
-			'warning'
-		);
+		// Swal.fire(
+		// 	'INFO',
+		// 	'Be sure to unmute the player located on the bottom right side of the page.',
+		// 	'warning'
+		// );
 
 	}
 
-	setInterval(saveTimeSpentOnSession, 300000); //Saving total time every 5 minutes as a backup
+	setInterval(saveTimeSpentOnSession, 30000); //Saving total time every 5 minutes as a backup
 
 	function initiateTimerRecorder() {
 		getTimeSpentOnSession();
@@ -775,9 +839,9 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	function update_viewsessions_history_open()
 	{
 		$.ajax({
-			url: base_url+"sessions/update_viewsessions_history_open",
+			url: base_url+"/sessions/update_viewsessions_history_open/"+sessionId,
 			type: "post",
-			data: {'view_sessions_history_id': $("#view_sessions_history_id").val()},
+			data: {'logs_id': $("#logs_id").val()},
 			dataType: "json",
 			success: function (data) {
 
@@ -800,6 +864,22 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		var nd = new Date(utc + (3600000*offset));
 
 		return nd;
+	}
+
+	function get_sessions_history_open(sessionId){
+		var resolution = screen.width + "x " + screen.height + "y";
+		$.ajax({
+			url: project_url+"/sessions/add_viewsessions_history_open",
+			type: "post",
+			data: {'sessions_id': sessionId, 'resolution': resolution},
+			dataType: "json",
+			success: function (data) {
+
+				console.log(data);
+				$("#logs_id").val(data.logs_id);
+			}
+		});
+		return false;
 	}
 
 	/******* End of saving time spent on session - by Rexter ************/
@@ -841,5 +921,127 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 		});
 	}
+	//######## Emoji functions
+	$(function(){
+		$(document).on("click", "#questions_clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_happy", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#happy", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+	})
 
 </script>

@@ -30,39 +30,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/default'">
 						</div>
 						<div class="col-8">
-							<div>
-								<small><?=date("l jS M, Y g:iA", strtotime($session->start_date_time))?> ET</small>
-								<h4><?=$session->name?></h4>
-								<p><?=$session->description?></p>
-							</div>
+							<h6 class="font-weight-normal"><?=date("F j, Y g:i A", strtotime($session->start_date_time))?> - <?=date("g:i A", strtotime($session->end_date_time))?>  <?=$session->time_zone?></h6>
+							<h4><?=$session->name?></h4>
 						</div>
 					</div>
 				</div>
-				<div class="col-4 mt-5" >
+				<div class="col-4 mt-1" >
 					<p>
-						<?php if($session->moderators != new stdClass()):?>
+						<?php /*if($session->moderators != new stdClass()):*/?><!--
 
-							<?php foreach ($session->moderators as $index=> $moderator):?>
-								<?=$moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?' '.$moderator->credentials:'')?>
-							<?php endforeach; ?><br>
-						<?php endif;?>
+							<?php /*foreach ($session->moderators as $index=> $moderator):*/?>
+								<?/*=$moderator->name." ".$moderator->surname.(!empty($moderator->credentials)?' '.$moderator->credentials:'')*/?>
+							<?php /*endforeach; */?><br>
+						--><?php /*endif;*/?>
 
-						<?php if($session->keynote_speakers != new stdClass()):?>
+						<?php /*if($session->keynote_speakers != new stdClass()):*/?><!--
 
-							<?php foreach ($session->keynote_speakers as $index=> $keynote):?>
-								<a style="cursor: pointer" class="keynote-link" keynote-id="<?=$keynote->id?>" keynote-photo="<?=$keynote->photo?>" speaker-name="<?= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')?>">
-									<?=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'')?>
+							<?php /*foreach ($session->keynote_speakers as $index=> $keynote):*/?>
+								<a style="cursor: pointer" class="keynote-link" keynote-id="<?/*=$keynote->id*/?>" keynote-photo="<?/*=$keynote->photo*/?>" speaker-name="<?/*= $keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?' '.$keynote->credentials:'')*/?>">
+									<?/*=$keynote->name." ".$keynote->surname.(!empty($keynote->credentials)?', '.$keynote->credentials:'')*/?>
 								</a>
-								<bio style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->bio?></bio>
-								<disclosure style="display: none;" session-id="<?=$keynote->id?>"><?=$keynote->disclosures?></disclosure>
-							<?php endforeach; ?><br>
-						<?php endif; ?>
+								<bio style="display: none;" session-id="<?/*=$keynote->id*/?>"><?/*=$keynote->bio*/?></bio>
+								<disclosure style="display: none;" session-id="<?/*=$keynote->id*/?>"><?/*=$keynote->disclosures*/?></disclosure>
+							<?php /*endforeach; */?><br>
+						--><?php /*endif; */?>
 						<?php if($session->presenters != new stdClass()):?>
 
 							<?php
 							foreach ($session->presenters as $index=>$presenter):
 								echo " ".trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?', '.trim($presenter->credentials):'');
-							endforeach;?><br>
+								echo "<br>";
+							endforeach;?>
 						<?php endif; ?>
 					</p>
 

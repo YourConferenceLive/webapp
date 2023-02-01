@@ -33,6 +33,13 @@ class Sessions extends CI_Controller
 
 		$data['user'] = $this->user;
 		$data['sessions'] = $this->sessions->getAllSessionWeek();
+		foreach ($data['sessions'] as $session){
+			if($session->time_zone === "EDT") {
+				$session->start_date_time = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($session->start_date_time)));
+				$session->end_date_time = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($session->end_date_time)));
+			}
+		}
+
 		$data['all_sessions_week'] = $this->sessions->getSessionWeek();
 		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
@@ -51,6 +58,11 @@ class Sessions extends CI_Controller
 
 		$data['user'] = $this->user;
 		$data['session'] = $this->sessions->getById($session_id);
+			if($data['session']->time_zone === "EDT") {
+				$data['session']->start_date_time = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($data['session']->start_date_time)));
+				$data['session']->end_date_time = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($data['session']->end_date_time)));
+		}
+
 		$data['countdownSeconds'] = $this->countdownInSeconds($data['session']->start_date_time);
 		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
 		$this->load
@@ -69,6 +81,10 @@ class Sessions extends CI_Controller
 		$this->claimCredit($session_id, $this->sessions->getCredits($session_id));
 
 		$session_data = $this->sessions->getById($session_id);
+		if($session_data->time_zone === "EDT") {
+			$session_data->start_date_time = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($session_data->start_date_time)));
+			$session_data->end_date_time = date('Y-m-d H:i:s', strtotime('+1 hour', strtotime($session_data->end_date_time)));
+		}
 //		print_r($session_data);exit;
 
 		if (date("Y-m-d H:i:s") > date("Y-m-d H:i:s", strtotime( $session_data->end_date_time)) ) {
@@ -182,7 +198,19 @@ class Sessions extends CI_Controller
 		$this->sessions->saveTimeSpentOnSession($session_id, $user_id);
 	}
 
+	public function update_viewsessions_history_open($session_id){
+		$this->sessions->update_viewsessions_history_open($session_id);
+	}
+
+	public function add_viewsessions_history_open(){
+		$this->sessions->add_viewsessions_history_open();
+	}
+
 	public function getTimeSpentOnSession($session_id, $user_id){
 		$this->sessions->getTimeSpentOnSession($session_id, $user_id);
+	}
+
+	public function markLaunchedPoll($poll_id){
+		$this->sessions->markLaunchedPoll($poll_id);
 	}
 }
