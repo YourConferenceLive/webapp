@@ -414,6 +414,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			},function(response){
 				if(response){
 					fillSavedQuestions();
+					$('#save-question-'+question_id).children().removeClass('far fa-star').addClass('fas fa-star')
 				}
 				// console.log(response);
 			})
@@ -487,6 +488,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					},function(response){
 						if(response){
 							fillSavedQuestions();
+							$('#save-question-'+question_id).children().removeClass('fas fa-star').addClass('far fa-star')
 							toastr.success('Starred question removed successfully');
 						}else{
 							toastr.error('Something went wrong');
@@ -545,6 +547,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		}
 	})
+
+	$('#chatToAttendeeText').on('keyup', function (e) {
+		if (e.key === 'Enter' || e.keyCode === 13) {
+			$('#sendMessagetoAttendee').trigger('click')
+		}
+	});
 
 	$('#sendMessagetoAttendee').on('click', function(){
 		let chat = $('#chatToAttendeeText').val();
