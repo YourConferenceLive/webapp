@@ -317,6 +317,7 @@ class Sessions_Model extends CI_Model
 			'time_zone' => (isset($session_data['time_zone'])?trim($session_data['time_zone']):''),
 			'event_id' => (isset($session_data['eventID'])?trim($session_data['eventID']):''),
 			'notes' => (isset($session_data['sessionNotes'])?trim($session_data['sessionNotes']):''),
+			'attendee_settings_id' => (isset($session_data['session_color_preset'])?trim($session_data['session_color_preset']):'0'),
 		);
 
 		if($session_data['isSponsorLogoRemoved'] == 0){
@@ -478,6 +479,7 @@ class Sessions_Model extends CI_Model
 			'notes' => (isset($session_data['sessionNotes'])?trim($session_data['sessionNotes']):''),
 			'sponsor_logo_width' => $session_data['sponsorLogoWidth'],
 			'sponsor_logo_height' =>  $session_data['sponsorLogoHeight'],
+			'attendee_settings_id' =>  $session_data['session_color_preset'],
 		);
 
 		if($session_end_image != '' && $session_end_image != null){

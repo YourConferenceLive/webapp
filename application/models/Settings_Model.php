@@ -24,12 +24,27 @@ class Settings_Model extends CI_Model
 		return '';
 	}
 
-	public function getAttendeeSettings($project_id)
+	public function getAttendeeSettings( $project_id, $session_id = null)
 	{
-		$settings = $this->db->select('*')
-			->from('attendee_view_settings')
-			->where('project_id', $project_id)
+		$result = $this->db->select('*')
+			->from('sessions')
+			->where('id', $session_id)
 			->get();
+
+		$settingsId = 0;
+		if($result->num_rows() > 0){
+			$settingsId = $result->result()[0]->attendee_settings_id;
+
+		}
+
+		 $this->db->select('*');
+		$this->db->from('attendee_view_settings');
+		$this->db->where('project_id', $project_id);
+		if($settingsId != 0){
+			$this->db->where('id', $settingsId);
+		}
+
+		$settings = $this->db->get();
 		if($settings->num_rows()>0){
 			return $settings->result();
 		}
@@ -129,5 +144,17 @@ class Settings_Model extends CI_Model
 			}
 		}
 
+	}
+
+	function getColorPresets(){
+		$result = $this->db->select('*')
+			->from('attendee_view_settings')
+			->where('name !=', '')
+			->get();
+
+		if($result->num_rows() > 0){
+			return json_encode(array('status'=>'success', 'data'=>$result->result()));
+		}
+		return '';
 	}
 }

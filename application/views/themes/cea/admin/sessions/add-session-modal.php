@@ -305,6 +305,16 @@
 
 								<div class="tab-pane fade" id="sessionSettingsTabContents" role="tabpanel" aria-labelledby="sessionSettingsTab">
 									<div class="form-group">
+										<label>Session Color Preset</label><br>
+										<div class="custom-control custom-switch mb-5">
+											<select name="session_color_preset" class="form-control bg-white"  id="sessionColorPreset">
+												<option > Choose Color Preset for this Session</option>
+												<option>Preset 1 (CCO Preset)</option>
+												<option>Preset 2 (CCS Preset)</option>
+												<option>Preset 3 (PCE Preset)</option>
+											</select>
+										</div>
+
 										<label>Header Settings</label><br>
 										<div class="custom-control custom-switch">
 											<input name="header_toolbox" type="checkbox" class="custom-control-input headerToolboxSwitch"  id="headerToolboxSwitch">
