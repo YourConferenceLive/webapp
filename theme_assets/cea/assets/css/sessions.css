@@ -360,3 +360,14 @@ a.keynote-link {
 	padding:3px;
 	margin-left: -30px !important;
 }
+.maximize{
+
+	position: absolute;
+	width: auto;
+	height: 80px;
+	top: 80%;
+	right: 5%;
+	margin-left: -50px;
+	margin-top: -25px;
+	color: #c6c6c6;
+}
