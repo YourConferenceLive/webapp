@@ -154,7 +154,7 @@ body{overflow: hidden;background-color: #151515;}
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
 					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
-					<li data-type="adminChatSticky" data-type2="off">Ask a Rep</li>
+					<li data-type="adminChatSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a rep'?></li>
 				</ul>
 			</div>
 		</div>
@@ -746,6 +746,13 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			$('li[data-type][data-type="notesSticky"]').hide();
 		}else{
 			$('#notesSticky').css('display','block')
+		}
+
+		if(right_sticky_askrep == 0){
+			$('#askARepSticky').css('display','none')
+			$('li[data-type][data-type="askARepSticky"]').hide();
+		}else{
+			$('#askARepSticky').css('display','block')
 		}
 
 		if(claim_credit_link !== ''){
