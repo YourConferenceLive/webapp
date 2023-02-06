@@ -732,6 +732,13 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			$('#resourcesStickyMenu').css('display','block')
 		}
 
+		if(header_askrep == 0){
+			$('#askARepStickyMenu').css('display','none')
+		}else{
+			$('#askARepStickyMenu').css('display','block')
+		}
+
+
 		if(right_sticky_resources == 0){
 			$('#resourcesSticky').css('display','none')
 			$('li[data-type][data-type="resourcesSticky"]').hide();
