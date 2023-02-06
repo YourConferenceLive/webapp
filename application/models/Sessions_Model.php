@@ -1019,7 +1019,7 @@ class Sessions_Model extends CI_Model
 			{
 				$order ++;
 				$options_array = array(
-					'poll_id' => $poll_id,
+					'poll_id' => $insert_id,
 					'option_text' => $option,
 					'option_order' => $order
 				);
