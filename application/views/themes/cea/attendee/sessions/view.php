@@ -10,7 +10,7 @@ body{overflow: hidden;background-color: #151515;}
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
 
 <div class="sessions-view-container container-fluid p-0">
-	<div id="embededVideo">
+	<div id="embededVideo" style="display: none">
 <?php
 			if (isset($session->video_url) && $session->video_url != ''):
 					$video_url = preg_replace('/[^0-9]/', '', $session->video_url);?>
@@ -383,6 +383,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			});
 	}
 
+	//Load div when Iframe is ready;
+	$('#sessionIframe').on('load', function(){
+		$('#embededVideo').css('display', 'block');
+	})
+
 	$(function (){
 		ask_a_rep();
 		iframeResize();
@@ -726,6 +731,13 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		}else{
 			$('#resourcesStickyMenu').css('display','block')
 		}
+
+		if(header_askrep == 0){
+			$('#askARepStickyMenu').css('display','none')
+		}else{
+			$('#askARepStickyMenu').css('display','block')
+		}
+
 
 		if(right_sticky_resources == 0){
 			$('#resourcesSticky').css('display','none')
