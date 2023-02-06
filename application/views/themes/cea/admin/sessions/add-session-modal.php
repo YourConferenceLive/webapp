@@ -309,9 +309,6 @@
 										<div class="custom-control custom-switch mb-5">
 											<select name="session_color_preset" class="form-control bg-white"  id="sessionColorPreset">
 												<option > Choose Color Preset for this Session</option>
-												<option>Preset 1 (CCO Preset)</option>
-												<option>Preset 2 (CCS Preset)</option>
-												<option>Preset 3 (PCE Preset)</option>
 											</select>
 										</div>
 
