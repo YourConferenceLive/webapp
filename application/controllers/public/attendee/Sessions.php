@@ -64,7 +64,12 @@ class Sessions extends CI_Controller
 		}
 
 		$data['countdownSeconds'] = $this->countdownInSeconds($data['session']->start_date_time);
-		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
+
+			if($data['countdownSeconds'] <= 0){
+				redirect(base_url().$this->project->name.'/sessions/view/'.$session_id);
+			}
+
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id, $session_id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
@@ -96,7 +101,7 @@ class Sessions extends CI_Controller
 		$data['session_id'] = $session_id;
 		$data['session'] 	= $session_data;
 		$data['notes'] 		= $this->note->getAll('session', $data['session_id'], $this->user['user_id']);
-		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id);
+		$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id, $session_id);
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
@@ -153,6 +158,7 @@ class Sessions extends CI_Controller
 	public function askQuestionAjax()
 	{
 		$post = $this->input->post();
+//		print_r($post);exit;
 		echo json_encode($this->sessions->askQuestion($post['session_id'], $post['question']));
 	}
 

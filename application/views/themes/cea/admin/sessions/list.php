@@ -124,7 +124,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		$('#sessionsTable').on('click', '.manageSession', function () {
 
 			let session_id = $(this).attr('session-id');
-
+			getColorPreset(session_id);
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading session data...',
@@ -558,4 +558,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				})
 		})
 	})
+
+	function getColorPreset(session_id){
+		$.post('<?= $this->project_url?>/admin/settings/getColorPresets/'+session_id,
+			{}, function(data){
+
+			data = JSON.parse(data);
+				$('#sessionColorPreset').html(
+					'<option value="0">Select Color Preset for this Session</option>'
+				);
+				$.each(data.data, function(i, val){
+					console.log(val);
+					$('#sessionColorPreset').append(
+						'<option value="'+val.id+'">Preset ('+val.id+') : '+val.name+'</option>'
+					)
+				})
+			})
+	}
 </script>

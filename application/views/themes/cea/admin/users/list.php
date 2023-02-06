@@ -297,7 +297,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'	<td>' +
 						'		<button class="manage-user btn btn-sm btn-info m-2" user-id="'+user.id+'"><i class="fas fa-edit"></i> Manage</button>' +
 						'		<button class="reset-user-pass-btn btn btn-sm btn-success m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-lock-open"></i> Reset Password</button>'+
-						'		<button class="suspend-user btn btn-sm btn-warning m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-user-slash"></i> Suspend</button>'+
+						'		<button onclick="suspendUser()" class="suspend-user btn btn-sm btn-warning m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-user-slash"></i> Suspend</button>'+
 						'	</td>' +
 						'</tr>'
 				);
@@ -362,4 +362,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		})
 	}
+
+	function suspendUser(){
+		toastr.warning('Unavailable')
+	}
+
 </script>

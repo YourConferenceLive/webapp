@@ -10,14 +10,15 @@ body{overflow: hidden;background-color: #151515;}
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
 
 <div class="sessions-view-container container-fluid p-0">
+	<div id="embededVideo">
 <?php
 			if (isset($session->video_url) && $session->video_url != ''):
 					$video_url = preg_replace('/[^0-9]/', '', $session->video_url);?>
-			<iframe id="sessionIframe" src="https://player.vimeo.com/video/<?=$video_url;?>?color=f7dfe9&title=0&byline=0&portrait=0" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="height: 100%"></iframe>
+			<iframe id="sessionIframe" src="https://player.vimeo.com/video/<?=$video_url;?>?color=f7dfe9&title=0&byline=0&portrait=0" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen height="100%"></iframe>
 			<script src="https://player.vimeo.com/api/player.js"></script>
 <?php
 			elseif (isset($session->millicast_stream) && $session->millicast_stream != ''):?>
-			<iframe id="sessionIframe" class="" src="https://viewer.millicast.com/v2?streamId=pYVHx2/<?=str_replace(' ', '', $session->millicast_stream)?>&autoPlay=true&muted=true&disableFull=true" width="100%" style="height: 100%"></iframe>
+			<iframe id="sessionIframe" class="" src="https://viewer.millicast.com/v2?streamId=pYVHx2/<?=str_replace(' ', '', $session->millicast_stream)?>&autoPlay=true&muted=true&disableFull=true" width="100%" height="100%"></iframe>
 <?php
 			else:?>
 			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
@@ -27,6 +28,13 @@ body{overflow: hidden;background-color: #151515;}
 			</div>
 <?php
 			endif;?>
+
+	<div class="maximize">
+		<span id="btnFS" class="btn text-white" data-toggle="tooltip" title="Full Screen">
+			<i class="fas fa-expand-alt"></i>
+		</span>
+	</div>
+	</div>
 </div>
 
 <!--bizim-->
@@ -146,7 +154,7 @@ body{overflow: hidden;background-color: #151515;}
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
 					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
-					<li data-type="adminChatSticky" data-type2="off">Ask a Rep</li>
+					<li data-type="adminChatSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a rep'?></li>
 				</ul>
 			</div>
 		</div>
@@ -312,6 +320,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/sponsor/sessions.js?v=<?=rand()?>"></script>
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/attendee_to_admin_chat.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/custom_full_screen.js?v=<?=rand()?>"></script>
 
 <script type="application/javascript">
 	let projectId = "<?=$this->project->id?>";
@@ -737,6 +746,13 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			$('li[data-type][data-type="notesSticky"]').hide();
 		}else{
 			$('#notesSticky').css('display','block')
+		}
+
+		if(right_sticky_askrep == 0){
+			$('#askARepSticky').css('display','none')
+			$('li[data-type][data-type="askARepSticky"]').hide();
+		}else{
+			$('#askARepSticky').css('display','block')
 		}
 
 		if(claim_credit_link !== ''){
