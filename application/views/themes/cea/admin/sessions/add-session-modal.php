@@ -641,11 +641,11 @@
 			return false;
 		}
 
-		if(!$.isNumeric($('input[name="sessionCredits"]').val()))
-		{
-			toastr.warning('Credit must be a positive number!')
-			return false;
-		}
+		// if(!$.isNumeric($('input[name="sessionCredits"]').val()))
+		// {
+		// 	toastr.warning('Credit must be a positive number!')
+		// 	return false;
+		// }
 
 		let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
 		Swal.fire({
