@@ -43,10 +43,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<th>Session ID</th>
 										<th>Day</th>
 										<th>Start Time</th>
+										<th>End Time</th>
 										<th>Name</th>
 										<th>People</th>
 										<th>Credits</th>
-										<th>End Time</th>
 										<th>Notes</th>
 										<th>Actions</th>
 										<th>Manage</th>
@@ -450,6 +450,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
+					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
+					'	</td>' +
+					'	<td>' +
 					'		'+session.name+
 					'	</td>' +
 					'	<td>' +
@@ -457,9 +460,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'	</td>' +
 					'	<td>' +
 					'		'+session.credits+
-					'	</td>' +
-					'	<td>' +
-					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
 					'		'+session.notes+
