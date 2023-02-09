@@ -44,6 +44,11 @@
 						<input type="text" class="form-control form-control-border" id="pollQuestionInput" name="pollQuestionInput" placeholder="Enter the poll question">
 					</div>
 
+					<h4>External Reference</h4>
+					<div class="form-group m">
+						<input type="text" class="form-control form-control-border" id="pollQuestionReferenceInput" name="pollQuestionReferenceInput" placeholder="Enter the poll external reference">
+					</div>
+
 					<h4>Slide Number</h4>
 					<div class="form-group m">
 						<input type="text" class="form-control form-control-border" id="slideNumberInput" name="slideNumberInput" placeholder="Enter how many slides">
@@ -140,12 +145,19 @@
 
 		$('.add-new-option-btn').on('click', function () {
 			$('#pollOptionsInputDiv').append('' +
-					'<div class="input-group input-group-sm mb-2">' +
+					'<div class="">'+
+					'<div class="input-group input-group-sm ">' +
 					'  <input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()">' +
 					'  <span class="input-group-append">' +
 					'    <button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>' +
 					'  </span>' +
-					'</div>');
+					'</div>'+
+					'<div class="mb-3">'+
+					'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
+					'</div>'+
+					'</div>'
+
+			);
 			appendCorrectAnswer1();
 			appendCorrectAnswer2();
 		})
@@ -156,7 +168,7 @@
 			if(pollOptionsDeleted) {
 				pollOptionsDeleted.push($(this).attr('option_id'))
 			}
-			$(this).parent().parent().remove();
+			$(this).parent().parentsUntil('#pollOptionsInputDiv').remove();
 			appendCorrectAnswer1();
 			appendCorrectAnswer2();
 		});
@@ -180,15 +192,21 @@
 					$('#pollQuestionInput').html('');
 					$('#slideNumberInput').val(poll.slide_number);
 					$('#pollInstructionInput').val(poll.poll_instruction);
+					$('#pollQuestionReferenceInput').val(poll.external_reference);
 
 					$.each(poll.options, function(i, obj){
 						$('#pollQuestionInput').val(poll.poll_question);
 						$('#pollOptionsInputDiv').append(
-							'<div class="input-group input-group-sm mb-2">' +
+							'<div class="">'+
+							'<div class="input-group input-group-sm">' +
 							'<input type="text" name="pollOptionsInput[]" option_id="'+obj.id+'" class="form-control pollOptions" value="'+obj.option_text+'" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"> ' +
 							'<span class="input-group-append"> ' +
 							'<button type="button" class="delete-option-button btn btn-danger btn-flat" option_id="'+obj.id+'" ><i class="fas fa-trash"></i></button>' +
 							'</span>' +
+							'</div>'+
+							'<div class="mb-3">'+
+							'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference" value="'+obj.external_reference+'"> '+
+							'</div>'+
 							'</div>'
 						);
 					})

@@ -961,7 +961,8 @@ class Sessions_Model extends CI_Model
 			'correct_answer1' => $post['poll_answer1'],
 			'correct_answer2' => $post['poll_answer2'],
 			'poll_instruction' => $post['pollInstructionInput'],
-			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
+			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0),
+			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : 0)
 		);
 		$this->db->insert('session_polls', $data);
 
@@ -969,13 +970,14 @@ class Sessions_Model extends CI_Model
 		{
 			$poll_id = $this->db->insert_id();
 			$order = 0;
-			foreach ($post['pollOptionsInput'] as $option)
+			foreach ($post['pollOptionsInput'] as $i => $option)
 			{
 				$order ++;
 				$options_array = array(
 					'poll_id' => $poll_id,
 					'option_text' => $option,
-					'option_order' => $order
+					'option_order' => $order,
+					'external_reference' => $post['optionExternalReference'][$i]
 				);
 				$this->db->insert('session_poll_options', $options_array);
 			}
@@ -1006,7 +1008,8 @@ class Sessions_Model extends CI_Model
 			'correct_answer1' => $post['poll_answer1'],
 			'correct_answer2' => $post['poll_answer2'],
 			'poll_instruction' => $post['pollInstructionInput'],
-			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
+			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0),
+			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : 0)
 		);
 		$this->db->insert('session_polls', $data);
 		$insert_id = $this->db->insert_id();
@@ -1015,13 +1018,14 @@ class Sessions_Model extends CI_Model
 			$this->db->update("session_polls", array("poll_comparison_id" => $insert_id), array("id" => $pollParentId));
 			$poll_id = $this->db->insert_id();
 			$order = 0;
-			foreach ($post['pollOptionsInput'] as $option)
+			foreach ($post['pollOptionsInput'] as $i=> $option)
 			{
 				$order ++;
 				$options_array = array(
 					'poll_id' => $insert_id,
 					'option_text' => $option,
-					'option_order' => $order
+					'option_order' => $order,
+					'external_reference' => $post['optionExternalReference'][$i]
 				);
 				$this->db->insert('session_poll_options', $options_array);
 			}
@@ -1041,7 +1045,8 @@ class Sessions_Model extends CI_Model
 			'correct_answer1' => $post['poll_answer1'],
 			'correct_answer2' => $post['poll_answer2'],
 			'poll_instruction' => $post['pollInstructionInput'],
-			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
+			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0),
+			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : 0)
 		);
 		if($post['pollId'] != 0) {
 
@@ -1049,10 +1054,12 @@ class Sessions_Model extends CI_Model
 			$this->db->update('session_polls', $data);
 			$order = 0;
 			foreach ($post['pollOptionsInput'] as $i => $option) {
+
 				$order ++;
 				$options_array = array(
 					'option_text' => $option,
-					'option_order' => $order
+					'option_order' => $order,
+					'external_reference' => $post['optionExternalReference'][$i]
 				);
 				if (isset($post['option_' . $i]) && $post['option_' . $i] !== 'undefined' ) {
 					$this->db->where('id', $post['option_' . $i]);
@@ -1063,6 +1070,7 @@ class Sessions_Model extends CI_Model
 						'poll_id' => $post['pollId'],
 						'option_text' => $option,
 						'option_order' => $order,
+						'external_reference' => $post['optionExternalReference'][$i]
 					);
 					$this->db->insert('session_poll_options', $options_array);
 				}
