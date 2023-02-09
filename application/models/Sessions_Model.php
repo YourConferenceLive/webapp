@@ -1929,9 +1929,11 @@ class Sessions_Model extends CI_Model
 			$this->db->where("v.ref_1", $sessions_id);
 			$this->db->where("v.project_id", $this->project->id);
 			$this->db->where("v.name", "Attend");
-			$this->db->where("v.info", "View Session");
+			$this->db->where("v.info", "Session View");
 //			$this->db->where("v.sessions_id", $sessions_id);
 			$sessions_history = $this->db->get();
+
+//			print_r ($sessions_history->result());exit;
 			$sessions_history_login = array();
 			if ($sessions_history->num_rows() > 0) {
 				foreach ($sessions_history->result() as $val) {
@@ -1948,28 +1950,28 @@ class Sessions_Model extends CI_Model
 						$total_time = 0;
 					}
 
-					$private_notes = array();
-					$this->db->select('*');
-					$this->db->from('sessions_cust_briefcase');
-					$this->db->where(array("cust_id" => $val->cust_id, "sessions_id"=>$sessions_id));
-					$sessions_cust_briefcase = $this->db->get();
-					if ($sessions_cust_briefcase->num_rows() > 0) {
-						foreach ($sessions_cust_briefcase->result() as $note_row)
-							$private_notes[] = $note_row->note;
-						//$private_notes = $sessions_cust_briefcase->row()->note;
-					}
+//					$private_notes = array();
+//					$this->db->select('*');
+//					$this->db->from('sessions_cust_briefcase');
+//					$this->db->where(array("user_id" => $val->cust_id, "sessions_id"=>$sessions_id));
+//					$sessions_cust_briefcase = $this->db->get();
+//					if ($sessions_cust_briefcase->num_rows() > 0) {
+//						foreach ($sessions_cust_briefcase->result() as $note_row)
+//							$private_notes[] = $note_row->note;
+//						//$private_notes = $sessions_cust_briefcase->row()->note;
+//					}
 
 					$sessions_history_login[] = array(
-						'uuid' => $val->cust_id,
+						'uuid' => $val->user_id,
 						'access' => 50,
 						'created_time' => $start_date_time,
 						'last_connected' => $end_date_time,
 						'total_time' => $total_time,
 						//'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
-						'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
+						'meta' => array("notes" => null, "personal_slide_notes" => array()),
 						'alertness' => array("checks_returned" => "", "understood" => ""),
-						'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
-						'identity' => array("uuid" => $val->cust_id, 'identifier' => $val->identifier_id, 'name' => $val->first_name . ' ' . $val->last_name, 'email' => $val->email, 'profile_org_name' => $val->company_name, 'profile_org_title' => $val->company_name, 'profile_org_website' => "", 'profile_bio' => $val->topic, 'profile_twitter' => $val->twitter_id, 'profile_linkedin' => "", 'profile_country' => $val->country, 'profile_picture_url' => "", 'profile_last_updated' => ""),
+						'browser_sessions' => array("0" => array("uuid" => $val->user_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->os . ' - ' . $val->browser)),
+						'identity' => array("uuid" => $val->user_id, 'identifier' => $val->user_id, 'name' => $val->name . ' ' . $val->surname, 'email' => $val->email, 'profile_org_name' => null, 'profile_org_title' => null, 'profile_org_website' => "", 'profile_bio' => $val->bio, 'profile_twitter' => "", 'profile_linkedin' => "", 'profile_country' => $val->country, 'profile_picture_url' => "", 'profile_last_updated' => ""),
 						'state_changes' => array("0" => array("timestamp" => 1592865240, "state" => 0))
 					);
 				}
