@@ -961,7 +961,8 @@ class Sessions_Model extends CI_Model
 			'correct_answer1' => $post['poll_answer1'],
 			'correct_answer2' => $post['poll_answer2'],
 			'poll_instruction' => $post['pollInstructionInput'],
-			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
+			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0),
+			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : 0)
 		);
 		$this->db->insert('session_polls', $data);
 
@@ -969,13 +970,14 @@ class Sessions_Model extends CI_Model
 		{
 			$poll_id = $this->db->insert_id();
 			$order = 0;
-			foreach ($post['pollOptionsInput'] as $option)
+			foreach ($post['pollOptionsInput'] as $i => $option)
 			{
 				$order ++;
 				$options_array = array(
 					'poll_id' => $poll_id,
 					'option_text' => $option,
-					'option_order' => $order
+					'option_order' => $order,
+					'external_reference' => $post['optionExternalReference'][$i]
 				);
 				$this->db->insert('session_poll_options', $options_array);
 			}
@@ -1006,7 +1008,8 @@ class Sessions_Model extends CI_Model
 			'correct_answer1' => $post['poll_answer1'],
 			'correct_answer2' => $post['poll_answer2'],
 			'poll_instruction' => $post['pollInstructionInput'],
-			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
+			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0),
+			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : 0)
 		);
 		$this->db->insert('session_polls', $data);
 		$insert_id = $this->db->insert_id();
@@ -1015,13 +1018,14 @@ class Sessions_Model extends CI_Model
 			$this->db->update("session_polls", array("poll_comparison_id" => $insert_id), array("id" => $pollParentId));
 			$poll_id = $this->db->insert_id();
 			$order = 0;
-			foreach ($post['pollOptionsInput'] as $option)
+			foreach ($post['pollOptionsInput'] as $i=> $option)
 			{
 				$order ++;
 				$options_array = array(
 					'poll_id' => $insert_id,
 					'option_text' => $option,
-					'option_order' => $order
+					'option_order' => $order,
+					'external_reference' => $post['optionExternalReference'][$i]
 				);
 				$this->db->insert('session_poll_options', $options_array);
 			}
@@ -1041,7 +1045,8 @@ class Sessions_Model extends CI_Model
 			'correct_answer1' => $post['poll_answer1'],
 			'correct_answer2' => $post['poll_answer2'],
 			'poll_instruction' => $post['pollInstructionInput'],
-			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0)
+			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0),
+			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : 0)
 		);
 		if($post['pollId'] != 0) {
 
@@ -1049,10 +1054,12 @@ class Sessions_Model extends CI_Model
 			$this->db->update('session_polls', $data);
 			$order = 0;
 			foreach ($post['pollOptionsInput'] as $i => $option) {
+
 				$order ++;
 				$options_array = array(
 					'option_text' => $option,
-					'option_order' => $order
+					'option_order' => $order,
+					'external_reference' => $post['optionExternalReference'][$i]
 				);
 				if (isset($post['option_' . $i]) && $post['option_' . $i] !== 'undefined' ) {
 					$this->db->where('id', $post['option_' . $i]);
@@ -1063,6 +1070,7 @@ class Sessions_Model extends CI_Model
 						'poll_id' => $post['pollId'],
 						'option_text' => $option,
 						'option_order' => $order,
+						'external_reference' => $post['optionExternalReference'][$i]
 					);
 					$this->db->insert('session_poll_options', $options_array);
 				}
@@ -1921,9 +1929,11 @@ class Sessions_Model extends CI_Model
 			$this->db->where("v.ref_1", $sessions_id);
 			$this->db->where("v.project_id", $this->project->id);
 			$this->db->where("v.name", "Attend");
-			$this->db->where("v.info", "View Session");
+			$this->db->where("v.info", "Session View");
 //			$this->db->where("v.sessions_id", $sessions_id);
 			$sessions_history = $this->db->get();
+
+//			print_r ($sessions_history->result());exit;
 			$sessions_history_login = array();
 			if ($sessions_history->num_rows() > 0) {
 				foreach ($sessions_history->result() as $val) {
@@ -1940,28 +1950,28 @@ class Sessions_Model extends CI_Model
 						$total_time = 0;
 					}
 
-					$private_notes = array();
-					$this->db->select('*');
-					$this->db->from('sessions_cust_briefcase');
-					$this->db->where(array("cust_id" => $val->cust_id, "sessions_id"=>$sessions_id));
-					$sessions_cust_briefcase = $this->db->get();
-					if ($sessions_cust_briefcase->num_rows() > 0) {
-						foreach ($sessions_cust_briefcase->result() as $note_row)
-							$private_notes[] = $note_row->note;
-						//$private_notes = $sessions_cust_briefcase->row()->note;
-					}
+//					$private_notes = array();
+//					$this->db->select('*');
+//					$this->db->from('sessions_cust_briefcase');
+//					$this->db->where(array("user_id" => $val->cust_id, "sessions_id"=>$sessions_id));
+//					$sessions_cust_briefcase = $this->db->get();
+//					if ($sessions_cust_briefcase->num_rows() > 0) {
+//						foreach ($sessions_cust_briefcase->result() as $note_row)
+//							$private_notes[] = $note_row->note;
+//						//$private_notes = $sessions_cust_briefcase->row()->note;
+//					}
 
 					$sessions_history_login[] = array(
-						'uuid' => $val->cust_id,
+						'uuid' => $val->user_id,
 						'access' => 50,
 						'created_time' => $start_date_time,
 						'last_connected' => $end_date_time,
 						'total_time' => $total_time,
 						//'total_time' => $this->getTimeSpentOnSession($sessions_id, $val->cust_id),
-						'meta' => array("notes" => $private_notes, "personal_slide_notes" => array()),
+						'meta' => array("notes" => null, "personal_slide_notes" => array()),
 						'alertness' => array("checks_returned" => "", "understood" => ""),
-						'browser_sessions' => array("0" => array("uuid" => $val->cust_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->operating_system . ' - ' . $val->computer_type)),
-						'identity' => array("uuid" => $val->cust_id, 'identifier' => $val->identifier_id, 'name' => $val->first_name . ' ' . $val->last_name, 'email' => $val->email, 'profile_org_name' => $val->company_name, 'profile_org_title' => $val->company_name, 'profile_org_website' => "", 'profile_bio' => $val->topic, 'profile_twitter' => $val->twitter_id, 'profile_linkedin' => "", 'profile_country' => $val->country, 'profile_picture_url' => "", 'profile_last_updated' => ""),
+						'browser_sessions' => array("0" => array("uuid" => $val->user_id, "launched_time" => $start_date_time, "last_connected" => $end_date_time, "user_agent" => $val->os . ' - ' . $val->browser)),
+						'identity' => array("uuid" => $val->user_id, 'identifier' => $val->user_id, 'name' => $val->name . ' ' . $val->surname, 'email' => $val->email, 'profile_org_name' => null, 'profile_org_title' => null, 'profile_org_website' => "", 'profile_bio' => $val->bio, 'profile_twitter' => "", 'profile_linkedin' => "", 'profile_country' => $val->country, 'profile_picture_url' => "", 'profile_last_updated' => ""),
 						'state_changes' => array("0" => array("timestamp" => 1592865240, "state" => 0))
 					);
 				}

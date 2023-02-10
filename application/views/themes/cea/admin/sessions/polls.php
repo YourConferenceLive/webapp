@@ -7,6 +7,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	#sessionsTable_filter, #sessionsTable_paginate{
 		float: right;
 	}
+	.form-control::placeholder{
+		color: lightblue;
+	}
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -112,17 +115,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#pollId').val(0);
 			$('#poll_comparison_select').css('display', 'block')
 			$('#pollOptionsInputDiv').html(
-				'<div class="input-group input-group-sm mb-2"> ' +
+				'<div class="">'+
+				'<div class="input-group input-group-sm "> ' +
 				'<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"> ' +
 				'<span class="input-group-append"> ' +
 				'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button> ' +
 				'</span>' +
 				'</div> ' +
-				'<div class="input-group input-group-sm mb-2">' +
+				'<div class="mb-3">'+
+				'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
+				'</div>'+
+				'</div>'+
+
+				'<div class="">'+
+				'<div class="input-group input-group-sm">' +
 				'<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1()">' +
 				'<span class="input-group-append">' +
 				'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button> ' +
 				'</span>' +
+				'</div>'+
+				'<div class="mb-3">'+
+				'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
+				'</div>'+
 				'</div>'
 			)
 			$('#pollQuestionInput').val('');
