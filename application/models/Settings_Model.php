@@ -53,6 +53,22 @@ class Settings_Model extends CI_Model
 		return '';
 	}
 
+	function getSessionSettings($project_id, $setting_id){
+		$this->db->select('*');
+		$this->db->from('attendee_view_settings');
+		$this->db->where('project_id', $project_id);
+		if($setting_id != null || $setting_id != ''){
+			$this->db->where('id', $setting_id);
+		}
+
+		$settings = $this->db->get();
+		if($settings->num_rows()>0){
+			return $settings->result();
+		}
+
+		return '';
+	}
+
 	function saveAttendeeViewSetting($project_id){
 		$post = $this->input->post();
 //		print_r($_FILES['poll_music']['name']);exit;
@@ -97,6 +113,7 @@ class Settings_Model extends CI_Model
 		}
 		if($settings->num_rows()>0){
 			$this->db->where('project_id', $project_id);
+			$this->db->where('name !=', '');
 			$result = $this->db->update('attendee_view_settings', $fieldset);
 			return (array('status'=>'success', 'msg'=>'Settings Updated Successfully'));
 		}else{
