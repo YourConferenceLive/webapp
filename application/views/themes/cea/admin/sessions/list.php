@@ -101,6 +101,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 		$('.add-session-btn').on('click', function () {
 
+			getColorPreset();
 			$('#addSessionForm')[0].reset();
 			$('#currentPhotoDiv').hide();
 			$('#currentSponsorLogoDiv').hide();
@@ -119,12 +120,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				backdrop: 'static',
 				keyboard: false
 			});
+
+
 		});
 
 		$('#sessionsTable').on('click', '.manageSession', function () {
 
 			let session_id = $(this).attr('session-id');
-			getColorPreset(session_id);
+			getColorPreset();
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading session data...',
@@ -174,6 +177,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				}else{
 					$('#currentSponsorLogoDiv').hide();
 				}
+
+				$('#sessionSessionLogo').val('');
+				if ((session.session_logo) !== "" ) {
+					$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/'+session.session_logo);
+					$('#currentSessionLogoDiv').show();
+				}else{
+					$('#currentSessionLogoDiv').hide();
+				}
+
+				$('#sponsorLogoWidth').val(session.sponsor_logo_width);
+				$('#sponsorLogoHeight').val(session.sponsor_logo_height);
+				$('#sessionLogoHeight').val(session.session_logo_width);
+				$('#sessionLogoHeight').val(session.session_logo_height);
 
 				$("#sessionAgenda").summernote("code", session.agenda);
 				$('#millicastStream').val(session.millicast_stream);
@@ -559,8 +575,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		})
 	})
 
-	function getColorPreset(session_id){
-		$.post('<?= $this->project_url?>/admin/settings/getColorPresets/'+session_id,
+	function getColorPreset(){
+		$.post('<?= $this->project_url?>/admin/settings/getColorPresets/',
 			{}, function(data){
 
 			data = JSON.parse(data);

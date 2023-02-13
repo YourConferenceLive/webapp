@@ -39,7 +39,7 @@ class Settings extends CI_Controller
 		echo json_encode($this->settings->savePresenterViewSetting($this->project->id));
 	}
 
-	public function getColorPresets($session_id){
-		echo  $this->settings->getColorPresets($session_id);
+	public function getColorPresets(){
+		echo  $this->settings->getColorPresets();
 	}
 }
