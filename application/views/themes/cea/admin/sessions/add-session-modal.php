@@ -194,7 +194,7 @@
 									<div class="form-group">
 										<label for="customFile">Sponsor Logo</label>
 										<div class="custom-file">
-											<input type="file" class="custom-file-input" id="sessionSponsorLogo" name="sessionSponsorLogo">
+											<input type="file" class="custom-file-input" id="sessionSponsorLogo" name="sessionSponsorLogo" previewImage="currentSponsorLogo">
 											<label class="custom-file-label" for="sessionSponsorLogo">Choose file</label>
 										</div>
 										<div class="mt-2">
@@ -209,6 +209,27 @@
 										<div class="mt-2">
 											<input type="hidden" name="isSponsorLogoRemoved" id="isSponsorLogoRemoved" value="0">
 											<a class="btn btn-danger removeSponsorLogo"> Remove</a>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="customFile">Session Logo</label>
+										<div class="custom-file">
+											<input type="file" class="custom-file-input" id="sessionLogo" name="sessionLogo" previewImage="currentSessionLogo">
+											<label class="custom-file-label" for="sessionLogo">Choose file</label>
+										</div>
+										<div class="mt-2">
+											<label for="sessionLogoWidth"> Width: </label><input type="text" name="sessionLogoWidth" id="sessionLogoWidth" placeholder="100px">
+											<label for="sessionLogoHeight"> Height: </label><input type="text" name="sessionLogoHeight" id="sessionLogoHeight" placeholder="50px">
+										</div>
+									</div>
+									<div class="form-group" id="currentSessionLogoDiv" style="display: none;">
+										<label for="currentSessionLogoDiv"><small>Current Session Logo</small></label>
+										<br>
+										<img id="currentSessionLogo" src="" width="200px">
+										<div class="mt-2">
+											<input type="hidden" name="isSessionLogoRemoved" id="isSessionLogoRemoved" value="0">
+											<a class="btn btn-danger removeSessionLogo"> Remove</a>
 										</div>
 									</div>
 
@@ -607,12 +628,23 @@
 			$('#currentSponsorLogoDiv').hide();
 		})
 
+		$('.removeSessionLogo').on('click', function(){
+			$('#isSessionLogoRemoved').val('1');
+			$('#currentSessionLogoDiv').hide();
+		})
+
 		$('#sessionSponsorLogo').on('change', function(){
 			$('#isSponsorLogoRemoved').val('0');
 			previewUpload(this);
 			$('#currentSponsorLogoDiv').show();
-
 		})
+
+		$('#sessionLogo').on('change', function(){
+			$('#isSessionLogoRemoved').val('0');
+			previewUpload(this);
+			$('#currentSessionLogoDiv').show();
+		})
+
 	});
 
 	$('#logo, #banner').on('change',function(){
@@ -670,15 +702,17 @@
 	});
 
 
-	function previewUpload(input){
-		if (input.files && input.files[0]) {
+	function previewUpload(that){
+		console.log(that)
+		console.log(that.getAttribute('previewImage'))
+		if (that.files && that.files[0]) {
 			var reader = new FileReader();
 
 			reader.onload = function (e) {
-				$('#currentSponsorLogo').attr('src', e.target.result);
+				$('#'+that.getAttribute('previewImage')).attr('src', e.target.result);
 			}
 
-			reader.readAsDataURL(input.files[0]);
+			reader.readAsDataURL(that.files[0]);
 		}
 	}
 
@@ -770,6 +804,12 @@
 						$('#currentSponsorLogoDiv').show();
 					}else
 						$('#currentSponsorLogoDiv').hide();
+
+					if(data.session.session_logo  !== '') {
+						$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/' + data.session.session_logo);
+						$('#currentSessionLogoDiv').show();
+					}else
+						$('#currentSessionLogoDiv').hide();
 
 					listSessions();
 					toastr.success('Session updated');

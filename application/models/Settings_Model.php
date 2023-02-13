@@ -24,11 +24,12 @@ class Settings_Model extends CI_Model
 		return '';
 	}
 
-	public function getAttendeeSettings( $project_id, $session_id = null)
+	public function getAttendeeSettings( $project_id)
 	{
 		$result = $this->db->select('*')
 			->from('sessions')
-			->where('id', $session_id)
+//			->where('id', $session_id)
+			->where('name !=', '')
 			->get();
 
 		$settingsId = 0;

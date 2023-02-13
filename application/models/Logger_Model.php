@@ -83,4 +83,34 @@ class Logger_Model extends CI_Model
 		return false;
 
 	}
+
+//	public function log_time_spent($page_name, $ref_1=null, $start_dt=null, $end_dt=null)
+//	{
+//
+//		$project_id = $this->project->id;
+//		$user_id = $_SESSION['project_sessions']["project_{$project_id}"]['user_id'];
+//
+//		$log = array(
+//			'project_id' => $project_id,
+//			'user_id' => $user_id,
+//			'name' => 'Attend',
+//			'info' => $page_name,
+//			'ref_1' => $ref_1,
+//			'browser' => $this->agent->browser(),
+//			'browser_version' => $this->agent->version(),
+//			'os' => $this->agent->platform(),
+//			'ip' => $this->input->ip_address(),
+//			'date_time' => date('Y-m-d H:i:s'),
+//			'start_date_time'=> $start_dt,
+//			'end_date_time'=> $end_dt
+//		);
+//
+//
+//		$this->db->update('total_time_on_session', $log);
+//
+//		if ($this->db->affected_rows() > 0)
+//			return true;
+//		return false;
+//
+//	}
 }

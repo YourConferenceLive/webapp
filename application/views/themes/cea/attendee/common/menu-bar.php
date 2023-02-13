@@ -1,5 +1,5 @@
 <?php
-//print_R(   $session->sponsor_logo);exit;
+//print_R(   $session);exit;
 //if($view_settings){
 //	print_r($view_settings);exit;
 //}else{
@@ -31,7 +31,11 @@ $ci_method = $this->router->fetch_method();?>
 	</style>
 	<header>
 		<nav id="mainMenu" class="navbar navbar-expand-md navbar-light bg-white <?=(($ci_controller == 'sessions' && $ci_method == 'view') || ($ci_controller == 'sponsor' && $ci_method == 'index'))?'':'fixed-top'?>">
+			<?php if(  $this->router->fetch_method() == 'view' && (isset($session->session_logo) && !empty($session->session_logo))) :?>
+			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/<?=(isset($session)&& $session !== '')? $session->session_logo : ''?>" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="width:<?=(isset($session->session_logo_width) && $session->session_logo_width)?$session->session_logo_width:'max-width:100px'?>;height:<?=(isset($session->session_logo_height) && $session->session_logo_height)?$session->session_logo_height:'50px'?>"></a>
+			<?php else: ?>
 			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_width)? 'width:'.$view_settings[0]->header_logo_width:'max-width:80px'?>;height:<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_height)?'height:'.$view_settings[0]->header_logo_height:''?>"></a>
+			<?php endif;?>
 			<?php if(  $this->router->fetch_method() == 'view' && (isset($session->sponsor_logo) && !empty($session->sponsor_logo))) :?>
 			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=(isset($session)&& $session !== '')? $session->sponsor_logo : ''?>" alt="<?=$this->project->name?> Sponsor Logo" onerror="" style="width:<?=(isset($session->sponsor_logo_width) && $session->sponsor_logo_width)?$session->sponsor_logo_width:'max-width:100px'?>;height:<?=(isset($session->sponsor_logo_height) && $session->sponsor_logo_height)?$session->sponsor_logo_height:'50px'?>"></a>
 			<?php endif ?>
