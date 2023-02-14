@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="modal-content">
 			<div class="mb-3">
 			</div>
-			<div class="pushNotificationModalBody" style="min-height:100px; 30vw">
+			<div class="pushNotificationModalBody" style="min-height:100px; padding:10px">
 				<div id="pushNotificationMessage" style="color:#000000; font-size: 16px; font-weight: 600" class="ml-3"></div>
 			</div>
 			<div class="mb-3 mr-3 text-right">
