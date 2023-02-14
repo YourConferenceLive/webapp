@@ -29,7 +29,6 @@ class Settings_Model extends CI_Model
 		$result = $this->db->select('*')
 			->from('sessions')
 //			->where('id', $session_id)
-			->where('name !=', '')
 			->get();
 
 		$settingsId = 0;
