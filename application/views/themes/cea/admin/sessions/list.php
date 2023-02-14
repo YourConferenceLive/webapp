@@ -206,6 +206,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#ask_a_rep_text').val(session.toolbox_askrep_text);
 				$('#sessionNotes').val(session.notes);
 
+				$('#sessionColorPreset').val(session.attendee_settings_id);
 				// Moderators
 				$('select[name="sessionModerators[]"] option').prop('selected', false);
 				$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);

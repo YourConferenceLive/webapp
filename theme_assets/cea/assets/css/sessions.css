@@ -82,10 +82,10 @@ a.keynote-link {
 }
 
 .rightSticky {
-	width: 200px;
+	width: 300px;
 	height: max-content;
 	position: absolute;
-	right: -150px;
+	right: -250px;
 	bottom: 200px;
 	margin: auto;
 	z-index: 4445;
@@ -149,7 +149,7 @@ a.keynote-link {
 }
 
 .rightSticky ul li:hover {
-	margin-left: -150px;
+	margin-left: -210px;
 	opacity: 1;
 }
 
