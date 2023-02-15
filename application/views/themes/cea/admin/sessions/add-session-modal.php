@@ -357,6 +357,27 @@
 											<input name="header_askrep" type="checkbox" class="custom-control-input headerQuestion"  id="headerAskRep">
 											<label class="custom-control-label" for="headerAskRep">Header Ask a Rep</label>
 										</div>
+
+										<div class="card mb-5 mt-4" >
+											<div class="ribbon-wrapper ribbon-sm" title="Newly added functions">
+												<div class="ribbon bg-danger">
+													New
+												</div>
+											</div>
+											<div class="card-header">Custom Header Buttons </div>
+											<div class="input-group p-2">
+												<input type="text" name="button1_text" id="button1_text" class="input-group-append" placeholder="Google" aria-label="Notes" aria-describedby="basic-addon1">
+												<input type="text" name="button1_link" id="button1_link" class="form-control" placeholder="https://www.google.com" aria-label="Notes" aria-describedby="basic-addon1">
+											</div>
+											<div class="input-group p-2">
+												<input type="text" name="button2_text" id="button2_text" class="input-group-append" placeholder="Google" aria-label="Notes" aria-describedby="basic-addon1">
+												<input type="text" name="button2_link" id="button2_link" class="form-control" placeholder="https://www.google.com" aria-label="Notes" aria-describedby="basic-addon1">
+											</div>
+											<div class="input-group p-2">
+												<input type="text" name="button3_text" id="button3_text" class="input-group-append" placeholder="Google" aria-label="Notes" aria-describedby="basic-addon1">
+												<input type="text" name="button3_link" id="button3_link" class="form-control" placeholder="https://www.google.com" aria-label="Notes" aria-describedby="basic-addon1">
+											</div>
+										</div>
 									</div>
 
 									<div class="form-group">
