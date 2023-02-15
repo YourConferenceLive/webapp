@@ -339,6 +339,12 @@ class Sessions_Model extends CI_Model
 			'event_id' => (isset($session_data['eventID'])?trim($session_data['eventID']):''),
 			'notes' => (isset($session_data['sessionNotes'])?trim($session_data['sessionNotes']):''),
 			'attendee_settings_id' => (isset($session_data['session_color_preset'])?trim($session_data['session_color_preset']):'0'),
+			'button1_text' => (isset($session_data['button1_text'])?trim($session_data['button1_text']):''),
+			'button1_link' => (isset($session_data['button1_link'])?trim($session_data['button1_link']):''),
+			'button2_text' => (isset($session_data['button2_text'])?trim($session_data['button2_text']):''),
+			'button2_link' => (isset($session_data['button2_link'])?trim($session_data['button2_link']):''),
+			'button3_text' => (isset($session_data['button3_text'])?trim($session_data['button3_text']):''),
+			'button3_link' => (isset($session_data['button3_link'])?trim($session_data['button3_link']):''),
 		);
 
 		if($session_data['isSponsorLogoRemoved'] == 0){
@@ -526,6 +532,12 @@ class Sessions_Model extends CI_Model
 			'sponsor_logo_width' => $session_data['sponsorLogoWidth'],
 			'sponsor_logo_height' =>  $session_data['sponsorLogoHeight'],
 			'attendee_settings_id' =>  $session_data['session_color_preset'],
+			'button1_text' => (isset($session_data['button1_text'])?trim($session_data['button1_text']):''),
+			'button1_link' => (isset($session_data['button1_link'])?trim($session_data['button1_link']):''),
+			'button2_text' => (isset($session_data['button2_text'])?trim($session_data['button2_text']):''),
+			'button2_link' => (isset($session_data['button2_link'])?trim($session_data['button2_link']):''),
+			'button3_text' => (isset($session_data['button3_text'])?trim($session_data['button3_text']):''),
+			'button3_link' => (isset($session_data['button3_link'])?trim($session_data['button3_link']):''),
 		);
 
 		if($session_end_image != '' && $session_end_image != null){

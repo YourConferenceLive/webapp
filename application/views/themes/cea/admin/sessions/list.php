@@ -206,6 +206,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#ask_a_rep_text').val(session.toolbox_askrep_text);
 				$('#sessionNotes').val(session.notes);
 
+				$('#button1_text').val(session.button1_text);
+				$('#button1_link').val(session.button1_link);
+				$('#button2_text').val(session.button2_text);
+				$('#button2_link').val(session.button2_link);
+				$('#button3_text').val(session.button3_text);
+				$('#button3_link').val(session.button3_link);
+
 				$('#sessionColorPreset').val(session.attendee_settings_id);
 				// Moderators
 				$('select[name="sessionModerators[]"] option').prop('selected', false);
