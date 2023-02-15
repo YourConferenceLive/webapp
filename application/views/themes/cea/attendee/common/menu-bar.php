@@ -1,5 +1,5 @@
 <?php
-//print_R(   $session);exit;
+//print_R(   $view_settings);exit;
 //if($view_settings){
 //	print_r($view_settings);exit;
 //}else{
@@ -85,6 +85,15 @@ $ci_method = $this->router->fetch_method();?>
 						<?php if(empty($view_settings) || $view_settings[0]->evaluation == 1):?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/evaluation"><strong>Evaluation</strong></a></li>
 						<?php endif;?>
+					<?php if(isset($session) && $session->button1_text !== ''):?>
+						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button1_link)?$session->button1_link:''?>"><strong><?=$session->button1_text?></strong></a></li>
+					<?php endif;?>
+					<?php if(isset($session) && $session->button2_text !== ''):?>
+						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button2_link)?$session->button2_link:''?>"><strong><?=$session->button2_text?></strong></a></li>
+					<?php endif;?>
+					<?php if(isset($session) && $session->button3_text !== ''):?>
+						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button3_link)?$session->button3_link:''?>"><strong><?=$session->button3_text?></strong></a></li>
+					<?php endif;?>
 					<?php if($this->router->fetch_class() == 'sessions'  && $this->router->fetch_method() == 'view' ) : ?>
 					<li class="nav-item dropdown " id="header-toolbox">
 						<a class="nav-link dropdown-toggle" style="font-weight:400" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
