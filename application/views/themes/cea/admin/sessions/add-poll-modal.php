@@ -39,6 +39,11 @@
 
 				<form id="addPollForm">
 
+					<h4>Poll Name</h4>
+					<div class="form-group m">
+						<input type="text" class="form-control form-control-border" id="pollNameInput" name="pollNameInput" placeholder="Enter how many slides">
+					</div>
+					
 					<h4>Question</h4>
 					<div class="form-group m">
 						<input type="text" class="form-control form-control-border" id="pollQuestionInput" name="pollQuestionInput" placeholder="Enter the poll question">
@@ -190,6 +195,7 @@
 					$('#addPollModal').modal('show');
 					$('#pollOptionsInputDiv').html('');
 					$('#pollQuestionInput').html('');
+					$('#pollNameInput').val(poll.poll_name);
 					$('#slideNumberInput').val(poll.slide_number);
 					$('#pollInstructionInput').val(poll.poll_instruction);
 					$('#pollQuestionReferenceInput').val(poll.external_reference);
