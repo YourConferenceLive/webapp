@@ -28,6 +28,7 @@ $ci_method = $this->router->fetch_method();?>
 			}
 		}
 
+		<?=(isset($view_settings) && $view_settings[0]->stickyIcon_color) ? ".nav-link :hover{ color:".$view_settings[0]->stickyIcon_color." }" : ''?>
 	</style>
 	<header>
 		<nav id="mainMenu" class="navbar navbar-expand-md navbar-light bg-white <?=(($ci_controller == 'sessions' && $ci_method == 'view') || ($ci_controller == 'sponsor' && $ci_method == 'index'))?'':'fixed-top'?>">
@@ -86,13 +87,13 @@ $ci_method = $this->router->fetch_method();?>
 					<li class="nav-item"><a class="nav-link" href="<?=base_url().$this->project->main_route?>/evaluation"><strong>Evaluation</strong></a></li>
 						<?php endif;?>
 					<?php if(isset($session) && $session->button1_text !== ''):?>
-						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button1_link)?$session->button1_link:''?>"><strong><?=$session->button1_text?></strong></a></li>
+						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button1_link)?$session->button1_link:''?>" target="_blank"><strong><?=$session->button1_text?></strong></a></li>
 					<?php endif;?>
 					<?php if(isset($session) && $session->button2_text !== ''):?>
-						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button2_link)?$session->button2_link:''?>"><strong><?=$session->button2_text?></strong></a></li>
+						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button2_link)?$session->button2_link:''?>" target="_blank"><strong><?=$session->button2_text?></strong></a></li>
 					<?php endif;?>
 					<?php if(isset($session) && $session->button3_text !== ''):?>
-						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button3_link)?$session->button3_link:''?>"><strong><?=$session->button3_text?></strong></a></li>
+						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button3_link)?$session->button3_link:''?>" target="_blank"><strong><?=$session->button3_text?></strong></a></li>
 					<?php endif;?>
 					<?php if($this->router->fetch_class() == 'sessions'  && $this->router->fetch_method() == 'view' ) : ?>
 					<li class="nav-item dropdown " id="header-toolbox">
