@@ -55,6 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Comparison ID</th>
 									<th>Slide Number</th>
 									<th>Instruction</th>
+									<th>Poll Answer</th>
 									<th>Auto-show Result</th>
 									<th>Poll Triggers</th>
 									<th>Result Triggers</th>
@@ -410,6 +411,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'	</td>' +
 					'	<td>' +
 					'		'+((poll.poll_instruction !== null)? poll.poll_instruction : '')+
+					'	</td>' +
+					'	<td style="width:120px">' +
+					'		<div>'+((poll.correct_answer1 !== null && poll.correct_answer1 !== '0')? "<span>Answer 1: <span><span style='color:red; font-size:25px'>"+poll.correct_answer1+"</span>" : '')+'</div>'+
+					'		<div>'+((poll.correct_answer2 !== null && poll.correct_answer2 !== '0')? "<span>Answer 2: <span><span style='color:red; font-size:25px'>"+poll.correct_answer2+"</span>" : '')+'</div>'+
 					'	</td>' +
 					'	<td>' +
 					'		'+show_result+
