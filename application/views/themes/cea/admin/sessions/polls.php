@@ -356,6 +356,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			toastr.success("Result popup triggered");
 		});
 
+
+		$('#pollsTable').on('click', '.startTimer10', function () {
+			let pollId = $(this).attr('poll-id');
+			emitTimer(pollId, this);
+		});
+
+		$('#pollsTable').on('click', '.startTimer15', function () {
+			let pollId = $(this).attr('poll-id');
+			emitTimer(pollId, this);
+		});
+
+
 		$('#pollsTable').on('click', '.close-result-btn', function () {
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
@@ -363,6 +375,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			toastr.success("Close result popup triggered");
 		});
 	});
+
+	function emitTimer(pollId, that) {
+
+		socket.on('connect', function() {
+			console.log('check 2', socket.connected);
+		});
+		// console.log($(that));
+		Swal.fire({
+			title: 'Please Wait',
+			html: '<span class="text-white">Starting the timer [' + pollId + ']...</span>',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+
+		$.get(project_admin_url + "/sessions/getPollByIdJson/" + pollId, function (poll) {
+			poll = JSON.parse(poll)
+			poll.timer = $(that).attr('timer');
+
+			if (socket) {
+				if (socket.emit('start_poll_timer', poll)) {
+					$(that).html('<i class="fas fa-sync-alt"></i> Start Timer Again').removeClass('btn-info').addClass('btn-warning');
+				}
+			} else {
+				toastr.error('Socket is not configured correctly')
+			}
+			Swal.fire(
+				'Done!',
+				'Poll [' + pollId + '] timer started',
+				'success'
+			)
+
+
+		}).fail((error) => {
+			Swal.fire(
+				'Error!',
+				error,
+				'error');
+		});
+	}
 
 	function listPolls()
 	{
@@ -392,6 +447,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			{
 				let show_result = (poll.show_result==1)?'Yes':'No';
 				let launchPollBtn = ((poll.is_launched === '0')?'<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' : '<button class="launch-poll-btn btn btn-sm btn-warning" poll-id="'+poll.id+'"><i class="fas fa-sync-alt"></i> Launch Again</button>' );
+				let startTimer10 = '<button class="startTimer10 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="10"><i class="fas fa-clock"></i> Start Timer 10s'+"'"+'</button>';
+				let startTimer15 = '<button class="startTimer15 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="15"><i class="fas fa-clock"></i> Start Timer 15s'+"'"+'</button>';
+
 				$('#pollsTableBody').append(
 					'<tr>' +
 					'	<td>' +
@@ -421,6 +479,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'	</td>' +
 					'	<td>' +
 					'		'+launchPollBtn+
+					'		'+startTimer10+
 					'	</td>' +
 					'   <td>' +
 					'		<button class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" poll-question="'+poll.poll_question+'"><i class="fas fa-poll-h"></i> Show Result</button>' +

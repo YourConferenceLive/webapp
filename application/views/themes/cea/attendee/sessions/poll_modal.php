@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 			<div class="modal-footer">
-				<span id="howMuchSecondsLeft"></span> seconds left
+				<span id="howMuchSecondsLeft" ></span>
 				<button id="voteBtn" type="button" class="btn btn-primary"><i class="fas fa-vote-yea"></i> Vote</button>
 			</div>
 		</div>
