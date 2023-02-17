@@ -1032,6 +1032,7 @@ class Sessions_Model extends CI_Model
 		$data = array(
 			'session_id' => $session_id,
 			'poll_question' => $post['pollQuestionInput'],
+			'poll_name' => $post['pollNameInput'],
 			'poll_type' => $post['poll_type'],
 			'show_result' => (isset($post['autoPollResult']))?1:0,
 			'is_active' => 1,
@@ -1078,6 +1079,7 @@ class Sessions_Model extends CI_Model
 		$data = array(
 			'session_id' => $session_id,
 			'poll_question' => $post['pollQuestionInput'],
+			'poll_name' => $post['pollNameInput'],
 			'poll_type' => $post['poll_comparison'],
 			'poll_comparison_id' => $pollParentId,
 			'show_result' => (isset($post['autoPollResult']))?1:0,
@@ -1117,6 +1119,7 @@ class Sessions_Model extends CI_Model
 //		print_r($post);exit;
 		$data = array(
 			'poll_question' => $post['pollQuestionInput'],
+			'poll_name' => $post['pollNameInput'],
 			'poll_type' => $post['poll_type'],
 			'show_result' => (isset($post['autoPollResult']))?1:0,
 			'is_active' => 1,

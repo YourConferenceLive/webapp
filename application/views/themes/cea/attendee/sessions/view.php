@@ -545,28 +545,36 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					keyboard: false
 				});
 
-				var timeleft = 10;
-				var downloadTimer = setInterval(function(){
+			}
+
+			markLaunchedPoll(data.id)
+		});
+
+		socket.on('start_poll_timer_notification', (data)=> {
+			console.log(data);
+			if($('#pollId').val() == data.id) {
+				var timeleft = data.timer;
+				var downloadTimer = setInterval(function () {
 					play_music();
-					if(timeleft <= 0) {
+					if (timeleft <= 0) {
 						stop_music();
 						clearInterval(downloadTimer);
 						$('#pollModal').modal('hide');
 
 						if (data.show_result == 1) {// Show result automatically
-							$.get(project_url+"/sessions/getPollResultAjax/"+data.id, function (results) {
+							$.get(project_url + "/sessions/getPollResultAjax/" + data.id, function (results) {
 								results = JSON.parse(results);
 
 								$('#pollResults').html('');
 								$('#pollResultModalLabel').text(data.poll_question);
 								$.each(results, function (poll_id, option_details) {
 									$('#pollResults').append('' +
-											'<div class="form-group">' +
-											'  <label class="form-check-label">'+option_details.option_name+'</label>' +
-											'  <div class="progress" style="height: 25px;">' +
-											'    <div class="progress-bar" role="progressbar" style="width: '+option_details.vote_percentage+'%;" aria-valuenow="'+option_details.vote_percentage+'" aria-valuemin="0" aria-valuemax="100">'+option_details.vote_percentage+'%</div>' +
-											'  </div>' +
-											'</div>');
+										'<div class="form-group">' +
+										'  <label class="form-check-label">' + option_details.option_name + '</label>' +
+										'  <div class="progress" style="height: 25px;">' +
+										'    <div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage + '%;" aria-valuenow="' + option_details.vote_percentage + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage + '%</div>' +
+										'  </div>' +
+										'</div>');
 								});
 
 								$('#pollResultModal').modal({
@@ -575,27 +583,24 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 								});
 
 								var resultTimeleft = 5;
-								var resultTimer = setInterval(function(){
-									if(resultTimeleft <= 0) {
+								var resultTimer = setInterval(function () {
+									if (resultTimeleft <= 0) {
 										stop_music();
 										clearInterval(resultTimer);
 										$('#pollResultModal').modal('hide');
 									} else {
-										$('#howMuchSecondsLeftResult').text(resultTimeleft);
+										$('#howMuchSecondsLeftResult').text(resultTimeleft + "  seconds left");
 									}
 									resultTimeleft -= 1;
 								}, 1000);
 							});
 						}
 					} else {
-						$('#howMuchSecondsLeft').text(timeleft);
+						$('#howMuchSecondsLeft').text(timeleft + "  seconds left");
 					}
 					timeleft -= 1;
 				}, 1000);
-
 			}
-
-			markLaunchedPoll(data.id)
 		});
 
 		socket.on('ycl_launch_poll_result', (data)=>{
