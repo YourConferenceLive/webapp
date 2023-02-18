@@ -288,7 +288,7 @@ body{overflow: hidden;background-color: #151515;}
 						</div>
 					</div>
 					<div class="col-md-3 float-right text-right">
-					<button class="float-right btn askARepSendBtn text-white" id="askARepSendBtn" style="margin: 0; padding: 15px 7px; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>" id=""><span>Send</span></button>
+					<button class="float-right btn askARepSendBtn text-white" id="askARepSendBtn" style="margin: 0; padding: 15px 7px; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'btn-primary':'btn-primary'?>" id=""><span>Send</span></button>
 					</div>
 				</div>
 
