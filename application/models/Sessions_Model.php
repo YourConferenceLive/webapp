@@ -1042,7 +1042,7 @@ class Sessions_Model extends CI_Model
 			'correct_answer2' => $post['poll_answer2'],
 			'poll_instruction' => $post['pollInstructionInput'],
 			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0),
-			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : 0)
+			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : '')
 		);
 		$this->db->insert('session_polls', $data);
 
@@ -1090,7 +1090,7 @@ class Sessions_Model extends CI_Model
 			'correct_answer2' => $post['poll_answer2'],
 			'poll_instruction' => $post['pollInstructionInput'],
 			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0),
-			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : 0)
+			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : '')
 		);
 		$this->db->insert('session_polls', $data);
 		$insert_id = $this->db->insert_id();
@@ -1128,7 +1128,7 @@ class Sessions_Model extends CI_Model
 			'correct_answer2' => $post['poll_answer2'],
 			'poll_instruction' => $post['pollInstructionInput'],
 			'slide_number' => (isset($post['slideNumberInput']) ? $post['slideNumberInput'] : 0),
-			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : 0)
+			'external_reference' => (isset($post['pollQuestionReferenceInput']) ? $post['pollQuestionReferenceInput'] : '')
 		);
 		if($post['pollId'] != 0) {
 
@@ -2091,6 +2091,7 @@ class Sessions_Model extends CI_Model
 							}
 							$options[] = array(
 								'option_id' => (int) $val->id,
+								'external_reference' => $sessions_poll_question->external_reference,
 								'text' => $val->option_text,
 								'total_votes' => ($this->db->select('*')->from('session_poll_answers')->where('answer_id', $val->id)->get()->num_rows()),
 								'votes' => $votes
