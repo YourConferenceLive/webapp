@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<tr>
 									<th>Poll ID</th>
 									<th>Name</th>
+									<th>Question</th>
 									<th>Type</th>
 									<th>Comparison ID</th>
 									<th>Slide Number</th>
@@ -454,6 +455,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'<tr>' +
 					'	<td>' +
 					'		'+poll.id+
+					'	</td>' +
+					'	<td>' +
+					'		'+poll.poll_name+
 					'	</td>' +
 					'	<td>' +
 					'		'+poll.poll_question+
