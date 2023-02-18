@@ -72,7 +72,7 @@ body{overflow: hidden;background-color: #151515;}
 					<textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?=isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
 				</div>
 				<div class="col-md-12 pt-1">
-					<a class="button color btn btn-info btn-sm" id="briefcase_send" style="<?= ($view_settings&& $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><i class="fas fa-save"></i> <span>Save</span></a>
+					<a class="button color btn btn-sm text-white border" id="briefcase_send" style="<?= ($view_settings&& $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><i class="fas fa-save"></i> <span>Save</span></a>
 				</div>
 				<div class="col-md-12">
 					<div class="contentHeader p-0 pt-2 pb-2" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">Previous Notes</div>
@@ -90,7 +90,7 @@ body{overflow: hidden;background-color: #151515;}
 						</ul>
 <?php
 					else:?>
-						<div class="alert alert-info mb-1 mt-1 p-1" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;">No previous notes</div>
+						<div class="mb-1 mt-1 p-1 text-white" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;">No previous notes</div>
 <?php
 					endif;?>
 					</div>
@@ -192,7 +192,7 @@ body{overflow: hidden;background-color: #151515;}
 						</div>
 						<input type="text" id="questionText" class="form-control" placeholder="Enter Question" value="">
 						<div class="input-group-append">
-							<span class="btn sendQuestionBtn css-color text-white p-1"><i class="fas fa-paper-plane"></i> Send</span>
+							<span class="btn sendQuestionBtn text-white p-1" style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fas fa-paper-plane"></i> Send</span>
 						</div>
 					</div>
 				</div>
@@ -288,7 +288,7 @@ body{overflow: hidden;background-color: #151515;}
 						</div>
 					</div>
 					<div class="col-md-3 float-right text-right">
-					<button class="float-right btn btn-success askARepSendBtn" id="askARepSendBtn" style="margin: 0; padding: 15px 7px;" id=""><span>Send</span></button>
+					<button class="float-right btn askARepSendBtn text-white" id="askARepSendBtn" style="margin: 0; padding: 15px 7px; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>" id=""><span>Send</span></button>
 					</div>
 				</div>
 
