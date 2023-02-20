@@ -228,4 +228,9 @@ class Sessions extends CI_Controller
 	public function markLaunchedPoll($poll_id){
 		$this->sessions->markLaunchedPoll($poll_id);
 	}
+
+	public function logout(){
+		$this->session->sess_destroy();
+		redirect(base_url().$this->project->name.'/login');
+	}
 }
