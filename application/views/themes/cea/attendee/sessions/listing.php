@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="col-12">
 		<div class="row">
 			<div class="col-md-12">
-<!--				<div class="text-center btn card mb-5" style="height: 80px;color:#487391;"><h1>Agenda</h1></div>-->
+<!--				<div class="text-center btn card mb-5" style="height: 80px;color:#212529;"><h1>Agenda</h1></div>-->
 			</div>
 		</div>
 		<!-- Date tabs -->
@@ -33,9 +33,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="card">
 								<?php $current_date = $this->uri->segment(4)?>
 								<?php if ($current_date == (date('Y-m-d', strtotime($session_day->start_date_time)))):?>
-								<div class="card-body p-0 pt-4 text-white text-center rounded" style="height: 130px; background-color: #F78E1E">
+								<div class="card-body p-0 pt-4 text-dark text-center rounded" style="height: 130px; background-color: #F78E1E">
 									<?php else:?>
-									<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#487391;">
+									<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#212529;">
 										<?php endif;?>
 										<h3><?= date('l', strtotime($session_day->start_date_time))?><br> <?= date('F d Y', strtotime($session_day->start_date_time)) ?></h3>
 									</div>
@@ -171,7 +171,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>-->
 									<div class="clearfix"></div>
 									<h3 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="p-0 mt-1" style="color:#F78E1E; font-weight:800"><?=$session->name?></a></h3>
-									<h3 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="" style="color: #284050;"><?=$session->other_language_name?></a></h3>
+									<h3 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="" style="color:#212529;"><?=$session->other_language_name?></a></h3>
 									<?php endif;?>
 									<p>
 										<?php /*if($session->moderators != new stdClass()):*/?><!--
@@ -222,7 +222,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<a href="<?=$this->project_url?>/sessions/view/<?=$session->id?>" class="btn btn-sm btn-warning m-1 rounded-0"><i class="fas fa-search"></i> View Recording</a>
 	<?php
 										else:?>
-											<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn m-1 rounded-0 text-white" style="background-color: #F78E1E"><!--<i class="fas fa-plus"></i>--> Attend</a>
+											<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn m-1 rounded-0 " style="background-color: #F78E1E"><!--<i class="fas fa-plus"></i>--> Attend</a>
 	<?php
 										endif;
 									endif;?>
