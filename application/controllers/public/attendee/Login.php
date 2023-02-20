@@ -32,4 +32,11 @@ class Login extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer")
 		;
 	}
+
+	public function logout(){
+		print_r('test');
+
+		$this->session->sess_destroy();
+		session_destroy();
+	}
 }
