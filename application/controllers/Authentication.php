@@ -443,7 +443,7 @@ class Authentication extends CI_Controller {
 				$user_id = $this->db->insert_id();
 				$user_details = $this->db->get_where("user", array("id" => $user_id))->row();
 				if (!empty($user_details)) {
-					$token = $this->auth->update_user_token($user_details->cust_id);
+					$token = $this->auth->update_user_token($user_details->id);
 					$project_access = $this->auth->cco_auth_project_access($user_details->id);
 
 					$current_project_sessions["project_$project_id"] = array(
