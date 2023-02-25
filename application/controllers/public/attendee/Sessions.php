@@ -233,4 +233,11 @@ class Sessions extends CI_Controller
 		$this->session->sess_destroy();
 		redirect(base_url().$this->project->name.'/login');
 	}
+
+	public function session_missing(){
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header" )
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/session_missing")
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer");
+	}
 }
