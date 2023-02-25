@@ -362,7 +362,6 @@ class Authentication extends CI_Controller {
 		$token = $this->input->get('token');
 		$project_id = $this->project->id;
 		$response_array = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', explode('.', $token)[1]))));
-		print_r($response_array);exit;
 		if (isset($response_array) && !empty($response_array)) {
 
 			$or_where = '(email = "' . $response_array->identity->email . '")';
