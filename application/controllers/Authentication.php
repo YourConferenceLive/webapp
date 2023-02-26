@@ -356,4 +356,125 @@ class Authentication extends CI_Controller {
 
 		return true;
 	}
+
+	function cco_authentication() {
+
+		$token = $this->input->get('token');
+		$project_id = $this->project->id;
+		$response_array = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', explode('.', $token)[1]))));
+		if (isset($response_array) && !empty($response_array)) {
+
+			$or_where = '(email = "' . $response_array->identity->email . '")';
+			$this->db->where($or_where);
+			$users = $this->db->get('user');
+			if ($users->num_rows() > 0) {
+				$user_details = $users->row();
+				$set_update_array = array(
+					'name' => $response_array->identity->firstname,
+					'surname' => $response_array->identity->lastname,
+					'email' => $response_array->identity->email,
+					'bio' => $response_array->identity->degree,
+					'credentials' => $user_details->bio	,
+					'country' => $user_details->country,
+//					'zipcode' => $user_details->zipcode,
+					'identifier_id' => $response_array->identity->identifier,
+					'api_session' => $response_array->session,
+					'iat' => $response_array->iat,
+					'aud' => json_encode($response_array->aud),
+					'exp' => $response_array->exp,
+					'jti' => $response_array->jti,
+					'updated_on'=> date('Y-m-d H:i'),
+				);
+
+				$this->db->update("user", $set_update_array, array("id"  => $user_details->id));
+				$token = $this->auth->update_user_token($user_details->id);
+				$project_access = $this->auth->cco_auth_project_access($user_details->id);
+
+				$current_project_sessions["project_$project_id"] = array(
+					'user_id' => $user_details->id,
+					'name' => $user_details->name,
+					'surname' => $user_details->surname,
+					'email' => $user_details->email,
+					'photo' => '',
+					'is_attendee' => 1,
+					'is_moderator' => 0,
+					'is_presenter' => 0,
+					'is_admin' => 0,
+					'is_exhibitor' => 0,
+					'token' => $token,
+				);
+
+				$this->session->set_userdata(array('project_sessions' => $current_project_sessions));
+
+				$sessions = $this->db->get_where('sessions', array('id' => $response_array->session));
+				if ($sessions->num_rows() > 0) {
+					redirect(base_url().$this->project->name.'/sessions/join/'.$sessions->result_array()[0]['id']);
+				} else {
+					redirect(base_url().$this->project->name.'/sessions/'.'session_missing');
+				}
+			} else {
+				$this->db->order_by("id", "desc");
+				$row_data = $this->db->get("user")->row();
+//				if (!empty($row_data)) {
+//					$reg_id = $row_data->cust_id;
+//					$register_id = date("Y") . '-20' . $reg_id;
+//				} else {
+//					$register_id = date("Y") . '-200';
+//				}
+				$set = array(
+//					"register_id" => $register_id,
+					'name' => $response_array->identity->firstname,
+					'surname' => $response_array->identity->lastname,
+					'email' => $response_array->identity->email,
+					'password' => password_hash('12345', PASSWORD_DEFAULT),
+//					'specialty' => "",
+					'bio' => $response_array->identity->degree,
+					'country' => "",
+					'identifier_id' => $response_array->identity->identifier,
+					'api_session' => $response_array->session,
+					'iat' => $response_array->iat,
+					'exp' => $response_array->exp,
+					'aud' => json_encode($response_array->aud),
+					'jti' => $response_array->jti,
+					'city' => "",
+					'created_on' => date("Y-m-d h:i")
+				);
+				$this->db->insert("user", $set);
+				$user_id = $this->db->insert_id();
+				$user_details = $this->db->get_where("user", array("id" => $user_id))->row();
+				if (!empty($user_details)) {
+					$token = $this->auth->update_user_token($user_details->id);
+					$project_access = $this->auth->cco_auth_project_access($user_details->id);
+
+					$current_project_sessions["project_$project_id"] = array(
+						'user_id' => $user_details->id,
+						'name' => $user_details->name,
+						'surname' => $user_details->surname,
+						'email' => $user_details->email,
+						'photo' => '',
+						'is_attendee' => 1,
+						'is_moderator' => 0,
+						'is_presenter' => 0,
+						'is_admin' => 0,
+						'is_exhibitor' => 0,
+						'token' => $token,
+						'updated_on', date('Y-m-d H:i')
+					);
+
+					$this->session->set_userdata(array('project_sessions' => $current_project_sessions));
+					$sessions = $this->db->get_where('sessions', array('id' => $response_array->session));
+					if ($sessions->num_rows() > 0) {
+						redirect(base_url().$this->project->name.'/sessions/join/'.$sessions->result_array()[0]['sessions_id']);
+					} else {
+						redirect(base_url().$this->project->name.'/sessions/'.'session_missing');
+					}
+				}
+			}
+		}
+	}
+
+	public function decode(){
+		print_R(base64_decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo'));
+	}
+
 }

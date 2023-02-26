@@ -71,4 +71,32 @@ class Authentication_Model extends CI_Model
 			return $result->result()[0]->booth_id;
 		return null;
 	}
+
+	public function update_user_token($user_id) {
+		$token = $this->generateRandomString();
+		$this->db->update("user", array("token" => $token), array("id" =>$user_id));
+		return $token;
+	}
+
+	function generateRandomString($length = 8) {
+		$characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, strlen($characters) - 1)];
+		}
+		return $randomString;
+	}
+
+	function cco_auth_project_access($user_id){
+		$project_access = $this->db->select('*')
+			->from('user_project_access')
+			->where('user_id', $user_id)
+			->where('project_id', $this->project->id)
+			->get();
+		if($project_access->num_rows()>0){
+			return $project_access->result()[0]->id;
+		}
+		$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'attendee'));
+		return $this->db->insert_id();
+	}
 }
