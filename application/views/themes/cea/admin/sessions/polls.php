@@ -517,7 +517,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('[data-toggle="tooltip"]').tooltip();
 
 			$('#pollsTable').DataTable({
-				"paging": true,
+				"paging": false,
 				"lengthChange": true,
 				"searching": true,
 				"ordering": true,
