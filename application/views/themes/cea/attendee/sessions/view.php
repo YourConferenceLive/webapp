@@ -688,6 +688,12 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		});
 	});
 
+	socket.on('closePollNotification', (data)=>{
+		if(data.session_id == sessionId) {
+			$('#pollModal').modal('hide');
+		}
+	});
+
 	function markLaunchedPoll(poll_id){
 		$.post(project_url+"/sessions/markLaunchedPoll/"+poll_id, function (results) {
 			console.log(results)
