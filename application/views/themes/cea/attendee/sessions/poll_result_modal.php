@@ -43,6 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 			<div class="modal-footer">
+				<div id="legend" class="m-auto"></div>
 				<span id="howMuchSecondsLeftResult"></span>
 			</div>
 		</div>
