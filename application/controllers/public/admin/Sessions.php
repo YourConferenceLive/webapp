@@ -246,4 +246,8 @@ class Sessions extends CI_Controller
 	public function redoPoll($poll_id){
 		echo  $this->sessions->redoPoll($poll_id);
 	}
+
+	public function removePoll($poll_id){
+		echo  $this->sessions->removePoll($poll_id);
+	}
 }

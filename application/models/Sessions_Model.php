@@ -2542,4 +2542,12 @@ class Sessions_Model extends CI_Model
 		$this->db->update("session_polls", array("is_result_showed" => 0, "is_launched" => 0), array("id" => $poll_id));
 		$this->db->delete("session_poll_answers", array("poll_id" => $poll_id));
 	}
+
+	function removePoll($poll_id){
+		$this->db->delete("session_polls", array("id" => $poll_id));
+		$this->db->delete("session_poll_options", array("poll_id" => $poll_id));
+		$this->db->delete("session_poll_answers", array("poll_id" => $poll_id));
+
+		return json_encode(array('status'=>'success', 'result'=>$this->db->affected_rows()));
+	}
 }

@@ -398,6 +398,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			socket.emit('poll_closed', {session_id:sessionId, poll_id:pollId});
 			toastr.success("Close result popup triggered");
 		});
+
+		$('#pollsTable').on('click', '.remove-poll-btn', function(){
+
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					removePoll($(this).attr('poll-id'))
+				}
+			})
+
+		})
+
+	/*############### End function ############*/
 	});
 
 	function emitTimer(pollId, that) {
@@ -542,6 +562,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			Swal.close();
 		});
 	}
+
+	function removePoll(poll_id){
+		$.post(project_admin_url+"/sessions/removePoll/"+poll_id, function (polls) {
+			polls = JSON.parse(polls);
+			if(polls){
+				if(polls.status== 'success'){
+					swal.fire(
+						'success',
+						'Poll Deleted',
+						'success'
+					)
+					setTimeout(
+						function()
+						{
+							listPolls();
+						}, 1000);
+				}
+			}
+		})
+		}
 
 	function summerNote(object) {
 		$(object).summernote({

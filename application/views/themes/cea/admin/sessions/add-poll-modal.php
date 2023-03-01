@@ -185,9 +185,6 @@
 			appendCorrectAnswer2();
 		});
 
-		$('#pollsTable').on('click', '.remove-poll-btn', function () {
-			toastr.warning('Under development');
-		});
 
 		$('#pollsTable').on('click', '.edit-poll-btn', function () {
 			pollOptionsDeleted = [];
