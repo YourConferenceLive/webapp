@@ -50,6 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>End Time</th>
 									<th>Duration</th>
 									<th>Name</th>
+									<th>Presenter(s)</th>
 									<th>Zoom</th>
 									<th>Session Presentation</th>
 								</tr>
@@ -63,6 +64,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<td><?=date("g:iA", strtotime($session->end_date_time))?> EST</td>
 										<td><?=round(abs(strtotime($session->end_date_time) - strtotime($session->start_date_time)) / 60,2). " Minutes"?></td>
 										<td><?=$session->name?></td>
+										<td>
+											<?php foreach($session->presenters as $presenter): ?>
+												<?=$presenter->name." ". $presenter->surname?><br>
+											<?php endforeach ?>
+										</td>
 										<td>
 											<a href="<?=$session->zoom_link?>" target="_blank" <?=($session->zoom_link == null || $session->zoom_link = '')?'onclick="toastr.warning(`Zoom is not configured yet.`); return false;"':''?>>
 												<button class="btn btn-sm btn-info"><i class="fas fa-video"></i> Join Zoom</button>
