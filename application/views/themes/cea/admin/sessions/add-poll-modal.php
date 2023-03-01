@@ -280,8 +280,31 @@
 		})
 	}
 
+	function checkAllFilledPollOption(){
+		let emptyOption = 0;
+		$('.pollOptions').each(function(e){
+			if($(this).summernote('isEmpty'))
+				emptyOption = emptyOption+1;
+		})
+		return emptyOption;
+	}
 	function addPoll()
 	{
+		if($('#pollNameInput').val() == ''){
+			swal.fire('Missing Field Poll Name','Please make sure all options are filled', 'error')
+			return false;
+		}
+
+		if($('#pollQuestionInput').val() == ''){
+			swal.fire('Missing Field Poll Question','Please make sure all options are filled', 'error')
+			return false;
+		}
+
+		if(!checkAllFilledPollOption() <= 0) {
+			swal.fire('Missing Field','Please make sure all options are filled', 'error')
+			return false;
+		}
+
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Adding the poll...',
