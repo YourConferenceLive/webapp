@@ -521,11 +521,10 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		});
 
 		socket.on('ycl_launch_poll', (data)=>{
-
 			if(data.session_id == sessionId) {
 
 				$('#pollId').val(data.id);
-				$('#pollQuestion').text(data.poll_question);
+				$('#pollQuestion').html(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
 
 				$('#pllOptions').html('');
@@ -688,7 +687,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		});
 	});
 
-	socket.on('closePollNotification', (data)=>{
+	socket.on('poll_close_notification', (data)=>{
 		if(data.session_id == sessionId) {
 			$('#pollModal').modal('hide');
 		}

@@ -99,7 +99,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(function () {
 
 		listPolls();
-
+		summerNote($('#pollQuestionInput'))
 		$('#sessionsTable').DataTable({
 			"paging": true,
 			"lengthChange": true,
@@ -117,33 +117,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#pollId').val(0);
 			$('#poll_comparison_select').css('display', 'block')
 			$('#pollOptionsInputDiv').html(
-				'<div class="">'+
-				'<div class="input-group input-group-sm "> ' +
-				'<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"> ' +
-				'<span class="input-group-append"> ' +
-				'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button> ' +
+				'<div class="card bg-light">'+
+				'<div class="card-header p-0">'+
+				'<span class="float-left"> ' +
+				'Option' +
 				'</span>' +
+				'<span class="float-right"> ' +
+				'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat"><i class="fas fa-times"></i></button> ' +
+				'</span>' +
+				'<div class="input-group input-group-sm "> ' +
+				'<textarea type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"></textarea>' +
 				'</div> ' +
-				'<div class="mb-3">'+
+				'<div class="">'+
 				'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
+				'</div>'+
 				'</div>'+
 				'</div>'+
 
-				'<div class="">'+
-				'<div class="input-group input-group-sm">' +
-				'<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1()">' +
-				'<span class="input-group-append">' +
-				'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button> ' +
+				'<div class="card bg-light">'+
+				'<div class="card-header p-0">'+
+				'<span class="float-left"> ' +
+				'Option' +
 				'</span>' +
+				'<span class="float-right"> ' +
+				'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat"><i class="fas fa-times"></i></button> ' +
+				'</span>' +
+				'<div class="input-group input-group-sm">' +
+				'<textarea type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"></textarea>' +
 				'</div>'+
-				'<div class="mb-3">'+
+				'<div class="">'+
 				'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
+				'</div>'+
 				'</div>'+
 				'</div>'
 			)
 			$('#pollQuestionInput').val('');
 			$('#slideNumberInput').val('');
 			$('#pollInstructionInput').val('');
+			summerNoteOption($('.pollOptions'))
 			//$('#sessionDescription').summernote('reset');
 			//$('.removeall').click();
 			// $('#sponsorId').val(0);
@@ -355,8 +366,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let pollQuestion = $(this).attr('poll-question');
 			if(socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId, poll_question:pollQuestion})) {
 				$.post(project_admin_url + "/sessions/updateShowedResult/" + pollId, function (poll) {
-					$('.launch-result-btn').css('display', 'none')
-					$('.close-result-btn').css('display', 'block')
+					$('#launch-result_'+pollId).css('display', 'none')
+					$('#close-result_'+pollId).css('display', 'block')
 				})
 			}
 			toastr.success("Result popup triggered");
@@ -384,7 +395,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#pollsTable').on('click', '.closePoll', function () {
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
-			socket.emit('ycl_close_poll_result', {session_id:sessionId,poll_id:pollId});
+			socket.emit('poll_closed', {session_id:sessionId, poll_id:pollId});
 			toastr.success("Close result popup triggered");
 		});
 	});
@@ -462,7 +473,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				let launchPollBtn = ((poll.is_launched === '0')?'<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' : '<button class="launch-poll-btn btn btn-sm btn-warning" poll-id="'+poll.id+'"><i class="fas fa-sync-alt"></i> Launch Again</button>' );
 				let startTimer10 = '<button class="startTimer10 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="10"><i class="fas fa-clock"></i> Start Timer 10s'+"'"+'</button>';
 				let startTimer15 = '<button class="startTimer15 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="15"><i class="fas fa-clock"></i> Start Timer 15s'+"'"+'</button>';
-				let closePoll = '<button class="closePoll btn btn-sm btn-danger mt-md-2" poll-id="'+poll.id+'"> <i class="fas fa-ban"></i>  Close Poll</button>';
+				let closePoll = '<button class="closePoll btn btn-sm btn-danger mt-md-2" poll-id="'+poll.id+'" session-id="'+poll.session_id+'"> <i class="fas fa-ban"></i>  Close Poll</button>';
 
 				$('#pollsTableBody').append(
 					'<tr>' +
@@ -500,8 +511,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+closePoll+
 					'	</td>' +
 					'   <td>' +
-					'<button style="display: '+((poll.is_result_showed != 1)? 'block':'none')+'" class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" poll-question="'+poll.poll_question+'"><i class="fas fa-poll-h"></i> Show Result</button>'+
-					'<button style="display: '+((poll.is_result_showed == 1)? 'block':'none')+'" class="close-result-btn btn btn-sm btn-danger ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Close Result</button>' +
+					'<button style="display: '+((poll.is_result_showed != 1)? 'block':'none')+'" id="launch-result_'+poll.id+'" class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" poll-question="'+poll.poll_question+'"><i class="fas fa-poll-h"></i> Show Result</button>'+
+					'<button style="display: '+((poll.is_result_showed == 1)? 'block':'none')+'" id="close-result_'+poll.id+'" class="close-result-btn btn btn-sm btn-danger ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Close Result</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="edit-poll-btn btn btn-sm btn-primary m-1" poll-id="'+poll.id+'"><i class="fas fa-edit"></i> Edit</button>' +
@@ -530,5 +541,58 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			Swal.close();
 		});
+	}
+
+	function summerNote(object) {
+		$(object).summernote({
+			dialogsInBody: true,
+			placeholder: $(object).attr('placeholder'),
+			height: 100,
+			toolbar:
+				[
+					["history", ["undo", "redo"]],
+					["style", ["style"]],
+					["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+					['fontsize', ['fontsize']],
+					["color", ["color"]],
+					["paragraph", ["ul", "ol", "paragraph", "height"]],
+					["table", ["table"]],
+					["insert", ["link", "resizedDataImage", "picture", "video"]],
+					["view", ["codeview"]]
+				],
+			fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48', '64', '82', '150'],
+			callbacks: {
+				onKeyup: function (e) {
+					console.log('summerkey')
+				}
+			}
+		});
+	}
+		function summerNoteOption(object){
+			$(object).summernote({
+				dialogsInBody: true,
+				placeholder: $(object).attr('placeholder'),
+				height: 100,
+				toolbar:
+					[
+						["history", ["undo", "redo"]],
+						["style", ["style"]],
+						["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+						['fontsize', ['fontsize']],
+						["color", ["color"]],
+						["paragraph", ["ul", "ol", "paragraph", "height"]],
+						["table", ["table"]],
+						["insert", ["link", "resizedDataImage", "picture", "video"]],
+						["view", ["codeview"] ]
+					],
+				fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150'],
+				callbacks: {
+					onKeyup: function (e) {
+
+						appendCorrectAnswer1();
+						appendCorrectAnswer2();
+					}
+				}
+			});
 	}
 </script>

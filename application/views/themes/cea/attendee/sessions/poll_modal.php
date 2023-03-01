@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="modal-dialog modal-lg" role="document" style="margin: 10rem auto !important;">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="pollModalLabel"><span id="pollQuestion"></span></h5>
+				<div class="modal-title" id="pollModalLabel"><label id="pollQuestion"></label></div>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>

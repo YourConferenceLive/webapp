@@ -26,27 +26,27 @@
 
 </style>
 
-<div class="modal fade" id="addPollModal" tabindex="-1" role="dialog" aria-labelledby="addPollModalLabel" aria-hidden="true">
+<div class="modal fade overflow-auto" id="addPollModal" tabindex="-1" role="dialog" aria-labelledby="addPollModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
+		<div class="modal-content overflow-auto">
 			<div class="modal-header">
 				<h5 class="modal-title" id="addPollModalLabel"><i class="fas fa-poll-h"></i> Add New Poll</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body overflow-auto">
 
 				<form id="addPollForm">
 
 					<h4>Poll Name</h4>
 					<div class="form-group m">
-						<input type="text" class="form-control form-control-border" id="pollNameInput" name="pollNameInput" placeholder="Enter how many slides">
+						<input type="text" class="form-control form-control-border" id="pollNameInput" name="pollNameInput" placeholder="Enter Poll Name">
 					</div>
 					
 					<h4>Question</h4>
 					<div class="form-group m">
-						<input type="text" class="form-control form-control-border" id="pollQuestionInput" name="pollQuestionInput" placeholder="Enter the poll question">
+						<textarea type="text" class="form-control form-control-border" id="pollQuestionInput" name="pollQuestionInput" placeholder="Enter the poll question"></textarea>
 					</div>
 
 					<h4>External Reference</h4>
@@ -150,19 +150,26 @@
 
 		$('.add-new-option-btn').on('click', function () {
 			$('#pollOptionsInputDiv').append('' +
-					'<div class="">'+
+					'<div class="card bg-light">'+
+					'<div class="card-header p-0">'+
+					'<span class="float-left"> ' +
+					'Option' +
+					'</span>' +
+					'<span class="float-right"> ' +
+					'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat"><i class="fas fa-times"></i></button> ' +
+					'</span>' +
 					'<div class="input-group input-group-sm ">' +
-					'  <input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()">' +
-					'  <span class="input-group-append">' +
-					'    <button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>' +
-					'  </span>' +
+					'  <textarea type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"></textarea>' +
 					'</div>'+
 					'<div class="mb-3">'+
 					'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
 					'</div>'+
+					'</div>'+
 					'</div>'
 
 			);
+			summerNoteOption($('.pollOptions'))
+
 			appendCorrectAnswer1();
 			appendCorrectAnswer2();
 		})
@@ -201,20 +208,26 @@
 					$('#pollQuestionReferenceInput').val(poll.external_reference);
 
 					$.each(poll.options, function(i, obj){
-						$('#pollQuestionInput').val(poll.poll_question);
+						$('#pollQuestionInput').html(poll.poll_question);
 						$('#pollOptionsInputDiv').append(
-							'<div class="">'+
-							'<div class="input-group input-group-sm">' +
-							'<input type="text" name="pollOptionsInput[]" option_id="'+obj.id+'" class="form-control pollOptions" value="'+obj.option_text+'" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"> ' +
-							'<span class="input-group-append"> ' +
-							'<button type="button" class="delete-option-button btn btn-danger btn-flat" option_id="'+obj.id+'" ><i class="fas fa-trash"></i></button>' +
+							'<div class="card bg-light">'+
+							'<div class="card-header p-0">'+
+							'<span class="float-left"> ' +
+							'Option' +
 							'</span>' +
+							'<span class="float-right"> ' +
+							'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat"><i class="fas fa-times"></i></button> ' +
+							'</span>' +
+							'<div class="input-group input-group-sm">' +
+							'<textarea type="text" name="pollOptionsInput[]" option_id="'+obj.id+'" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()">'+obj.option_text+'</textarea>' +
 							'</div>'+
 							'<div class="mb-3">'+
 							'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference" value="'+obj.external_reference+'"> '+
 							'</div>'+
+							'</div>'+
 							'</div>'
 						);
+						summerNoteOption($('.pollOptions'))
 					})
 				}
 			}, 'json').fail((error)=>{
