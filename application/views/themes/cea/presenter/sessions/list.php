@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Start Time</th>
 									<th>End Time</th>
 									<th>Duration</th>
-									<th>Name</th>
+									<th>Session Title</th>
 									<th>Presenter(s)</th>
 									<th>Zoom</th>
 									<th>Session Presentation</th>
