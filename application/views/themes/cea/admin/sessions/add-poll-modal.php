@@ -291,12 +291,12 @@
 	function addPoll()
 	{
 		if($('#pollNameInput').val() == ''){
-			swal.fire('Missing Field Poll Name','Please make sure all options are filled', 'error')
+			swal.fire('Missing Field Poll Name','Please make sure Poll Name is not empty', 'error')
 			return false;
 		}
 
 		if($('#pollQuestionInput').val() == ''){
-			swal.fire('Missing Field Poll Question','Please make sure all options are filled', 'error')
+			swal.fire('Missing Field Poll Question','Please make sure  Poll Question is not empty', 'error')
 			return false;
 		}
 
