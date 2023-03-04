@@ -29,12 +29,15 @@ class Forgot_password extends CI_Controller
 		if($result->num_rows()>0){
 			if($this->mailPassword($post['email']) == true){
 				echo json_encode(array('status'=>'Success','icon'=>'success', 'msg'=>'Email sent, Check your email address for password recovery'));
+				exit;
 			}else{
 				echo json_encode(array('status'=>'Error','icon'=>'error', 'msg'=>'Failed to send email'));
+				exit;
 			}
 			echo json_encode(array('status'=>'Error','icon'=>'error', 'msg'=>'Failed to send email'));
 		}else{
 			echo json_encode(array('status'=>'Error','icon'=>'error', 'msg'=>'Email not found'));
+			exit;
 		}
 
 	}
