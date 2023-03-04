@@ -521,11 +521,10 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		});
 
 		socket.on('ycl_launch_poll', (data)=>{
-
 			if(data.session_id == sessionId) {
 
 				$('#pollId').val(data.id);
-				$('#pollQuestion').text(data.poll_question);
+				$('#pollQuestion').html(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
 
 				$('#pllOptions').html('');
@@ -606,11 +605,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		socket.on('ycl_launch_poll_result', (data)=>{
 
 			if(data.session_id == sessionId) {
-				$('#pollResultModalLabel').text(data.poll_question);
+				$('#pollResultModalLabel').html(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
 					$('#pollResults').html('');
-					console.log(results);
+					// console.log(results);
 
 					if(results.poll_type === 'poll' || results.poll_type === 'presurvey') {
 						$.each(results.poll, function (poll_id, option_details) {
@@ -623,6 +622,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 								'  </div>' +
 								'</div>');
 						});
+						$('#legend').html('');
+
 					}else {
 						$.each(results.poll, function (poll_id, option_details) {
 							// console.log(option_details);
@@ -646,6 +647,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 								'	</div> '
 							);
 						});
+
+						$('#legend').html(
+							'<span class="mr-4"><i style="width:20px; height:20px;" class="fa-solid fa-square bg-info text-info d-inline-block "></i> Presurvey</span>' +
+							'<span><i  style="width:20px; height:20px;" class="fa-solid fa-square bg-primary text-primary d-inline-block "></i> Assessment</span>'
+						)
 					}
 
 					$('#pollResultModal').modal({
@@ -661,10 +667,10 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					}
 					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
 						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
-							console.log('tdsadsa');
+							// console.log('tdsadsa');
 							//
-							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>');
-							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>');
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
 
 							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
 							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
@@ -679,6 +685,12 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 				$('#pollResultModal').modal('hide');
 			}
 		});
+	});
+
+	socket.on('poll_close_notification', (data)=>{
+		if(data.session_id == sessionId) {
+			$('#pollModal').modal('hide');
+		}
 	});
 
 	function markLaunchedPoll(poll_id){

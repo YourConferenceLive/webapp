@@ -27,6 +27,15 @@ class Sessions extends CI_Controller
 		$sidebar_data['user'] = $this->user;
 
 		$data["sessions"] = $this->sessions->getAllSessionsByPresenterModeratorKeynote($this->user->user_id);
+		if($data['sessions']){
+			$session_array = array();
+			foreach($data['sessions'] as $session){
+				$session->presenters = $this->sessions->getPresentersPerSession($session->id);
+				$session_array[] = $session;
+			}
+			$data["sessions"] = $session_array;
+		}
+
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")

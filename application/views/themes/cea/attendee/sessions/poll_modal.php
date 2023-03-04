@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="modal-dialog modal-lg" role="document" style="margin: 10rem auto !important;">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="pollModalLabel"><span id="pollQuestion"></span></h5>
+				<div class="modal-title" id="pollModalLabel"><label id="pollQuestion"></label></div>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -41,17 +41,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(function () {
 		$('#voteBtn').on('click', function () {
 
-			Swal.fire({
-				title: 'Please Wait',
-				text: 'Saving...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-
 			let formData = new FormData(document.getElementById('pollAnswerForm'));
 
 			$.ajax({
@@ -62,25 +51,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				contentType: false,
 				error: function(jqXHR, textStatus, errorMessage)
 				{
-					Swal.close();
 					$('#pollModal').modal('hide');
 					//toastr.error(errorMessage);
 					//console.log(errorMessage); // Optional
 				},
 				success: function(data)
 				{
-					Swal.close();
-
 					data = JSON.parse(data);
 
 					if (data.status == 'success')
 					{
 						toastr.success('Vote recorded');
-						$('#pollModal').modal('hide');
+						setTimeout(function() {
+							$('#pollModal').modal('hide');
+						}, 1000);
 
 					}else{
-						$('#pollModal').modal('hide');
-						//toastr.error("Error");
+						setTimeout(function() {
+							$('#pollModal').modal('hide');
+						}, 1000);
 					}
 				}
 			});

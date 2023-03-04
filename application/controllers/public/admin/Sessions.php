@@ -238,4 +238,16 @@ class Sessions extends CI_Controller
 	public function view_json($session_id){
 		echo  $this->sessions->view_json($session_id);
 	}
+
+	public function updateShowedResult($poll_id){
+		echo  $this->sessions->updateShowedResult($poll_id);
+	}
+
+	public function redoPoll($poll_id){
+		echo  $this->sessions->redoPoll($poll_id);
+	}
+
+	public function removePoll($poll_id){
+		echo  $this->sessions->removePoll($poll_id);
+	}
 }

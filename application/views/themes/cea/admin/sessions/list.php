@@ -348,21 +348,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			});
 		});
 
-		$('#sessionsTable').on('click', '.openPoll', function () {
-			socket.emit('openPoll');
-		});
-
-		$('#sessionsTable').on('click', '.closePoll', function () {
-			socket.emit('closePoll');
-		});
-
-		$('#sessionsTable').on('click', '.openResult', function () {
-			socket.emit('openResult');
-		});
-
-		$('#sessionsTable').on('click', '.closeResult', function () {
-			socket.emit('closeResult');
-		});
+		// $('#sessionsTable').on('click', '.openPoll', function () {
+		// 	socket.emit('openPoll');
+		// });
+		//
+		// $('#sessionsTable').on('click', '.closePoll', function () {
+		// 	socket.emit('closePoll');
+		// });
+		//
+		// $('#sessionsTable').on('click', '.openResult', function () {
+		// 	socket.emit('openResult');
+		// });
+		//
+		// $('#sessionsTable').on('click', '.closeResult', function () {
+		// 	socket.emit('closeResult');
+		// });
 	});
 
 	function listSessions()

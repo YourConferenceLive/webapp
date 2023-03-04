@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="Athul AK">
-	<link rel="icon" href="<?=ycl_root?>/ycl_assets/ycl_icon.png">
+	<link rel="icon" href="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/project_icon.ico">
 	<title>Presenter | <?=ucfirst($this->router->fetch_class())?></title>
 	<!-- Google Font: Source Sans Pro -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">

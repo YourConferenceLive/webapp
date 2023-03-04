@@ -63,7 +63,7 @@ class Common {
             'smtp_pass' => $this->_CI->config->config['email_config']['smtp_pass'],
             'mailtype' => $this->_CI->config->config['email_config']['mailtype'],
             'charset' => $this->_CI->config->config['email_config']['charset'],
-            'smtp_crypto'   => 'ssl'
+           // 'smtp_crypto'   => 'ssl'
             // 'smtp_port' => $this->config->item('smtp_port', 'email_config'),
             // 'smtp_user' => $this->config->item('smtp_user', 'email_config'),
             // 'smtp_pass' => $this->config->item('smtp_pass', 'email_config'),

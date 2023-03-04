@@ -40,13 +40,15 @@
 			$.post(url,
 				{
 					'email':email
-				}, function(response){
+				}, function(response)
+				{
+					response = JSON.parse(response);
 					Swal.fire(
 						response.status,
 						response.msg,
 						response.icon
 					)
-			},'json')
+			})
 
 		})
 	})

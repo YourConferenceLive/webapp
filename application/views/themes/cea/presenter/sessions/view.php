@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	#presentationRow,
 	#presentationColumn
 	{
-		height: 100% !important;
+		height: calc(100% - 10px) !important;
 		overflow: hidden;
 	}
 
