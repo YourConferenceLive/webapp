@@ -199,13 +199,14 @@
 					$('#addPollModal').modal('show');
 					$('#pollOptionsInputDiv').html('');
 					$('#pollQuestionInput').html('');
+
 					$('#pollNameInput').val(poll.poll_name);
 					$('#slideNumberInput').val(poll.slide_number);
 					$('#pollInstructionInput').val(poll.poll_instruction);
 					$('#pollQuestionReferenceInput').val(poll.external_reference);
 
 					$.each(poll.options, function(i, obj){
-						$('#pollQuestionInput').html(poll.poll_question);
+						$("#pollQuestionInput").summernote("code", poll.poll_question)
 						$('#pollOptionsInputDiv').append(
 							'<div class="card bg-light">'+
 							'<div class="card-header p-0">'+
