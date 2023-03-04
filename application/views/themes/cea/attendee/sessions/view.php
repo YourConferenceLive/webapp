@@ -605,7 +605,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		socket.on('ycl_launch_poll_result', (data)=>{
 
 			if(data.session_id == sessionId) {
-				$('#pollResultModalLabel').text(data.poll_question);
+				$('#pollResultModalLabel').html(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
 					$('#pollResults').html('');
