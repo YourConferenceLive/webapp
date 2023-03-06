@@ -149,4 +149,19 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->hideQuestionAjax());
 	}
 
+	public function view_poll($poll_id){
+
+		$poll_data = $this->sessions->getPollsBySession($poll_id);
+
+		$data["poll_data"] = $poll_data;
+		$sidebar_data['user'] = $this->user;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view_poll", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")
+		;
+	}
 }
