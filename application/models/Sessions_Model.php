@@ -2550,4 +2550,23 @@ class Sessions_Model extends CI_Model
 
 		return json_encode(array('status'=>'success', 'result'=>$this->db->affected_rows()));
 	}
+
+	function getPollsBySession($session_id){
+		$result = $this->db->select('*')
+			->from('session_polls')
+			->where('session_id', $session_id)
+			->get();
+
+		if($result){
+			$poll_options_array = array();
+			foreach($result->result() as $polls){
+				$polls->options = $this->getPollOptions($polls->id);
+				$poll_options_array[] = $polls;
+			}
+			return $poll_options_array;
+		}
+
+
+		return '';
+	}
 }
