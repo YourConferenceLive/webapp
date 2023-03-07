@@ -33,9 +33,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		margin-left: -50px; /* margin is -0.5 * dimension */
 		margin-top: -25px;
 	}
+
+	.direct-chat-text{
+		background-color: white !important;
+		color:black !important;
+		border-color: white !important;
+
+	}
+
+	.show-toolbox{
+		background-color: <?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?> !important;
+		right: -140px !important;
+		transition: 1s !important;
+	}
+	.show-toolbox:hover{
+		right: 0 !important;
+		transition: 1s !important;
+	}
+	.dark-mode .nav-tabs .nav-item.show .nav-link, .dark-mode .nav-tabs .nav-link.active{
+		border-color: white !important;
+	}
 </style>
 
-
+<?php //print_r($settings);exit;?>
 <div id="presentationEmbed">
 	<div id="presentationRow" class="row m-0 p-0">
 <!--		<span style="position: absolute;color: white;z-index: 2;left: 15px;"><a class="btn btn-sm btn-info mt-2" href="<?/*=$session->zoom_link*/?>" target="_blank" <?/*=($session->zoom_link == null || $session->zoom_link = '')?'onclick="toastr.warning(`Zoom is not configured yet.`); return false;"':''*/?>><i class="fas fa-video"></i> Join Zoom</a></span>-->
@@ -52,22 +72,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php endif; ?>
 
 			</div>
-			<div class="ml-2 col-2 show-toolbox" style="z-index:1; position:fixed; right:0px; bottom:57px; height:40px; background-color:#343a40"  title="minimize">Toolbox <span class="float-right mr-2" style="cursor:pointer"><i class="fas fa-window-maximize"></i></span></div>
-			<div class="col-2 m-0 p-0 tool-box-section" >
+			<div class="ml-2 col-2 show-toolbox" style="width:229px; z-index:1; position:fixed; right:0px; bottom:57px; height:40px; background-color:#343a40"  title="minimize">Toolbox <span class="float-right mr-2" style="cursor:pointer"><i class="fas fa-window-maximize"></i></span></div>
+			<div class="col-2 m-0 p-0 tool-box-section" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>" >
 				<div class="ml-2 hide-toolbox">Toolbox <span class="float-right mr-2" style="cursor:pointer" title="minimize"><i class="fas fa-window-minimize"></i></span></div>
 				<!-- Host Chat -->
-				<div class="card card-primary card-outline card-tabs" style="height: 45vh;">
-					<div class="card-header p-0 pt-1 border-bottom-0">
-						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-							<li class="nav-item">
-								<a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true"><i class="fas fa-user-tie"></i> Host Chat</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false"><i class="fas fa-users"></i> Attendee Chat</a>
+				<div class="card card-primary card-tabs" style="height: 45vh;">
+					<div class="card-header p-0 pt-1 border-bottom-0" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">
+						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist" >
+
+							<li class="nav-item" >
+								<a class="nav-link text-white" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>"><i class="fas fa-user-tie"></i> Host Chat</a>
 							</li>
 						</ul>
 					</div>
-					<div class="card-body p-0">
+					<div class="card-body p-0 bg-white text-black	">
 						<div class="tab-content" id="custom-tabs-three-tabContent" style="height: 88%;">
 
 							<!-- Host Chat Tab -->
@@ -85,166 +103,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 								<div class="input-group" style="position: absolute;bottom: 5px">
 									<input id="hostChatNewMessage" type="text" placeholder="Type Message... (Host Chat)" class="form-control">
-									<span class="input-group-append">
-											<button id="sendHostChatBtn" type="button" class="btn btn-primary">Send</button>
+									<span class="input-group-append" >
+											<button id="sendHostChatBtn" type="button" class="btn text-white" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">Send</button>
 										</span>
 								</div>
 
 							</div>
 
-							<!-- Attendee Chat Tab -->
-							<div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab" style="height: 100%;overflow: scroll;">
-								<!-- Conversations are loaded here -->
-								<div class="direct-chat-messages" style="height: 100% !important;">
 
-
-
-								</div>
-								<!--/.direct-chat-messages-->
-
-								<!-- /.direct-chat-pane -->
-								<div class="input-group" style="position: absolute;bottom: 5px">
-									<input type="text" name="message" placeholder="Type Message ..." class="form-control">
-									<span class="input-group-append">
-											<button type="button" class="btn btn-primary">Send</button>
-										</span>
-								</div>
-							</div>
 						</div>
 					</div>
 					<!-- /.card -->
 				</div>
 
 				<!-- Questions and Starred Questions -->
-				<div class="card card-primary card-outline card-tabs" style="height: 45vh;">
-					<div class="card-header p-0 pt-1 border-bottom-0">
+				<div class="card card-primary card-tabs" style="height: 45vh;">
+					<div class="card-header p-0 pt-1 border-bottom-0 text-white" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">
 						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-							<li class="nav-item">
-								<a class="nav-link active" id="questions-tab" data-toggle="pill" href="#questions-tab-content" role="tab" aria-controls="questions-tab-content" aria-selected="true"><i class="far fa-question-circle"></i> Questions</a>
+							<li class="nav-item" >
+								<a class="nav-link active text-white" id="questions-tab" data-toggle="pill" href="#questions-tab-content" role="tab" aria-controls="questions-tab-content" aria-selected="true" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>"><i class="far fa-question-circle"></i> Questions</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" id="starred-questions-tab" data-toggle="pill" href="#starred-questions-tab-content" role="tab" aria-controls="starred-questions-tab-content" aria-selected="false"><i class="fas fa-star"></i> Starred Questions</a>
+								<a class="nav-link text-white" id="starred-questions-tab" data-toggle="pill" href="#starred-questions-tab-content" role="tab" aria-controls="starred-questions-tab-content" aria-selected="false" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>"><i class="fas fa-star"></i> Favorited </a>
 							</li>
 						</ul>
 					</div>
-					<div class="card-body p-0" style="height: 100%; overflow: scroll;">
+					<div class="card-body p-0 bg-white text-dark" style="height: 100%; overflow: scroll;">
 						<div class="tab-content" id="custom-tabs-three-tabContent">
 
 							<!-- Questions tab -->
 							<div class="tab-pane fade active show pb-5" id="questions-tab-content" role="tabpanel" aria-labelledby="questions-tab">
 
-								<!-- Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row" style="padding-right: 15px">-->
-<!--										<div class="col-7">-->
-<!--											<strong>Maria Gonzales</strong>-->
-<!--										</div>-->
-<!--										<div class="col-3">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
-
-								<!-- Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row" style="padding-right: 15px">-->
-<!--										<div class="col-7">-->
-<!--											<strong>John Doe</strong>-->
-<!--										</div>-->
-<!--										<div class="col-3">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="far fa-star" style="color: white;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											What is the best way to treat this patient?-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
-
-								<!-- Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row" style="padding-right: 15px">-->
-<!--										<div class="col-7">-->
-<!--											<strong>Richard Lu</strong>-->
-<!--										</div>-->
-<!--										<div class="col-3">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											Can you elaborate on this information?-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
-
 							</div>
 
 							<!-- Starred questions tab -->
 							<div class="tab-pane fade pb-5" id="starred-questions-tab-content" role="tabpanel" aria-labelledby="starred-questions-tab-content">
-
-								<!-- Starred Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row">-->
-<!--										<div class="col-8">-->
-<!--											<strong>Maria Gonzales</strong>-->
-<!--										</div>-->
-<!--										<div class="col-4">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
-
-								<!-- Starred Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row">-->
-<!--										<div class="col-8">-->
-<!--											<strong>Richard Lu</strong>-->
-<!--										</div>-->
-<!--										<div class="col-4">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											Can you elaborate on this informatiion?-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
 
 							</div>
 						</div>
@@ -350,10 +243,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<small class="text-secondary"></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary"><i class="far fa-star" style="color: black;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'</div>' +
 						'<div class="row"><a class="questionList" href="#" style="cursor:pointer" question-id="'+data.question_id+'" question="'+data.question+'" sender_id="'+data.sender_id+'" sender_name="'+data.sender_name+'" sender_surname="'+data.sender_surname+'">' +
@@ -639,10 +532,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<small class="text-secondary"></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary hide-question" id="hide-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary hide-question" id="hide-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary save-question" id="save-question-'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary save-question" id="save-question-'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: black;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'</div>' +
 						'<div class="row">' +
@@ -672,7 +565,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'<small class="text-secondary"></small>' +
 					'</div>' +
 					'<div class="col-1">' +
-					'<small class="text-secondary hide-saved-question" id="hide-saved-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+					'<small class="text-secondary hide-saved-question" id="hide-saved-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
 					'</div>' +
 					// '<div class="col-1">' +
 					// '<small class="text-secondary save-question" id="'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +

@@ -51,15 +51,25 @@ class Sessions extends CI_Controller
 		//$sidebar_data['user'] = $this->user;
 
 		$session = $this->sessions->getById($id);
-		if($this->settings->presenterSettings($this->project->id)) {
-			$data['settings'] = $this->settings->presenterSettings($this->project->id)[0];
+
+//		print_r($session);
+		if(($session == new stdClass())){
+			echo "Session Not found";
+			exit;
 		}
+
 		$data["error_text"] = "No Slide Found";
 
 		if (!isset($session->id))
 			$data["error_text"] = "Session Not Found";
 
-
+		if($session->attendee_settings_id != 0) {
+			$data['settings'] = $this->settings->getSessionSettings($this->project->id, $session->attendee_settings_id)[0];
+		}else{
+			if($this->settings->presenterSettings($this->project->id)) {
+				$data['settings'] = $this->settings->presenterSettings($this->project->id)[0];
+			}
+		}
 		$data["session"] = $session;
 		$data["user"] = $this->user;
 
