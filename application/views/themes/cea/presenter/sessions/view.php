@@ -102,7 +102,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<!-- /.direct-chat-pane -->
 
 								<div class="input-group" style="position: absolute;bottom: 5px">
-									<input id="hostChatNewMessage" type="text" placeholder="Type Message... (Host Chat)" class="form-control">
+									<input id="hostChatNewMessage" type="text" placeholder="Type Message... (Host Chat)" class="form-control text-dark bg-white">
 									<span class="input-group-append" >
 											<button id="sendHostChatBtn" type="button" class="btn text-white" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">Send</button>
 										</span>
