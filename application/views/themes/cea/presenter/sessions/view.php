@@ -73,10 +73,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			</div>
 			<div class="ml-2 col-2 show-toolbox" style="width:229px; z-index:1; position:fixed; right:0px; bottom:57px; height:40px; background-color:#343a40"  title="minimize">Toolbox <span class="float-right mr-2" style="cursor:pointer"><i class="fas fa-window-maximize"></i></span></div>
-			<div class="col-2 m-0 p-0 tool-box-section" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>" >
+			<div class="col-2 m-0 p-0 tool-box-section" style="display:none; background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>" >
 				<div class="ml-2 hide-toolbox">Toolbox <span class="float-right mr-2" style="cursor:pointer" title="minimize"><i class="fas fa-window-minimize"></i></span></div>
 				<!-- Host Chat -->
-				<div class="card card-primary card-tabs" style="height: 45vh;">
+				<div class="card card-primary card-tabs shadow-none" style="height: 45vh;">
 					<div class="card-header p-0 pt-1 border-bottom-0" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">
 						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist" >
 
@@ -117,7 +117,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 
 				<!-- Questions and Starred Questions -->
-				<div class="card card-primary card-tabs" style="height: 45vh;">
+				<div class="card card-primary card-tabs shadow-none" style="height: 45vh;">
 					<div class="card-header p-0 pt-1 border-bottom-0 text-white" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">
 						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
 							<li class="nav-item" >
@@ -229,6 +229,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		fillQuestions();
 		fillSavedQuestions();
 
+		$('.show-toolbox').on('click', function(){
+			$('.tool-box-section').css('display', 'block')
+		});
 		socket.on('ycl_session_question', function (data) {
 			// console.log(data.question_id);
 			if (data.sessionId == session_id)
