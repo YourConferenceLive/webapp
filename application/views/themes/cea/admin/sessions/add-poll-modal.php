@@ -214,7 +214,7 @@
 							'Option' +
 							'</span>' +
 							'<span class="float-right"> ' +
-							'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat"><i class="fas fa-times"></i></button> ' +
+							'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat" option_id="'+obj.id+'"><i class="fas fa-times"></i></button> ' +
 							'</span>' +
 							'<div class="input-group input-group-sm">' +
 							'<textarea type="text" name="pollOptionsInput[]" option_id="'+obj.id+'" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()">'+obj.option_text+'</textarea>' +
@@ -352,6 +352,21 @@
 
 	function updatePoll(pollOptionsDeleted){
 		// console.log(pollOptionsDeleted);
+		if($('#pollNameInput').val() == ''){
+			swal.fire('Missing Field Poll Name','Please make sure Poll Name is not empty', 'error')
+			return false;
+		}
+
+		if($('#pollQuestionInput').val() == ''){
+			swal.fire('Missing Field Poll Question','Please make sure  Poll Question is not empty', 'error')
+			return false;
+		}
+
+		if(!checkAllFilledPollOption() <= 0) {
+			swal.fire('Missing Field','Please make sure all options are filled', 'error')
+			return false;
+		}
+
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Updating the poll...',
