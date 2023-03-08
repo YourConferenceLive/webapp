@@ -159,19 +159,55 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->hideQuestionAjax());
 	}
 
-	public function view_poll($poll_id){
-
-		$poll_data = $this->sessions->getPollsBySession($poll_id);
-
-		$data["poll_data"] = $poll_data;
+	public function view_poll($session_id){
 		$sidebar_data['user'] = $this->user;
+		$session = $this->sessions->getById($session_id);
+
+		if($session == new stdClass()){
+			print_r("session empty");exit;
+		}
+		$data['session'] = $session;
+		$data['polls'] = $this->sessions->getAllPolls($session_id);
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view_poll", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/add-poll-modal.php")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")
 		;
 	}
+
+	public function updateShowedResult($poll_id){
+		echo  $this->sessions->updateShowedResult($poll_id);
+	}
+
+	public function redoPoll($poll_id){
+		echo  $this->sessions->redoPoll($poll_id);
+	}
+
+	public function removePoll($poll_id){
+		echo  $this->sessions->removePoll($poll_id);
+	}
+
+	public function addPollJson($session_id)
+	{
+		echo json_encode($this->sessions->addPoll($session_id));
+	}
+
+	public function updatePollJson($session_id){
+		echo json_encode($this->sessions->updatePoll($session_id));
+	}
+
+	public function getAllPollsJson($session_id)
+	{
+		echo json_encode($this->sessions->getAllPolls($session_id));
+	}
+
+	public function getPollByIdJson($id)
+	{
+		echo json_encode($this->sessions->getPollById($id));
+	}
+
 }
