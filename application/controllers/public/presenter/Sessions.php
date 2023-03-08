@@ -151,6 +151,10 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->saveQuestionAjax());
 	}
 
+	public function hideSavedQuestionAjax(){
+		echo json_encode($this->sessions->hideSavedQuestionAjax());
+	}
+
 	public function getSavedQuestions($session_id){
 		echo json_encode($this->sessions->getSavedQuestions($session_id));
 	}

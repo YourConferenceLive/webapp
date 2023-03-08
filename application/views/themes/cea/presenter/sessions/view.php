@@ -524,7 +524,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#questions-tab-content').html('');
 			$.each(questions, function (poll_id, question) {
-				console.log(question)
+
 				$('#questions-tab-content').prepend('' +
 						'<div class="container-fluid mr-2">' +
 						'<div class="row" style="padding-right: 15px">' +
@@ -538,7 +538,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<small class="text-secondary hide-question" id="hide-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary save-question" id="save-question-'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: black;cursor: pointer;"></i></small>' +
+						'<span class="text-secondary save-question" id="save-question-'+question.id+'" question-id="'+question.id+'">'+((question.isOnSaveQuestion == "1")?'<i class="fas fa-star" style="color: black; cursor: pointer;"></i>':'<i class="far fa-star" style="color: black;cursor: pointer;"></i>')+'</span>' +
 						'</div>' +
 						'</div>' +
 						'<div class="row">' +
@@ -554,6 +554,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	function fillSavedQuestions() {
 		$.get(project_presenter_url+"/sessions/getSavedQuestions/"+session_id, function (questions) {
 			questions = JSON.parse(questions);
+			console.log(questions)
 			// console.log(questions)
 			$('#starred-questions-tab-content').html('');
 			$.each(questions.data, function (poll_id, question) {
@@ -568,7 +569,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'<small class="text-secondary"></small>' +
 					'</div>' +
 					'<div class="col-1">' +
-					'<small class="text-secondary hide-saved-question" id="hide-saved-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
+					'<small class="text-secondary hide-saved-question" id="hide-saved-question-'+question.id+'" question-id="'+question.question_id+'"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
 					'</div>' +
 					// '<div class="col-1">' +
 					// '<small class="text-secondary save-question" id="'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
@@ -690,6 +691,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		$('#questions-tab-content').on('click', '.save-question', function(){
+			let that = this;
 			let question_id = $(this).attr('question-id');
 
 			$.post(project_presenter_url+'/sessions/saveQuestionAjax/',
@@ -703,6 +705,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						"type": "like",
 						"question": response,
 					});
+					$(that).html('<i style="color:black" class="fas fa-star"></>')
 				}
 					// console.log(response);
 			})
@@ -721,6 +724,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 				})
 		})
+
+		$('#starred-questions-tab-content').on('click', '.hide-saved-question', function(){
+			let question_id = $(this).attr('question-id');
+
+			Swal.fire({
+				title: 'Remove From Starred Question',
+				text: "This starred question will be removed on admin and presenter",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, Remove it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.post(project_presenter_url+'/sessions/hideSavedQuestionAjax/',
+						{
+							'question_id':question_id
+						},function(response){
+							if(response){
+								fillSavedQuestions();
+								$('#save-question-'+question_id).children().removeClass('fas fa-star').addClass('far fa-star')
+								toastr.success('Starred question removed successfully');
+							}else{
+								toastr.error('Something went wrong');
+							}
+						})
+				}
+			})
+		})
+
 
 	})
 
