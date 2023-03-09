@@ -151,7 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				'</div>'+
 				'</div>'
 			)
-			$('#pollQuestionInput').val('');
+			$('#pollQuestionInput').summernote('code','');
 			$('#slideNumberInput').val('');
 			$('#pollInstructionInput').val('');
 			summerNoteOption($('.pollOptions'))
