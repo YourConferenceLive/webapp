@@ -1,0 +1,21 @@
+/*This contain global styles css*/
+
+.btn-violet{
+	background-color: violet;
+	color:white;
+}
+
+.btn-aqua{
+	background-color: aqua;
+	color:white;
+}
+
+.btn-purple{
+	background-color: purple;
+	color:white;
+}
+
+.btn-danger-muted{
+	background-color:#853D43;
+	color:white;
+}

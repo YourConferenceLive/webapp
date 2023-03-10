@@ -393,10 +393,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		$('#pollsTable').on('click', '.closePoll', function () {
+			let that = this;
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
+
 			socket.emit('poll_closed', {session_id:sessionId, poll_id:pollId});
 			toastr.success("Close result popup triggered");
+
+			$.post(project_admin_url+'/sessions/update_closed_poll/'+pollId, {  }, function(){
+				$(that).removeClass('btn-danger').addClass('btn-danger-muted');
+			})
 		});
 
 		$('#pollsTable').on('click', '.remove-poll-btn', function(){
@@ -493,7 +499,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				let launchPollBtn = ((poll.is_launched === '0')?'<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' : '<button class="launch-poll-btn btn btn-sm btn-warning" poll-id="'+poll.id+'"><i class="fas fa-sync-alt"></i> Launch Again</button>' );
 				let startTimer10 = '<button class="startTimer10 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="10"><i class="fas fa-clock"></i> Start Timer 10s'+"'"+'</button>';
 				let startTimer15 = '<button class="startTimer15 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="15"><i class="fas fa-clock"></i> Start Timer 15s'+"'"+'</button>';
-				let closePoll = '<button class="closePoll btn btn-sm btn-danger mt-md-2" poll-id="'+poll.id+'" session-id="'+poll.session_id+'"> <i class="fas fa-ban"></i>  Close Poll</button>';
+				let closePoll = '<button class="closePoll btn btn-sm '+(poll.is_poll_closed == 1 ? "btn-danger-muted": "btn-danger")+' mt-md-2" poll-id="'+poll.id+'" session-id="'+poll.session_id+'"> <i class="fas fa-ban"></i>  Close Poll</button>';
 
 				$('#pollsTableBody').append(
 					'<tr>' +

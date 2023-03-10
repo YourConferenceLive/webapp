@@ -658,3 +658,5 @@ ALTER TABLE `user` ADD `identifier_id` VARCHAR(255) NULL AFTER `id`;
 ALTER TABLE `user` ADD `api_session` VARCHAR(255) NULL AFTER `IdFromApi`, ADD `iat` VARCHAR(255) NULL AFTER `api_session`, ADD `aud` TEXT NULL AFTER `iat`, ADD `exp` VARCHAR(255) NULL AFTER `aud`, ADD `jti` VARCHAR(255) NULL AFTER `exp`, ADD `token` VARCHAR(255) NULL AFTER `jti`;
 
 ALTER TABLE `session_polls` ADD `is_result_showed` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_launched`;
+
+ALTER TABLE `session_polls` ADD `is_poll_closed` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_result_showed`;

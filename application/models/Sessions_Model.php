@@ -2538,6 +2538,13 @@ class Sessions_Model extends CI_Model
 		return $this->db->affected_rows();
 	}
 
+	function update_closed_poll($poll_id){
+		$this->db->select('*')
+			->where('id', $poll_id)
+			->update('session_polls', array('is_poll_closed'=>'1'));
+		return $this->db->affected_rows();
+	}
+
 	function redoPoll($poll_id){
 		$this->db->update("session_polls", array("is_result_showed" => 0, "is_launched" => 0), array("id" => $poll_id));
 		$this->db->delete("session_poll_answers", array("poll_id" => $poll_id));
