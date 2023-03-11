@@ -110,9 +110,11 @@ class Sessions_Model extends CI_Model
 		$this->db->join('session_moderators', 'session_moderators.session_id = sessions.id', 'left');
 		$this->db->join('session_keynote_speakers', 'session_keynote_speakers.session_id = sessions.id', 'left');
 		$this->db->where('sessions.is_deleted', 0);
+		$this->db->group_start();
 		$this->db->where('session_presenters.presenter_id', $user_id);
 		$this->db->or_where('session_moderators.moderator_id', $user_id);
 		$this->db->or_where('session_keynote_speakers.speaker_id', $user_id);
+		$this->db->group_end();
 		$this->db->where('sessions.project_id', $this->project->id);
 		$this->db->group_by('sessions.id');
 		$this->db->order_by('sessions.start_date_time', 'ASC');
@@ -1180,19 +1182,17 @@ class Sessions_Model extends CI_Model
 	public function getQuestions($session_id)
 	{
 		$sql = "SELECT sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id FROM `session_questions` sq left join user u on sq.user_id = u.id where sq.session_id  = $session_id AND sq.id not In (SELECT question_id FROM session_question_stash ) or sq.id IN (SELECT question_id FROM session_question_stash where hidden != 1)";
-//		$this->db->select("sq.*, u.name as user_name, u.surname as user_surname, u.id as user_id");
-//		$this->db->from('session_questions sq');
-//		$this->db->join('user u', 'sq.user_id = u.id');
-//		$this->db->join('session_question_stash sqs', 'sq.id = sqs.question_id', 'left');
-//		$this->db->where('sq.session_id', $session_id);
-//		$this->db->group_start();
-//		$this->db->where('sqs.id', NULL);
-//		$this->db->or_where('sqs.id', !=1);
-//		$this->db->group_end();
-//		$polls = $this->db->get();
 		$polls = $this->db->query($sql);
-		if ($polls->num_rows() > 0)
-			return $polls->result();
+		if ($polls->num_rows() > 0){
+			$poll_array = array();
+			foreach($polls->result() as $poll){
+				$poll->isOnSaveQuestion = ($this->db->select('*')->from('session_question_saved')->where('question_id', $poll->id)->where('saved_status', 1)->get()->row()? 1:0);
+				$poll_array[]= $poll;
+			}
+
+			return $poll_array;
+		}
+
 
 		return new stdClass();
 	}
@@ -2538,6 +2538,13 @@ class Sessions_Model extends CI_Model
 		return $this->db->affected_rows();
 	}
 
+	function update_closed_poll($poll_id){
+		$this->db->select('*')
+			->where('id', $poll_id)
+			->update('session_polls', array('is_poll_closed'=>'1'));
+		return $this->db->affected_rows();
+	}
+
 	function redoPoll($poll_id){
 		$this->db->update("session_polls", array("is_result_showed" => 0, "is_launched" => 0), array("id" => $poll_id));
 		$this->db->delete("session_poll_answers", array("poll_id" => $poll_id));
@@ -2549,5 +2556,24 @@ class Sessions_Model extends CI_Model
 		$this->db->delete("session_poll_answers", array("poll_id" => $poll_id));
 
 		return json_encode(array('status'=>'success', 'result'=>$this->db->affected_rows()));
+	}
+
+	function getPollsBySession($session_id){
+		$result = $this->db->select('*')
+			->from('session_polls')
+			->where('session_id', $session_id)
+			->get();
+
+		if($result){
+			$poll_options_array = array();
+			foreach($result->result() as $polls){
+				$polls->options = $this->getPollOptions($polls->id);
+				$poll_options_array[] = $polls;
+			}
+			return $poll_options_array;
+		}
+
+
+		return '';
 	}
 }

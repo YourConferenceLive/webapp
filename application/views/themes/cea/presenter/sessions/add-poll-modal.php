@@ -180,6 +180,7 @@
 			if(pollOptionsDeleted) {
 				pollOptionsDeleted.push($(this).attr('option_id'))
 			}
+			console.log(pollOptionsDeleted);
 			$(this).parent().parentsUntil('#pollOptionsInputDiv').remove();
 			appendCorrectAnswer1();
 			appendCorrectAnswer2();
@@ -192,7 +193,7 @@
 			$('#poll_comparison_select').css('display', 'none')
 			$('#pollId').val($(this).attr('poll-id'));
 			$('#save-poll').html('Update');
-			$.get(project_admin_url+"/sessions/getPollByIdJson/"+$(this).attr('poll-id'), function (poll) {
+			$.get(project_presenter_url+"/sessions/getPollByIdJson/"+$(this).attr('poll-id'), function (poll) {
 				if(poll){
 
 					$('#poll_type_select').val(poll.poll_type)
@@ -289,69 +290,8 @@
 		})
 		return emptyOption;
 	}
-	function addPoll()
-	{
-		if($('#pollNameInput').val() == ''){
-			swal.fire('Missing Field Poll Name','Please make sure Poll Name is not empty', 'error')
-			return false;
-		}
-
-		if($('#pollQuestionInput').val() == ''){
-			swal.fire('Missing Field Poll Question','Please make sure  Poll Question is not empty', 'error')
-			return false;
-		}
-
-		if(!checkAllFilledPollOption() <= 0) {
-			swal.fire('Missing Field','Please make sure all options are filled', 'error')
-			return false;
-		}
-
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Adding the poll...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
-
-		let formData = new FormData(document.getElementById('addPollForm'));
-
-		$.ajax({
-			type: "POST",
-			url: project_admin_url+"/sessions/addPollJson/<?=$session->id?>",
-			data: formData,
-			processData: false,
-			contentType: false,
-			error: function(jqXHR, textStatus, errorMessage)
-			{
-				Swal.close();
-				toastr.error(errorMessage);
-				//console.log(errorMessage); // Optional
-			},
-			success: function(data)
-			{
-				Swal.close();
-
-				data = JSON.parse(data);
-
-				if (data.status == 'success')
-				{
-					listPolls();
-					toastr.success(data.msg);
-					$('#addPollModal').modal('hide');
-
-				}else{
-					toastr.error(data.msg);
-				}
-			}
-		});
-	}
 
 	function updatePoll(pollOptionsDeleted){
-		// console.log(pollOptionsDeleted);
 		if($('#pollNameInput').val() == ''){
 			swal.fire('Missing Field Poll Name','Please make sure Poll Name is not empty', 'error')
 			return false;
@@ -367,6 +307,7 @@
 			return false;
 		}
 
+		// console.log(pollOptionsDeleted);
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Updating the poll...',
@@ -391,7 +332,7 @@
 
 		$.ajax({
 			type: "POST",
-			url: project_admin_url+"/sessions/updatePollJson/<?=$session->id?>",
+			url: project_presenter_url+"/sessions/updatePollJson/<?=$session->id?>",
 			data: formData,
 			processData: false,
 			contentType: false,

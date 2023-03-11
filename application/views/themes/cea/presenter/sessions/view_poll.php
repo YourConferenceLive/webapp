@@ -42,7 +42,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="card">
 						<div class="card-header">
 							<h3 class="card-title">All polls for the session: [<?=$session->id?>] <?=$session->name?></h3>
-							<button class="add-poll-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
+<!--							<button class="add-poll-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>-->
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
@@ -111,66 +111,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 
-		$('.add-poll-btn').on('click', function () {
-
-			$('#addPollForm')[0].reset();
-			$('#pollId').val(0);
-			$('#poll_comparison_select').css('display', 'block')
-			$('#pollOptionsInputDiv').html(
-				'<div class="card bg-light">'+
-				'<div class="card-header p-0">'+
-				'<span class="float-left"> ' +
-				'Option' +
-				'</span>' +
-				'<span class="float-right"> ' +
-				'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat"><i class="fas fa-times"></i></button> ' +
-				'</span>' +
-				'<div class="input-group input-group-sm "> ' +
-				'<textarea type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"></textarea>' +
-				'</div> ' +
-				'<div class="">'+
-				'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
-				'</div>'+
-				'</div>'+
-				'</div>'+
-
-				'<div class="card bg-light">'+
-				'<div class="card-header p-0">'+
-				'<span class="float-left"> ' +
-				'Option' +
-				'</span>' +
-				'<span class="float-right"> ' +
-				'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat"><i class="fas fa-times"></i></button> ' +
-				'</span>' +
-				'<div class="input-group input-group-sm">' +
-				'<textarea type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"></textarea>' +
-				'</div>'+
-				'<div class="">'+
-				'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
-				'</div>'+
-				'</div>'+
-				'</div>'
-			)
-			$('#pollQuestionInput').summernote('code','');
-			$('#slideNumberInput').val('');
-			$('#pollInstructionInput').val('');
-			summerNoteOption($('.pollOptions'))
-			//$('#sessionDescription').summernote('reset');
-			//$('.removeall').click();
-			// $('#sponsorId').val(0);
-			// $('#logo_preview').hide();
-			// $('#logo_label').text('');
-			// $('#banner_preview').hide();
-			// $('#banner_label').text('');
-
-			$('#save-poll').html('<i class="fas fa-plus"></i> Create');
-
-			$('#addPollModal').modal({
-				backdrop: 'static',
-				keyboard: false
-			});
-		});
-
 		$('#sessionsTable').on('click', '.manageSession', function () {
 
 			let session_id = $(this).attr('session-id');
@@ -186,7 +126,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				allowOutsideClick: false
 			});
 
-			$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
+			$.get(project_presenter_url+"/sessions/getByIdJson/"+session_id, function (session) {
 				session = JSON.parse(session);
 
 				$('#sessionId').val(session.id);
@@ -291,7 +231,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						allowOutsideClick: false
 					});
 
-					$.get(project_admin_url+"/sessions/remove/"+session_id, function (response) {
+					$.get(project_presenter_url+"/sessions/remove/"+session_id, function (response) {
 						response = JSON.parse(response);
 
 						if (response.status == 'success')
@@ -300,9 +240,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							toastr.success(session_name+" has been removed!");
 						}else{
 							Swal.fire(
-									'Error!',
-									'Unable to remove '+session_name,
-									'error'
+								'Error!',
+								'Unable to remove '+session_name,
+								'error'
 							);
 						}
 					});
@@ -341,22 +281,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				allowOutsideClick: false
 			});
 
-			$.get(project_admin_url+"/sessions/getPollByIdJson/"+pollId, function (poll) {
+			$.get(project_presenter_url+"/sessions/getPollByIdJson/"+pollId, function (poll) {
 
 				socket.emit('ycl_launch_poll', JSON.parse(poll));
 
 				Swal.fire(
-						'Done!',
-						'Poll ['+pollId+'] launch initiated',
-						'success'
+					'Done!',
+					'Poll ['+pollId+'] launch initiated',
+					'success'
 				)
 				$(that).html('<i class="fas fa-sync-alt"></i> Launch Again').removeClass('btn-info').addClass('btn-warning');
 
 			}).fail((error)=>{
 				Swal.fire(
-						'Error!',
-						 error,
-						'error');
+					'Error!',
+					error,
+					'error');
 			});
 		});
 
@@ -365,7 +305,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let pollId = $(this).attr('poll-id');
 			let pollQuestion = $(this).attr('poll-question');
 			if(socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId, poll_question:pollQuestion})) {
-				$.post(project_admin_url + "/sessions/updateShowedResult/" + pollId, function (poll) {
+				$.post(project_presenter_url + "/sessions/updateShowedResult/" + pollId, function (poll) {
 					$('#launch-result_'+pollId).css('display', 'none')
 					$('#close-result_'+pollId).css('display', 'block')
 				})
@@ -393,16 +333,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		$('#pollsTable').on('click', '.closePoll', function () {
-			let that = this;
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
-
 			socket.emit('poll_closed', {session_id:sessionId, poll_id:pollId});
 			toastr.success("Close result popup triggered");
-
-			$.post(project_admin_url+'/sessions/update_closed_poll/'+pollId, {  }, function(){
-				$(that).removeClass('btn-danger').addClass('btn-danger-muted');
-			})
 		});
 
 		$('#pollsTable').on('click', '.remove-poll-btn', function(){
@@ -423,7 +357,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		})
 
-	/*############### End function ############*/
+		/*############### End function ############*/
 	});
 
 	function emitTimer(pollId, that) {
@@ -443,7 +377,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			allowOutsideClick: false
 		});
 
-		$.get(project_admin_url + "/sessions/getPollByIdJson/" + pollId, function (poll) {
+		$.get(project_presenter_url + "/sessions/getPollByIdJson/" + pollId, function (poll) {
 			poll = JSON.parse(poll)
 			poll.timer = $(that).attr('timer');
 
@@ -483,7 +417,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			allowOutsideClick: false
 		});
 
-		$.get(project_admin_url+"/sessions/getAllPollsJson/<?=$session->id?>", function (polls) {
+		$.get(project_presenter_url+"/sessions/getAllPollsJson/<?=$session->id?>", function (polls) {
 			polls = JSON.parse(polls);
 
 			$('#pollsTableBody').html('');
@@ -499,7 +433,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				let launchPollBtn = ((poll.is_launched === '0')?'<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' : '<button class="launch-poll-btn btn btn-sm btn-warning" poll-id="'+poll.id+'"><i class="fas fa-sync-alt"></i> Launch Again</button>' );
 				let startTimer10 = '<button class="startTimer10 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="10"><i class="fas fa-clock"></i> Start Timer 10s'+"'"+'</button>';
 				let startTimer15 = '<button class="startTimer15 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="15"><i class="fas fa-clock"></i> Start Timer 15s'+"'"+'</button>';
-				let closePoll = '<button class="closePoll btn btn-sm '+(poll.is_poll_closed == 1 ? "btn-danger-muted": "btn-danger")+' mt-md-2" poll-id="'+poll.id+'" session-id="'+poll.session_id+'"> <i class="fas fa-ban"></i>  Close Poll</button>';
+				let closePoll = '<button class="closePoll btn btn-sm btn-danger mt-md-2" poll-id="'+poll.id+'" session-id="'+poll.session_id+'"> <i class="fas fa-ban"></i>  Close Poll</button>';
 
 				$('#pollsTableBody').append(
 					'<tr>' +
@@ -570,7 +504,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	function removePoll(poll_id){
-		$.post(project_admin_url+"/sessions/removePoll/"+poll_id, function (polls) {
+		$.post(project_presenter_url+"/sessions/removePoll/"+poll_id, function (polls) {
 			polls = JSON.parse(polls);
 			if(polls){
 				if(polls.status== 'success'){
@@ -587,7 +521,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 			}
 		})
-		}
+	}
 
 	function summerNote(object) {
 		$(object).summernote({
@@ -614,31 +548,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	}
-		function summerNoteOption(object){
-			$(object).summernote({
-				dialogsInBody: true,
-				placeholder: $(object).attr('placeholder'),
-				height: 100,
-				toolbar:
-					[
-						["history", ["undo", "redo"]],
-						["style", ["style"]],
-						["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
-						['fontsize', ['fontsize']],
-						["color", ["color"]],
-						["paragraph", ["ul", "ol", "paragraph", "height"]],
-						["table", ["table"]],
-						["insert", ["link", "resizedDataImage", "picture", "video"]],
-						["view", ["codeview"] ]
-					],
-				fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150'],
-				callbacks: {
-					onKeyup: function (e) {
+	function summerNoteOption(object){
+		$(object).summernote({
+			dialogsInBody: true,
+			placeholder: $(object).attr('placeholder'),
+			height: 100,
+			toolbar:
+				[
+					["history", ["undo", "redo"]],
+					["style", ["style"]],
+					["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+					['fontsize', ['fontsize']],
+					["color", ["color"]],
+					["paragraph", ["ul", "ol", "paragraph", "height"]],
+					["table", ["table"]],
+					["insert", ["link", "resizedDataImage", "picture", "video"]],
+					["view", ["codeview"] ]
+				],
+			fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150'],
+			callbacks: {
+				onKeyup: function (e) {
 
-						appendCorrectAnswer1();
-						appendCorrectAnswer2();
-					}
+					appendCorrectAnswer1();
+					appendCorrectAnswer2();
 				}
-			});
+			}
+		});
 	}
 </script>

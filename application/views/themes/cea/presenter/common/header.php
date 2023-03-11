@@ -34,6 +34,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/sweetalert2/sweetalert2.css">
 	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/sweetalert2/sweetalert2.all.js"></script>
 	<!-- Moment JS -->
+
+	<!-- SummerNotes -->
+	<link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/summernote/summernote.min.css">
+	<script src="<?=ycl_root?>/vendor_frontend/adminlte/plugins/summernote/summernote.min.js"></script>
+
+
 	<!-- https://momentjs.com/docs/#/displaying/ -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.33/moment-timezone-with-data.min.js" integrity="sha512-rjmacQUGnwQ4OAAt3MoAmWDQIuswESNZwYcKC8nmdCIxAVkRC/Lk2ta2CWGgCZyS+FfBWPgaO01LvgwU/BX50Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

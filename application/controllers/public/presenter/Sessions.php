@@ -51,15 +51,25 @@ class Sessions extends CI_Controller
 		//$sidebar_data['user'] = $this->user;
 
 		$session = $this->sessions->getById($id);
-		if($this->settings->presenterSettings($this->project->id)) {
-			$data['settings'] = $this->settings->presenterSettings($this->project->id)[0];
+
+//		print_r($session);
+		if(($session == new stdClass())){
+			echo "Session Not found";
+			exit;
 		}
+
 		$data["error_text"] = "No Slide Found";
 
 		if (!isset($session->id))
 			$data["error_text"] = "Session Not Found";
 
-
+		if($session->attendee_settings_id != 0) {
+			$data['settings'] = $this->settings->getSessionSettings($this->project->id, $session->attendee_settings_id)[0];
+		}else{
+			if($this->settings->presenterSettings($this->project->id)) {
+				$data['settings'] = $this->settings->presenterSettings($this->project->id)[0];
+			}
+		}
 		$data["session"] = $session;
 		$data["user"] = $this->user;
 
@@ -141,12 +151,67 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->saveQuestionAjax());
 	}
 
+	public function hideSavedQuestionAjax(){
+		echo json_encode($this->sessions->hideSavedQuestionAjax());
+	}
+
 	public function getSavedQuestions($session_id){
 		echo json_encode($this->sessions->getSavedQuestions($session_id));
 	}
 
 	public function hideQuestionAjax(){
 		echo json_encode($this->sessions->hideQuestionAjax());
+	}
+
+	public function view_poll($session_id){
+		$sidebar_data['user'] = $this->user;
+		$session = $this->sessions->getById($session_id);
+
+		if($session == new stdClass()){
+			print_r("session empty");exit;
+		}
+		$data['session'] = $session;
+		$data['polls'] = $this->sessions->getAllPolls($session_id);
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view_poll", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/add-poll-modal.php")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")
+		;
+	}
+
+	public function updateShowedResult($poll_id){
+		echo  $this->sessions->updateShowedResult($poll_id);
+	}
+
+	public function redoPoll($poll_id){
+		echo  $this->sessions->redoPoll($poll_id);
+	}
+
+	public function removePoll($poll_id){
+		echo  $this->sessions->removePoll($poll_id);
+	}
+
+	public function addPollJson($session_id)
+	{
+		echo json_encode($this->sessions->addPoll($session_id));
+	}
+
+	public function updatePollJson($session_id){
+		echo json_encode($this->sessions->updatePoll($session_id));
+	}
+
+	public function getAllPollsJson($session_id)
+	{
+		echo json_encode($this->sessions->getAllPolls($session_id));
+	}
+
+	public function getPollByIdJson($id)
+	{
+		echo json_encode($this->sessions->getPollById($id));
 	}
 
 }

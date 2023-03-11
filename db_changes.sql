@@ -639,3 +639,24 @@ ALTER TABLE `logs` ADD `start_date_time` DATETIME NULL AFTER `date_time`, ADD `e
 
 -- add launched status
 ALTER TABLE `session_polls` ADD `is_launched` INT(1) NOT NULL DEFAULT '0' AFTER `is_active`;
+-- add external reference  status
+ALTER TABLE `session_polls` ADD `external_reference` VARCHAR(255) NOT NULL DEFAULT 'None' AFTER `session_id`;
+
+-- add launched status
+ALTER TABLE `session_polls` ADD `poll_comparison_id` int(11) NOT NULL AFTER `poll_type`;
+
+ALTER TABLE `session_polls` ADD `slide_number` int(11) NOT NULL AFTER `poll_comparison_id`;
+ALTER TABLE `session_polls` ADD `poll_instruction` int(11) NOT NULL AFTER `poll_comparison_id`;
+ALTER TABLE `session_polls` ADD `correct_answer2` int(11) NOT NULL  AFTER `poll_comparison_id`;
+ALTER TABLE `session_polls` ADD `correct_answer1` int(11) NOT NULL  AFTER `poll_comparison_id`;
+
+ALTER TABLE `session_poll_options` ADD `external_reference` VARCHAR(255) NOT NULL  AFTER `poll_id`;
+ALTER TABLE `session_poll_options` ADD `option_order` int(11) NOT NULL  AFTER `option_text`;
+
+-- CCO SSO authentication
+ALTER TABLE `user` ADD `identifier_id` VARCHAR(255) NULL AFTER `id`;
+ALTER TABLE `user` ADD `api_session` VARCHAR(255) NULL AFTER `IdFromApi`, ADD `iat` VARCHAR(255) NULL AFTER `api_session`, ADD `aud` TEXT NULL AFTER `iat`, ADD `exp` VARCHAR(255) NULL AFTER `aud`, ADD `jti` VARCHAR(255) NULL AFTER `exp`, ADD `token` VARCHAR(255) NULL AFTER `jti`;
+
+ALTER TABLE `session_polls` ADD `is_result_showed` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_launched`;
+
+ALTER TABLE `session_polls` ADD `is_poll_closed` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_result_showed`;

@@ -52,7 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										foreach ($polls as $val) {
 //											print_r($val);
 											?>
-											<th><?= $val->poll_type .': ' .$val->poll_question?></th>
+											<th><?= $val->poll_name .': ' .$val->poll_question?></th>
 											<?php
 										}
 									}

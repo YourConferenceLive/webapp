@@ -53,6 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Presenter(s)</th>
 									<th>Zoom</th>
 									<th>Session Presentation</th>
+									<th>Options</th>
 								</tr>
 								</thead>
 								<tbody>
@@ -82,6 +83,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<button class="btn btn-sm btn-primary"><i class="fas fa-tools"></i> Toolbox Only</button>
 											</a>-->
 										</td>
+										<td><a href="<?=$this->project_url.'/presenter/sessions/view_poll/'.$session->id?>" class="btn btn-info btn-sm"> View Poll</a></td>
 									</tr>
 								<?php endforeach; ?>
 								</tbody>
