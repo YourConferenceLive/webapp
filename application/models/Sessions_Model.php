@@ -2576,4 +2576,20 @@ class Sessions_Model extends CI_Model
 
 		return '';
 	}
+
+	public function askarepReport($session_id){
+		$rep = $this->db->select('a.*,CONCAT(u.name, " ", u.surname) AS user_name')
+			->from('ask_a_rep a')
+			->join('user u', 'a.user_id = u.id', 'left')
+			->where('session_id', $session_id)
+			->where('project_id', $this->project->id)
+			->get();
+
+		if($rep->num_rows() >0)
+			return json_encode(array('status'=>'success','result'=>$rep->result()));
+		else
+			return '';
+
+	}
+
 }
