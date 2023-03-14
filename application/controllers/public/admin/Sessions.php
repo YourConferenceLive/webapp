@@ -235,6 +235,10 @@ class Sessions extends CI_Controller
 
 	public function attendee_question_report($session_id){
 		echo  $this->sessions->attendee_question_report($session_id);
+		/*
+		 * To enable emoji on excel it should be imported as csv and file origin select 65001
+		 * In Excel, navigate to Data > Import External Data > Import Data/Import From Text and choose 65001 Unicode (UTF-8).
+		*/
 	}
 
 	public function view_json($session_id){
