@@ -29,8 +29,10 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/list")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/ask-a-report-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/add-resources-modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/add-session-modal", $create_modal)
+
 
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
 		;
@@ -233,6 +235,10 @@ class Sessions extends CI_Controller
 
 	public function attendee_question_report($session_id){
 		echo  $this->sessions->attendee_question_report($session_id);
+		/*
+		 * To enable emoji on excel it should be imported as csv and file origin select 65001
+		 * In Excel, navigate to Data > Import External Data > Import Data/Import From Text and choose 65001 Unicode (UTF-8).
+		*/
 	}
 
 	public function view_json($session_id){
@@ -253,5 +259,9 @@ class Sessions extends CI_Controller
 
 	public function update_closed_poll($poll_id){
 		echo  $this->sessions->update_closed_poll($poll_id);
+	}
+
+	public function askarepReport($session_id){
+		echo  $this->sessions->askarepReport($session_id);
 	}
 }
