@@ -660,3 +660,4 @@ ALTER TABLE `user` ADD `api_session` VARCHAR(255) NULL AFTER `IdFromApi`, ADD `i
 ALTER TABLE `session_polls` ADD `is_result_showed` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_launched`;
 
 ALTER TABLE `session_polls` ADD `is_poll_closed` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_result_showed`;
+ALTER TABLE `session_polls` ADD `is_result_closed` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_result_showed`;

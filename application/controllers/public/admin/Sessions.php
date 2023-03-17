@@ -261,7 +261,15 @@ class Sessions extends CI_Controller
 		echo  $this->sessions->update_closed_poll($poll_id);
 	}
 
+	public function update_closed_poll_result($poll_id){
+		echo  $this->sessions->update_closed_poll_result($poll_id);
+	}
+
 	public function askarepReport($session_id){
 		echo  $this->sessions->askarepReport($session_id);
+	}
+
+	public function clearJson($session_id){
+		echo  $this->sessions->clearJson($session_id);
 	}
 }
