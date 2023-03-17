@@ -554,7 +554,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				if(response.status == 'success'){
 					alert('success');
 				}
-			})
+			},'json')
 		});
 		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
 			Swal.fire({
