@@ -2594,4 +2594,99 @@ class Sessions_Model extends CI_Model
 
 	}
 
+	public function clearJson($session_id){
+
+//		$this->db->delete("login_sessions_history", array("sessions_id" => $sessions_id));
+//		$this->db->delete("sessions_cust_question", array("sessions_id" => $sessions_id));
+//		$this->db->delete("tbl_favorite_question_admin", array("sessions_id" => $sessions_id));
+//		$this->db->delete("tbl_favorite_question", array("sessions_id" => $sessions_id));
+	//		$this->db->delete("total_time_on_session", array("session_id" => $sessions_id));
+//
+//		$poll_question_result = $this->db->get_where("poll_question_option", array("sessions_id" => $sessions_id))->result();
+//		if (!empty($poll_question_result)) {
+//			foreach ($poll_question_result as $value) {
+//				$sessions_poll_question_id = $value->sessions_poll_question_id;
+//				$this->db->update("poll_question_option", array("total_vot" => 0), array("sessions_poll_question_id" => $sessions_poll_question_id));
+//				$this->db->delete("tbl_poll_voting", array("sessions_poll_question_id" => $sessions_poll_question_id));
+//			}
+//		}
+//		//   $this->db->delete("sessions_poll_question", array("sessions_id" => $sessions_id));
+//		header('location:' . base_url() . 'admin/sessions?msg=S');
+
+		try {
+			$this->db->trans_begin();
+			$this->deleteSessionLogHistory($session_id);
+			$this->deleteSessionQuestion($session_id);
+			$this->deleteTotalTimeOnSession($session_id);
+			$this->deletePoll($session_id);
+
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				echo json_encode(array('status' => 'failed', 'reason' => $this->db->error()));
+			} else {
+				$this->db->trans_commit();
+				echo json_encode(array('status' => 'success'));
+
+			}
+		}catch (\Exception $e){
+			echo json_encode(array('status' => 'failed', 'reason' => $e));
+		}
+
+	}
+	 public function deleteSessionLogHistory($session_id){
+//		$this->db->select('*');
+		$this->db->from('logs');
+		$this->db->where("ref_1", $session_id);
+		$this->db->where("project_id", $this->project->id);
+		$this->db->where("name", "Attend");
+		$this->db->where("info", "Session View");
+		$this->db->delete();
+	}
+
+	function deleteSessionQuestion($session_id){
+		$question = $this->db->select('*')
+			->from('session_questions')
+			->where('session_id', $session_id)
+//			->where('project_id', $this->project->id)
+			->get();
+
+		if($question->num_rows() > 0){
+			foreach ($question->result() as $item){
+				$this->deleteSessionFavQuestion($item->id);
+				$this->deleteSessionStashedQuestion($item->id);
+			}
+			$this->db->delete("session_questions", array("session_id" => $session_id));
+		}
+	}
+
+	function deleteSessionFavQuestion($question_id){
+		$this->db->delete("session_question_saved", array("question_id" => $question_id));
+	}
+	function deleteSessionStashedQuestion($question_id){
+		$this->db->delete("session_question_stash", array("question_id" => $question_id));
+	}
+	function deleteTotalTimeOnSession($session_id){
+		$this->db->delete("total_time_on_session", array("session_id" => $session_id));
+	}
+	function deletePoll($session_id){
+		$result = $this->db->select('*')
+			->from('session_polls')
+			->where('session_id', $session_id)
+			->get();
+
+		if($result->num_rows()>0){
+			foreach ($result->result() as $item){
+				$this->deletePollAnswerByPoll($item->id);
+			}
+			$this->db->update('session_polls', array('is_launched'=>'0', 'is_poll_closed'=>'0', 'is_result_showed'=>'0'));
+		}
+	}
+
+	function deletePollOptionByPoll($poll_id){
+		$this->db->delete("session_poll_options", array("poll_id" => $poll_id));
+	}
+	function deletePollAnswerByPoll($poll_id){
+		$this->db->delete("session_poll_answers", array("poll_id" => $poll_id));
+	}
+
 }

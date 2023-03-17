@@ -264,4 +264,8 @@ class Sessions extends CI_Controller
 	public function askarepReport($session_id){
 		echo  $this->sessions->askarepReport($session_id);
 	}
+
+	public function clearJson($session_id){
+		echo  $this->sessions->clearJson($session_id);
+	}
 }

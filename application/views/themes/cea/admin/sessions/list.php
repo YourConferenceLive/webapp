@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<th>Actions</th>
 										<th>Manage</th>
 										<th>Export</th>
+										<th>JSON(s)</th>
 									</tr>
 								</thead>
 								<tbody id="sessionsTableBody">
@@ -513,6 +514,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		<a  href="" style="width:80px; height:50px" class="askARepBtn btn btn-sm btn-warning m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Ask a Rep - Report</a><br>' +
 					'		<a href="'+project_admin_url+'/sessions/attendee_question_report/'+session.id+'" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Question Report</a><br>' +
 					'</td>'+
+					'<td>'+
+					'		<a href="" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Send Json </a><br>' +
+					'		<a href="'+project_admin_url+'/sessions/view_json/'+session.id+'" target="_blank" style="width:80px; height:50px" class="Question btn btn-sm btn-secondary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> View Json </a><br>' +
+					'		<a href="" style="width:80px; height:50px" class="clearJsonBtn btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Clear Json </a><br>' +
+					'		<a href="" style="width:80px; height:50px" class="Question btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Delete Session </a><br>' +
+
+					'</td>'+
 					'</tr>'
 				);
 			});
@@ -536,6 +544,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	}
 
 	$(function(){
+
+		$('#sessionsTableBody').on('click', '.clearJsonBtn', function(e){
+			e.preventDefault();
+			let session_id = $(this).attr('session-id')
+			$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
+				function(response){
+				console.log(response);
+				if(response.status == 'success'){
+					alert('success');
+				}
+			})
+		});
 		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
 			Swal.fire({
 				title: 'Are you sure?',
