@@ -428,6 +428,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		})
 
+		$('#pollsTable').on('click', '.redo-poll-btn', function(){
+			let poll_id = $(this).attr('poll-id');
+
+			Swal.fire({
+				title: 'Are you sure?',
+				html: '<span class="text-white">You are about to redo POLL: '+poll_id+' <br></span>',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, Redo it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					redoPoll(poll_id);
+				}
+			})
+
+
+		})
 	/*############### End function ############*/
 	});
 
@@ -542,12 +561,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'		'+closePoll+
 					'	</td>' +
 					'   <td>' +
-					'<button style="display: '+((poll.is_result_showed != 1)? 'block':'none')+'" id="launch-result_'+poll.id+'" class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" poll-question="'+poll.poll_question+'"><i class="fas fa-poll-h"></i> Show Result</button>'+
+					'<button style="display: '+((poll.is_result_showed != 1)? 'block':'none')+'" id="launch-result_'+poll.id+'" class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" ><i class="fas fa-poll-h"></i> Show Result</button>'+
 					'<button style="display: '+((poll.is_result_showed == 1)? 'block':'none')+'" id="close-result_'+poll.id+'" class="close-result-btn btn btn-sm '+(poll.is_result_closed == 1 ? "btn-danger-muted": "btn-danger")+' ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Close Result</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="edit-poll-btn btn btn-sm btn-primary m-1" poll-id="'+poll.id+'"><i class="fas fa-edit"></i> Edit</button>' +
 					'		<button class="remove-poll-btn btn btn-sm btn-danger m-1" poll-id="'+poll.id+'""><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'		<button class="redo-poll-btn btn btn-sm btn-warning m-1" poll-id="'+poll.id+'""><i class="fas fa-redo"></i> Redo</button>' +
 					'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
 					'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
 					'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
@@ -572,6 +592,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			Swal.close();
 		});
+	}
+
+	function redoPoll(poll_id){
+		$.post(project_admin_url+"/sessions/redoPoll/"+poll_id, function (polls) {
+			polls = JSON.parse(polls);
+			if(polls){
+				if(polls.status== 'success'){
+					swal.fire(
+						'success',
+						'Poll Redo Success',
+						'success'
+					)
+					setTimeout(
+						function()
+						{
+							listPolls();
+						}, 1000);
+				}
+			}
+		})
 	}
 
 	function removePoll(poll_id){
