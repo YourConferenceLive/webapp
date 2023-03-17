@@ -386,10 +386,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 		$('#pollsTable').on('click', '.close-result-btn', function () {
+			let that = this;
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
 			socket.emit('ycl_close_poll_result', {session_id:sessionId,poll_id:pollId});
 			toastr.success("Close result popup triggered");
+
+			$.post(project_admin_url+'/sessions/update_closed_poll_result/'+pollId, {  }, function(){
+				$(that).removeClass('btn-danger').addClass('btn-danger-muted');
+			})
 		});
 
 		$('#pollsTable').on('click', '.closePoll', function () {
@@ -538,7 +543,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'	</td>' +
 					'   <td>' +
 					'<button style="display: '+((poll.is_result_showed != 1)? 'block':'none')+'" id="launch-result_'+poll.id+'" class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" poll-question="'+poll.poll_question+'"><i class="fas fa-poll-h"></i> Show Result</button>'+
-					'<button style="display: '+((poll.is_result_showed == 1)? 'block':'none')+'" id="close-result_'+poll.id+'" class="close-result-btn btn btn-sm btn-danger ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Close Result</button>' +
+					'<button style="display: '+((poll.is_result_showed == 1)? 'block':'none')+'" id="close-result_'+poll.id+'" class="close-result-btn btn btn-sm '+(poll.is_result_closed == 1 ? "btn-danger-muted": "btn-danger")+' ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Close Result</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="edit-poll-btn btn btn-sm btn-primary m-1" poll-id="'+poll.id+'"><i class="fas fa-edit"></i> Edit</button>' +
