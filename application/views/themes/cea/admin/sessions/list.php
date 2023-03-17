@@ -548,13 +548,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		$('#sessionsTableBody').on('click', '.clearJsonBtn', function(e){
 			e.preventDefault();
 			let session_id = $(this).attr('session-id')
-			$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
-				function(response){
-				console.log(response);
-				if(response.status == 'success'){
-					alert('success');
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, clear it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
+						function(response){
+							console.log(response);
+							if(response.status == 'success'){
+								Swal.fire(
+									'Success',
+									'Json Cleared',
+									'success'
+								)
+							}
+						},'json')
 				}
-			},'json')
+			})
 		});
 		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
 			Swal.fire({
