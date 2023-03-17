@@ -542,7 +542,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'	</td>' +
 					'	<td>' +
 					'		<button class="edit-poll-btn btn btn-sm btn-primary m-1" poll-id="'+poll.id+'"><i class="fas fa-edit"></i> Edit</button>' +
-					'		<button class="remove-poll-btn btn btn-sm btn-danger m-1" poll-id="'+poll.id+'" session-name="'+poll.poll_question+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'		<button class="remove-poll-btn btn btn-sm btn-danger m-1" poll-id="'+poll.id+'""><i class="fas fa-trash-alt"></i> Remove</button>' +
 					'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
 					'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
 					'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
@@ -592,7 +592,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	function summerNote(object) {
 		$(object).summernote({
 			dialogsInBody: true,
-			placeholder: $(object).attr('placeholder'),
+			inheritPlaceholder: true,
 			height: 100,
 			toolbar:
 				[
@@ -620,14 +620,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					setTimeout(function () {
 						document.execCommand('insertText', false, bufferText);
 					}, 10);
-				}
+				},
+				// onInit: function() {
+				// 	var $noteEditable = $('.note-editable');
+				// 	$noteEditable.html($noteEditable.html().replace(/^<br>/i, ''));
+				// }
 			}
 		});
 	}
 		function summerNoteOption(object){
 			$(object).summernote({
 				dialogsInBody: true,
-				placeholder: $(object).attr('placeholder'),
+				inheritPlaceholder: true,
 				height: 100,
 				toolbar:
 					[
@@ -657,7 +661,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						setTimeout(function () {
 							document.execCommand('insertText', false, bufferText);
 						}, 10);
-					}
+					},
+					// onInit: function() {
+					// 	var $noteEditable = $('.note-editable');
+					// 	$noteEditable.html($noteEditable.html().replace(/^<br>/i, ''));
+					// }
 				}
 			});
 	}

@@ -1028,6 +1028,7 @@ class Sessions_Model extends CI_Model
 
 	public function addPoll($session_id)
 	{
+		$pattern = "/^(<br>\s*)*(<p>\s*)*|\s*(<\/p>\s*)*(<\/br>\s*)*$/";
 		$post = $this->input->post();
 //		print_r($post);exit;
 
@@ -1057,7 +1058,7 @@ class Sessions_Model extends CI_Model
 				$order ++;
 				$options_array = array(
 					'poll_id' => $poll_id,
-					'option_text' => $option,
+					'option_text' => trim(preg_replace($pattern, "", $option)),
 					'option_order' => $order,
 					'external_reference' => $post['optionExternalReference'][$i]
 				);
@@ -1077,7 +1078,7 @@ class Sessions_Model extends CI_Model
 	}
 
 	function addPollComparison($session_id, $post, $pollParentId){
-
+		$pattern = "/^(<br>\s*)*(<p>\s*)*|\s*(<\/p>\s*)*(<\/br>\s*)*$/";
 		$data = array(
 			'session_id' => $session_id,
 			'poll_question' => $post['pollQuestionInput'],
@@ -1106,7 +1107,7 @@ class Sessions_Model extends CI_Model
 				$order ++;
 				$options_array = array(
 					'poll_id' => $insert_id,
-					'option_text' => $option,
+					'option_text' => trim(preg_replace($pattern, "", $option)),
 					'option_order' => $order,
 					'external_reference' => $post['optionExternalReference'][$i]
 				);
@@ -1117,6 +1118,7 @@ class Sessions_Model extends CI_Model
 
 	public function updatePoll($session_id)
 	{
+		$pattern = "/^(<br>\s*)*(<p>\s*)*|\s*(<\/p>\s*)*(<\/br>\s*)*$/";
 		$post = $this->input->post();
 //		print_r($post);exit;
 		$data = array(
@@ -1141,7 +1143,7 @@ class Sessions_Model extends CI_Model
 
 				$order ++;
 				$options_array = array(
-					'option_text' => $option,
+					'option_text' => preg_replace($pattern, "", $option),
 					'option_order' => $order,
 					'external_reference' => $post['optionExternalReference'][$i]
 				);
@@ -1152,7 +1154,7 @@ class Sessions_Model extends CI_Model
 				} else {
 					$options_array = array(
 						'poll_id' => $post['pollId'],
-						'option_text' => $option,
+						'option_text' => preg_replace($pattern, "", $option),
 						'option_order' => $order,
 						'external_reference' => $post['optionExternalReference'][$i]
 					);
