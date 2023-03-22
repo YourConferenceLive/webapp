@@ -102,10 +102,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<!-- /.direct-chat-pane -->
 
 								<div class="input-group" style="position: absolute;bottom: 5px">
+									<div class="input-group-prepend">
+										<span class="input-group-text btn" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
+									</div>
 									<input id="hostChatNewMessage" type="text" placeholder="Type Message... (Host Chat)" class="form-control text-dark bg-white">
 									<span class="input-group-append" >
 											<button id="sendHostChatBtn" type="button" class="btn text-white" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:'#0052CC'?>">Send</button>
-										</span>
+									</span>
+
+									<div style="text-align: left; padding-left: 10px; display: flex;" id="presenter_questions_emojis_section">
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/happy.png" title="Happy" class="btn" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/sad.png" title="Sad" class="btn" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/laughing.png" title="Laughing" class="btn" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/thumbs_up.png" title="Thumbs Up" class="btn" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/thumbs_down.png" title="Thumbs Down" class="btn" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/clapping.png" title="Clapping" class="btn" id="questions_clapping"  data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+									</div>
 								</div>
 
 							</div>
@@ -374,6 +386,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$('#starred-questions-tab').on('click', function(){
 			fillSavedQuestions();
+		})
+
+		$('#presenter_questions_emojis_section').hide();
+
+		$('#questions_emjis_section_show').on('click', function(){
+			if(	$('#presenter_questions_emojis_section').attr('hide') == true || $('#presenter_questions_emojis_section').css('display') == 'none'){
+				$('#presenter_questions_emojis_section').show();
+			}else{
+				$('#presenter_questions_emojis_section').hide();
+			}
 		})
 	});
 
@@ -871,6 +893,131 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 	/** End of live users per session **/
+
+	//######## Emoji functions
+	$(function(){
+		$(document).on("click", "#questions_clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_happy", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#hostChatNewMessage").val();
+			if (send_message != "") {
+				$("#hostChatNewMessage").val(send_message + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#happy", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#hostChatNewMessage").val();
+			if (send_message != "") {
+				$("#hostChatNewMessage").val(send_message + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#hostChatNewMessage").val();
+			if (send_message != "") {
+				$("#hostChatNewMessage").val(send_message + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#hostChatNewMessage").val();
+			if (send_message != "") {
+				$("#hostChatNewMessage").val(send_message + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+	})
+
+//	End Emojis functions
 
 </script>
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/host_chat.js"></script>
