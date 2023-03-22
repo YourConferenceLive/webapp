@@ -110,6 +110,7 @@ class Sessions_Model extends CI_Model
 		$this->db->join('session_moderators', 'session_moderators.session_id = sessions.id', 'left');
 		$this->db->join('session_keynote_speakers', 'session_keynote_speakers.session_id = sessions.id', 'left');
 		$this->db->where('sessions.is_deleted', 0);
+		$this->db->where("end_date_time >=", date('Y-m-d H:i:s'));
 		$this->db->group_start();
 		$this->db->where('session_presenters.presenter_id', $user_id);
 		$this->db->or_where('session_moderators.moderator_id', $user_id);
