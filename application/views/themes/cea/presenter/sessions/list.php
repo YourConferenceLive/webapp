@@ -65,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<td><?=date("g:iA", strtotime($session->start_date_time))?> EST</td>
 										<td><?=date("g:iA", strtotime($session->end_date_time))?> EST</td>
 										<!--<td><?/*=round(abs(strtotime($session->end_date_time) - strtotime($session->start_date_time)) / 60,2). " Minutes"*/?></td>-->
-										<td ><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->thumbnail?>" style="width:200px; max-height: 200px"></td>
+										<td ><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->thumbnail?>" style="width:100px; max-height: 200px"></td>
 										<td><?=$session->name?></td>
 										<td>
 											<?php foreach($session->presenters as $presenter): ?>
