@@ -49,8 +49,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Start Time</th>
 									<th>End Time</th>
 									<!--<th>Duration</th>-->
-									<th>Session Photo</th>
-									<th>Session Title</th>
+									<th style="width:120px">Session Photo</th>
+									<th style="width:400px">Session Title</th>
 									<th>Presenter(s)</th>
 									<th>Zoom</th>
 									<th>Session Presentation</th>
@@ -65,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<td><?=date("g:iA", strtotime($session->start_date_time))?> EST</td>
 										<td><?=date("g:iA", strtotime($session->end_date_time))?> EST</td>
 										<!--<td><?/*=round(abs(strtotime($session->end_date_time) - strtotime($session->start_date_time)) / 60,2). " Minutes"*/?></td>-->
-										<td ><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->thumbnail?>" style="width:100px; max-height: 200px"></td>
+										<td style="padding-left:0; padding-right:0; "><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->thumbnail?>" style="width:120px; max-height: 200px; padding:0"></td>
 										<td><?=$session->name?></td>
 										<td>
 											<?php foreach($session->presenters as $presenter): ?>
