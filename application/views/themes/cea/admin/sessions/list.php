@@ -383,8 +383,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		// });
 	});
 
-	function listSessions(getFrom)
+	function listSessions(getFrom = null)
 	{
+		if(getFrom == null)
+		getFrom = "getAllJson";
 
 		Swal.fire({
 			title: 'Please Wait',
