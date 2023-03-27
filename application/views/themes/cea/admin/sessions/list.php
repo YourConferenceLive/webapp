@@ -32,7 +32,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">All sessions</h3>
+							<h3 class="card-title">
+								<select class="form-control" id="session_list_type">
+									<option value="all_sessions" url="getAllJson">All Session</option>
+									<option value="archived_sessions" url="getAllArchived">Archived Session</option>
+								</select>
+							</h3>
 							<button class="add-session-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
 						</div>
 						<!-- /.card-header -->
@@ -88,7 +93,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <script>
 	$(function () {
 
-		listSessions();
+			// getAllJson
+		let session_list_type = $('#session_list_type').find(':selected').val();
+		let getFrom = $('#session_list_type').attr('url');
+		// console.log(session_list_type);return false;
+	
+		(getFrom == undefined)?getFrom="getAllJson":'';
+		listSessions(getFrom);
+		
+		$('#session_list_type').on('change', function(){
+			getFrom =  $('#session_list_type').find(':selected').attr('url')
+			console.log(getFrom)
+			listSessions(getFrom);
+		})
 
 		$('#sessionsTable').DataTable({
 			"paging": true,
@@ -335,7 +352,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						response = JSON.parse(response);
 
 						if (response.status == 'success') {
-							listSessions();
+							listSessions(getFrom);
 							toastr.success(session_name+" has been removed!");
 						}else{
 							Swal.fire(
@@ -366,8 +383,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		// });
 	});
 
-	function listSessions()
+	function listSessions(getFrom = null)
 	{
+		if(getFrom == null)
+		getFrom = "getAllJson";
+
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading sessions data...',
@@ -379,7 +399,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			allowOutsideClick: false
 		});
 
-		$.get(project_admin_url+"/sessions/getAllJson", function (sessions) {
+		$.get(project_admin_url+"/sessions/"+ getFrom, function (sessions) {
 			sessions = JSON.parse(sessions);
 
 			$('#sessionsTableBody').html('');

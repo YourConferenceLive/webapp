@@ -66,6 +66,11 @@ class Sessions extends CI_Controller
 	{
 		echo json_encode($this->sessions->getAll());
 	}
+	
+	public function getAllArchived()
+	{
+		echo json_encode($this->sessions->getAllArchived());
+	}
 
 	public function getByIdJson($session_id)
 	{

@@ -19,6 +19,12 @@ class Sessions_Model extends CI_Model
 		$this->db->join('session_tracks st', 's.track = st.id', 'left');
 		$this->db->where('s.is_deleted', 0);
 		$this->db->where('s.project_id', $this->project->id);
+		$this->db->group_start();
+			$this->db->where('s.end_date_time >=', date('Y-m-d'));
+			$this->db->or_where('s.id', 78);
+			$this->db->or_where('s.id', 79);
+			$this->db->or_where('s.id', 80);
+		$this->db->group_end();
 		$this->db->order_by('s.start_date_time', 'ASC');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
@@ -32,6 +38,35 @@ class Sessions_Model extends CI_Model
 				$session->invisible_moderators = $this->getInvisibleModeratorsPerSession($session->id);
 			}
 
+			return $sessions->result();
+		}
+
+		return new stdClass();
+	}
+
+	public function getAllArchived()
+	{
+		$this->db->select('s.*, st.name as session_track');
+		$this->db->from('sessions s');
+		$this->db->join('session_tracks st', 's.track = st.id', 'left');
+		$this->db->where('s.is_deleted', 0);
+		$this->db->where('s.project_id', $this->project->id);
+		$this->db->group_start();
+			$this->db->where('s.end_date_time <', date('Y-m-d'));
+			
+		$this->db->group_end();
+		$this->db->order_by('s.start_date_time', 'ASC');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+		{
+			foreach ($sessions->result() as $session)
+			{
+				$session->briefcase = $this->getUserBriefcasePerSession($session->id);
+				$session->presenters = $this->getPresentersPerSession($session->id);
+				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
+				$session->moderators = $this->getModeratorsPerSession($session->id);
+				$session->invisible_moderators = $this->getInvisibleModeratorsPerSession($session->id);
+			}
 			return $sessions->result();
 		}
 
