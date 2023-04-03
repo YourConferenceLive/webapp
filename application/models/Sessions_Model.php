@@ -73,6 +73,32 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getFromDay($date)
+	{
+		$this->db->select('s.*, st.name as session_track');
+		$this->db->from('sessions s');
+		$this->db->join('session_tracks st', 's.track = st.id', 'left');
+		$this->db->where('s.is_deleted', 0);
+		$this->db->where('s.project_id', $this->project->id);
+		$this->db->where('DATE(s.start_date_time)', $date);
+		$this->db->order_by('s.start_date_time', 'ASC');
+		$sessions = $this->db->get();
+		
+		if ($sessions->num_rows() > 0)
+		{
+			foreach ($sessions->result() as $session)
+			{
+				$session->briefcase = $this->getUserBriefcasePerSession($session->id);
+				$session->presenters = $this->getPresentersPerSession($session->id);
+				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
+				$session->moderators = $this->getModeratorsPerSession($session->id);
+				$session->invisible_moderators = $this->getInvisibleModeratorsPerSession($session->id);
+			}
+			return $sessions->result();
+		}
+		return new stdClass();
+	}
+
 	public function getAllSessionWeek()
 	{
 		$this->db->select('s.*, st.name as session_track');

@@ -34,8 +34,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						<div class="card-header">
 							<h3 class="card-title">
 								<select class="form-control" id="session_list_type">
-									<option value="all_sessions" url="getAllJson">All Session</option>
-									<option value="archived_sessions" url="getAllArchived">Archived Session</option>
+									<option value="all_sessions" url="getAllJson">Sessions</option>
+									<option value="today_sessions" url="getAllToday">Today Sessions</option>
+										<option value="tomorrow_sessions" url="getAllTomorrow">Tomorrow Sessions</option>
+									<option value="archived_sessions" url="getAllArchived">Archived Sessions</option>
 								</select>
 							</h3>
 							<button class="add-session-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
