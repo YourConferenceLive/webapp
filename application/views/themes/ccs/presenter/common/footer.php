@@ -12,11 +12,9 @@ $ci_method = $this->router->fetch_method();
 
 <!-- Main Footer -->
 <footer
-	class="main-footer"
-	<?=($ci_controller == 'sessions' && $ci_method == 'view')?'style="margin-left: unset !important;"':''?>
->
-	<strong>Copyright &copy; 2021 <a href="https://yourconference.live">Your Conference Live</a>. </strong>
-	All rights reserved.
+	class="main-footer bg-transparent border-0"
+	style="<?=($ci_controller == 'sessions' && $ci_method == 'view')?'margin-left: unset !important':''?>; font-size:11px">
+	<span>@ 2023 </span> All rights reserved.
 	<div id="attendeesOnline" class="float-right d-none d-sm-inline-block"> <!-- Filled by JS only in sessions/view pages -->
 
 	</div>

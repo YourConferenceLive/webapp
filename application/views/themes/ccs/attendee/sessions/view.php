@@ -7,17 +7,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 body{overflow: hidden;background-color: #151515;}
 </style>
 
-<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
 
 <div class="sessions-view-container container-fluid p-0">
+	<div id="embededVideo" style="display: none">
 <?php
 			if (isset($session->video_url) && $session->video_url != ''):
 					$video_url = preg_replace('/[^0-9]/', '', $session->video_url);?>
-			<iframe id="sessionIframe" src="https://player.vimeo.com/video/<?=$video_url;?>?color=f7dfe9&title=0&byline=0&portrait=0" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="height: 100%"></iframe>
+			<iframe id="sessionIframe" src="https://player.vimeo.com/video/<?=$video_url;?>?color=f7dfe9&title=0&byline=0&portrait=0" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen height="100%"></iframe>
 			<script src="https://player.vimeo.com/api/player.js"></script>
 <?php
 			elseif (isset($session->millicast_stream) && $session->millicast_stream != ''):?>
-			<iframe id="sessionIframe" class="" src="https://viewer.millicast.com/v2?streamId=pYVHx2/<?=str_replace(' ', '', $session->millicast_stream)?>&autoPlay=true&muted=true&disableFull=true" width="100%" style="height: 100%"></iframe>
+			<iframe id="sessionIframe" class="" src="https://viewer.millicast.com/v2?streamId=pYVHx2/<?=str_replace(' ', '', $session->millicast_stream)?>&autoPlay=true&muted=true&disableFull=true" width="100%" height="100%"></iframe>
 <?php
 			else:?>
 			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
@@ -27,6 +28,13 @@ body{overflow: hidden;background-color: #151515;}
 			</div>
 <?php
 			endif;?>
+
+	<div class="maximize">
+		<span id="btnFS" class="btn text-white" data-toggle="tooltip" title="Full Screen">
+			<i class="fas fa-expand-alt"></i>
+		</span>
+	</div>
+	</div>
 </div>
 
 <!--bizim-->
@@ -64,7 +72,7 @@ body{overflow: hidden;background-color: #151515;}
 					<textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?=isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
 				</div>
 				<div class="col-md-12 pt-1">
-					<a class="button color btn btn-info btn-sm" id="briefcase_send" style="<?= ($view_settings&& $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><i class="fas fa-save"></i> <span>Save</span></a>
+					<a class="button color btn btn-sm text-white border" id="briefcase_send" style="<?= ($view_settings&& $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;"><i class="fas fa-save"></i> <span>Save</span></a>
 				</div>
 				<div class="col-md-12">
 					<div class="contentHeader p-0 pt-2 pb-2" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'color:'.$view_settings[0]->stickyIcon_color:''?>;">Previous Notes</div>
@@ -82,7 +90,7 @@ body{overflow: hidden;background-color: #151515;}
 						</ul>
 <?php
 					else:?>
-						<div class="alert alert-info mb-1 mt-1 p-1" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;">No previous notes</div>
+						<div class="mb-1 mt-1 p-1 text-white" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:''?>;">No previous notes</div>
 <?php
 					endif;?>
 					</div>
@@ -146,7 +154,7 @@ body{overflow: hidden;background-color: #151515;}
 					<li data-type="resourcesSticky" data-type2="off"><?=(isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text))? $session->toolbox_resource_text: 'Resources'?></li>
 					<li data-type="questionsSticky" data-type2="off"><?=(isset($session->toolbox_question_text) && !empty($session->toolbox_question_text))? $session->toolbox_question_text: 'Questions'?></li>
 					<li data-type="notesSticky" data-type2="off"><?=(isset($session->toolbox_note_text) && !empty($session->toolbox_note_text))? $session->toolbox_note_text: 'Take Notes'?>  </li>
-					<li data-type="adminChatSticky" data-type2="off">Ask a Rep</li>
+					<li data-type="adminChatSticky" data-type2="off"><?=(isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text))? $session->toolbox_askrep_text: 'Ask a rep'?></li>
 				</ul>
 			</div>
 		</div>
@@ -180,21 +188,21 @@ body{overflow: hidden;background-color: #151515;}
 				<div style="text-align: center; display: flex; " id="questions_section">
 					<div class="input-group p-0">
 						<div class="input-group-prepend">
-							<span class="input-group-text btn" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
+							<span class="input-group-text btn" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
 						</div>
 						<input type="text" id="questionText" class="form-control" placeholder="Enter Question" value="">
 						<div class="input-group-append">
-							<span class="btn sendQuestionBtn css-color text-white p-1"><i class="fas fa-paper-plane"></i> Send</span>
+							<span class="btn sendQuestionBtn text-white p-1" style="<?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'':''?>"><i class="fas fa-paper-plane"></i> Send</span>
 						</div>
 					</div>
 				</div>
 				<div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/happy.png" title="Happy" class="btn" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/sad.png" title="Sad" class="btn" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/laughing.png" title="Laughing" class="btn" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_up.png" title="Thumbs Up" class="btn" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/thumbs_down.png" title="Thumbs Down" class="btn" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/emoji/clapping.png" title="Clapping" class="btn" id="questions_clapping"  data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/happy.png" title="Happy" class="btn" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/sad.png" title="Sad" class="btn" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/laughing.png" title="Laughing" class="btn" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/thumbs_up.png" title="Thumbs Up" class="btn" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/thumbs_down.png" title="Thumbs Down" class="btn" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+					<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/clapping.png" title="Clapping" class="btn" id="questions_clapping"  data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
 				</div>
 				<span id='error_questions' style='color:red;'></span>
 				<span id='success_questions' style='color:green;'></span>
@@ -280,7 +288,7 @@ body{overflow: hidden;background-color: #151515;}
 						</div>
 					</div>
 					<div class="col-md-3 float-right text-right">
-					<button class="float-right btn btn-success askARepSendBtn" id="askARepSendBtn" style="margin: 0; padding: 15px 7px;" id=""><span>Send</span></button>
+					<button class="float-right btn askARepSendBtn text-white" id="askARepSendBtn" style="margin: 0; padding: 15px 7px; <?= ($view_settings)?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'btn-primary':'btn-primary'?>" id=""><span>Send</span></button>
 					</div>
 				</div>
 
@@ -310,8 +318,9 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 </style>
 <!--<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/dRp5VbWCQ3A?playlist=dRp5VbWCQ3A&controls=1&autoplay=1&mute=1&loop=1"></iframe>-->
 
-<script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/js/sponsor/sessions.js?v=<?=rand()?>"></script>
-<script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/js/common/sessions/attendee_to_admin_chat.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/sponsor/sessions.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/attendee_to_admin_chat.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/custom_full_screen.js?v=<?=rand()?>"></script>
 
 <script type="application/javascript">
 	let projectId = "<?=$this->project->id?>";
@@ -339,7 +348,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading notes...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 			imageAlt: 'Loading...',
 			showCancelButton: false,
@@ -373,6 +382,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 				}
 			});
 	}
+
+	//Load div when Iframe is ready;
+	$('#sessionIframe').on('load', function(){
+		$('#embededVideo').css('display', 'block');
+	})
 
 	$(function (){
 		ask_a_rep();
@@ -468,7 +482,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Posting your notes...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 				imageAlt: 'Loading...',
 				showCancelButton: false,
@@ -507,11 +521,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		});
 
 		socket.on('ycl_launch_poll', (data)=>{
-
+			$('#voteBtn').html('<i class="fas fa-vote-yea"></i> Vote')
 			if(data.session_id == sessionId) {
 
 				$('#pollId').val(data.id);
-				$('#pollQuestion').text(data.poll_question);
+				$('#pollQuestion').html(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
 
 				$('#pllOptions').html('');
@@ -531,28 +545,36 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					keyboard: false
 				});
 
-				var timeleft = 10;
-				var downloadTimer = setInterval(function(){
+			}
+
+			markLaunchedPoll(data.id)
+		});
+
+		socket.on('start_poll_timer_notification', (data)=> {
+			console.log(data);
+			if($('#pollId').val() == data.id) {
+				var timeleft = data.timer;
+				var downloadTimer = setInterval(function () {
 					play_music();
-					if(timeleft <= 0) {
+					if (timeleft <= 0) {
 						stop_music();
 						clearInterval(downloadTimer);
 						$('#pollModal').modal('hide');
 
 						if (data.show_result == 1) {// Show result automatically
-							$.get(project_url+"/sessions/getPollResultAjax/"+data.id, function (results) {
+							$.get(project_url + "/sessions/getPollResultAjax/" + data.id, function (results) {
 								results = JSON.parse(results);
 
 								$('#pollResults').html('');
 								$('#pollResultModalLabel').text(data.poll_question);
 								$.each(results, function (poll_id, option_details) {
 									$('#pollResults').append('' +
-											'<div class="form-group">' +
-											'  <label class="form-check-label">'+option_details.option_name+'</label>' +
-											'  <div class="progress" style="height: 25px;">' +
-											'    <div class="progress-bar" role="progressbar" style="width: '+option_details.vote_percentage+'%;" aria-valuenow="'+option_details.vote_percentage+'" aria-valuemin="0" aria-valuemax="100">'+option_details.vote_percentage+'%</div>' +
-											'  </div>' +
-											'</div>');
+										'<div class="form-group">' +
+										'  <label class="form-check-label">' + option_details.option_name + '</label>' +
+										'  <div class="progress" style="height: 25px;">' +
+										'    <div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage + '%;" aria-valuenow="' + option_details.vote_percentage + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage + '%</div>' +
+										'  </div>' +
+										'</div>');
 								});
 
 								$('#pollResultModal').modal({
@@ -561,37 +583,34 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 								});
 
 								var resultTimeleft = 5;
-								var resultTimer = setInterval(function(){
-									if(resultTimeleft <= 0) {
+								var resultTimer = setInterval(function () {
+									if (resultTimeleft <= 0) {
 										stop_music();
 										clearInterval(resultTimer);
 										$('#pollResultModal').modal('hide');
 									} else {
-										$('#howMuchSecondsLeftResult').text(resultTimeleft);
+										$('#howMuchSecondsLeftResult').text(resultTimeleft + "  seconds left");
 									}
 									resultTimeleft -= 1;
 								}, 1000);
 							});
 						}
 					} else {
-						$('#howMuchSecondsLeft').text(timeleft);
+						$('#howMuchSecondsLeft').text(timeleft + "  seconds left");
 					}
 					timeleft -= 1;
 				}, 1000);
-
 			}
-
-			markLaunchedPoll(data.id)
 		});
 
 		socket.on('ycl_launch_poll_result', (data)=>{
 
 			if(data.session_id == sessionId) {
-				$('#pollResultModalLabel').text(data.poll_question);
+				$('#pollResultModalLabel').html(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
 					$('#pollResults').html('');
-					console.log(results);
+					// console.log(results);
 
 					if(results.poll_type === 'poll' || results.poll_type === 'presurvey') {
 						$.each(results.poll, function (poll_id, option_details) {
@@ -604,6 +623,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 								'  </div>' +
 								'</div>');
 						});
+						$('#legend').html('');
+
 					}else {
 						$.each(results.poll, function (poll_id, option_details) {
 							// console.log(option_details);
@@ -627,6 +648,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 								'	</div> '
 							);
 						});
+
+						$('#legend').html(
+							'<span class="mr-4"><i style="width:20px; height:20px;" class="fa-solid fa-square bg-info text-info d-inline-block "></i> Presurvey</span>' +
+							'<span><i  style="width:20px; height:20px;" class="fa-solid fa-square bg-primary text-primary d-inline-block "></i> Assessment</span>'
+						)
 					}
 
 					$('#pollResultModal').modal({
@@ -642,10 +668,10 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					}
 					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
 						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
-							console.log('tdsadsa');
+							// console.log('tdsadsa');
 							//
-							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>');
-							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>');
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
 
 							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
 							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
@@ -660,6 +686,12 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 				$('#pollResultModal').modal('hide');
 			}
 		});
+	});
+
+	socket.on('poll_close_notification', (data)=>{
+		if(data.session_id == sessionId) {
+			$('#pollModal').modal('hide');
+		}
 	});
 
 	function markLaunchedPoll(poll_id){
@@ -718,6 +750,13 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			$('#resourcesStickyMenu').css('display','block')
 		}
 
+		if(header_askrep == 0){
+			$('#askARepStickyMenu').css('display','none')
+		}else{
+			$('#askARepStickyMenu').css('display','block')
+		}
+
+
 		if(right_sticky_resources == 0){
 			$('#resourcesSticky').css('display','none')
 			$('li[data-type][data-type="resourcesSticky"]').hide();
@@ -737,6 +776,13 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			$('li[data-type][data-type="notesSticky"]').hide();
 		}else{
 			$('#notesSticky').css('display','block')
+		}
+
+		if(right_sticky_askrep == 0){
+			$('#askARepSticky').css('display','none')
+			$('li[data-type][data-type="askARepSticky"]').hide();
+		}else{
+			$('#askARepSticky').css('display','block')
 		}
 
 		if(claim_credit_link !== ''){

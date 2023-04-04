@@ -4,9 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		body{overflow: hidden;}
 	</style>
 
-	<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/eposters.css?v=<?=rand()?>" rel="stylesheet">
+	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/eposters.css?v=<?=rand()?>" rel="stylesheet">
 
-	<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/sessions/sessions_listing_background.jpg" style="z-index: -1;">
+	<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg" style="z-index: -1;">
 
 	<div class="clearfix" style="margin-top: 77px;"></div>
 
@@ -41,7 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			if ($eposter->prize) :?>
 		<div class="tool-btns prize hide">
 			<a><img data-toggle="tooltip" data-placement="left" title="<?php echo (($eposter->prize != 'hot topic') ? 'Won ' : '' ).ucwords($eposter->prize);?>" class="img-fluid img-prize-detail img-thumbnail"
-				  		 src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/eposters/thumb/<?=str_replace(' ', '_', $eposter->prize).'.png';?>"
+				  		 src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/eposters/thumb/<?=str_replace(' ', '_', $eposter->prize).'.png';?>"
 						 onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/default.jpg'"></a>
 		</div>
 <?php
@@ -108,7 +108,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						Swal.fire({
 							title: 'Please Wait',
 							text: 'Checking credits...',
-							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 							imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 							imageAlt: 'Loading...',
 							showCancelButton: false,
@@ -172,7 +172,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				Swal.fire({
 					title: 'Please Wait',
 					text: 'Loading notes...',
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 					imageAlt: 'Loading...',
 					showCancelButton: false,
@@ -228,7 +228,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				Swal.fire({
 					title: 'Please Wait',
 					text: 'Loading comments...',
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 					imageAlt: 'Loading...',
 					showCancelButton: false,

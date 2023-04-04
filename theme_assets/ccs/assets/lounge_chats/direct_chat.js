@@ -40,7 +40,7 @@ $(function () {
 						'  <span class="direct-chat-name float-right">'+lounge_user_name+'</span>\n' +
 						'  <span class="direct-chat-timestamp float-left">'+moment.tz(chat.date_time).format("MMMM D h:m A")+'</span>\n' +
 						' </div>\n' +
-						' <img class="direct-chat-img" src="'+ycl_root+'/ycl_assets/images/'+lounge_user_photo+'" onerror="this.onerror=null;this.src=`'+ycl_root+'/ycl_assets/images/person_dp_placeholder.png`;" alt="DP Image">\n' +
+						''+ycl_root+' <img class="direct-chat-img" src="/ycl_assets/images" onerror="this.onerror=null;this.src=`'+lounge_user_photo+''+ycl_root+'/ycl_assets/images/person_dp_placeholder.png`;" alt="DP Image">\n' +
 						' <div class="direct-chat-text">'+chat.message+'</div>\n' +
 						'</div>');
 				}else{
@@ -102,7 +102,7 @@ $(function () {
 						'  <span class="direct-chat-name float-right">'+lounge_user_name+'</span>\n' +
 						'  <span class="direct-chat-timestamp float-left">'+moment.tz(project_timezone).format("MMMM D h:m A")+'</span>\n' +
 						' </div>\n' +
-						' <img class="direct-chat-img" src="'+ycl_root+'/ycl_assets/images/'+lounge_user_photo+'" onerror="this.onerror=null;this.src=`'+ycl_root+'/ycl_assets/images/person_dp_placeholder.png`;" alt="DP Image">\n' +
+						''+ycl_root+' <img class="direct-chat-img" src="/ycl_assets/images" onerror="this.onerror=null;this.src=`'+lounge_user_photo+''+ycl_root+'/ycl_assets/images/person_dp_placeholder.png`;" alt="DP Image">\n' +
 						' <div class="direct-chat-text">'+message+'</div>\n' +
 						'</div>');
 

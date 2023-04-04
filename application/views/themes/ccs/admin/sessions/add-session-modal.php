@@ -194,7 +194,7 @@
 									<div class="form-group">
 										<label for="customFile">Sponsor Logo</label>
 										<div class="custom-file">
-											<input type="file" class="custom-file-input" id="sessionSponsorLogo" name="sessionSponsorLogo">
+											<input type="file" class="custom-file-input" id="sessionSponsorLogo" name="sessionSponsorLogo" previewImage="currentSponsorLogo">
 											<label class="custom-file-label" for="sessionSponsorLogo">Choose file</label>
 										</div>
 										<div class="mt-2">
@@ -209,6 +209,27 @@
 										<div class="mt-2">
 											<input type="hidden" name="isSponsorLogoRemoved" id="isSponsorLogoRemoved" value="0">
 											<a class="btn btn-danger removeSponsorLogo"> Remove</a>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="customFile">Session Logo</label>
+										<div class="custom-file">
+											<input type="file" class="custom-file-input" id="sessionLogo" name="sessionLogo" previewImage="currentSessionLogo">
+											<label class="custom-file-label" for="sessionLogo">Choose file</label>
+										</div>
+										<div class="mt-2">
+											<label for="sessionLogoWidth"> Width: </label><input type="text" name="sessionLogoWidth" id="sessionLogoWidth" placeholder="100px">
+											<label for="sessionLogoHeight"> Height: </label><input type="text" name="sessionLogoHeight" id="sessionLogoHeight" placeholder="50px">
+										</div>
+									</div>
+									<div class="form-group" id="currentSessionLogoDiv" style="display: none;">
+										<label for="currentSessionLogoDiv"><small>Current Session Logo</small></label>
+										<br>
+										<img id="currentSessionLogo" src="" width="200px">
+										<div class="mt-2">
+											<input type="hidden" name="isSessionLogoRemoved" id="isSessionLogoRemoved" value="0">
+											<a class="btn btn-danger removeSessionLogo"> Remove</a>
 										</div>
 									</div>
 
@@ -305,6 +326,13 @@
 
 								<div class="tab-pane fade" id="sessionSettingsTabContents" role="tabpanel" aria-labelledby="sessionSettingsTab">
 									<div class="form-group">
+										<label>Session Color Preset</label><br>
+										<div class="custom-control custom-switch mb-5">
+											<select name="session_color_preset" class="form-control bg-white"  id="sessionColorPreset">
+												<option > Choose Color Preset for this Session</option>
+											</select>
+										</div>
+
 										<label>Header Settings</label><br>
 										<div class="custom-control custom-switch">
 											<input name="header_toolbox" type="checkbox" class="custom-control-input headerToolboxSwitch"  id="headerToolboxSwitch">
@@ -328,6 +356,27 @@
 										<div class="custom-control custom-switch">
 											<input name="header_askrep" type="checkbox" class="custom-control-input headerQuestion"  id="headerAskRep">
 											<label class="custom-control-label" for="headerAskRep">Header Ask a Rep</label>
+										</div>
+
+										<div class="card mb-5 mt-4" >
+											<div class="ribbon-wrapper ribbon-sm" title="Newly added functions">
+												<div class="ribbon bg-danger">
+													New
+												</div>
+											</div>
+											<div class="card-header">Custom Header Buttons </div>
+											<div class="input-group p-2">
+												<input type="text" name="button1_text" id="button1_text" class="input-group-append" placeholder="Google" aria-label="Notes" aria-describedby="basic-addon1">
+												<input type="text" name="button1_link" id="button1_link" class="form-control" placeholder="https://www.google.com" aria-label="Notes" aria-describedby="basic-addon1">
+											</div>
+											<div class="input-group p-2">
+												<input type="text" name="button2_text" id="button2_text" class="input-group-append" placeholder="Google" aria-label="Notes" aria-describedby="basic-addon1">
+												<input type="text" name="button2_link" id="button2_link" class="form-control" placeholder="https://www.google.com" aria-label="Notes" aria-describedby="basic-addon1">
+											</div>
+											<div class="input-group p-2">
+												<input type="text" name="button3_text" id="button3_text" class="input-group-append" placeholder="Google" aria-label="Notes" aria-describedby="basic-addon1">
+												<input type="text" name="button3_link" id="button3_link" class="form-control" placeholder="https://www.google.com" aria-label="Notes" aria-describedby="basic-addon1">
+											</div>
 										</div>
 									</div>
 
@@ -600,12 +649,23 @@
 			$('#currentSponsorLogoDiv').hide();
 		})
 
+		$('.removeSessionLogo').on('click', function(){
+			$('#isSessionLogoRemoved').val('1');
+			$('#currentSessionLogoDiv').hide();
+		})
+
 		$('#sessionSponsorLogo').on('change', function(){
 			$('#isSponsorLogoRemoved').val('0');
 			previewUpload(this);
 			$('#currentSponsorLogoDiv').show();
-
 		})
+
+		$('#sessionLogo').on('change', function(){
+			$('#isSessionLogoRemoved').val('0');
+			previewUpload(this);
+			$('#currentSessionLogoDiv').show();
+		})
+
 	});
 
 	$('#logo, #banner').on('change',function(){
@@ -634,11 +694,11 @@
 			return false;
 		}
 
-		if(!$.isNumeric($('input[name="sessionCredits"]').val()))
-		{
-			toastr.warning('Credit must be a positive number!')
-			return false;
-		}
+		// if(!$.isNumeric($('input[name="sessionCredits"]').val()))
+		// {
+		// 	toastr.warning('Credit must be a positive number!')
+		// 	return false;
+		// }
 
 		let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
 		Swal.fire({
@@ -663,15 +723,17 @@
 	});
 
 
-	function previewUpload(input){
-		if (input.files && input.files[0]) {
+	function previewUpload(that){
+		console.log(that)
+		console.log(that.getAttribute('previewImage'))
+		if (that.files && that.files[0]) {
 			var reader = new FileReader();
 
 			reader.onload = function (e) {
-				$('#currentSponsorLogo').attr('src', e.target.result);
+				$('#'+that.getAttribute('previewImage')).attr('src', e.target.result);
 			}
 
-			reader.readAsDataURL(input.files[0]);
+			reader.readAsDataURL(that.files[0]);
 		}
 	}
 
@@ -680,7 +742,7 @@
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Adding the session...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 			imageAlt: 'Loading...',
 			showCancelButton: false,
@@ -726,7 +788,7 @@
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Updating the session...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 			imageAlt: 'Loading...',
 			showCancelButton: false,
@@ -763,6 +825,12 @@
 						$('#currentSponsorLogoDiv').show();
 					}else
 						$('#currentSponsorLogoDiv').hide();
+
+					if(data.session.session_logo  !== '') {
+						$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/' + data.session.session_logo);
+						$('#currentSessionLogoDiv').show();
+					}else
+						$('#currentSessionLogoDiv').hide();
 
 					listSessions();
 					toastr.success('Session updated');

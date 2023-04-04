@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <form class="form-change-password">
 
 	<div class="mb-4">
-		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="max-width: 100%;max-height: 100%;">
+		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="max-width: 100%;max-height: 100%;">
 	</div>
 
 	<h1 class="h3 mb-3 font-weight-normal">Change Password</h1>

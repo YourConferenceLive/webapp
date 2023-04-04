@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //exit;
 ?>
 
-<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/admin_booth.css?v=5" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/admin_booth.css?v=5" rel="stylesheet">
 
 <!-- Full Calendar-->
 <link rel="stylesheet" href="<?=ycl_root?>/vendor_frontend/adminlte/plugins/fullcalendar/main.css">
@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <?php
-$cover_photo_url='theme_assets/ccs/booth_uploads/'.$booth->cover_photo;
+$cover_photo_url='theme_assets/booth_uploads/'.$booth->cover_photo;
 
 if(!file_exists($cover_photo_url)){
 	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$booth->cover_photo;
@@ -36,7 +36,7 @@ if(!file_exists($cover_photo_url)){
 <div class="main">
 			<div class="content">
 				<div class="middle">
-					<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$booth->tv_banner?>" id="tv_banner">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->tv_banner?>" id="tv_banner">
 					<div class="change_tv_url">
 						<input type="text" data-type="main_video_url" class="url" value='<?=$booth->main_video_url?>' placeholder="url"/>
 						<input type="button" value="Save" class="save_booth_url">
@@ -58,7 +58,7 @@ if(!file_exists($cover_photo_url)){
 					</div>
 				</div>
 				<div class="left">
-					<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$booth->left_banner?>" id="left_banner">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_banner?>" id="left_banner">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_banner" />
 					<div class="update_image_url">
 						<input type="text" data-type="left_banner_url" class="url" value='<?=$booth->left_banner_url?>' placeholder="image link"/>
@@ -66,7 +66,7 @@ if(!file_exists($cover_photo_url)){
 					</div>
 				</div>
 				<div class="right">
-					<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$booth->right_banner?>" id="right_banner">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_banner?>" id="right_banner">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_banner" />
 					<div class="update_image_url">
 						<input type="text" data-type="right_banner_url" class="url" value='<?=$booth->right_banner_url?>' placeholder="image link"/>
@@ -76,7 +76,7 @@ if(!file_exists($cover_photo_url)){
 			</div>
 			<div class="tables">
 				<div class="table_left">
-					<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$booth->left_table?>" id="left_table">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->left_table?>" id="left_table">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="left_table" />
 					<div class="update_image_url">
 						<input type="text" data-type="left_table_url" class="url" value='<?=$booth->left_table_url?>' placeholder="image link"/>
@@ -84,7 +84,7 @@ if(!file_exists($cover_photo_url)){
 					</div>
 				</div>
 				<div class="table_right">
-					<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$booth->right_table?>" id="right_table">
+					<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$booth->right_table?>" id="right_table">
 					<input name="file" type="file" accept=".jpg,.png,.jpeg" class="upload_photo" data-type="right_table" />
 					<div class="update_image_url">
 						<input type="text" data-type="right_table_url" class="url" value='<?=$booth->right_table_url?>' placeholder="image link"/>
@@ -522,4 +522,4 @@ if(!file_exists($cover_photo_url)){
 
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/js/sponsor/sponsor_admin.js?v=5"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/sponsor/sponsor_admin.js?v=5"></script>

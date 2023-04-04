@@ -50,4 +50,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 </div>
-<script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/js/sponsor/video-chat.js?v=2"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/sponsor/video-chat.js?v=2"></script>

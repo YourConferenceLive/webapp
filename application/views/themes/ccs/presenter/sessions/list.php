@@ -48,10 +48,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Day</th>
 									<th>Start Time</th>
 									<th>End Time</th>
-									<th>Duration</th>
-									<th>Name</th>
+									<!--<th>Duration</th>-->
+									<th style="width:120px">Session Photo</th>
+									<th style="width:400px">Session Title</th>
+									<th>Presenter(s)</th>
 									<th>Zoom</th>
 									<th>Session Presentation</th>
+									<th>Options</th>
 								</tr>
 								</thead>
 								<tbody>
@@ -61,8 +64,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<td><?=date("F jS (l)", strtotime($session->start_date_time))?></td>
 										<td><?=date("g:iA", strtotime($session->start_date_time))?> EST</td>
 										<td><?=date("g:iA", strtotime($session->end_date_time))?> EST</td>
-										<td><?=round(abs(strtotime($session->end_date_time) - strtotime($session->start_date_time)) / 60,2). " Minutes"?></td>
+										<!--<td><?/*=round(abs(strtotime($session->end_date_time) - strtotime($session->start_date_time)) / 60,2). " Minutes"*/?></td>-->
+										<td style="padding-left:0; padding-right:0; "><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->thumbnail?>" style="width:120px; max-height: 200px; padding:0"></td>
 										<td><?=$session->name?></td>
+										<td>
+											<?php foreach($session->presenters as $presenter): ?>
+												<?=$presenter->name." ". $presenter->surname?><br>
+											<?php endforeach ?>
+										</td>
 										<td>
 											<a href="<?=$session->zoom_link?>" target="_blank" <?=($session->zoom_link == null || $session->zoom_link = '')?'onclick="toastr.warning(`Zoom is not configured yet.`); return false;"':''?>>
 												<button class="btn btn-sm btn-info"><i class="fas fa-video"></i> Join Zoom</button>
@@ -76,6 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<button class="btn btn-sm btn-primary"><i class="fas fa-tools"></i> Toolbox Only</button>
 											</a>-->
 										</td>
+										<td><a href="<?=$this->project_url.'/presenter/sessions/view_poll/'.$session->id?>" class="btn btn-info btn-sm"> View Poll</a></td>
 									</tr>
 								<?php endforeach; ?>
 								</tbody>

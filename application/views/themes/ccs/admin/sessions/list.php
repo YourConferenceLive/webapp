@@ -32,7 +32,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				<div class="col-12">
 					<div class="card">
 						<div class="card-header">
-							<h3 class="card-title">All sessions</h3>
+							<h3 class="card-title">
+								<select class="form-control" id="session_list_type">
+									<option value="all_sessions" url="getAllJson">Sessions</option>
+									<option value="today_sessions" url="getAllToday">Today Sessions</option>
+										<option value="tomorrow_sessions" url="getAllTomorrow">Tomorrow Sessions</option>
+									<option value="archived_sessions" url="getAllArchived">Archived Sessions</option>
+								</select>
+							</h3>
 							<button class="add-session-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
 						</div>
 						<!-- /.card-header -->
@@ -43,14 +50,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<th>Session ID</th>
 										<th>Day</th>
 										<th>Start Time</th>
+										<th>End Time</th>
 										<th>Name</th>
 										<th>People</th>
 										<th>Credits</th>
-										<th>End Time</th>
 										<th>Notes</th>
 										<th>Actions</th>
 										<th>Manage</th>
 										<th>Export</th>
+										<th>JSON(s)</th>
 									</tr>
 								</thead>
 								<tbody id="sessionsTableBody">
@@ -87,7 +95,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 <script>
 	$(function () {
 
-		listSessions();
+			// getAllJson
+		let session_list_type = $('#session_list_type').find(':selected').val();
+		let getFrom = $('#session_list_type').attr('url');
+		// console.log(session_list_type);return false;
+	
+		(getFrom == undefined)?getFrom="getAllJson":'';
+		listSessions(getFrom);
+		
+		$('#session_list_type').on('change', function(){
+			getFrom =  $('#session_list_type').find(':selected').attr('url')
+			console.log(getFrom)
+			listSessions(getFrom);
+		})
 
 		$('#sessionsTable').DataTable({
 			"paging": true,
@@ -101,6 +121,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 		$('.add-session-btn').on('click', function () {
 
+			getColorPreset();
 			$('#addSessionForm')[0].reset();
 			$('#currentPhotoDiv').hide();
 			$('#currentSponsorLogoDiv').hide();
@@ -119,16 +140,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				backdrop: 'static',
 				keyboard: false
 			});
+
+
 		});
 
 		$('#sessionsTable').on('click', '.manageSession', function () {
 
 			let session_id = $(this).attr('session-id');
-
+			getColorPreset();
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading session data...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 				imageAlt: 'Loading...',
 				showCancelButton: false,
@@ -175,6 +198,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					$('#currentSponsorLogoDiv').hide();
 				}
 
+				$('#sessionSessionLogo').val('');
+				if ((session.session_logo) !== "" ) {
+					$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/'+session.session_logo);
+					$('#currentSessionLogoDiv').show();
+				}else{
+					$('#currentSessionLogoDiv').hide();
+				}
+
+				$('#sponsorLogoWidth').val(session.sponsor_logo_width);
+				$('#sponsorLogoHeight').val(session.sponsor_logo_height);
+				$('#sessionLogoHeight').val(session.session_logo_width);
+				$('#sessionLogoHeight').val(session.session_logo_height);
+
 				$("#sessionAgenda").summernote("code", session.agenda);
 				$('#millicastStream').val(session.millicast_stream);
 				$('#zoomLink').val(session.zoom_link);
@@ -190,6 +226,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#ask_a_rep_text').val(session.toolbox_askrep_text);
 				$('#sessionNotes').val(session.notes);
 
+				$('#button1_text').val(session.button1_text);
+				$('#button1_link').val(session.button1_link);
+				$('#button2_text').val(session.button2_text);
+				$('#button2_link').val(session.button2_link);
+				$('#button3_text').val(session.button3_text);
+				$('#button3_link').val(session.button3_link);
+
+				$('#sessionColorPreset').val(session.attendee_settings_id);
 				// Moderators
 				$('select[name="sessionModerators[]"] option').prop('selected', false);
 				$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
@@ -298,7 +342,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					Swal.fire({
 						title: 'Please Wait',
 						text: 'Removing the session...',
-						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 						imageAlt: 'Loading...',
 						showCancelButton: false,
@@ -310,7 +354,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						response = JSON.parse(response);
 
 						if (response.status == 'success') {
-							listSessions();
+							listSessions(getFrom);
 							toastr.success(session_name+" has been removed!");
 						}else{
 							Swal.fire(
@@ -324,29 +368,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			});
 		});
 
-		$('#sessionsTable').on('click', '.openPoll', function () {
-			socket.emit('openPoll');
-		});
-
-		$('#sessionsTable').on('click', '.closePoll', function () {
-			socket.emit('closePoll');
-		});
-
-		$('#sessionsTable').on('click', '.openResult', function () {
-			socket.emit('openResult');
-		});
-
-		$('#sessionsTable').on('click', '.closeResult', function () {
-			socket.emit('closeResult');
-		});
+		// $('#sessionsTable').on('click', '.openPoll', function () {
+		// 	socket.emit('openPoll');
+		// });
+		//
+		// $('#sessionsTable').on('click', '.closePoll', function () {
+		// 	socket.emit('closePoll');
+		// });
+		//
+		// $('#sessionsTable').on('click', '.openResult', function () {
+		// 	socket.emit('openResult');
+		// });
+		//
+		// $('#sessionsTable').on('click', '.closeResult', function () {
+		// 	socket.emit('closeResult');
+		// });
 	});
 
-	function listSessions()
+	function listSessions(getFrom = null)
 	{
+		if(getFrom == null)
+		getFrom = "getAllJson";
+
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading sessions data...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 			imageAlt: 'Loading...',
 			showCancelButton: false,
@@ -354,7 +401,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			allowOutsideClick: false
 		});
 
-		$.get(project_admin_url+"/sessions/getAllJson", function (sessions) {
+		$.get(project_admin_url+"/sessions/"+ getFrom, function (sessions) {
 			sessions = JSON.parse(sessions);
 
 			$('#sessionsTableBody').html('');
@@ -450,6 +497,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
+					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
+					'	</td>' +
+					'	<td>' +
 					'		'+session.name+
 					'	</td>' +
 					'	<td>' +
@@ -457,9 +507,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'	</td>' +
 					'	<td>' +
 					'		'+session.credits+
-					'	</td>' +
-					'	<td>' +
-					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
 					'		'+session.notes+
@@ -486,8 +533,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'<td>' +
 					'		<a href="'+project_admin_url+'/sessions/flash_report/'+session.id+'" style="width:80px; height:50px" class="flashReport btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Flash Report</a><br>' +
 					'		<a href="'+project_admin_url+'/sessions/polling_report/'+session.id+'" style="width:80px; height:50px" class="pollingReport btn btn-sm btn-success m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Polling Report</a><br>' +
-					'		<a  style="width:80px; height:50px" class="pollingChart btn btn-sm btn-warning m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Ask a Rep - Report</a><br>' +
+					'		<a  href="" style="width:80px; height:50px" class="askARepBtn btn btn-sm btn-warning m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Ask a Rep - Report</a><br>' +
 					'		<a href="'+project_admin_url+'/sessions/attendee_question_report/'+session.id+'" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Question Report</a><br>' +
+					'</td>'+
+					'<td>'+
+					'		<a href="" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Send Json </a><br>' +
+					'		<a href="'+project_admin_url+'/sessions/view_json/'+session.id+'" target="_blank" style="width:80px; height:50px" class="Question btn btn-sm btn-secondary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> View Json </a><br>' +
+					'		<a href="" style="width:80px; height:50px" class="clearJsonBtn btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Clear Json </a><br>' +
+					'		<a href="" style="width:80px; height:50px" class="Question btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Delete Session </a><br>' +
+
 					'</td>'+
 					'</tr>'
 				);
@@ -512,6 +566,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	}
 
 	$(function(){
+
+		$('#sessionsTableBody').on('click', '.clearJsonBtn', function(e){
+			e.preventDefault();
+			let session_id = $(this).attr('session-id')
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, clear it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
+						function(response){
+							console.log(response);
+							if(response.status == 'success'){
+								Swal.fire(
+									'Success',
+									'Json Cleared',
+									'success'
+								)
+							}
+						},'json')
+				}
+			})
+		});
 		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
 			Swal.fire({
 				title: 'Are you sure?',
@@ -558,4 +640,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				})
 		})
 	})
+
+	function getColorPreset(){
+		$.post('<?= $this->project_url?>/admin/settings/getColorPresets/',
+			{}, function(data){
+
+			data = JSON.parse(data);
+				$('#sessionColorPreset').html(
+					'<option value="0">Select Color Preset for this Session</option>'
+				);
+				$.each(data.data, function(i, val){
+					console.log(val);
+					$('#sessionColorPreset').append(
+						'<option value="'+val.id+'">Preset ('+val.id+') : '+val.name+'</option>'
+					)
+				})
+			})
+	}
 </script>

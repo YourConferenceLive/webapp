@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	#presentationRow,
 	#presentationColumn
 	{
-		height: 100% !important;
+		height: calc(100% - 10px) !important;
 		overflow: hidden;
 	}
 
@@ -33,9 +33,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		margin-left: -50px; /* margin is -0.5 * dimension */
 		margin-top: -25px;
 	}
+
+	.direct-chat-text{
+		background-color: white !important;
+		color:black !important;
+		border-color: white !important;
+
+	}
+
+	.show-toolbox{
+		background-color: <?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?> !important;
+		right: -140px !important;
+		transition: 1s !important;
+	}
+	.show-toolbox:hover{
+		right: 0 !important;
+		transition: 1s !important;
+	}
+	.dark-mode .nav-tabs .nav-item.show .nav-link, .dark-mode .nav-tabs .nav-link.active{
+		border-color: white !important;
+	}
 </style>
 
-
+<?php //print_r($settings);exit;?>
 <div id="presentationEmbed">
 	<div id="presentationRow" class="row m-0 p-0">
 <!--		<span style="position: absolute;color: white;z-index: 2;left: 15px;"><a class="btn btn-sm btn-info mt-2" href="<?/*=$session->zoom_link*/?>" target="_blank" <?/*=($session->zoom_link == null || $session->zoom_link = '')?'onclick="toastr.warning(`Zoom is not configured yet.`); return false;"':''*/?>><i class="fas fa-video"></i> Join Zoom</a></span>-->
@@ -52,22 +72,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php endif; ?>
 
 			</div>
-			<div class="ml-2 col-2 show-toolbox" style="z-index:1; position:fixed; right:0px; bottom:57px; height:40px; background-color:#343a40"  title="minimize">Toolbox <span class="float-right mr-2" style="cursor:pointer"><i class="fas fa-window-maximize"></i></span></div>
-			<div class="col-2 m-0 p-0 tool-box-section" >
+			<div class="ml-2 col-2 show-toolbox" style="width:229px; z-index:1; position:fixed; right:0px; bottom:57px; height:40px; background-color:#343a40"  title="minimize">Toolbox <span class="float-right mr-2" style="cursor:pointer"><i class="fas fa-window-maximize"></i></span></div>
+			<div class="col-2 m-0 p-0 tool-box-section" style="display:none; background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>" >
 				<div class="ml-2 hide-toolbox">Toolbox <span class="float-right mr-2" style="cursor:pointer" title="minimize"><i class="fas fa-window-minimize"></i></span></div>
 				<!-- Host Chat -->
-				<div class="card card-primary card-outline card-tabs" style="height: 45vh;">
-					<div class="card-header p-0 pt-1 border-bottom-0">
-						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-							<li class="nav-item">
-								<a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true"><i class="fas fa-user-tie"></i> Host Chat</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false"><i class="fas fa-users"></i> Attendee Chat</a>
+				<div class="card card-primary card-tabs shadow-none" style="height: 45vh;">
+					<div class="card-header p-0 pt-1 border-bottom-0" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">
+						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist" >
+
+							<li class="nav-item" >
+								<a class="nav-link text-white" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>"><i class="fas fa-user-tie"></i> Host Chat</a>
 							</li>
 						</ul>
 					</div>
-					<div class="card-body p-0">
+					<div class="card-body p-0 bg-white text-black	">
 						<div class="tab-content" id="custom-tabs-three-tabContent" style="height: 88%;">
 
 							<!-- Host Chat Tab -->
@@ -75,7 +93,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 								<!-- Conversations are loaded here -->
 								<div id="hostChatDiv" class="direct-chat-messages" style="height: 100% !important;">
-									<!-- Automatically filled by the JS:loadAllHostChats() (theme_assets/ccs/{theme_name}/js/presenter/sessions/host_chat.js) -->
+									<!-- Automatically filled by the JS:loadAllHostChats() (theme_assets/{theme_name}/js/presenter/sessions/host_chat.js) -->
 								</div>
 
 
@@ -84,167 +102,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<!-- /.direct-chat-pane -->
 
 								<div class="input-group" style="position: absolute;bottom: 5px">
-									<input id="hostChatNewMessage" type="text" placeholder="Type Message... (Host Chat)" class="form-control">
-									<span class="input-group-append">
-											<button id="sendHostChatBtn" type="button" class="btn btn-primary">Send</button>
-										</span>
+									<div class="input-group-prepend">
+										<span class="input-group-text btn" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
+									</div>
+									<input id="hostChatNewMessage" type="text" placeholder="Type Message... (Host Chat)" class="form-control text-dark bg-white">
+									<span class="input-group-append" >
+											<button id="sendHostChatBtn" type="button" class="btn text-white" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:'#0052CC'?>">Send</button>
+									</span>
+
+									<div style="text-align: left; padding-left: 10px; display: flex;" id="presenter_questions_emojis_section">
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/happy.png" title="Happy" class="btn" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/sad.png" title="Sad" class="btn" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/laughing.png" title="Laughing" class="btn" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/thumbs_up.png" title="Thumbs Up" class="btn" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/thumbs_down.png" title="Thumbs Down" class="btn" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+										<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/clapping.png" title="Clapping" class="btn" id="questions_clapping"  data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+									</div>
 								</div>
 
 							</div>
 
-							<!-- Attendee Chat Tab -->
-							<div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab" style="height: 100%;overflow: scroll;">
-								<!-- Conversations are loaded here -->
-								<div class="direct-chat-messages" style="height: 100% !important;">
 
-
-
-								</div>
-								<!--/.direct-chat-messages-->
-
-								<!-- /.direct-chat-pane -->
-								<div class="input-group" style="position: absolute;bottom: 5px">
-									<input type="text" name="message" placeholder="Type Message ..." class="form-control">
-									<span class="input-group-append">
-											<button type="button" class="btn btn-primary">Send</button>
-										</span>
-								</div>
-							</div>
 						</div>
 					</div>
 					<!-- /.card -->
 				</div>
 
 				<!-- Questions and Starred Questions -->
-				<div class="card card-primary card-outline card-tabs" style="height: 45vh;">
-					<div class="card-header p-0 pt-1 border-bottom-0">
+				<div class="card card-primary card-tabs shadow-none" style="height: 45vh;">
+					<div class="card-header p-0 pt-1 border-bottom-0 text-white" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">
 						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-							<li class="nav-item">
-								<a class="nav-link active" id="questions-tab" data-toggle="pill" href="#questions-tab-content" role="tab" aria-controls="questions-tab-content" aria-selected="true"><i class="far fa-question-circle"></i> Questions</a>
+							<li class="nav-item" >
+								<a class="nav-link active text-white" id="questions-tab" data-toggle="pill" href="#questions-tab-content" role="tab" aria-controls="questions-tab-content" aria-selected="true" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:'#0052CC'?>"><i class="far fa-question-circle"></i> Questions</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" id="starred-questions-tab" data-toggle="pill" href="#starred-questions-tab-content" role="tab" aria-controls="starred-questions-tab-content" aria-selected="false"><i class="fas fa-star"></i> Starred Questions</a>
+								<a class="nav-link text-white" id="starred-questions-tab" data-toggle="pill" href="#starred-questions-tab-content" role="tab" aria-controls="starred-questions-tab-content" aria-selected="false" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:'#0052CC'?>"><i class="fas fa-star"></i> Favorites </a>
 							</li>
 						</ul>
 					</div>
-					<div class="card-body p-0" style="height: 100%; overflow: scroll;">
+					<div class="card-body p-0 bg-white text-dark" style="height: 100%; overflow: scroll;">
 						<div class="tab-content" id="custom-tabs-three-tabContent">
 
 							<!-- Questions tab -->
 							<div class="tab-pane fade active show pb-5" id="questions-tab-content" role="tabpanel" aria-labelledby="questions-tab">
 
-								<!-- Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row" style="padding-right: 15px">-->
-<!--										<div class="col-7">-->
-<!--											<strong>Maria Gonzales</strong>-->
-<!--										</div>-->
-<!--										<div class="col-3">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
-
-								<!-- Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row" style="padding-right: 15px">-->
-<!--										<div class="col-7">-->
-<!--											<strong>John Doe</strong>-->
-<!--										</div>-->
-<!--										<div class="col-3">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="far fa-star" style="color: white;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											What is the best way to treat this patient?-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
-
-								<!-- Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row" style="padding-right: 15px">-->
-<!--										<div class="col-7">-->
-<!--											<strong>Richard Lu</strong>-->
-<!--										</div>-->
-<!--										<div class="col-3">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--										<div class="col-1">-->
-<!--											<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											Can you elaborate on this information?-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
-
 							</div>
 
 							<!-- Starred questions tab -->
 							<div class="tab-pane fade pb-5" id="starred-questions-tab-content" role="tabpanel" aria-labelledby="starred-questions-tab-content">
-
-								<!-- Starred Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row">-->
-<!--										<div class="col-8">-->
-<!--											<strong>Maria Gonzales</strong>-->
-<!--										</div>-->
-<!--										<div class="col-4">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
-
-								<!-- Starred Question -->
-<!--								<div class="container-fluid mr-2">-->
-<!--									<div class="row">-->
-<!--										<div class="col-8">-->
-<!--											<strong>Richard Lu</strong>-->
-<!--										</div>-->
-<!--										<div class="col-4">-->
-<!--											<small class="text-secondary">10:00 AM</small>-->
-<!--										</div>-->
-<!--									</div>-->
-<!--									<div class="row">-->
-<!--										<div class="col-12">-->
-<!--											Can you elaborate on this informatiion?-->
-<!--										</div>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--								<div class="col"><hr></div>-->
 
 							</div>
 						</div>
@@ -336,6 +241,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		fillQuestions();
 		fillSavedQuestions();
 
+		$('.show-toolbox').on('click', function(){
+			$('.tool-box-section').css('display', 'block')
+		});
 		socket.on('ycl_session_question', function (data) {
 			// console.log(data.question_id);
 			if (data.sessionId == session_id)
@@ -350,10 +258,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<small class="text-secondary"></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary"><i class="far fa-star" style="color: black;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'</div>' +
 						'<div class="row"><a class="questionList" href="#" style="cursor:pointer" question-id="'+data.question_id+'" question="'+data.question+'" sender_id="'+data.sender_id+'" sender_name="'+data.sender_name+'" sender_surname="'+data.sender_surname+'">' +
@@ -478,6 +386,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$('#starred-questions-tab').on('click', function(){
 			fillSavedQuestions();
+		})
+
+		$('#presenter_questions_emojis_section').hide();
+
+		$('#questions_emjis_section_show').on('click', function(){
+			if(	$('#presenter_questions_emojis_section').attr('hide') == true || $('#presenter_questions_emojis_section').css('display') == 'none'){
+				$('#presenter_questions_emojis_section').show();
+			}else{
+				$('#presenter_questions_emojis_section').hide();
+			}
 		})
 	});
 
@@ -628,7 +546,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#questions-tab-content').html('');
 			$.each(questions, function (poll_id, question) {
-				console.log(question)
+
 				$('#questions-tab-content').prepend('' +
 						'<div class="container-fluid mr-2">' +
 						'<div class="row" style="padding-right: 15px">' +
@@ -639,10 +557,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'<small class="text-secondary"></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary hide-question" id="hide-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+						'<small class="text-secondary hide-question" id="hide-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
 						'</div>' +
 						'<div class="col-1">' +
-						'<small class="text-secondary save-question" id="save-question-'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
+						'<span class="text-secondary save-question" id="save-question-'+question.id+'" question-id="'+question.id+'">'+((question.isOnSaveQuestion == "1")?'<i class="fas fa-star" style="color: black; cursor: pointer;"></i>':'<i class="far fa-star" style="color: black;cursor: pointer;"></i>')+'</span>' +
 						'</div>' +
 						'</div>' +
 						'<div class="row">' +
@@ -658,6 +576,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	function fillSavedQuestions() {
 		$.get(project_presenter_url+"/sessions/getSavedQuestions/"+session_id, function (questions) {
 			questions = JSON.parse(questions);
+			console.log(questions)
 			// console.log(questions)
 			$('#starred-questions-tab-content').html('');
 			$.each(questions.data, function (poll_id, question) {
@@ -672,7 +591,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'<small class="text-secondary"></small>' +
 					'</div>' +
 					'<div class="col-1">' +
-					'<small class="text-secondary hide-saved-question" id="hide-saved-question-'+question.id+'" question-id="'+question.id+'"><i class="fas fa-ban" style="color: white;cursor: pointer;"></i></small>' +
+					'<small class="text-secondary hide-saved-question" id="hide-saved-question-'+question.id+'" question-id="'+question.question_id+'"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
 					'</div>' +
 					// '<div class="col-1">' +
 					// '<small class="text-secondary save-question" id="'+question.id+'" question-id="'+question.id+'"><i class="far fa-star" style="color: yellow;cursor: pointer;"></i></small>' +
@@ -794,6 +713,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		$('#questions-tab-content').on('click', '.save-question', function(){
+			let that = this;
 			let question_id = $(this).attr('question-id');
 
 			$.post(project_presenter_url+'/sessions/saveQuestionAjax/',
@@ -807,6 +727,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						"type": "like",
 						"question": response,
 					});
+					$(that).html('<i style="color:black" class="fas fa-star"></>')
 				}
 					// console.log(response);
 			})
@@ -825,6 +746,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 				})
 		})
+
+		$('#starred-questions-tab-content').on('click', '.hide-saved-question', function(){
+			let question_id = $(this).attr('question-id');
+
+			Swal.fire({
+				title: 'Remove From Starred Question',
+				text: "This starred question will be removed on admin and presenter",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, Remove it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.post(project_presenter_url+'/sessions/hideSavedQuestionAjax/',
+						{
+							'question_id':question_id
+						},function(response){
+							if(response){
+								fillSavedQuestions();
+								$('#save-question-'+question_id).children().removeClass('fas fa-star').addClass('far fa-star')
+								toastr.success('Starred question removed successfully');
+							}else{
+								toastr.error('Something went wrong');
+							}
+						})
+				}
+			})
+		})
+
 
 	})
 
@@ -943,6 +894,131 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	});
 	/** End of live users per session **/
 
+	//######## Emoji functions
+	$(function(){
+		$(document).on("click", "#questions_clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_happy", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#hostChatNewMessage").val();
+			if (send_message != "") {
+				$("#hostChatNewMessage").val(send_message + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#happy", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#hostChatNewMessage").val();
+			if (send_message != "") {
+				$("#hostChatNewMessage").val(send_message + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#hostChatNewMessage").val();
+			if (send_message != "") {
+				$("#hostChatNewMessage").val(send_message + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#hostChatNewMessage").val();
+			if (send_message != "") {
+				$("#hostChatNewMessage").val(send_message + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#hostChatNewMessage").val();
+			if (questions != "") {
+				$("#hostChatNewMessage").val(questions + ' ' + value);
+			} else {
+				$("#hostChatNewMessage").val(value);
+			}
+		});
+	})
+
+//	End Emojis functions
+
 </script>
-<script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
-<link rel="stylesheet" href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/presenter/view_session.css" type="text/css">
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/host_chat.js"></script>
+<link rel="stylesheet" href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/presenter/view_session.css" type="text/css">

@@ -7,6 +7,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	#sessionsTable_filter, #sessionsTable_paginate{
 		float: right;
 	}
+	.form-control::placeholder{
+		color: lightblue;
+	}
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -48,10 +51,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<tr>
 									<th>Poll ID</th>
 									<th>Name</th>
+									<th>Question</th>
 									<th>Type</th>
 									<th>Comparison ID</th>
 									<th>Slide Number</th>
 									<th>Instruction</th>
+									<th>Poll Answer</th>
 									<th>Auto-show Result</th>
 									<th>Poll Triggers</th>
 									<th>Result Triggers</th>
@@ -94,7 +99,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(function () {
 
 		listPolls();
-
+		summerNote($('#pollQuestionInput'))
 		$('#sessionsTable').DataTable({
 			"paging": true,
 			"lengthChange": true,
@@ -112,22 +117,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#pollId').val(0);
 			$('#poll_comparison_select').css('display', 'block')
 			$('#pollOptionsInputDiv').html(
-				'<div class="input-group input-group-sm mb-2"> ' +
-				'<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"> ' +
-				'<span class="input-group-append"> ' +
-				'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button> ' +
+				'<div class="card bg-light">'+
+				'<div class="card-header p-0">'+
+				'<span class="float-left"> ' +
+				'Option' +
 				'</span>' +
+				'<span class="float-right"> ' +
+				'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat"><i class="fas fa-times"></i></button> ' +
+				'</span>' +
+				'<div class="input-group input-group-sm "> ' +
+				'<textarea type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"></textarea>' +
 				'</div> ' +
-				'<div class="input-group input-group-sm mb-2">' +
-				'<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1()">' +
-				'<span class="input-group-append">' +
-				'<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button> ' +
+				'<div class="">'+
+				'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
+				'</div>'+
+				'</div>'+
+				'</div>'+
+
+				'<div class="card bg-light">'+
+				'<div class="card-header p-0">'+
+				'<span class="float-left"> ' +
+				'Option' +
 				'</span>' +
+				'<span class="float-right"> ' +
+				'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat"><i class="fas fa-times"></i></button> ' +
+				'</span>' +
+				'<div class="input-group input-group-sm">' +
+				'<textarea type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()"></textarea>' +
+				'</div>'+
+				'<div class="">'+
+				'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference"> '+
+				'</div>'+
+				'</div>'+
 				'</div>'
 			)
-			$('#pollQuestionInput').val('');
+			$('#pollQuestionInput').summernote('code','');
 			$('#slideNumberInput').val('');
 			$('#pollInstructionInput').val('');
+			summerNoteOption($('.pollOptions'))
 			//$('#sessionDescription').summernote('reset');
 			//$('.removeall').click();
 			// $('#sponsorId').val(0);
@@ -151,7 +178,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading session data...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 				imageAlt: 'Loading...',
 				showCancelButton: false,
@@ -256,7 +283,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					Swal.fire({
 						title: 'Please Wait',
 						text: 'Removing the session...',
-						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 						imageAlt: 'Loading...',
 						showCancelButton: false,
@@ -283,21 +310,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 		});
 
-		$('#sessionsTable').on('click', '.openPoll', function () {
-			socket.emit('openPoll');
-		});
-
-		$('#sessionsTable').on('click', '.closePoll', function () {
-			socket.emit('closePoll');
-		});
-
-		$('#sessionsTable').on('click', '.openResult', function () {
-			socket.emit('openResult');
-		});
-
-		$('#sessionsTable').on('click', '.closeResult', function () {
-			socket.emit('closeResult');
-		});
+		// $('#pollsTable').on('click', '.openPoll', function () {
+		// 	socket.emit('openPoll');
+		// });
+		//
+		// $('#pollsTable').on('click', '.closePoll', function () {
+		// 	socket.emit('closePoll');
+		// });
+		//
+		// $('#pollsTable').on('click', '.openResult', function () {
+		// 	socket.emit('openResult');
+		// });
+		//
+		// $('#pollsTable').on('click', '.closeResult', function () {
+		// 	socket.emit('closeResult');
+		// });
 
 		$('#pollsTable').on('click', '.launch-poll-btn', function () {
 
@@ -306,7 +333,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			Swal.fire({
 				title: 'Please Wait',
 				html: '<span class="text-white">Launching the poll ['+pollId+']...</span>',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 				imageAlt: 'Loading...',
 				showCancelButton: false,
@@ -337,17 +364,134 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
 			let pollQuestion = $(this).attr('poll-question');
-			socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId, poll_question:pollQuestion});
+			if(socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId, poll_question:pollQuestion})) {
+				$.post(project_admin_url + "/sessions/updateShowedResult/" + pollId, function (poll) {
+					$('#launch-result_'+pollId).css('display', 'none')
+					$('#close-result_'+pollId).css('display', 'block')
+				})
+			}
 			toastr.success("Result popup triggered");
 		});
 
+
+		$('#pollsTable').on('click', '.startTimer10', function () {
+			let pollId = $(this).attr('poll-id');
+			emitTimer(pollId, this);
+		});
+
+		$('#pollsTable').on('click', '.startTimer15', function () {
+			let pollId = $(this).attr('poll-id');
+			emitTimer(pollId, this);
+		});
+
+
 		$('#pollsTable').on('click', '.close-result-btn', function () {
+			let that = this;
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
 			socket.emit('ycl_close_poll_result', {session_id:sessionId,poll_id:pollId});
 			toastr.success("Close result popup triggered");
+
+			$.post(project_admin_url+'/sessions/update_closed_poll_result/'+pollId, {  }, function(){
+				$(that).removeClass('btn-danger').addClass('btn-danger-muted');
+			})
 		});
+
+		$('#pollsTable').on('click', '.closePoll', function () {
+			let that = this;
+			let sessionId = $(this).attr('session-id');
+			let pollId = $(this).attr('poll-id');
+
+			socket.emit('poll_closed', {session_id:sessionId, poll_id:pollId});
+			toastr.success("Close result popup triggered");
+
+			$.post(project_admin_url+'/sessions/update_closed_poll/'+pollId, {  }, function(){
+				$(that).removeClass('btn-danger').addClass('btn-danger-muted');
+			})
+		});
+
+		$('#pollsTable').on('click', '.remove-poll-btn', function(){
+
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					removePoll($(this).attr('poll-id'))
+				}
+			})
+
+		})
+
+		$('#pollsTable').on('click', '.redo-poll-btn', function(){
+			let poll_id = $(this).attr('poll-id');
+
+			Swal.fire({
+				title: 'Are you sure?',
+				html: '<span class="text-white">You are about to redo POLL: '+poll_id+' <br></span>',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, Redo it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					redoPoll(poll_id);
+				}
+			})
+
+
+		})
+	/*############### End function ############*/
 	});
+
+	function emitTimer(pollId, that) {
+
+		socket.on('connect', function() {
+			console.log('check 2', socket.connected);
+		});
+		// console.log($(that));
+		Swal.fire({
+			title: 'Please Wait',
+			html: '<span class="text-white">Starting the timer [' + pollId + ']...</span>',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+
+		$.get(project_admin_url + "/sessions/getPollByIdJson/" + pollId, function (poll) {
+			poll = JSON.parse(poll)
+			poll.timer = $(that).attr('timer');
+
+			if (socket) {
+				if (socket.emit('start_poll_timer', poll)) {
+					$(that).html('<i class="fas fa-sync-alt"></i> Start Timer Again').removeClass('btn-info').addClass('btn-warning');
+				}
+			} else {
+				toastr.error('Socket is not configured correctly')
+			}
+			Swal.fire(
+				'Done!',
+				'Poll [' + pollId + '] timer started',
+				'success'
+			)
+
+
+		}).fail((error) => {
+			Swal.fire(
+				'Error!',
+				error,
+				'error');
+		});
+	}
 
 	function listPolls()
 	{
@@ -355,7 +499,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading poll data...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 			imageAlt: 'Loading...',
 			showCancelButton: false,
@@ -377,10 +521,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			{
 				let show_result = (poll.show_result==1)?'Yes':'No';
 				let launchPollBtn = ((poll.is_launched === '0')?'<button class="launch-poll-btn btn btn-sm btn-info" poll-id="'+poll.id+'"><i class="fas fa-list-ol"></i> Launch</button>' : '<button class="launch-poll-btn btn btn-sm btn-warning" poll-id="'+poll.id+'"><i class="fas fa-sync-alt"></i> Launch Again</button>' );
+				let startTimer10 = '<button class="startTimer10 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="10"><i class="fas fa-clock"></i> Start Timer 10s'+"'"+'</button>';
+				let startTimer15 = '<button class="startTimer15 btn btn-sm btn-info" poll-id="'+poll.id+'" timer="15"><i class="fas fa-clock"></i> Start Timer 15s'+"'"+'</button>';
+				let closePoll = '<button class="closePoll btn btn-sm '+(poll.is_poll_closed == 1 ? "btn-danger-muted": "btn-danger")+' mt-md-2" poll-id="'+poll.id+'" session-id="'+poll.session_id+'"> <i class="fas fa-ban"></i>  Close Poll</button>';
+
 				$('#pollsTableBody').append(
 					'<tr>' +
 					'	<td>' +
 					'		'+poll.id+
+					'	</td>' +
+					'	<td>' +
+					'		'+poll.poll_name+
 					'	</td>' +
 					'	<td>' +
 					'		'+poll.poll_question+
@@ -397,21 +548,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'	<td>' +
 					'		'+((poll.poll_instruction !== null)? poll.poll_instruction : '')+
 					'	</td>' +
+					'	<td style="width:120px">' +
+					'		<div>'+((poll.correct_answer1 !== null && poll.correct_answer1 !== '0')? "<span>Answer 1: <span><span style='color:red; font-size:25px'>"+poll.correct_answer1+"</span>" : '')+'</div>'+
+					'		<div>'+((poll.correct_answer2 !== null && poll.correct_answer2 !== '0')? "<span>Answer 2: <span><span style='color:red; font-size:25px'>"+poll.correct_answer2+"</span>" : '')+'</div>'+
+					'	</td>' +
 					'	<td>' +
 					'		'+show_result+
 					'	</td>' +
 					'	<td>' +
 					'		'+launchPollBtn+
+					'		'+startTimer10+
+					'		'+closePoll+
 					'	</td>' +
 					'   <td>' +
-					'		<button class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" poll-question="'+poll.poll_question+'"><i class="fas fa-poll-h"></i> Show Result</button>' +
-					'		<button class="close-result-btn btn btn-sm btn-danger ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Close Result</button>' +
+					'<button style="display: '+((poll.is_result_showed != 1)? 'block':'none')+'" id="launch-result_'+poll.id+'" class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" ><i class="fas fa-poll-h"></i> Show Result</button>'+
+					'<button style="display: '+((poll.is_result_showed == 1)? 'block':'none')+'" id="close-result_'+poll.id+'" class="close-result-btn btn btn-sm '+(poll.is_result_closed == 1 ? "btn-danger-muted": "btn-danger")+' ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Close Result</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="edit-poll-btn btn btn-sm btn-primary m-1" poll-id="'+poll.id+'"><i class="fas fa-edit"></i> Edit</button>' +
-					'		<button class="remove-poll-btn btn btn-sm btn-danger m-1" poll-id="'+poll.id+'" session-name="'+poll.poll_question+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'		<button class="remove-poll-btn btn btn-sm btn-danger m-1" poll-id="'+poll.id+'""><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'		<button class="redo-poll-btn btn btn-sm btn-warning m-1" poll-id="'+poll.id+'""><i class="fas fa-redo"></i> Redo</button>' +
 					'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
-					'		<!--<button class="closePoll btn btn-sm btn-primary">Close Poll</button>-->' +
 					'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
 					'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
 					'	</td>' +
@@ -422,7 +579,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('[data-toggle="tooltip"]').tooltip();
 
 			$('#pollsTable').DataTable({
-				"paging": true,
+				"paging": false,
 				"lengthChange": true,
 				"searching": true,
 				"ordering": true,
@@ -435,5 +592,126 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			Swal.close();
 		});
+	}
+
+	function redoPoll(poll_id){
+		$.post(project_admin_url+"/sessions/redoPoll/"+poll_id, function (polls) {
+			polls = JSON.parse(polls);
+			if(polls){
+				if(polls.status== 'success'){
+					swal.fire(
+						'success',
+						'Poll Redo Success',
+						'success'
+					)
+					setTimeout(
+						function()
+						{
+							listPolls();
+						}, 1000);
+				}
+			}
+		})
+	}
+
+	function removePoll(poll_id){
+		$.post(project_admin_url+"/sessions/removePoll/"+poll_id, function (polls) {
+			polls = JSON.parse(polls);
+			if(polls){
+				if(polls.status== 'success'){
+					swal.fire(
+						'success',
+						'Poll Deleted',
+						'success'
+					)
+					setTimeout(
+						function()
+						{
+							listPolls();
+						}, 1000);
+				}
+			}
+		})
+		}
+
+	function summerNote(object) {
+		$(object).summernote({
+			dialogsInBody: true,
+			inheritPlaceholder: true,
+			height: 100,
+			toolbar:
+				[
+					["history", ["undo", "redo"]],
+					["style", ["style"]],
+					["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+					['fontsize', ['fontsize']],
+					["color", ["color"]],
+					["paragraph", ["ul", "ol", "paragraph", "height"]],
+					["table", ["table"]],
+					["insert", ["link", "resizedDataImage", "picture", "video"]],
+					["view", ["codeview"]]
+				],
+			fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48', '64', '82', '150'],
+			callbacks: {
+				onKeyup: function (e) {
+					console.log('summerkey')
+				},
+				onPaste: function (e) {
+					var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+
+					e.preventDefault();
+
+					// Firefox fix
+					setTimeout(function () {
+						document.execCommand('insertText', false, bufferText);
+					}, 10);
+				},
+				// onInit: function() {
+				// 	var $noteEditable = $('.note-editable');
+				// 	$noteEditable.html($noteEditable.html().replace(/^<br>/i, ''));
+				// }
+			}
+		});
+	}
+		function summerNoteOption(object){
+			$(object).summernote({
+				dialogsInBody: true,
+				inheritPlaceholder: true,
+				height: 100,
+				toolbar:
+					[
+						["history", ["undo", "redo"]],
+						["style", ["style"]],
+						["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+						['fontsize', ['fontsize']],
+						["color", ["color"]],
+						["paragraph", ["ul", "ol", "paragraph", "height"]],
+						["table", ["table"]],
+						["insert", ["link", "resizedDataImage", "picture", "video"]],
+						["view", ["codeview"] ]
+					],
+				fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150'],
+				callbacks: {
+					onKeyup: function (e) {
+
+						appendCorrectAnswer1();
+						appendCorrectAnswer2();
+					},
+					onPaste: function (e) {
+						var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+
+						e.preventDefault();
+
+						// Firefox fix
+						setTimeout(function () {
+							document.execCommand('insertText', false, bufferText);
+						}, 10);
+					},
+					// onInit: function() {
+					// 	var $noteEditable = $('.note-editable');
+					// 	$noteEditable.html($noteEditable.html().replace(/^<br>/i, ''));
+					// }
+				}
+			});
 	}
 </script>

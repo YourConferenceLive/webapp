@@ -1,16 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
 
 <?php if(isset($view_settings) && !empty($view_settings)):?>
 	<?php if($view_settings[0]->session_background_image == 1):?>
 		<img id="full-screen-background" style="background-image:<?=$view_settings[0]->session_background_color?>">
 	<?php else: ?>
-		<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/sessions/sessions_listing_background.jpg">
+		<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 	<?php endif;?>
 <?php else:?>
-		<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/sessions/sessions_listing_background.jpg">
+		<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 <?php endif;?>
 
 <?php

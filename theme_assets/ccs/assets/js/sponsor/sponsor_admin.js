@@ -476,7 +476,7 @@ $(document).ready(function () {
 						'<li class="all-users-item list-group-item" user-id="' + data.user_id + '" active-status="0" style="cursor: pointer;" data-list_id = "' + data.user_id + '" data-chatting_to ="' + data.name + ' ' + data.surname + '" data-to_id="' + data.id + '">\n' +
 						'  <div class="row">\n' +
 						'    <div class="col-1 p-0">\n' +
-						'      <img src="'+ycl_root+'/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">\n' +
+						'      <img src='+ycl_root+'"/vendor_frontend/adminlte/dist/img/user.png" style="width: 30px; border-radius: 50%;">\n' +
 						'    </div>\n' +
 						'    <div class="col-8 p-0 pl-2">\n' +
 						'       <span>' + data.name + ' ' + data.surname + ' <i class="user-status-indicator fas fa-dot-circle" user-id="' + data.user_id + '" style="color: grey;"><badge  class="new-message badge badge-danger float-right ml-2" style="display: none">new</badge></i></span>\n' +

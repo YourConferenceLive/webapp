@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-	<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/sticky-footer.css" rel="stylesheet">
+	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/sticky-footer.css" rel="stylesheet">
 <!--	<footer class="footer">-->
 <!--		<div class="container text-center">-->
 <!--			<span class="text-muted">&copy; <img src="--><?//=ycl_root?><!--/ycl_assets/ycl_icon.png" width="25px"> Your Conference Live</span>-->
@@ -13,15 +13,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- Modal Push Notification -->
 <div class="modal fade" id="pushNotificationModal" tabindex="-1" aria-labelledby="pushNotificationModalLabel" aria-hidden="true" style="transition:all 1s;">
 	<input type="hidden" id="push_notification_id" value="">
-	<div class="modal-dialog ml-5 shadow" style="position: fixed; bottom:0; max-width:500px; min-width:300px">
+	<div class="modal-dialog ml-5 shadow" style="position: fixed; bottom:0; width:40vw">
 		<div class="modal-content">
 			<div class="mb-3">
-<!--				<h5 class="modal-title " id="pushNotificationModalTitle" style="color: orangered"><i class="fas fa-bell"></i> Notification </h5>-->
-<!--				<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--					<span aria-hidden="true">&times;</span>-->
-<!--				</button>-->
 			</div>
-			<div class="pushNotificationModalBody" style="min-height:100px; min-width:700px">
+			<div class="pushNotificationModalBody" style="min-height:100px; padding:10px">
 				<div id="pushNotificationMessage" style="color:#000000; font-size: 16px; font-weight: 600" class="ml-3"></div>
 			</div>
 			<div class="mb-3 mr-3 text-right">

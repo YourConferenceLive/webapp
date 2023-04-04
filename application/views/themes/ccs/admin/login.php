@@ -3,9 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <style>
-	<?php if(file_exists(FCPATH."cms_uploads/projects/{$this->project->id}/theme_assets/ccs/login_background.jpg")): ?>
+	<?php if(file_exists(FCPATH."cms_uploads/projects/{$this->project->id}/theme_assets/login_background.jpg")): ?>
 	body{
-		background-image: url("<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/login_background.jpg");
+		background-image: url("<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/login_background.jpg");
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;
@@ -14,12 +14,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php endif; ?>
 </style>
 
-<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/login.css" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/login.css" rel="stylesheet">
 <body class="text-center">
 <form class="form-signin">
 
 	<div class="mb-4">
-		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="max-width: 100%;max-height: 100%;">
+		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="max-width: 100%;max-height: 100%;">
 	</div>
 
 	<h1 class="h3 mb-3 font-weight-normal">Admin Login</h1>
@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'We are validating your credentials',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 				imageAlt: 'Loading...',
 				showCancelButton: false,

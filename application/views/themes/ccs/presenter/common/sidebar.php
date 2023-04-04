@@ -4,8 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<!-- Brand Logo -->
-	<a href="<?=$this->project_url.'/admin/dashboard'?>" class="brand-link">
-		<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/logo.png" alt="Logo" class="brand-image <?=(($this->project->name)=='Demo')?'':'img-circle'?>" style="opacity: .8 <?=(($this->project->name=="Demo"))?'max-width:120px':''?>">
+	<a href="<?=$this->project_url.'/presenter/sessions'?>" class="brand-link">
+	<!--	<img src="<?/*=ycl_root*/?>/cms_uploads/projects/<?/*=$this->project->id*/?>/theme_assets/logo.png" alt="Logo" class="brand-image <?/*=(($this->project->name)=='Demo')?'':'img-circle'*/?>" style="opacity: .8 <?/*=(($this->project->name=="Demo"))?'max-width:120px':''*/?>">
+	-->
 		<span class="brand-text font-weight-light"><?=$this->project->name?> Presenter</span>
 	</a>
 
@@ -38,15 +39,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 				<!-- Add icons to the links using the .nav-icon class
 					 with font-awesome or any other icon font library -->
-				<li class="nav-item menu-open">
-					<a href="<?=$this->project_url.'/presenter/dashboard'?>" class="nav-link <?=($this->router->fetch_class()=='dashboard')?'active':''?>">
+				<!--<li class="nav-item menu-open">
+					<a href="<?/*=$this->project_url.'/presenter/dashboard'*/?>" class="nav-link <?/*=($this->router->fetch_class()=='dashboard')?'active':''*/?>">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>
 							Dashboard
-<!--							<i class="right fas fa-angle-left"></i>-->
+								<i class="right fas fa-angle-left"></i>
 						</p>
 					</a>
-				</li>
+				</li>-->
 
 				<li class="nav-item">
 					<a href="<?=$this->project_url.'/presenter/sessions'?>" class="nav-link <?=($this->router->fetch_class()=='sessions')?'active':''?>">

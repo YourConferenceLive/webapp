@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/lobby.css?v=<?=rand()?>" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/lobby.css?v=<?=rand()?>" rel="stylesheet">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/maphilight/1.4.0/jquery.maphilight.min.js" integrity="sha512-AXsnvY/qS75ZpZGBz0CkJHMY55DNWyTeXmjZU2W8IZNHcnxSP31UuAaiCWfdajWk+a3kAeSX8VpYLsP635IGuA==" crossorigin="anonymous"></script>
 <script type="text/javascript">
@@ -33,13 +33,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </script>
 
 <img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/other_images/lobby.jpeg" usemap="#workmap">
-<!--<img id="full-screen-background" src="--><?//=ycl_root?><!--/theme_assets/ccs/<?=$this->project->theme?>/images/background-images/lobby_bg.png" usemap="#workmap">-->
+<!--<img id="full-screen-background" src="--><?//=ycl_root?><!--/theme_assets/<?=$this->project->theme?>/images/background-images/lobby_bg.png" usemap="#workmap">-->
 
 <div class="lobby-content">
 	<div class="custom-container">
 		<div class="middle">
 			<div class="top-banner">
-				<img src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/images/lobby/banner_top.png">
+				<img src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/lobby/banner_top.png">
 			</div>
 			<div class="menu">
 <?php
@@ -55,14 +55,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}?>
 			</div>
 			<div class="bottom-peoples">
-				<img src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/images/lobby/peoples.png">
+				<img src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/lobby/peoples.png">
 			</div>
 		</div>
 		<div class="left">
-			<img src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/images/lobby/banner_left.png">
+			<img src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/lobby/banner_left.png">
 		</div>
 		<div class="right">
-			<img src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/images/lobby/banner_right.png">
+			<img src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/lobby/banner_right.png">
 			<a href="#" class="support-button"></a>
 		</div>
 	</div>

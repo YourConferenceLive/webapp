@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<td><?=$log->credentials?></td>
 										<td><?=$log->email?></td>
 										<td><?=$log->city?></td>
-										<td align="center"><img src="<?=ycl_root?>/theme_assets/ccs/booth_game_icons/<?=$log->icon_name?>.png" width="30" title="<?php echo $log->booth_name;?>"></td>
+										<td align="center"><img src="<?=ycl_root?>/theme_assets/booth_game_icons/<?=$log->icon_name?>.png" width="30" title="<?php echo $log->booth_name;?>"></td>
 										<td><?=$log->last_collected?></td>
 									</tr>
 <?php
