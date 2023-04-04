@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="modal-dialog modal-lg" role="document" style="margin: 10rem auto !important;">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="pollModalLabel"><span id="pollQuestion"></span></h5>
+				<div class="modal-title" id="pollModalLabel"><label id="pollQuestion"></label></div>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -30,8 +30,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 			<div class="modal-footer">
-				<span id="howMuchSecondsLeft"></span> seconds left
-				<button id="voteBtn" type="button" class="btn btn-primary"><i class="fas fa-vote-yea"></i> Vote</button>
+				<span id="howMuchSecondsLeft" ></span>
+				<button id="voteBtn" type="button" class="btn text-white" style="<?= isset($view_settings) && $view_settings?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'btn-primary':'btn-primary'?>"><i class="fas fa-vote-yea"></i> Vote</button>
 			</div>
 		</div>
 	</div>
@@ -40,17 +40,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(function () {
 		$('#voteBtn').on('click', function () {
-
-			Swal.fire({
-				title: 'Please Wait',
-				text: 'Saving...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
 
 			let formData = new FormData(document.getElementById('pollAnswerForm'));
 
@@ -62,25 +51,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				contentType: false,
 				error: function(jqXHR, textStatus, errorMessage)
 				{
-					Swal.close();
 					$('#pollModal').modal('hide');
 					//toastr.error(errorMessage);
 					//console.log(errorMessage); // Optional
 				},
 				success: function(data)
 				{
-					Swal.close();
 
 					data = JSON.parse(data);
 
 					if (data.status == 'success')
 					{
+						$('#voteBtn').html('<i class="fas fa-check"></i> Voted')
 						toastr.success('Vote recorded');
-						$('#pollModal').modal('hide');
+						setTimeout(function() {
+							$('#pollModal').modal('hide');
+						}, 1000);
 
 					}else{
-						$('#pollModal').modal('hide');
-						//toastr.error("Error");
+						setTimeout(function() {
+							$('#pollModal').modal('hide');
+						}, 1000);
+						toastr.error('something went wrong')
 					}
 				}
 			});

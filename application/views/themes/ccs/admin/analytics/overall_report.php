@@ -238,7 +238,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		//	Swal.fire({
 		//		title: 'Please Wait',
 		//		text: 'Loading session attendees data...',
-		//		imageUrl: '<?//=ycl_root?>///cms_uploads/projects/<?//=$this->project->id?>///theme_assets/ccs/loading.gif',
+		//		imageUrl: '<?//=ycl_root?>///cms_uploads/projects/<?//=$this->project->id?>///theme_assets/loading.gif',
 		//		imageUrlOnError: '<?//=ycl_root?>///ycl_assets/ycl_anime_500kb.gif',
 		//		imageAlt: 'Loading...',
 		//		showCancelButton: false,

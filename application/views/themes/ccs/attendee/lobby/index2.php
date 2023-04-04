@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/lobby.css?v=<?=rand()?>" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/lobby.css?v=<?=rand()?>" rel="stylesheet">
 
-<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/lobby/lobby_background.jpg">
+<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/lobby/lobby_background.jpg">
 
 <div class="lobby-container container-fluid">
 
@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<div class="col-12 col-md-8 order-md-2 text-center">
 			<div class="card mx-auto banner main-banner">
-				<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/lobby/main_banner.jpg" alt="Main Banner">
+				<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/lobby/main_banner.jpg" alt="Main Banner">
 			</div>
 
 			<!-- Menu Items Exclusively For Bigger Screens Than Mobile -->
@@ -26,13 +26,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<div class="col-6 col-md-2 order-md-1 text-center">
 			<div class="card mx-auto mt-2 mt-md-4 banner side-banner-1">
-				<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/lobby/banner_1.jpg" alt="Banner 1">
+				<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/lobby/banner_1.jpg" alt="Banner 1">
 			</div>
 		</div>
 
 		<div class="col-6 col-md-2 order-md-3 text-center">
 			<div class="card mx-auto mt-2 mt-md-4 banner side-banner-2">
-				<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/lobby/banner_2.jpg" alt="Banner 2">
+				<img class="img-fluid" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/lobby/banner_2.jpg" alt="Banner 2">
 			</div>
 		</div>
 

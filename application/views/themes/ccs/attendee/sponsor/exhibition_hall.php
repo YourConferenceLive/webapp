@@ -16,7 +16,7 @@
 
 	<link rel="stylesheet" href="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/index.css">
 	<link rel="stylesheet" href="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/main.css">
-	<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/exhibition_hall.css?v=<?=rand()?>" rel="stylesheet">
+	<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/exhibition_hall.css?v=<?=rand()?>" rel="stylesheet">
 	<script src="<?= ycl_root ?>/vendor_frontend/3d_exhibition/assets/pep.min.js"></script>
 	<style>
 		[touch-action="none"]{ -ms-touch-action: none; touch-action: none; touch-action-delay: none; }
@@ -146,11 +146,11 @@
 
 
 <button id="enterButton" class="btn btn-primary xy-center">ENTER</button>
-<img id="full-screen-background" src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/images/exhibition/bg.jpg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">
+<img id="full-screen-background" src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/images/exhibition/bg.jpg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">
 <!--<img id="full-screen-background" src="https://dev.yourconference.live/cms_uploads/projects/3/other_images/exhibition_landing.jpeg" usemap="#workmap" style="margin-top: 67px;z-index: 1000;">-->
 
 <div class="vertical-center" id="loadingScreen">Loading<br>
-	<img src="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/images/loading.gif">
+	<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/loading.gif">
 </div>
 <div id="bg"></div>
 

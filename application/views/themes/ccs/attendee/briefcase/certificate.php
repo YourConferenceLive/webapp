@@ -4,7 +4,7 @@ define('PROJECT_ID', $this->project->id);
 class MYPDF extends TCPDF {
     //Page header
     public function Header() {
-		$header = 'cms_uploads'.DIRECTORY_SEPARATOR.'projects'.DIRECTORY_SEPARATOR.PROJECT_ID.DIRECTORY_SEPARATOR.'theme_assets/ccs/ccs/ccs'.DIRECTORY_SEPARATOR.'briefcase'.DIRECTORY_SEPARATOR.'pdf-header.jpg';
+		$header = 'cms_uploads'.DIRECTORY_SEPARATOR.'projects'.DIRECTORY_SEPARATOR.PROJECT_ID.DIRECTORY_SEPARATOR.'theme_assets/ccs'.DIRECTORY_SEPARATOR.'briefcase'.DIRECTORY_SEPARATOR.'pdf-header.jpg';
         $this->Image($header, 0, 0, 210, '', 'JPG', '', 'B', false, 300, '', false, false, 0, false, false, false);
         $this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP+35, PDF_MARGIN_RIGHT);
 	}
@@ -12,7 +12,7 @@ class MYPDF extends TCPDF {
     // Page footer
     public function Footer() {
 		/* Put your code here (see a working example below) */
-		$footer 		= 'cms_uploads'.DIRECTORY_SEPARATOR.'projects'.DIRECTORY_SEPARATOR.'3'.DIRECTORY_SEPARATOR.'theme_assets/ccs/ccs/ccs'.DIRECTORY_SEPARATOR.'briefcase'.DIRECTORY_SEPARATOR.'pdf-footer.png';
+		$footer 		= 'cms_uploads'.DIRECTORY_SEPARATOR.'projects'.DIRECTORY_SEPARATOR.'3'.DIRECTORY_SEPARATOR.'theme_assets/ccs'.DIRECTORY_SEPARATOR.'briefcase'.DIRECTORY_SEPARATOR.'pdf-footer.png';
 
 		$footerWidth 	= 210;
 		$footerX 		= 0; 
@@ -162,7 +162,7 @@ TCOS Workshop | Atelier LSCO COC CE: 3.6 credits, JCAHPO: 3.0 credits<br>
 <span class="french">TCSO Scientific Session | Séance scientifique LSCO : COC CE: 4.1 credits, JCaHPO: 3.75 credits</span><br>';
 $pdf->writeHTMLCell(0, 0, '', '', $html, '', 1, 0, true, 'L', true);
 
-$signaute 		= 'cms_uploads'.DIRECTORY_SEPARATOR.'projects'.DIRECTORY_SEPARATOR.'3'.DIRECTORY_SEPARATOR.'theme_assets/ccs/ccs/ccs'.DIRECTORY_SEPARATOR.'briefcase'.DIRECTORY_SEPARATOR.'pdf-signature.jpg';
+$signaute 		= 'cms_uploads'.DIRECTORY_SEPARATOR.'projects'.DIRECTORY_SEPARATOR.'3'.DIRECTORY_SEPARATOR.'theme_assets/ccs'.DIRECTORY_SEPARATOR.'briefcase'.DIRECTORY_SEPARATOR.'pdf-signature.jpg';
 
 $html = $styles.'<br><br><br>
 <img src="'.$signaute.'" width="150">';

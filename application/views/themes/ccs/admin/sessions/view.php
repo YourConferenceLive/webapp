@@ -79,7 +79,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 								<!-- Conversations are loaded here -->
 								<div id="hostChatDiv" class="direct-chat-messages" style="height: 100% !important;">
-									<!-- Automatically filled by the JS:loadAllHostChats() (theme_assets/ccs/{theme_name}/js/common/sessions/host_chat.js) -->
+									<!-- Automatically filled by the JS:loadAllHostChats() (theme_assets/{theme_name}/js/common/sessions/host_chat.js) -->
 								</div>
 
 
@@ -738,5 +738,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/js/common/sessions/host_chat.js"></script>
-<link rel="stylesheet" href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/admin/view_session.css" type="text/css">
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/host_chat.js"></script>
+<link rel="stylesheet" href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/admin/view_session.css" type="text/css">

@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/scavanger-hunt.css?v=<?=rand()?>" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/scavanger-hunt.css?v=<?=rand()?>" rel="stylesheet">
 
-<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/ccs/sessions/sessions_listing_background.jpg">
+<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
 
@@ -36,7 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<li>Look left and right for this object</li>
 				</ol>
 				<p>Example of object you may find in the exhibition hall:</p>
-				<img src="<?= ycl_root ?>/theme_assets/ccs/booth_game_icons/1.png" class="img-fluid img-prize-detail" style="width: 110px;"><br><br>
+				<img src="<?= ycl_root ?>/theme_assets/booth_game_icons/1.png" class="img-fluid img-prize-detail" style="width: 110px;"><br><br>
 				<p>Prizes:</p>
 				<p>At the end of the event, names of participants who have found all 10 items will automatically be sent to the COS to be entered for a chance to win 1 of the prizes listed below. Prizes are open to COS members. Winners will be contacted following the meeting.</p>
 				<ol>
@@ -68,7 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<li>Il faut chercher à gauche et à droite pour trouver cet objet. </li>
 					</ol>
 					<p>Exemple d'images que vous pourriez trouver dans le hall d'exposition:</p>
-					<img src="<?= ycl_root ?>/theme_assets/ccs/booth_game_icons/8.png" class="img-fluid img-prize-detail" style="width: 110px;"><br><br>
+					<img src="<?= ycl_root ?>/theme_assets/booth_game_icons/8.png" class="img-fluid img-prize-detail" style="width: 110px;"><br><br>
 					<p>Prix :</p>
 					<p>À la fin du Congrès, les noms des participants qui auront trouvé les 10 images seront envoyés à la SCO, qui les inscrira au tirage des prix ci-dessous. Seuls les membres de la SCO sont admissibles aux prix. Nous communiquerons avec les gagnants après le congrès.</p>
 					<ol>

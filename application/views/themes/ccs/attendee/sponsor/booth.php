@@ -13,13 +13,13 @@ if($hunt_item){
 	$hunting_icon=$sponsor_data[0]->hunting_icon;
 }
 
-$cover_photo_url='theme_assets/ccs/booth_uploads/'.$data->cover_photo;
+$cover_photo_url='theme_assets/booth_uploads/'.$data->cover_photo;
 
 if(!file_exists($cover_photo_url)){
 	$cover_photo_url='/cms_uploads/projects/'.$this->project->id.'/sponsor_assets/uploads/cover_photo/'.$data->cover_photo;
 }
 ?>
-<link href="<?= ycl_root ?>/theme_assets/ccs/<?=$this->project->theme?>/css/booth.css?ver=10" rel="stylesheet">
+<link href="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/css/booth.css?ver=10" rel="stylesheet">
 <!-- Date Time Picker-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.js"></script>
@@ -29,7 +29,7 @@ if(!file_exists($cover_photo_url)){
 	<div class="jumbotron rounded-0" style="background-image: url('<?= (isset($data->cover_photo) && !empty($data->cover_photo)) ?  ycl_root . '/'.$cover_photo_url:'' ?> ')">
 		<div class="content">
 			<div class="middle">
-				<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$data->tv_banner?>" id="tv_banner">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->tv_banner?>" id="tv_banner">
 				<?php if (isset($data->main_video_url) && !empty($data->main_video_url) && $data->video_position == '1') {
 					?>
 					<div id="tv-container" >
@@ -46,18 +46,18 @@ if(!file_exists($cover_photo_url)){
 				</div>
 			</div>
 			<div class="left">
-				<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$data->left_banner?>" class="wt_booth_img" data-url="<?=$data->left_banner_url?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_banner?>" class="wt_booth_img" data-url="<?=$data->left_banner_url?>">
 			</div>
 			<div class="right">
-				<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$data->right_banner?>" class="wt_booth_img" data-url="<?=$data->right_banner_url?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_banner?>" class="wt_booth_img" data-url="<?=$data->right_banner_url?>">
 			</div>
 		</div>
 		<div class="tables">
 			<div class="table_left">
-				<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$data->left_table?>" class="wt_booth_img" data-url="<?=$data->left_table_url?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->left_table?>" class="wt_booth_img" data-url="<?=$data->left_table_url?>">
 			</div>
 			<div class="table_right">
-				<img src="<?= ycl_root ?>/theme_assets/ccs/booth_uploads/<?=$data->right_table?>" class="wt_booth_img" data-url="<?=$data->right_table_url?>">
+				<img src="<?= ycl_root ?>/theme_assets/booth_uploads/<?=$data->right_table?>" class="wt_booth_img" data-url="<?=$data->right_table_url?>">
 			</div>
 		</div>
 	</div>
@@ -266,7 +266,7 @@ if(!file_exists($cover_photo_url)){
 	var booth_project_id = "<?= $this->project->id?>";
 </script>
 
-<script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/js/sponsor/sponsor_attendee.js?ver=10"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/js/sponsor/sponsor_attendee.js?ver=10"></script>
 <script>
 	socket.emit('ycl_booth_visit', {'booth_id':current_booth_id, 'user_id' : user_id});
 </script>

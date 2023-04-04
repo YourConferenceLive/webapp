@@ -5,16 +5,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //exit("</pre>");
 ?>
 
-<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/css/lounge.css?v=<?=rand()?>" rel="stylesheet">
-<link href="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/lounge_chats/group_chat.css?v=<?=rand()?>" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/lounge.css?v=<?=rand()?>" rel="stylesheet">
+<link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/lounge_chats/group_chat.css?v=<?=rand()?>" rel="stylesheet">
 
 <div class="loung-container">
     <div class="tv">
-        <img src="<?=ycl_root?>/theme_assets/ccs/lounge/tv.png" id="tv">
+        <img src="<?=ycl_root?>/theme_assets/lounge/tv.png" id="tv">
         <iframe src="https://player.vimeo.com/video/565322231?autoplay=1&loop=1&title=0&byline=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
     </div>
 </div>
-<img id="peoples" src="<?=ycl_root?>/theme_assets/ccs/lounge/peoples.png">
+<img id="peoples" src="<?=ycl_root?>/theme_assets/lounge/peoples.png">
 
 
 <div class="chat-boxes-container"> <!-- position: absolute (lounge.css:193) -->
@@ -118,5 +118,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     let lounge_user_company_name = "<?=($lounge_user->company_name != '')?$lounge_user->company_name:$lounge_user->city?>";
     let lounge_user_photo = "<?=$lounge_user->photo?>";
 </script>
-<script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/lounge_chats/group_chat.js?v=<?=rand()?>"></script>
-<script src="<?=ycl_root?>/theme_assets/ccs/<?=$this->project->theme?>/lounge_chats/direct_chat.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/lounge_chats/group_chat.js?v=<?=rand()?>"></script>
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/lounge_chats/direct_chat.js?v=<?=rand()?>"></script>
