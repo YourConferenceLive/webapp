@@ -1,4 +1,7 @@
 /*This contain global styles css*/
+body {
+	font-family: Congenial;
+}
 
 .btn-violet{
 	background-color: violet;
