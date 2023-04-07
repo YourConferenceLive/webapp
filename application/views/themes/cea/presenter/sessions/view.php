@@ -304,8 +304,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				var downloadTimer = setInterval(function(){
 					if(timeleft <= 0){
 						clearInterval(downloadTimer);
-						$('#pollModal').modal('hide');
-
+						// $('#pollModal').modal('hide');
+						$('#howMuchSecondsLeft').hide();
+						$('#voteBtn').attr('disabled', 'disabled');
 						if (data.show_result == 1) // Show result automatically
 						{
 							$.get(project_presenter_url+"/sessions/getPollResultAjax/"+data.id, function (results) {
@@ -334,7 +335,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										clearInterval(resultTimer);
 										$('#pollResultModal').modal('hide');
 									} else {
-										$('#howMuchSecondsLeftResult').text(resultTimeleft);
+										$('#howMuchSecondsLeftResult').text(resultTimeleft + ((resultTimeleft <= 1)?" second left":"  seconds left"));
 									}
 									resultTimeleft -= 1;
 								}, 1000);
@@ -343,7 +344,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						}
 
 					} else {
-						$('#howMuchSecondsLeft').text(timeleft);
+						$('#howMuchSecondsLeft').text(timeleft + ((timeleft <= 1)?" second left":"  seconds left"));
 					}
 					timeleft -= 1;
 				}, 1000);
