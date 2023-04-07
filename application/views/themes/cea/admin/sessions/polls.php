@@ -360,6 +360,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 		});
 
+	
+		$('#pollsTable').on('click', '.show-result-again-btn', function () {
+			let pollId = $(this).attr('poll-id');
+			$('#launch-result_'+pollId).click();
+			$(this).removeClass('btn-warning').addClass('btn-warning-muted');
+		});
+		
 		$('#pollsTable').on('click', '.launch-result-btn', function () {
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
@@ -367,7 +374,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			if(socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId, poll_question:pollQuestion})) {
 				$.post(project_admin_url + "/sessions/updateShowedResult/" + pollId, function (poll) {
 					$('#launch-result_'+pollId).css('display', 'none')
-					$('#close-result_'+pollId).css('display', 'block')
+					$('#show-result-again_'+pollId).css('display', 'block')
 				})
 			}
 			toastr.success("Result popup triggered");
@@ -562,7 +569,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'	</td>' +
 					'   <td>' +
 					'<button style="display: '+((poll.is_result_showed != 1)? 'block':'none')+'" id="launch-result_'+poll.id+'" class="launch-result-btn btn btn-sm btn-success" session-id="'+poll.session_id+'" poll-id="'+poll.id+'" ><i class="fas fa-poll-h"></i> Show Result</button>'+
-					'<button style="display: '+((poll.is_result_showed == 1)? 'block':'none')+'" id="close-result_'+poll.id+'" class="close-result-btn btn btn-sm '+(poll.is_result_closed == 1 ? "btn-danger-muted": "btn-danger")+' ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Close Result</button>' +
+					'<button style="display: '+((poll.is_result_showed == 1)? 'block':'none')+'" id="show-result-again_'+poll.id+'" class="show-result-again-btn btn btn-sm '+(poll.is_result_closed == 1 ? "btn-warning-muted": "btn-warning")+' ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Show Again</button>' +
+					'<button style="" id="close-result_'+poll.id+'" class="close-result-btn btn btn-sm '+(poll.is_result_closed == 1 ? "btn-danger-muted": "btn-danger")+' ml-2" session-id="'+poll.session_id+'" poll-id="'+poll.id+'"><i class="fas fa-poll-h"></i> Close Result</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="edit-poll-btn btn btn-sm btn-primary m-1" poll-id="'+poll.id+'"><i class="fas fa-edit"></i> Edit</button>' +

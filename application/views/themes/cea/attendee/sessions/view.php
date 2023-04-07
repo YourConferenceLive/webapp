@@ -559,8 +559,9 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 					if (timeleft <= 0) {
 						stop_music();
 						clearInterval(downloadTimer);
-						$('#pollModal').modal('hide');
-
+						// $('#pollModal').modal('hide');
+						$('#howMuchSecondsLeft').hide();
+						$('#voteBtn').attr('disabled', 'disabled');
 						if (data.show_result == 1) {// Show result automatically
 							$.get(project_url + "/sessions/getPollResultAjax/" + data.id, function (results) {
 								results = JSON.parse(results);
@@ -589,14 +590,14 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 										clearInterval(resultTimer);
 										$('#pollResultModal').modal('hide');
 									} else {
-										$('#howMuchSecondsLeftResult').text(resultTimeleft + "  seconds left");
+										$('#howMuchSecondsLeftResult').text(resultTimeleft + ((resultTimeleft <= 1)?" second left":"  seconds left"));
 									}
 									resultTimeleft -= 1;
 								}, 1000);
 							});
 						}
 					} else {
-						$('#howMuchSecondsLeft').text(timeleft + "  seconds left");
+						$('#howMuchSecondsLeft').text(timeleft + ((timeleft <= 1)?" second left":"  seconds left"));
 					}
 					timeleft -= 1;
 				}, 1000);
