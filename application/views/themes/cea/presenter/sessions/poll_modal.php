@@ -4,10 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!-- Poll Modal - attendee -->
 <div class="modal fade" id="pollModal" tabindex="-1" role="dialog" aria-labelledby="pollModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-lg" role="document" style="margin: 10rem auto !important;">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="pollModalLabel"><span id="pollQuestion"></span></h5>
+				<div class="modal-title" id="pollModalLabel"><label id="pollQuestion"></label></div>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -30,27 +30,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 			<div class="modal-footer">
-				<span id="howMuchSecondsLeft"></span> seconds left
+				<span id="howMuchSecondsLeft"></span>
 				<button id="voteBtn" type="button" class="btn btn-primary"><i class="fas fa-vote-yea"></i> Vote</button>
 			</div>
 		</div>
 	</div>
 </div>
 
+
 <script>
 	$(function () {
 		$('#voteBtn').on('click', function () {
-
-			Swal.fire({
-				title: 'Please Wait',
-				text: 'Saving...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
 
 			let formData = new FormData(document.getElementById('pollAnswerForm'));
 
@@ -62,25 +52,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				contentType: false,
 				error: function(jqXHR, textStatus, errorMessage)
 				{
-					Swal.close();
 					$('#pollModal').modal('hide');
 					//toastr.error(errorMessage);
 					//console.log(errorMessage); // Optional
 				},
 				success: function(data)
 				{
-					Swal.close();
 
 					data = JSON.parse(data);
 
 					if (data.status == 'success')
 					{
+						$('#voteBtn').html('<i class="fas fa-check"></i> Voted')
 						toastr.success('Vote recorded');
-						$('#pollModal').modal('hide');
+						setTimeout(function() {
+							$('#pollModal').modal('hide');
+						}, 1000);
 
 					}else{
-						$('#pollModal').modal('hide');
-						//toastr.error("Error");
+						setTimeout(function() {
+							$('#pollModal').modal('hide');
+						}, 1000);
+						toastr.error('something went wrong')
 					}
 				}
 			});

@@ -597,6 +597,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 							});
 						}
 					} else {
+						$('#voteBtn').removeAttr('disabled')
+						$('#howMuchSecondsLeft').show();
 						$('#howMuchSecondsLeft').text(timeleft + ((timeleft <= 1)?" second left":"  seconds left"));
 					}
 					timeleft -= 1;
@@ -605,8 +607,9 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		});
 
 		socket.on('ycl_launch_poll_result', (data)=>{
-
+			
 			if(data.session_id == sessionId) {
+				$('#pollModal').modal('hide');
 				$('#pollResultModalLabel').html(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
