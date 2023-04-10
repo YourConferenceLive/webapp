@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 //echo"<pre>";print_r($user);exit("</pre>");
+// print_r($settings);exit;
 ?>
 <style>
 	html,
@@ -203,7 +204,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 </div>
+<?php
 
+if (isset($settings) && !empty($settings->poll_music)) {
+	// print_r($settings);exit;
+	?>
+	<audio muted="true" id="audio_<?=$this->project->id?>" src="<?= ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$settings->poll_music ?>" ></audio>
+	<?php
+}
+?>
 <script>
 
 	let controllerPath = project_presenter_url;
@@ -276,11 +285,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		socket.on('ycl_launch_poll', (data)=>{
+			$('#voteBtn').html('<i class="fas fa-vote-yea"></i> Vote')
+			if(data.session_id == session_id) {
 
-			if(data.session_id == session_id)
-			{
-				$('#pollId').val(data.session_id);
-				$('#pollQuestion').text(data.poll_question);
+				$('#pollId').val(data.id);
+				$('#pollQuestion').html(data.poll_question);
 				$('#howMuchSecondsLeft').text('');
 
 				$('#pllOptions').html('');
@@ -300,28 +309,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					keyboard: false
 				});
 
-				var timeleft = 10;
-				var downloadTimer = setInterval(function(){
-					if(timeleft <= 0){
+			}
+
+		});
+
+		socket.on('start_poll_timer_notification', (data)=> {
+			console.log(data);
+			if($('#pollId').val() == data.id) {
+				var timeleft = data.timer;
+				var downloadTimer = setInterval(function () {
+					// play_music();
+					if (timeleft <= 0) {
+						// stop_music();
 						clearInterval(downloadTimer);
 						// $('#pollModal').modal('hide');
 						$('#howMuchSecondsLeft').hide();
 						$('#voteBtn').attr('disabled', 'disabled');
-						if (data.show_result == 1) // Show result automatically
-						{
-							$.get(project_presenter_url+"/sessions/getPollResultAjax/"+data.id, function (results) {
+						if (data.show_result == 1) {// Show result automatically
+							$.get(project_url + "/sessions/getPollResultAjax/" + data.id, function (results) {
 								results = JSON.parse(results);
 
 								$('#pollResults').html('');
 								$('#pollResultModalLabel').text(data.poll_question);
 								$.each(results, function (poll_id, option_details) {
 									$('#pollResults').append('' +
-											'<div class="form-group">' +
-											'  <label class="form-check-label">'+option_details.option_name+'</label>' +
-											'  <div class="progress" style="height: 25px;">' +
-											'    <div class="progress-bar" role="progressbar" style="width: '+option_details.vote_percentage+'%;" aria-valuenow="'+option_details.vote_percentage+'" aria-valuemin="0" aria-valuemax="100">'+option_details.vote_percentage+'%</div>' +
-											'  </div>' +
-											'</div>');
+										'<div class="form-group">' +
+										'  <label class="form-check-label">' + option_details.option_name + '</label>' +
+										'  <div class="progress" style="height: 25px;">' +
+										'    <div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage + '%;" aria-valuenow="' + option_details.vote_percentage + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage + '%</div>' +
+										'  </div>' +
+										'</div>');
 								});
 
 								$('#pollResultModal').modal({
@@ -330,8 +347,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								});
 
 								var resultTimeleft = 5;
-								var resultTimer = setInterval(function(){
-									if(resultTimeleft <= 0){
+								var resultTimer = setInterval(function () {
+									if (resultTimeleft <= 0) {
+										// stop_music();
 										clearInterval(resultTimer);
 										$('#pollResultModal').modal('hide');
 									} else {
@@ -339,11 +357,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									}
 									resultTimeleft -= 1;
 								}, 1000);
-
 							});
 						}
-
 					} else {
+						$('#voteBtn').removeAttr('disabled')
+						$('#howMuchSecondsLeft').show();
 						$('#howMuchSecondsLeft').text(timeleft + ((timeleft <= 1)?" second left":"  seconds left"));
 					}
 					timeleft -= 1;
@@ -352,28 +370,80 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		socket.on('ycl_launch_poll_result', (data)=>{
-			if(data.session_id == session_id)
-			{
+			
+			if(data.session_id == session_id) {
+				$('#pollModal').modal('hide');
+				$('#pollResultModalLabel').html(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
-
 					$('#pollResults').html('');
-					$('#pollResultModalLabel').text(data.poll_question);
-					$.each(results, function (poll_id, option_details) {
-						$('#pollResults').append('' +
-								'<div class="form-group">' +
-								'  <label class="form-check-label">'+option_details.option_name+'</label>' +
-								'  <div class="progress" style="height: 25px;">' +
-								'    <div class="progress-bar" role="progressbar" style="width: '+option_details.vote_percentage+'%;" aria-valuenow="'+option_details.vote_percentage+'" aria-valuemin="0" aria-valuemax="100">'+option_details.vote_percentage+'%</div>' +
+					// console.log(results);
+
+					if(results.poll_type === 'poll' || results.poll_type === 'presurvey') {
+						$.each(results.poll, function (poll_id, option_details) {
+							$('#pollResults').append('' +
+								'<div class="form-group" id="group-'+option_details.option_order+'">' +
+								'  <label class="form-check-label progress-label">'+option_details.option_name+'</label>' +
+								'  <div class="progress" style="height: 20px;">' +
+								'    <div class="progress-bar" role="progressbar" style="width: '+((option_details.vote_percentage !== undefined)? option_details.vote_percentage  : 0 )+'%;" aria-valuenow="'+((option_details.vote_percentage !== undefined)? option_details.vote_percentage : 0) +'" aria-valuemin="0" aria-valuemax="100">'+((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0)+'%</div>' +
+								'    <div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity:0.2; width: '+((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage  : 100 )+'%;" aria-valuenow="'+((option_details.vote_percentage !== undefined)? 100-option_details.vote_percentage : 100) +'" aria-valuemin="0" aria-valuemax="100"></div>' +
 								'  </div>' +
 								'</div>');
-					});
+						});
+						$('#legend').html('');
+
+					}else {
+						$.each(results.poll, function (poll_id, option_details) {
+							// console.log(option_details);
+							$('#pollResults').append('' +
+								'<div class="form-group " id="group-'+option_details.option_order+'" >' +
+								'  <label class="form-check-label progress-label">' + option_details.option_name + '</label>' +
+								' <div class="progress_section" id="progress-section-'+option_details.option_order+'"> ' +
+								'	<div class="progress  mb-1" style="height: 20px;">' +
+								'    	<div class="progress-bar" role="progressbar" style="width: ' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0)+ '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0) + '" aria-valuemin="0" aria-valuemax="100">' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0) + '%</div>' +
+								'    	<div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity: 0.2; width: ' + ((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage: 100)+ '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage: 100) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+								'	</div> ' +
+								'</div>' +
+								'</div>');
+
+						});
+						$.each(results.compere, function (poll_id, option_details) {
+							$('#progress-section-'+option_details.option_order).prepend(
+								'	<div class="progress mb-1" style="height: 20px;">' +
+								'    	<div class="progress-bar bg-info" role="progressbar" style="width: ' + option_details.vote_percentage_compare + '%;" aria-valuenow="' + option_details.vote_percentage_compare + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage_compare + '%</div>' +
+								'    	<div class="progress-bar" role="progressbar" style="background-color:#17A2B8; opacity: 0.2; width: ' + (100-option_details.vote_percentage_compare) + '%;" aria-valuenow="' + (100-option_details.vote_percentage_compare) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+								'	</div> '
+							);
+						});
+
+						$('#legend').html(
+							'<span class="mr-4"><i style="width:20px; height:20px;" class="fa-solid fa-square bg-info text-info d-inline-block "></i> Presurvey</span>' +
+							'<span><i  style="width:20px; height:20px;" class="fa-solid fa-square bg-primary text-primary d-inline-block "></i> Assessment</span>'
+						)
+					}
 
 					$('#pollResultModal').modal({
 						backdrop: 'static',
 						keyboard: false
 					});
+				}).then(function(obj,results){
+					obj = JSON.parse(obj);
+					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
+						$('.progress-label').attr('style', 'margin-left:30px')
+					}else{
+						$('.progress-label').attr('style', '')
+					}
+					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
+						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
+							// console.log('tdsadsa');
+							//
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
 
+							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
+							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+						}
+					}
 				});
 			}
 		});
@@ -400,6 +470,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		})
 	});
 
+	function play_music() {
+		var audio = document.getElementById("audio_"+<?=$this->project->id?>);
+		audio.muted = true;
+		audio.play();
+	}
+	function stop_music() {
+		var audio1 = document.getElementById("audio_"+<?=$this->project->id?>);
+		audio1.pause();
+		audio1.currentTime = 0;
+	}
+	
 	function startsIn() {
 		// Set the date we're counting down to
 		var countDownDate = new Date(session_start_datetime).getTime();
