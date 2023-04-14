@@ -161,6 +161,7 @@ socket.on("liveSupportChatStarted", function (data) {
 });
 
 socket.on("liveSupportChatOffline", function (data) {
+    document.getElementById("liveSupportChatForm").style.display = "none";
     toastr.error("Live support chat is unavailable at this moment");
 });
 
