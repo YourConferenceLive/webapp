@@ -39,4 +39,14 @@ class Login extends CI_Controller
 		$this->session->sess_destroy();
 		session_destroy();
 	}
+
+	
+
+	// Key for authentication :
+		// 
+
+	public  function cco_authentication() {
+		 $token = $this->input->get('token');
+		print_r($token);
+	}
 }
