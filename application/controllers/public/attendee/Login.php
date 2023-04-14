@@ -48,8 +48,6 @@ class Login extends CI_Controller
 	public  function cco_authentication() {
 		  $token = $this->input->get('token');
        	 $response_array = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', explode('.', $token)[1]))));
-
-		 print_r($response_array);exit;
 	
         if (isset($response_array) && !empty($response_array)) {
             $identifier = $response_array->identity->identifier;
@@ -70,7 +68,6 @@ class Login extends CI_Controller
 
 			
             $response = curl_exec($curl);
-			print_r($response);exit;
             $err = curl_error($curl);
             curl_close($curl);
             $member_array = json_decode($response);
