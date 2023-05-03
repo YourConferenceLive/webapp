@@ -2319,6 +2319,7 @@ class Sessions_Model extends CI_Model
 	}
 
 	function send_json($sessions_id){
+				
 		$this->db->select('*');
 		$this->db->from('sessions');
 		$this->db->where("id", $sessions_id);
@@ -2566,9 +2567,11 @@ class Sessions_Model extends CI_Model
 			$json_array = array("data" => json_encode($create_array), "session_reference" => (int) $result_sessions->id, "session_id" => (int) $result_sessions->id, "source" => "gravity");
 
 			$data_to_post = "data=" . json_encode($create_array) . "&session_reference=" . (int) $result_sessions->id . "&session_id=" . (int) $result_sessions->id . "&source=gravity"; //if http_build_query causes any problem with JSON data, send this parameter directly in post.
-
-//			$url = "https://practicingclinicians.com/testing/digitell/digitell-session-data-v2.php";
-			$url ='';
+			// print_r($data_to_post);exit;
+			$url = "https://omni-channel-api-prod.herokuapp.com/gravity/gravitypostback";
+			// $url ='';
+			// print_R($url);exit;
+			// print_r($url);exit;
 			$headers = array(
 				'Content-Type:application/json',
 				'Accept: application/json'
@@ -2584,7 +2587,7 @@ class Sessions_Model extends CI_Model
 			$result = json_decode($result);
 			echo "<pre>";
 			print_r($result);
-//            die;
+           die;
 			if ($result == 1) {
 				return TRUE;
 			} else {
