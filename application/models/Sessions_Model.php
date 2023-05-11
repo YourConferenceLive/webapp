@@ -2566,8 +2566,8 @@ class Sessions_Model extends CI_Model
 
 			$json_array = array("data" => json_encode($create_array), "session_reference" => (int) $result_sessions->id, "session_id" => (int) $result_sessions->id, "source" => "gravity");
 
-			$data_to_post = "data=" . json_encode($create_array) . "&session_reference=" . (int) $result_sessions->id . "&session_id=" . (int) $result_sessions->id . "&source=gravity"; //if http_build_query causes any problem with JSON data, send this parameter directly in post.
-			// print_r($data_to_post);exit;
+			$data_to_post = "data:" . json_encode($create_array) . "&session_reference=" . (int) $result_sessions->id . "&session_id=" . (int) $result_sessions->id . "&source=gravity"; //if http_build_query causes any problem with JSON data, send this parameter directly in post.
+		
 			$url = "https://omni-channel-api-prod.herokuapp.com/gravity/gravitypostback";
 			// $url ='';
 			// print_R($url);exit;
@@ -2584,12 +2584,10 @@ class Sessions_Model extends CI_Model
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($json_array));
 			$result = curl_exec($ch);
 			curl_close($ch);
-			$result = json_decode($result);
-			echo "<pre>";
-			print_r($result);
-           die;
+			$result = json_encode($result);
+			
 			if ($result == 1) {
-				return TRUE;
+				return $result;
 			} else {
 				return FALSE;
 			}
