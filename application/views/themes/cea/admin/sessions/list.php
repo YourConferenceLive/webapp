@@ -646,9 +646,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 		
 				console.log(result);
-				if(result.status == "success"){
+				if(result.status == "ok"){
 					Swal.fire({
-						text: result.message,
+						text: result.status,
 						icon:'success',
 						title: 'Success'
 					})
