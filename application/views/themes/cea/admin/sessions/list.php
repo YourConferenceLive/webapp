@@ -640,27 +640,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				})
 		})
 
-		$('#sessionsTableBody').on('click','.sendJsonBtn', function(){
-			let session_id = $(this).attr('session-id');
-			$.post(project_admin_url+'/sessions/send_json/'+session_id, function(result){
+	$('#sessionsTableBody').on('click', '.sendJsonBtn', function() {
 
-		
-				console.log(result);
-				if(result.status == "ok"){
-					Swal.fire({
-						text: result.status,
-						icon:'success',
-						title: 'Success'
-					})
-				}else{
-					Swal.fire({
-						text: result.message,
-						icon: 'info',
-						title: 'Info'
-					})
-				}
-			},'json')
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, send it!'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				let session_id = $(this).attr('session-id');
+				$.post({
+					url: project_admin_url + '/sessions/send_json/' + session_id,
+					data: '',
+					beforeSend: function() {
+						Swal.fire({
+							title: 'Sending Json...',
+								showCancelButton: false,
+  								showConfirmButton: false,
+							onBeforeOpen: () => {
+								Swal.showLoading()
+							}
+						})
+					}
+				}).done(function(result) {
+
+					result = JSON.parse(result)
+					console.log(result)
+					if (result.status == "ok") {
+						Swal.fire({
+							text: result.status,
+							icon: 'success',
+							title: 'Success'
+						})
+					} else {
+						Swal.fire({
+							text: result.message,
+							icon: 'info',
+							title: 'Info'
+						})
+					}
+				});
+			}
 		})
+	})
 	})
 
 	function getColorPreset(){
