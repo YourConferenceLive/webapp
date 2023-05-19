@@ -358,10 +358,13 @@ class Authentication extends CI_Controller {
 	}
 
 	function cco_authentication() {
+		// print_r('test');exit;
 
 		$token = $this->input->get('token');
 		$project_id = $this->project->id;
 		$response_array = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', explode('.', $token)[1]))));
+		// print_r($response_array);exit;
+
 		if (isset($response_array) && !empty($response_array)) {
 
 			$or_where = '(email = "' . $response_array->identity->email . '")';
@@ -373,9 +376,9 @@ class Authentication extends CI_Controller {
 					'name' => $response_array->identity->firstname,
 					'surname' => $response_array->identity->lastname,
 					'email' => $response_array->identity->email,
-					'bio' => $response_array->identity->degree,
-					'credentials' => $user_details->bio	,
-					'country' => $user_details->country,
+					// 'bio' => $response_array->identity->degree,
+					// 'credentials' => $user_details->bio	,
+					// 'country' => $user_details->country,
 //					'zipcode' => $user_details->zipcode,
 					'identifier_id' => $response_array->identity->identifier,
 					'api_session' => $response_array->session,
@@ -428,15 +431,15 @@ class Authentication extends CI_Controller {
 					'email' => $response_array->identity->email,
 					'password' => password_hash('12345', PASSWORD_DEFAULT),
 //					'specialty' => "",
-					'bio' => $response_array->identity->degree,
-					'country' => "",
+					// 'bio' => $response_array->identity->degree,
+					// 'country' => "",
 					'identifier_id' => $response_array->identity->identifier,
 					'api_session' => $response_array->session,
 					'iat' => $response_array->iat,
 					'exp' => $response_array->exp,
 					'aud' => json_encode($response_array->aud),
 					'jti' => $response_array->jti,
-					'city' => "",
+					// 'city' => "",
 					'created_on' => date("Y-m-d h:i")
 				);
 				$this->db->insert("user", $set);
