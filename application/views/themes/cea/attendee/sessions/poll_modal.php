@@ -43,6 +43,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			let formData = new FormData(document.getElementById('pollAnswerForm'));
 
+			if(formData.has('poll_option') == false){
+				toastr.warning("Please select an option")
+				return false;
+			}
+			
 			$.ajax({
 				type: "POST",
 				url: project_url+"/sessions/vote",
