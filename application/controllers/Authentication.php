@@ -38,6 +38,7 @@ class Authentication extends CI_Controller {
 			{
 				if (in_array($access_level, $verification['user']->access_levels))
 				{
+					$token = $this->auth->update_user_token($verification['user']->id);
 					$current_project_sessions = $this->session->userdata('project_sessions');
 
 					$current_project_sessions["project_$project_id"] = array(
@@ -52,7 +53,8 @@ class Authentication extends CI_Controller {
 						'is_presenter' => (in_array('presenter', $verification['user']->access_levels))?1:0,
 						'is_admin' => (in_array('admin', $verification['user']->access_levels))?1:0,
 						'is_exhibitor' => (in_array('exhibitor', $verification['user']->access_levels))?1:0,
-						'is_mobile_attendee' => (in_array('mobile_attendee', $verification['user']->access_levels))?1:0
+						'is_mobile_attendee' => (in_array('mobile_attendee', $verification['user']->access_levels))?1:0,
+						'token'=>$token,
 					);
 
 					if (in_array('exhibitor', $verification['user']->access_levels))

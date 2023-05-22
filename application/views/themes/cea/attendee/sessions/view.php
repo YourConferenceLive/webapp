@@ -562,6 +562,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 						// $('#pollModal').modal('hide');
 						$('#howMuchSecondsLeft').hide();
 						$('#voteBtn').attr('disabled', 'disabled');
+						$('#pollModal').modal('hide');
 						if (data.show_result == 1) {// Show result automatically
 							$.get(project_url + "/sessions/getPollResultAjax/" + data.id, function (results) {
 								results = JSON.parse(results);
