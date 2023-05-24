@@ -2670,28 +2670,11 @@ class Sessions_Model extends CI_Model
 	}
 
 	public function clearJson($session_id){
-
-//		$this->db->delete("login_sessions_history", array("sessions_id" => $sessions_id));
-//		$this->db->delete("sessions_cust_question", array("sessions_id" => $sessions_id));
-//		$this->db->delete("tbl_favorite_question_admin", array("sessions_id" => $sessions_id));
-//		$this->db->delete("tbl_favorite_question", array("sessions_id" => $sessions_id));
-	//		$this->db->delete("total_time_on_session", array("session_id" => $sessions_id));
-//
-//		$poll_question_result = $this->db->get_where("poll_question_option", array("sessions_id" => $sessions_id))->result();
-//		if (!empty($poll_question_result)) {
-//			foreach ($poll_question_result as $value) {
-//				$sessions_poll_question_id = $value->sessions_poll_question_id;
-//				$this->db->update("poll_question_option", array("total_vot" => 0), array("sessions_poll_question_id" => $sessions_poll_question_id));
-//				$this->db->delete("tbl_poll_voting", array("sessions_poll_question_id" => $sessions_poll_question_id));
-//			}
-//		}
-//		//   $this->db->delete("sessions_poll_question", array("sessions_id" => $sessions_id));
-//		header('location:' . base_url() . 'admin/sessions?msg=S');
-
 		try {
 			$this->db->trans_begin();
 			$this->deleteSessionLogHistory($session_id);
 			$this->deleteSessionQuestion($session_id);
+			$this->deleteSessionHostChat($session_id);
 			$this->deleteTotalTimeOnSession($session_id);
 			$this->deletePoll($session_id);
 
@@ -2730,9 +2713,15 @@ class Sessions_Model extends CI_Model
 				$this->deleteSessionFavQuestion($item->id);
 				$this->deleteSessionStashedQuestion($item->id);
 			}
+			$this->db->where('session_id', $session_id);
 			$this->db->delete("session_questions", array("session_id" => $session_id));
 		}
 	}
+
+	function deleteSessionHostChat($session_id){
+		$this->db->delete("session_host_chat", array("session_id" => $session_id));
+	}
+
 
 	function deleteSessionFavQuestion($question_id){
 		$this->db->delete("session_question_saved", array("question_id" => $question_id));
@@ -2753,6 +2742,7 @@ class Sessions_Model extends CI_Model
 			foreach ($result->result() as $item){
 				$this->deletePollAnswerByPoll($item->id);
 			}
+			$this->db->where('session_id', $session_id);
 			$this->db->update('session_polls', array('is_launched'=>'0', 'is_poll_closed'=>'0', 'is_result_showed'=>'0'));
 		}
 	}
