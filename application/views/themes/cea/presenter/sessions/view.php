@@ -54,6 +54,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	.dark-mode .nav-tabs .nav-item.show .nav-link, .dark-mode .nav-tabs .nav-link.active{
 		border-color: white !important;
 	}
+	.tool-box-section{
+		background-color: black;
+		padding-left:30px !important;
+		padding-right:15px !important;
+	}
 </style>
 
 <?php //print_r($settings);exit;?>
@@ -81,7 +86,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="card-header p-0 pt-1 border-bottom-0" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">
 						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist" >
 
-							<li class="nav-item" >
+							<li class="nav-item" style="border: 1px solid white;">
 								<a class="nav-link text-white" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>"><i class="fas fa-user-tie"></i> Host Chat</a>
 							</li>
 						</ul>
@@ -130,13 +135,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 
 				<!-- Questions and Starred Questions -->
-				<div class="card card-primary card-tabs shadow-none" style="height: 45vh;">
+				<div class="card card-primary card-tabs shadow-none" style="height: 43vh;">
 					<div class="card-header p-0 pt-1 border-bottom-0 text-white" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:''?>">
 						<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
-							<li class="nav-item" >
+							<li class="nav-item" style="border: 1px solid white;">
 								<a class="nav-link active text-white" id="questions-tab" data-toggle="pill" href="#questions-tab-content" role="tab" aria-controls="questions-tab-content" aria-selected="true" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:'#0052CC'?>"><i class="far fa-question-circle"></i> Questions</a>
 							</li>
-							<li class="nav-item">
+							<li class="nav-item" style="border: 1px solid white;">
 								<a class="nav-link text-white" id="starred-questions-tab" data-toggle="pill" href="#starred-questions-tab-content" role="tab" aria-controls="starred-questions-tab-content" aria-selected="false" style="background-color:<?=(isset($settings) && $settings->stickyIcon_color!== '')? $settings->stickyIcon_color:'#0052CC'?>"><i class="fas fa-star"></i> Favorites </a>
 							</li>
 						</ul>
