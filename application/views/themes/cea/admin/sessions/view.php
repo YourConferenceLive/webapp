@@ -378,6 +378,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#questions-tab-content').html('');
 			$.each(questions, function (poll_id, question) {
+				let comment_icon_btn = ''
+				if(question.marked_replied == 1){
+					comment_icon_btn = '<span class=""><i class="fas fa-comment-dots"></i></span>'
+				}
+
 				// console.log(question)
 				$('#questions-tab-content').prepend('' +
 					'<div class="container-fluid mr-2">' +
@@ -396,7 +401,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'</div>' +
 					'</div>' +
 					'<div class="row">' +
-					'<div class="col-12"><a class="questionList" href="#" style="cursor:pointer" question-id="'+question.id+'" question="'+question.question+'" session_id="'+session_id+'" sender_id="'+question.user_id+'" sender_name="'+question.user_name+'" sender_surname="'+question.user_surname+'">'+question.user_name+' '+ question.user_surname+'</a></div>' +
+					'<div class="col-12"><a class="questionList" href="#" style="cursor:pointer" question-id="'+question.id+'" question="'+question.question+'" session_id="'+session_id+'" sender_id="'+question.user_id+'" sender_name="'+question.user_name+'" sender_surname="'+question.user_surname+'">'+question.user_name+' '+ question.user_surname+' '+comment_icon_btn+'</a></div>' +
 					'<div class="col-12">'+question.question+'</div>' +
 					'</div>' +
 					'<div class="col"><hr></div>');
@@ -557,6 +562,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('#sendMessagetoAttendee').on('click', function(){
 		let chat = $('#chatToAttendeeText').val();
 		let sender_id = $(this).attr('sender_id');
+		let question_id = $(this).attr('question_id')
 
 		if(chat == ''){
 			toastr.info('Cannot send empty message');
@@ -564,6 +570,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 		let url = project_presenter_url+"/sessions/save_presenter_attendee_chat";
 
+		$.get(project_presenter_url+"/sessions/markQuestionReplied/"+question_id,function( data ) {
+                
+            	});
+				
 		$.post(url,
 			{
 				'chat': chat,
@@ -574,7 +584,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				if(response.status == 'success') {
 
 					socket.emit('new-attendee-to-admin-chat', {"session_id":session_id, "sent_from":"admin", "sender_id": sender_id, "chat_text":chat, "from_id": user_id, 'presenter_name': user_name });
-					// socket.emit('update-admin-attendee-chat', {"socket_session_name":socket_session_name, "session_id":session_id, "to_id": sender_id, "to_name":currently_chatting_with_attendee, 'current_question':chat,'replied_status':comment_question_id });
+					socket.emit('update-admin-attendee-chat');
 
 					$('#attendeeChatModalBody').append('<span class="admin-to-attendee-chat btn btn-warning float-right mr-2 my-1" style="width:90%"><span style="float: right; text-right margin-left:5px"><strong>' + user_name + ': </strong>' + chat + '</span></span>')
 					$('#chatToAttendeeText').val('');
@@ -586,6 +596,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 			}, 'json')
 	})
+
+	socket.on('update-admin-attendee-chat', function(){
+			fillQuestions();
+		})
 
 	socket.on('new-attendee-to-admin-chat-notification', function (data) {
 		// console.log(data);
@@ -682,7 +696,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			{
 				'sender_id': sender_id,
 				'sender_name': sender_name,
-				'sender_surname': sender_surname
+				'sender_surname': sender_surname,
+				'question_id': question_id
 			});
 		$('#chatToAttendeeText').attr('question-id', question_id)
 

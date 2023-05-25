@@ -163,6 +163,10 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->hideQuestionAjax());
 	}
 
+	public function markQuestionReplied($session_id){
+		echo json_encode($this->sessions->markQuestionReplied($session_id));
+	}
+
 	public function view_poll($session_id){
 		$sidebar_data['user'] = $this->user;
 		$session = $this->sessions->getById($session_id);
