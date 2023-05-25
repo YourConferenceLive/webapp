@@ -259,33 +259,34 @@ if (isset($settings) && !empty($settings->poll_music)) {
 			$('.tool-box-section').css('display', 'block')
 		});
 		socket.on('ycl_session_question', function (data) {
-			// console.log(data.question_id);
 			if (data.sessionId == session_id)
 			{
-				let question = '' +
-						'<div class="container-fluid mr-2">' +
-						'<div class="row" style="padding-right: 15px">' +
-						'<div class="col-7">' +
-						'<strong></strong>' +
-						'</div>' +
-						'<div class="col-3">' +
-						'<small class="text-secondary"></small>' +
-						'</div>' +
-						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
-						'</div>' +
-						'<div class="col-1">' +
-						'<small class="text-secondary"><i class="far fa-star" style="color: black;cursor: pointer;"></i></small>' +
-						'</div>' +
-						'</div>' +
-						'<div class="row"><a class="questionList" href="#" style="cursor:pointer" question-id="'+data.question_id+'" question="'+data.question+'" sender_id="'+data.sender_id+'" sender_name="'+data.sender_name+'" sender_surname="'+data.sender_surname+'">' +
-						'<div class="col-12">'+data.sender_name+' '+ data.sender_surname+'</div>' +
-						'<div class="col-12">'+data.question+'</div>' +
-						'</div></a>' +
-						'</div>' +
-						'<div class="col"><hr></div>';
+			console.log(data.question_id);
+			fillQuestions();
+				// let question = '' +
+				// 		'<div class="container-fluid mr-2">' +
+				// 		'<div class="row" style="padding-right: 15px">' +
+				// 		'<div class="col-7">' +
+				// 		'<strong></strong>' +
+				// 		'</div>' +
+				// 		'<div class="col-3">' +
+				// 		'<small class="text-secondary"></small>' +
+				// 		'</div>' +
+				// 		'<div class="col-1">' +
+				// 		'<small class="text-secondary"><i class="fas fa-ban" style="color: black;cursor: pointer;"></i></small>' +
+				// 		'</div>' +
+				// 		'<div class="col-1">' +
+				// 		'<span class="text-secondary save-question" id="save-question-'+data.question_id+'" question-id="'+data.question_id+'">'+((data.isOnSaveQuestion == "1")?'<i class="fas fa-star" style="color: black; cursor: pointer;"></i>':'<i class="far fa-star" style="color: black;cursor: pointer;"></i>')+'</span>' +
+				// 		'</div>' +
+				// 		'</div>' +
+				// 		'<div class="row"><a class="questionList" href="#" style="cursor:pointer" question-id="'+data.question_id+'" question="'+data.question+'" sender_id="'+data.sender_id+'" sender_name="'+data.sender_name+'" sender_surname="'+data.sender_surname+'">' +
+				// 		'<div class="col-12">'+data.sender_name+' '+ data.sender_surname+'</div>' +
+				// 		'<div class="col-12">'+data.question+'</div>' +
+				// 		'</div></a>' +
+				// 		'</div>' +
+				// 		'<div class="col"><hr></div>';
 
-				$('#questions-tab-content').prepend(question);
+				// $('#questions-tab-content').prepend(question);
 			}
 		});
 
