@@ -1406,6 +1406,7 @@ class Sessions_Model extends CI_Model
 			->get();
 
 		if ($result->num_rows()>0){
+			$this->db->where('id',$result->result()[0]->id);
 			$this->db->update('session_question_stash', $field_set);
 		}else
 			$this->db->insert('session_question_stash', $field_set);
