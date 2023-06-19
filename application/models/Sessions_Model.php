@@ -1322,7 +1322,7 @@ class Sessions_Model extends CI_Model
 			->where('from_id', $post['sender_id'])
 			->or_where('to_id', $post['sender_id'])
 			->group_end()
-			->order_by('date_time', 'asc')
+			->order_by('adc.date_time', 'asc')
 			->get();
 
 		if($chats->num_rows()>0){
