@@ -20,8 +20,9 @@ class Sessions extends CI_Controller
 			redirect(base_url().$this->project->main_route."/login/logout"); // multiple logged-in
 		}
 
+		
 		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
-
+		// print_R($this->user);exit;
 		$this->load->model('Logger_Model', 'logger');
 		$this->load->model('Sessions_Model', 'sessions');
 		$this->load->model('attendee/Notes_Model', 'note');
@@ -116,6 +117,19 @@ class Sessions extends CI_Controller
 			$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id, $session_id);
 		}
 
+		if($this->user['email'] == "Shannon_ccs@gmail.com" || $this->user['email'] == "onsite2@polling.com" ){
+           	
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
+			// ->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/view_onsite", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/poll_modal_onsite")
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/poll_result_modal_onsite")
+			// ->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/note_modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
+		;
+        }else {
+            	
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
@@ -125,6 +139,8 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/note_modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer", $data)
 		;
+        }
+	
 	}
 
 	public function claimCredit($session_id, $credit)

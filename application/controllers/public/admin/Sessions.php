@@ -204,6 +204,10 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->getSessionResources($session_id));
 	}
 
+	public function markQuestionReplied($session_id){
+		echo json_encode($this->sessions->markQuestionReplied($session_id));
+	}
+
 	public function addSessionResources(){
 		echo json_encode($this->sessions->addSessionResources());
 	}

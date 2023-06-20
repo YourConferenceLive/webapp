@@ -1322,7 +1322,7 @@ class Sessions_Model extends CI_Model
 			->where('from_id', $post['sender_id'])
 			->or_where('to_id', $post['sender_id'])
 			->group_end()
-			->order_by('date_time', 'asc')
+			->order_by('adc.date_time', 'asc')
 			->get();
 
 		if($chats->num_rows()>0){
@@ -2730,6 +2730,22 @@ class Sessions_Model extends CI_Model
 	function deleteSessionStashedQuestion($question_id){
 		$this->db->delete("session_question_stash", array("question_id" => $question_id));
 	}
+
+	function markQuestionReplied($question_id)
+    {
+        $data = array(
+            'id' => $question_id
+        );
+
+        $this->db->where($data);
+        $this->db->update('session_questions', array('marked_replied'=>1));
+
+        if ($this->db->affected_rows() > 0)
+           return true;
+        else
+             return false;
+    }
+	
 	function deleteTotalTimeOnSession($session_id){
 		$this->db->delete("total_time_on_session", array("session_id" => $session_id));
 	}

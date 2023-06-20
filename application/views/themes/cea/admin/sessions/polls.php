@@ -342,7 +342,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 
 			$.get(project_admin_url+"/sessions/getPollByIdJson/"+pollId, function (poll) {
-
+				console.log(JSON.parse(poll))
 				socket.emit('ycl_launch_poll', JSON.parse(poll));
 
 				Swal.fire(
@@ -371,13 +371,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
 			let pollQuestion = $(this).attr('poll-question');
-			if(socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId, poll_question:pollQuestion})) {
+		
+			
+			$.get(project_admin_url+"/sessions/getPollByIdJson/"+pollId, function (poll) {
+				poll = JSON.parse(poll);
+				if(socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId, poll_question:poll.poll_question})) {
 				$.post(project_admin_url + "/sessions/updateShowedResult/" + pollId, function (poll) {
 					$('#launch-result_'+pollId).css('display', 'none')
 					$('#show-result-again_'+pollId).css('display', 'block')
-				})
-			}
-			toastr.success("Result popup triggered");
+					})
+
+					toastr.success("Result popup triggered");
+				}
+	
+			}).fail((error)=>{
+				Swal.fire(
+						'Error!',
+						 error,
+						'error');
+			});
+			
 		});
 
 

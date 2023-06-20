@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Sessions extends CI_Controller
 {
+	// private $user;
 	public function __construct()
 	{
 		parent::__construct();
@@ -75,7 +76,19 @@ class Sessions extends CI_Controller
 
 		//$menu_data['host_chat_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_host_chat", '', true);
 		//$menu_data['questions_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_questions.php", '', true);
-
+		// print_r($this->user);exit;
+		if($this->user->email == "rexterdayuta@gmail.com"){
+			$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
+			// ->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
+			//->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view_onsite", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_result_modal")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")
+		;
+		}else{
+		
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
@@ -85,6 +98,7 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_result_modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")
 		;
+		}
 	}
 
 	public function view_without_slides($id)
@@ -161,6 +175,10 @@ class Sessions extends CI_Controller
 
 	public function hideQuestionAjax(){
 		echo json_encode($this->sessions->hideQuestionAjax());
+	}
+
+	public function markQuestionReplied($session_id){
+		echo json_encode($this->sessions->markQuestionReplied($session_id));
 	}
 
 	public function view_poll($session_id){

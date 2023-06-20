@@ -73,4 +73,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}, 'json')
 	}
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/content-zoom-slider.min.js?v=2"></script>
+
+<script>
+  jQuery.noConflict();
+  jQuery(document).ready(function($) {
+    $("#contentPoll").contentZoomSlider({
+      toolContainer: ".zoom-tool-bar"
+    });
+	 $("#contentResult").contentZoomSlider({
+      toolContainer: ".zoom-tool-bar2"
+    });
+  });
+  
+</script>
 
