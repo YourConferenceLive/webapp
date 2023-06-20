@@ -7,6 +7,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	body {
 		overflow: hidden;
 		background-color: #151515;
+		font-family: "Open Sans", Helvetica, Arial, sans-serif
+	}
+	#pollResultModal, #pollModal{
+		font-size: 2rem !important;
+	}
+	#pollModal input[type="radio"]{
+		width:25px;
+		height:40px
+	}
+	#pollModal label{
+		margin-left: 10px !important;
 	}
 </style>
 
@@ -16,267 +27,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 </div>
 
-<!--bizim-->
-<!-- <div class="rightSticky" data-screen="customer">
-	<ul>
-		<li data-type="notesSticky" id="notesSticky" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>"><i class="fas fa-edit" aria-hidden="true"></i> <span><?= (isset($session->toolbox_note_text) && !empty($session->toolbox_note_text)) ? $session->toolbox_note_text : 'Take Notes' ?> </span></li>
-		<li data-type="resourcesSticky" id="resourcesSticky" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>"><i class="fa fa-paperclip" aria-hidden="true"></i> <span><?= (isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text)) ? $session->toolbox_resource_text : 'Resources' ?> </span></li>
-		<li data-type="messagesSticky"><i class="fa fa-comments" aria-hidden="true"></i> <span class="notify displayNone"></span> <span>MESSAGES</span></li>
-		<li data-type="questionsSticky" id="questionsSticky" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>"><i class="fa fa-question" aria-hidden="true"></i> <span><?= (isset($session->toolbox_question_text) && !empty($session->toolbox_question_text)) ? $session->toolbox_question_text : 'Questions' ?></span></li>
-		<li data-type="adminChatSticky" id="adminChatStickyIcon" style="display:none" class="bg-primary"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Chat With Admin</span></li>
-		<li data-type="askARepSticky" id="askARepSticky" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>"><img src="<?= ycl_root ?>/cms_uploads/projects/<?= $this->project->id ?>/theme_assets/sessions/conversation_icon.png" style="height:25px; width:25px"> <span><?= (isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text)) ? $session->toolbox_askrep_text : 'Ask a Rep' ?></span></li>
-	</ul>
-</div> -->
-
-<div class="rightSticykPopup notesSticky" style="display: none; ">
-	<div class="header" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>;"><span>Toolbox</span>
-		<div class="rightTool">
-			<i class="fa fa-minus" aria-hidden="true"></i>
-			<div class="dropdown">
-				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
-				<ul class="dropdown-menu">
-					<li data-type="resourcesSticky" data-type2="off"><?= (isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text)) ? $session->toolbox_resource_text : 'Resources' ?></li>
-					<li data-type="questionsSticky" data-type2="off"><?= (isset($session->toolbox_question_text) && !empty($session->toolbox_question_text)) ? $session->toolbox_question_text : 'Questions' ?></li>
-					<li data-type="askARepSticky" data-type2="off"><?= (isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text)) ? $session->toolbox_askrep_text : 'Ask a Rep' ?></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div class="content">
-		<div class="contentHeader" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>;"><?= (isset($session->toolbox_note_text) && !empty($session->toolbox_note_text)) ? $session->toolbox_note_text : 'Take Notes' ?> </div>
-		<div id="briefcase_section">
-			<div id="briefcase_section">
-				<div class="col-md-12 input-group">
-					<input type="hidden" name="session_id" id="session_id" value="<?php echo $session_id; ?>">
-					<textarea type="text" id="briefcase" class="form-control" placeholder="Enter Note" value=""><?= isset($sessions_notes_download) ? $sessions_notes_download : "" ?></textarea>
-				</div>
-				<div class="col-md-12 pt-1">
-					<a class="button color btn btn-sm text-white border" id="briefcase_send" style="<?= ($view_settings && $view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' ?>;"><i class="fas fa-save"></i> <span>Save</span></a>
-				</div>
-				<div class="col-md-12">
-					<div class="contentHeader p-0 pt-2 pb-2" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color != '') ? 'color:' . $view_settings[0]->stickyIcon_color : '' ?>;">Previous Notes</div>
-					<div id="notes_list_container">
-						<?php
-						if ($notes != new stdClass()) : ?>
-							<ul class="list-group">
-								<?php
-								foreach ($notes as $note) :
-									if (trim($note->note_text) != '') : ?>
-										<li class="list-group-item p-1"><?php echo ((strlen($note->note_text) > 20) ? substr($note->note_text, 0, 20) . '&hellip; <a href="javascript:void(0);" class="note_detail" data-note-text="' . $note->note_text . '">more&raquo;</a>' : $note->note_text); ?></li>
-								<?php
-									endif;
-								endforeach; ?>
-							</ul>
-						<?php
-						else : ?>
-							<div class="mb-1 mt-1 p-1 text-white" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' ?>;">No previous notes</div>
-						<?php
-						endif; ?>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="rightSticykPopup resourcesSticky" style="display: none">
-	<div class="header" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>;"><span>Toolbox</span>
-		<div class="rightTool">
-			<i class="fa fa-minus" id="resourcesStickyMinimize" aria-hidden="true"></i>
-			<div class="dropdown">
-				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
-				<ul class="dropdown-menu">
-					<li data-type="questionsSticky" data-type2="off"><?= (isset($session->toolbox_question_text) && !empty($session->toolbox_question_text)) ? $session->toolbox_question_text : 'Questions' ?></li>
-					<li data-type="notesSticky" data-type2="off"><?= (isset($session->toolbox_note_text) && !empty($session->toolbox_note_text)) ? $session->toolbox_note_text : 'Take Notes' ?> </li>
-					<li data-type="askARepSticky" data-type2="off"><?= (isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text)) ? $session->toolbox_askrep_text : 'Ask a Rep' ?></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div class="content">
-		<div class="contentHeader" style="<?= (($view_settings) && $view_settings[0]->stickyIcon_color != '') ? 'color:' . $view_settings[0]->stickyIcon_color : '' ?>;">
-			<?= (isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text)) ? $session->toolbox_resource_text : 'Resources' ?>
-		</div>
-		<div id="resource_section" style="padding: 0px 0px 0px 0px; margin-top: 10px; background-color: #fff; border-radius: 5px;">
-			<div style="padding: 0px 15px 15px 15px; overflow-y: auto; height: 240px;" id="resource_display_status">
-				<?php
-				if (!empty($session->resources)) {
-					foreach ($session->resources as $resource) { ?>
-						<div class="row" style="margin-bottom: 10px; padding-bottom: 5px">
-							<?php
-							if ($resource->resource_type == "url") { ?>
-								<div class="col-md-12"><a href="<?= $resource->resource_path ?>" target="_blank"><i class="fas fa-globe"></i> <?= $resource->resource_name ?></a></div>
-							<?php
-							} ?>
-							<?php
-							if ($resource->resource_type == "file") {
-								if ($resource->resource_path != "") { ?>
-									<div class="col-md-12"><a href="<?= ycl_root ?>/cms_uploads/projects/<?= $this->project->id ?>/sessions/resources/<?= $resource->resource_path ?>" download><i class="fas fa-file-alt text-info"></i> <?= $resource->resource_name ?> </a></div>
-							<?php
-								}
-							} ?>
-						</div>
-				<?php
-					}
-				} ?>
-				<span id='success_resource' style='color:green;'></span>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="rightSticykPopup messagesSticky" style="display: none">
-	<div class="header"><span>Toolbox</span>
-		<div class="rightTool">
-			<i class="fa fa-minus" id="messagesStickyMinimize" aria-hidden="true"></i>
-			<div class="dropdown">
-				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
-				<ul class="dropdown-menu">
-					<li data-type="resourcesSticky" data-type2="off"><?= (isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text)) ? $session->toolbox_resource_text : 'Resources' ?></li>
-					<li data-type="questionsSticky" data-type2="off"><?= (isset($session->toolbox_question_text) && !empty($session->toolbox_question_text)) ? $session->toolbox_question_text : 'Questions' ?></li>
-					<li data-type="notesSticky" data-type2="off"><?= (isset($session->toolbox_note_text) && !empty($session->toolbox_note_text)) ? $session->toolbox_note_text : 'Take Notes' ?> </li>
-					<li data-type="adminChatSticky" data-type2="off"><?= (isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text)) ? $session->toolbox_askrep_text : 'Ask a rep' ?></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div class="content">
-		<div class="contentHeader"><?= (isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text)) ? $session->toolbox_chat_admin_text : 'Chat With admin' ?></div>
-		<div class="messages"></div>
-		<input type="text" class="form-control" placeholder="Enter message" id='sendGroupChat'>
-	</div>
-</div>
-<div class="rightSticykPopup questionsSticky" style="display: none">
-	<div class="header" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>;"><span>Toolbox</span>
-		<div class="rightTool">
-			<i class="fa fa-minus" id="questionsStickyMinimize" aria-hidden="true"></i>
-			<div class="dropdown">
-				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
-				<ul class="dropdown-menu">
-					<li data-type="resourcesSticky" data-type2="off"><?= (isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text)) ? $session->toolbox_resource_text : 'Resources' ?></li>
-					<li data-type="notesSticky" data-type2="off"><?= (isset($session->toolbox_note_text) && !empty($session->toolbox_note_text)) ? $session->toolbox_note_text : 'Take Notes' ?> </li>
-					<li data-type="askARepSticky" data-type2="off"><?= (isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text)) ? $session->toolbox_askrep_text : 'Ask a Rep' ?></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div class="content">
-
-		<div class="contentHeader" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>;"><?= (isset($session->toolbox_question_text) && !empty($session->toolbox_question_text)) ? $session->toolbox_question_text : 'Questions' ?></div>
-		<div id="questionElement" class="questionElement" style="overflow: scroll;height: 170px;"></div>
-		<div id="ask_questions_section" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
-			<div style="padding:5px;">
-				<div style="text-align: center; display: flex; " id="questions_section">
-					<div class="input-group p-0">
-						<div class="input-group-prepend">
-							<span class="input-group-text btn" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/assets/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt="" /></span>
-						</div>
-						<input type="text" id="questionText" class="form-control" placeholder="Enter Question" value="">
-						<div class="input-group-append">
-							<span class="btn sendQuestionBtn text-white p-1" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>"><i class="fas fa-paper-plane"></i> Send</span>
-						</div>
-					</div>
-				</div>
-				<div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
-					<img src="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/assets/images/emoji/happy.png" title="Happy" class="btn" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt="" />
-					<img src="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/assets/images/emoji/sad.png" title="Sad" class="btn" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt="" />
-					<img src="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/assets/images/emoji/laughing.png" title="Laughing" class="btn" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt="" />
-					<img src="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/assets/images/emoji/thumbs_up.png" title="Thumbs Up" class="btn" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt="" />
-					<img src="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/assets/images/emoji/thumbs_down.png" title="Thumbs Down" class="btn" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt="" />
-					<img src="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/assets/images/emoji/clapping.png" title="Clapping" class="btn" id="questions_clapping" data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt="" />
-				</div>
-				<span id='error_questions' style='color:red;'></span>
-				<span id='success_questions' style='color:green;'></span>
-			</div>
-		</div>
-	</div>
-
-</div>
-
-<div class="rightSticykPopup adminChatSticky" style="display: none">
-	<div class="header bg-primary" style=""><span>Toolbox</span>
-		<div class="rightTool">
-			<i class="fa fa-minus" id="chatWithAdminMinimize" aria-hidden="true"></i>
-			<div class="dropdown">
-				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
-				<ul class="dropdown-menu">
-					<li data-type="resourcesSticky" data-type2="off"><?= (isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text)) ? $session->toolbox_resource_text : 'Resources' ?></li>
-					<li data-type="notesSticky" data-type2="off"><?= (isset($session->toolbox_note_text) && !empty($session->toolbox_note_text)) ? $session->toolbox_note_text : 'Take Notes' ?> </li>
-					<li data-type="askARepSticky" data-type2="off"><?= (isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text)) ? $session->toolbox_askrep_text : 'Ask a Rep' ?></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div class="content">
-
-		<div class="contentHeader" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>;"><?= (isset($session->toolbox_chat_admin_text) && !empty($session->toolbox_chat_admin_text)) ? $session->toolbox_chat_admin_text : 'Chat With admin' ?></div>
-		<div id="chat_with_admin_body" class="chat_with_admin_body" style="overflow-y: scroll;height: 170px;">
-
-		</div>
-		<div id="chat_with_admin_footer" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
-			<div style="padding:5px;">
-				<div style="text-align: center; display: flex; " id="">
-					<div class="col-md-12 input-group">
-						<input type="text" id="chat_with_admin_text" class="form-control" placeholder="Press enter to send..." value="">
-					</div>
-					<a class="button color btn" style="margin: 0; padding: 15px 7px;" id="chat_with_admin_send"><span>Send</span></a>
-				</div>
-				<span id='error_chat_with_admin' style='color:red;'></span>
-				<span id='success_chat_with_admin' style='color:green;'></span>
-			</div>
-		</div>
-	</div>
-
-</div>
-
-
-<div class="rightSticykPopup askARepSticky" style="display: none">
-	<div class="header" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>;"><span>Toolbox</span>
-		<div class="rightTool">
-			<i class="fa fa-minus" id="askARepStickyMinimize" aria-hidden="true"></i>
-			<div class="dropdown">
-				<span class="fas fa-ellipsis-v" aria-hidden="true" data-toggle="dropdown"></span>
-				<ul class="dropdown-menu">
-					<li data-type="questionsSticky" data-type2="off"><?= (isset($session->toolbox_question_text) && !empty($session->toolbox_question_text)) ? $session->toolbox_question_text : 'Questions' ?></li>
-					<li data-type="resourcesSticky" data-type2="off"><?= (isset($session->toolbox_resource_text) && !empty($session->toolbox_resource_text)) ? $session->toolbox_resource_text : 'Resources' ?></li>
-					<li data-type="notesSticky" data-type2="off"><?= (isset($session->toolbox_note_text) && !empty($session->toolbox_note_text)) ? $session->toolbox_note_text : 'Take Notes' ?> </li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div class="content">
-		<div class="contentHeader" style="<?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'color:' . $view_settings[0]->stickyIcon_color : '' : '' ?>;"><?= (isset($session->toolbox_askrep_text) && !empty($session->toolbox_askrep_text)) ? $session->toolbox_askrep_text : 'Ask a Rep' ?></div>
-		<div id="ask-a-rep" class="ask-a-rep" style="overflow-y: scroll;height: 170px;">
-			I would like a representative to contact me.
-		</div>
-		<div id="ask_a_rep_footer" style="background-color: #fff; border-radius: 5px; position: absolute; bottom: 0; width: 100%;">
-			<div style="padding:5px;">
-				<div style="text-align: center; display: flex; " id="">
-					<div class="col-md-9 input-group float-right">
-						<div class="form-group ">
-							<div class="form-check text-left">
-								<input class="form-check-input" type="radio" name="ask_rep_radio" id="ask_rep_radio" value="rep">
-								<label class="form-check-label" for="ask_rep_radio">
-									Ask a Rep
-								</label>
-							</div>
-							<div class="form-check text-left">
-								<input class="form-check-input" type="radio" name="ask_rep_radio" id="ask_msl_radio" value="msl">
-								<label class="form-check-label" for="ask_msl_radio">
-									Ask an MSL
-								</label>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3 float-right text-right">
-						<button class="float-right btn askARepSendBtn text-white" id="askARepSendBtn" style="margin: 0; padding: 15px 7px; <?= ($view_settings) ? ($view_settings[0]->stickyIcon_color != '') ? 'background-color:' . $view_settings[0]->stickyIcon_color : 'btn-primary' : 'btn-primary' ?>" id=""><span>Send</span></button>
-					</div>
-				</div>
-
-				<span id='error_chat_with_admin' style='color:red;'></span>
-				<span id='success_chat_with_admin' style='color:green;'></span>
-			</div>
-		</div>
-	</div>
-</div>
 <?php
 if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	foreach ($view_settings as $music_setting) {
@@ -645,8 +395,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 						});
 
 						$('#legend').html(
-							'<span class="mr-4"><i style="width:20px; height:20px;" class="fa-solid fa-square bg-info text-info d-inline-block "></i> Presurvey</span>' +
-							'<span><i  style="width:20px; height:20px;" class="fa-solid fa-square bg-primary text-primary d-inline-block "></i> Assessment</span>'
+							'<span class="mr-4"><span style="width:20px; height:20px;" class=" bg-info  d-inline-block "></span> Presurvey</span>' +
+							'<span><span  style="width:20px; height:20px;" class="bg-primary d-inline-block "></span> Assessment</span>'
 						)
 					}
 
@@ -657,7 +407,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 				}).then(function(obj, results) {
 					obj = JSON.parse(obj);
 					if (obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0') {
-						$('.progress-label').attr('style', 'margin-left:30px')
+						$('.progress-label').attr('style', 'margin-left:45px')
 					} else {
 						$('.progress-label').attr('style', '')
 					}

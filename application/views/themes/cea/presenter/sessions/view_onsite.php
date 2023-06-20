@@ -4,15 +4,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // print_r($settings);exit;
 ?>
 <style>
-	*{
-		font-size:20px
+	#questions-tab-content, #starred-questions-tab-content{
+		font-size:1.5rem
+	}
+	#pollModal{
+		font-family: "Open Sans", Helvetica, Arial, sans-serif;
 	}
 </style>
 	
 <main>
 	<div class="card">
 		<div class="card-header">
-			<h1>Attendee Questions</h1>
+			<h3>Attendee Questions</h3>
 		</div>
 		<div class="card-body">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -26,36 +29,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="tab-content" id="myTabContent">
 			<div class="tab-pane fade show active" id="question" role="tabpanel" aria-labelledby="question-tab">
 				<div id="chatBody" class="panel-body">
-					<div id="questions-tab-content" style="height:80vh; overflow-y:auto; overflow-x:hidden"></div>
+					<div id="questions-tab-content" style="height:73vh; overflow-y:auto; overflow-x:hidden"></div>
 				</div>
 			</div>
 			<div class="tab-pane fade" id="favorites" role="tabpanel" aria-labelledby="favorites-tab">
 				<div id="chatBody" class="panel-body">
-					<div id="starred-questions-tab-content" style="height:80vh; overflow-y:auto; overflow-x:hidden"></div>
+					<div id="starred-questions-tab-content" style="height:73vh; overflow-y:auto; overflow-x:hidden"></div>
 				</div>
 			
 			</div>
 			</div>
 		</div>
 		<div class="card-footer">
-			<h3>Footer</h3>
+			
 		</div>
 	</div>
 </main>
 <!-- Direct attendee chat modal -->
 <div class="modal fade" id="attendeeChatModal" tabindex="-1" role="dialog" aria-labelledby="attendeeChatModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document" style="min-width:100vw; min-height:100vh">
+	<div class="modal-dialog modal-lg" role="document" style="min-width:100vw; min-height:90vh">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="attendeeChatModalLabel">Chat with <span id="chatAttendeeName"></span></h4>
+				<h4 class="modal-title" id="attendeeChatModalLabel" style="font-size:30px">Chat with <span id="chatAttendeeName"></span></h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="user-question">Question: <span id="chattAttendeeQuestion" ></span><br></div><br>
-			<div class="attendeeChatmodal-body card " style="max-height: 50vh; overflow: auto;">
+			<div class="user-question" style="font-size:30px">Question: <span id="chattAttendeeQuestion" ></span><br></div><br>
+			<div class="attendeeChatmodal-body card " style="height:55vh; overflow: auto">
 				<div class="panel panel-default">
-					<div id="attendeeChatModalBody" style="" class="panel-body attendeeChatModalBody">
+					<div id="attendeeChatModalBody" class="panel-body attendeeChatModalBody">
 
 					</div>
 				</div>
