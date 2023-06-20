@@ -117,7 +117,7 @@ class Sessions extends CI_Controller
 			$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id, $session_id);
 		}
 
-		if($this->user['email'] == "Shannon_ccs@gmail.com" || $this->user['email'] == "onsite2@polling.com" ){
+		if($this->user['email'] == "onsite@polling.com" || $this->user['email'] == "onsite2@polling.com" ){
            	
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
