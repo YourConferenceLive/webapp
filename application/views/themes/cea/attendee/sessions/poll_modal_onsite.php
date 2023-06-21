@@ -5,8 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   
 <!-- Poll Modal - attendee -->
 <!-- <div id="content"> -->
-	<div class="modal fade" id="pollModal" tabindex="-1" role="dialog" aria-labelledby="pollModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="margin-top:-25px">
-		<div class="modal-dialog modal-lg" role="document" style=" width:100vw !important; min-width:100%">
+	<div class="modal fade" id="pollModal" tabindex="-1" role="dialog" aria-labelledby="pollModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="margin-top:3vh">
+		<div class="modal-dialog modal-lg" role="document" style=" width:100vw !important; min-width:93vw; overflow-y:auto; overflow-x:hidden">
 			<div class="modal-content">
 				  <div class="modal-header" style="padding:0; border-bottom:0">
 					<i class="zoom-tool-bar" style="width:100%"></i>
