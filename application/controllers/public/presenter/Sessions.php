@@ -77,7 +77,7 @@ class Sessions extends CI_Controller
 		//$menu_data['host_chat_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_host_chat", '', true);
 		//$menu_data['questions_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_questions.php", '', true);
 		// print_r($this->user);exit;
-		if($this->user->email == "rexterdayuta@gmail.com"){
+		if($this->user->email == "q@a.com"){
 			$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
 			// ->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
