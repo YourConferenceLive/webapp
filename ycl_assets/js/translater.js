@@ -8,7 +8,34 @@ function closeSwal() {
     Swal.close();
 }
 
-function initializeLanguageSettings2() {
+function initializeLanguage() {
+    return new Promise((resolve, reject) => {
+        Swal.showLoading();
+        Swal.getContainer().style.pointerEvents = 'none';
+        $.ajax({
+            url: baseUrl + "translator/initializeUserLanguageSetting",
+            dataType: "JSON",
+            method: "POST",
+            success: function(response) {
+                if(response) {
+                    let language = response[0].language;
+                    $('#languageSelect').val(language);
+                    resolve(language);
+                }
+                else
+                {
+                    reject("Error response");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("No response from server.");
+                closeSwal();
+            }
+        });
+    });
+}
+
+function initializeLanguageSettings() {
 
     $('body').css('pointer-events', 'none');
     Swal.fire({
@@ -63,40 +90,6 @@ function initializeLanguageSettings2() {
     });
 }
 
-function initializeLanguageSettings() {
-    // Return a Promise to indicate the completion of the initialization
-    return new Promise((resolve) => {
-        $('body').css('pointer-events', 'none');
-        Swal.fire({
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showConfirmButton: false,
-        willOpen: () => {
-            Swal.showLoading();
-            Swal.getContainer().style.pointerEvents = 'none'; // Disable user input
-        }
-        });
-
-        $.ajax({
-        url: baseUrl + "translator/initializeUserLanguageSetting",
-        dataType: 'JSON',
-        method: 'POST',
-        success: function(response) {
-            // Rest of your code for initializeLanguageSettings
-
-            // ...
-
-            resolve(); // Resolve the Promise to indicate completion
-        },
-        error: function(xhr, status, error) {
-            console.log("No response from server.");
-            closeSwal();
-
-            resolve(); // Resolve the Promise even if an error occurs
-        }
-        });
-    });
-}
 async function updatePageLanguage(language) {
     const arrEnglishToSpanishData = await fetchAllText();
     (async () => {
@@ -108,17 +101,6 @@ function updateUserLanguage(language) {
     // Start Swal loading
     Swal.showLoading();
     $('body').css('pointer-events', 'auto');
-
-    // Swal.fire({
-    //     allowOutsideClick: false,
-    //     allowEscapeKey: false,
-    //     showConfirmButton: false,
-    //     willOpen: () => {
-    //         Swal.showLoading();
-    //         Swal.disableButtons()
-    //         Swal.getContainer().style.pointerEvents = 'none'; // Disable user input
-    //     }
-    // });
 
     $.ajax({
         url: baseUrl + "translator/updateUserLanguage",

@@ -102,10 +102,16 @@ $ci_method = $this->router->fetch_method();
     const userType= "presenter";
     const baseUrl = "<?=$this->project_url?>/" +userType+"/"; // use this as url
 
+	if ($('#elementId').is('*')) {
+		// alternative to counter the bug for loading
+		initializeLanguage().then(() => {});
+	} 
     $(document).ready(function() {
         
-        // Initialize the language and translate if not english
-        initializeLanguageSettings();
+        // check if languageSelect exist ** required for translation
+        if ($('#elementId').is('*')) {
+			initializeLanguageSettings();
+		}
 
         // Reinitialize the language when sorting table
         $('table.dataTable thead th').on('click', function() {

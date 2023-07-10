@@ -88,9 +88,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	function evaluation_list()
 	{
 
-		(async () => {
-			await initializeLanguageSettings();
-		})();
 		const translationData = fetchAllText(); // Fetch the translation data
 
 		translationData.then((arrData) => {

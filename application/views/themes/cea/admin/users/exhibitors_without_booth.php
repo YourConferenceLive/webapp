@@ -332,9 +332,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function listUsers()
 	{
-		(async () => {
-			await initializeLanguageSettings();
-		})();
+
 		// Working code
 		const translationData = fetchAllText(); // Fetch the translation data
 

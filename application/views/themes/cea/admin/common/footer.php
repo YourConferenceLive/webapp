@@ -26,22 +26,20 @@ $ci_method = $this->router->fetch_method();
 
 <script src="<?= ycl_base_url ?>/ycl_assets/js/translater.js"></script>
 
-<!-- Lang-Translate Version 3 -->
 <script>
-    const userType= "admin";
-    const baseUrl = "<?=$this->project_url?>/" + userType + "/";
+	// use in translation.js
+    const baseUrl = "<?=$this->project_url?>/admin/";
    
+    if (! $('#elementId').is('*')) {
+		// alternative to counter the bug for loading
+        initializeLanguage().then(() => {});
+	}
     $(document).ready(function() {
 
-        const currentUrl = "<?= current_url() ?>";
-        const projUrl = "<?= $this->project_url?>";
-
-        // Used on logged in, if the url is for login => dont translate
-        if(currentUrl != projUrl)
-        {
-            initializeLanguageSettings();
-        }
-
+        // check if languageSelect exist ** required for translation
+        if ($('#languageSelect').length) {
+			initializeLanguageSettings();
+		} 
 
         // Reinitialize the language when sorting table
         $('table thead th').on('click', function() {

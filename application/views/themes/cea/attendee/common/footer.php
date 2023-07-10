@@ -96,11 +96,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- Lang-Translate Version 3 -->
 <script>
 
+	// use in translation.js
     const baseUrl = project_url + "/";
-	const currentUrl = "<?= current_url() ?>";
 
+	if ($('#elementId').is('*')) {
+		// alternative to counter the bug for loading
+		initializeLanguage().then(() => {});
+	} 
     $(document).ready(function() {
-        if (!currentUrl.includes('admin')) {
+
+		// check if languageSelect exist ** required for translation
+        if ($('#elementId').is('*')) {
 			initializeLanguageSettings();
 		} 
 

@@ -49,9 +49,4 @@ class Translator extends CI_Controller
 		echo json_encode($xdata);
 	}
 
-	public function test() {
-			echo json_encode(123);
-	}
-
-	
 }

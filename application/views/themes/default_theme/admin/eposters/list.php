@@ -245,9 +245,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 	function listePosters()
 	{
-		(async () => {
-			await initializeLanguageSettings();
-		})();
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading ePosters data...',
