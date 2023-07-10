@@ -56,16 +56,16 @@
 						<ul class="rd-navbar-nav">
 							<li class="active"><a href="<?=base_url()?>">Home</a>
 							</li>
-							<li><a href="<?=base_url()?>services">Services</a>
+							<li><a href="<?=base_url()?>ycl_home/services">Services</a>
 								<ul class="rd-navbar-dropdown">
-									<li><a href="<?=base_url()?>webinars">Webinars</a></li>
-									<li><a href="<?=base_url()?>virtual">Virtual Conferences</a></li>
-									<li><a href="<?=base_url()?>hybrid">Hybrid Events</a></li>
+									<li><a href="<?=base_url()?>ycl_home/webinars">Webinars</a></li>
+									<li><a href="<?=base_url()?>ycl_home/virtual">Virtual Conferences</a></li>
+									<li><a href="<?=base_url()?>ycl_home/hybrid">Hybrid Events</a></li>
 									</li>
 								</ul>
 							</li>
 							<li><a href="<?=ycl_base_url?>contacts">Contact</a>
-							<li><a class="brand-name" href="<?=base_url()?>special"><img src="<?=ycl_root?>/ycl_assets/images/homepage_images/first_free.jpg" alt="" width="163" height="40"/></a>
+							<li><a class="brand-name" href="<?=base_url()?>ycl_home/special"><img src="<?=ycl_root?>/ycl_assets/images/homepage_images/first_free.jpg" alt="" width="163" height="40"/></a>
 							</li>
 						</ul>
 					</div>

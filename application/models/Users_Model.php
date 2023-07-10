@@ -88,6 +88,12 @@ class Users_Model extends CI_Model
 			'created_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'],
 
 		);
+
+		if($this->emailExists($post['email']) > 0)
+		{
+			return "duplicate";
+		}
+		
 		$this->db->insert('user', $data);
 
 		if ($this->db->affected_rows() > 0)
@@ -104,11 +110,14 @@ class Users_Model extends CI_Model
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'admin'));
 			if (isset($post['exhibitor_access']))
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'exhibitor'));
+			if (isset($post['guest_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'guest'));
 
 			return true;
 		}
 
 		return false;
+
 	}
 
 	public function update()
@@ -170,6 +179,8 @@ class Users_Model extends CI_Model
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'admin'));
 			if (isset($post['exhibitor_access']))
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'exhibitor'));
+			if (isset($post['guest_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'guest'));
 
 			return true;
 		}

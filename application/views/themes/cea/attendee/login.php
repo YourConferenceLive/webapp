@@ -31,6 +31,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<input type="password" id="password" class="form-control" placeholder="Password" required>
 
 	<button id="login-btn" class="btn btn-lg btn-primary btn-block" type="button">Login</button>
+	<!-- <button id="test-btn" class="btn btn-lg btn-primary btn-block" type="button">Test</button> -->
+	
 
 </form>
 </body>
@@ -97,6 +99,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					);
             });
         });
+
+		$('#test-btn').on('click', function(){
+			Swal.fire({
+                title: 'Please Wait',
+                text: 'Fetching test data',
+                imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+                imageAlt: 'Loading...',
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+
+			$.post("<?=$this->project_url.'/test/num'?>", 
+				{
+					test: "Test"
+				})
+				.done(function(data){
+					data = JSON.parse(data);
+					if(data)
+					{
+						console.log(data);
+					}
+					else
+					{
+						console.log("Error: No data.");
+					}
+				})
+				.fail(function() {
+					Swal.fire(
+						'Unable To Retrieve data.',
+						'Network error',
+						'error'
+					);
+				});
+		});
 
     });
 

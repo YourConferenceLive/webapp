@@ -34,6 +34,7 @@ $ci_method = $this->router->fetch_method();
 				</a>
 			</li>
 		<?php endif; ?>
+		
 	</ul>
 
 	<!-- Right navbar links -->
@@ -43,6 +44,14 @@ $ci_method = $this->router->fetch_method();
 			<a id="admin_timer" class="nav-link disabled" style="display: none;color: rgb(255, 255, 255);">
 				Starts In: __ __
 			</a>
+		</li>
+
+		<li class="nav-item">
+			<select class="custom-select border-0" id="languageSelect">
+				<option value="" disabled selected>Lang</option>
+				<option value="english">English</option>
+				<option value="spanish">Spanish</option>
+			</select>
 		</li>
 
 		<!-- Navbar Search -->
@@ -169,3 +178,7 @@ $ci_method = $this->router->fetch_method();
 	</ul>
 </nav>
 <!-- /.navbar -->
+
+<script>
+	
+</script>

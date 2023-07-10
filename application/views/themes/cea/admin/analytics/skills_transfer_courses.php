@@ -164,16 +164,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			let session_id = $(this).attr('session-id');
 
-			Swal.fire({
-				title: 'Please Wait',
-				text: 'Loading session attendees data...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
+            const translationData = fetchAllText(); // Fetch the translation data
+
+            translationData.then((arrData) => {
+                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+                // Find the translations for the dialog text
+                let dialogTitle = 'Please Wait';
+                let dialogText = 'Loading session attendees data...';
+				let imageAltText = 'Loading...';
+
+                for (let i = 0; i < arrData.length; i++) {
+                    if (arrData[i].english_text === dialogTitle) {
+                        dialogTitle = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === dialogText) {
+                        dialogText = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === imageAltText) {
+                        imageAltText = arrData[i][selectedLanguage + '_text'];
+                    }
+                }
+				Swal.fire({
+					title: dialogTitle,
+					text: dialogText,
+					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+					imageAlt: imageAltText
+					showCancelButton: false,
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
+                
+            });
+
+
 
 			let attendeesDT = $('#attendeesTable').DataTable({
 				"dom": "<'row'<'col-sm-12 col-md-8'l><'#attendeesTableBtns.col-sm-12 col-md-4 text-right'B>>" +

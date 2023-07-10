@@ -148,16 +148,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 			let session_id = $(this).attr('session-id');
 			getColorPreset();
-			Swal.fire({
-				title: 'Please Wait',
-				text: 'Loading session data...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
+
+
+			const translationData = fetchAllText(); // Fetch the translation data
+
+            translationData.then((arrData) => {
+                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+                // Find the translations for the dialog text
+                let dialogTitle = 'Please Wait';
+                let dialogText = 'Loading session data...';
+				let imageAltText = 'Loading...';
+
+                for (let i = 0; i < arrData.length; i++) {
+                    if (arrData[i].english_text === dialogTitle) {
+                        dialogTitle = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === dialogText) {
+                        dialogText = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === imageAltText) {
+                        imageAltText = arrData[i][selectedLanguage + '_text'];
+                    }
+                }
+				
+				Swal.fire({
+					title: dialogTitle,
+					text: dialogText,
+					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+					imageAlt: imageAltText,
+					showCancelButton: false,
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
+                
+            });
+
 
 			$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
 				session = JSON.parse(session);
@@ -328,44 +355,114 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			let session_id = $(this).attr('session-id');
 			let session_name = $(this).attr('session-name');
 
-			Swal.fire({
-				title: 'Are you sure?',
-				html: '<span class="text-white">You are about to remove<br>['+session_id+'] '+session_name+'<br><br><small>(We will still keep it in our records for auditing)</small></span>',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, remove it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
 
-					Swal.fire({
-						title: 'Please Wait',
-						text: 'Removing the session...',
-						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-						imageAlt: 'Loading...',
-						showCancelButton: false,
-						showConfirmButton: false,
-						allowOutsideClick: false
-					});
+			const translationData = fetchAllText(); // Fetch the translation data
 
-					$.get(project_admin_url+"/sessions/remove/"+session_id, function (response) {
-						response = JSON.parse(response);
+            translationData.then((arrData) => {
+                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
 
-						if (response.status == 'success') {
-							listSessions(getFrom);
-							toastr.success(session_name+" has been removed!");
-						}else{
-							Swal.fire(
-									'Error!',
-									'Unable to remove '+session_name,
-									'error'
-							);
-						}
-					});
-				}
-			});
+                // Find the translations for the dialog text
+                let dialogTitle = 'Are you sure?';
+				let html1 = "You are about to remove";
+				let html2 = "(We will still keep it in our records for auditing)";
+                let confirmButtonText = 'Yes, remove it!';
+                let cancelButtonText = 'Cancel';
+
+				// Swal 2
+				let dialogTitle2 = 'Please Wait';
+				let dialogText2 = "Removing the session...";
+				let imageAltText2 = 'Loading...';
+
+				// Swal 3
+				let errorText = "Error!";
+				let errorMsg = "Unable to remove";
+
+				// Toastr
+				let removedText = "has been removed!";
+
+                for (let i = 0; i < arrData.length; i++) {
+                    if (arrData[i].english_text === dialogTitle) {
+                        dialogTitle = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === html1) {
+                        html1 = arrData[i][selectedLanguage + '_text'];
+                    }
+					if (arrData[i].english_text === html2) {
+                        html2 = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === confirmButtonText) {
+                        confirmButtonText = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === cancelButtonText) {
+                        cancelButtonText = arrData[i][selectedLanguage + '_text'];
+                    }
+
+					if (arrData[i].english_text === dialogTitle2) {
+                        dialogTitle2 = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === dialogText2) {
+                        dialogText2 = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === imageAltText2) {
+                        imageAltText2 = arrData[i][selectedLanguage + '_text'];
+                    }
+
+					if (arrData[i].english_text === errorText) {
+                        errorText = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === errorMsg) {
+                        errorMsg = arrData[i][selectedLanguage + '_text'];
+                    }
+
+					if (arrData[i].english_text === removedText) {
+                        removedText = arrData[i][selectedLanguage + '_text'];
+                    }
+                }
+
+				Swal.fire({
+					title: dialogTitle,
+					html: '<span class="text-white">'+html1+'<br>['+session_id+'] '+session_name+'<br><br><small>'+html2+'</small></span>',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: confirmButtonText,
+                    cancelButtonText: cancelButtonText
+				}).then((result) => {
+					if (result.isConfirmed) {
+	
+						Swal.fire({
+							title: dialogTitle2,
+							text: dialogText2,
+							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+							imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+							imageAlt: imageAltText2,
+							showCancelButton: false,
+							showConfirmButton: false,
+							allowOutsideClick: false
+						});
+	
+						$.get(project_admin_url+"/sessions/remove/"+session_id, function (response) {
+							response = JSON.parse(response);
+	
+							if (response.status == 'success') {
+								listSessions(getFrom);
+								toastr.success(session_name+" "+removedText);
+							}else{
+								Swal.fire(
+										errorText,
+										errorMsg+" "+session_name,
+										'error'
+								);
+							}
+						});
+					}
+				});
+                
+            });
+
+
+
 		});
 
 		// $('#sessionsTable').on('click', '.openPoll', function () {
@@ -390,16 +487,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		if(getFrom == null)
 		getFrom = "getAllJson";
 
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Loading sessions data...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
+		const translationData = fetchAllText(); // Fetch the translation data
+
+		translationData.then((arrData) => {
+			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+			// Find the translations for the dialog text
+			let dialogTitle = 'Please Wait';
+			let dialogText = 'Loading sessions data...';
+			let imageAltText = 'Loading...';
+
+			for (let i = 0; i < arrData.length; i++) {
+				if (arrData[i].english_text === dialogTitle) {
+					dialogTitle = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === dialogText) {
+					dialogText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === imageAltText) {
+					imageAltText = arrData[i][selectedLanguage + '_text'];
+				}
+			}
+
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+			
 		});
+
+
+
 
 		$.get(project_admin_url+"/sessions/"+ getFrom, function (sessions) {
 			sessions = JSON.parse(sessions);
@@ -570,49 +694,133 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		$('#sessionsTableBody').on('click', '.clearJsonBtn', function(e){
 			e.preventDefault();
 			let session_id = $(this).attr('session-id')
-			Swal.fire({
-				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, clear it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
-						function(response){
-							console.log(response);
-							if(response.status == 'success'){
-								Swal.fire(
-									'Success',
-									'Json Cleared',
-									'success'
-								)
-							}
-						},'json')
+
+			const translationData = fetchAllText(); // Fetch the translation data
+
+			translationData.then((arrData) => {
+				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+				// Find the translations for the dialog text
+				let dialogTitle = 'Are you sure?';
+				let dialogText = "You won't be able to revert this!";
+				let confirmButtonText = 'Yes, clear it!';
+				let cancelButtonText = 'Cancel';
+
+				// Toast
+				let successText = "Success";
+				let successMsg = "Json Cleared";
+
+				for (let i = 0; i < arrData.length; i++) {
+					if (arrData[i].english_text === dialogTitle) {
+						dialogTitle = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === dialogText) {
+						dialogText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === confirmButtonText) {
+						confirmButtonText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === cancelButtonText) {
+						cancelButtonText = arrData[i][selectedLanguage + '_text'];
+					}
+
+					if (arrData[i].english_text === successText) {
+						successText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === successMsg) {
+						successMsg = arrData[i][selectedLanguage + '_text'];
+					}
 				}
-			})
+
+				Swal.fire({
+					title: dialogTitle,
+					text: dialogText,
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: confirmButtonText,
+                    cancelButtonText: cancelButtonText
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
+							function(response){
+								console.log(response);
+								if(response.status == 'success'){
+									Swal.fire(
+										successText,
+										successMsg,
+										'success'
+									)
+								}
+							},'json')
+					}
+				})
+				
+			});
 		});
+
 		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
-			Swal.fire({
-				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					Swal.fire(
-						'Success',
-						'Attendee Reloaded',
-						'success'
-					)
-					socket.emit('reload-attendee');
+
+
+			const translationData = fetchAllText(); // Fetch the translation data
+
+			translationData.then((arrData) => {
+				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+				// Find the translations for the dialog text
+				let dialogTitle = 'Are you sure?';
+				let dialogText = "You won't be able to revert this!";
+				let confirmButtonText = 'Yes, delete it!';
+				let cancelButtonText = 'Cancel';
+
+				// Toast
+				let successText = "Success";
+				let successMsg = "Attendee Reloaded";
+
+				for (let i = 0; i < arrData.length; i++) {
+					if (arrData[i].english_text === dialogTitle) {
+						dialogTitle = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === dialogText) {
+						dialogText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === confirmButtonText) {
+						confirmButtonText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === cancelButtonText) {
+						cancelButtonText = arrData[i][selectedLanguage + '_text'];
+					}
+
+					if (arrData[i].english_text === successText) {
+						successText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === successMsg) {
+						successMsg = arrData[i][selectedLanguage + '_text'];
+					}
 				}
-			})
+
+				Swal.fire({
+					title: dialogTitle,
+					text: dialogText,
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: confirmButtonText,
+                    cancelButtonText: cancelButtonText
+				}).then((result) => {
+					if (result.isConfirmed) {
+						Swal.fire(
+							successText,
+							successMsg,
+							'success'
+						)
+						socket.emit('reload-attendee');
+					}
+				})
+			});
+
 		})
 
 		$('#sessionsTableBody').on('click', '.session_resources', function(){
@@ -639,54 +847,92 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					}
 				})
 		})
-
+	})
+	
 	$('#sessionsTableBody').on('click', '.sendJsonBtn', function() {
 
-		Swal.fire({
-			title: 'Are you sure?',
-			text: "",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, send it!'
-		}).then((result) => {
-			if (result.isConfirmed) {
-				let session_id = $(this).attr('session-id');
-				$.post({
-					url: project_admin_url + '/sessions/send_json/' + session_id,
-					data: '',
-					beforeSend: function() {
-						Swal.fire({
-							title: 'Sending Json...',
-								showCancelButton: false,
-  								showConfirmButton: false,
-							onBeforeOpen: () => {
-								Swal.showLoading()
-							}
-						})
-					}
-				}).done(function(result) {
+		const translationData = fetchAllText(); // Fetch the translation data
 
-					result = JSON.parse(result)
-					console.log(result)
-					if (result.status == "ok") {
-						Swal.fire({
-							text: result.status,
-							icon: 'success',
-							title: 'Success'
-						})
-					} else {
-						Swal.fire({
-							text: result.message,
-							icon: 'info',
-							title: 'Info'
-						})
-					}
-				});
+		translationData.then((arrData) => {
+			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+			// Find the translations for the dialog text
+			let dialogTitle = 'Are you sure?';
+			let confirmButtonText = 'Yes, send it!';
+			let cancelButtonText = 'Cancel';
+
+			// Swal 2
+			let successText = "Success";
+			let infoText = "Info";
+
+			for (let i = 0; i < arrData.length; i++) {
+				if (arrData[i].english_text === dialogTitle) {
+					dialogTitle = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === confirmButtonText) {
+					confirmButtonText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === cancelButtonText) {
+					cancelButtonText = arrData[i][selectedLanguage + '_text'];
+				}
+
+				if (arrData[i].english_text === successText) {
+					successText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === infoText) {
+					infoText = arrData[i][selectedLanguage + '_text'];
+				}
 			}
-		})
-	})
+
+			Swal.fire({
+				title: dialogTitle,
+				text: "",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: confirmButtonText,
+				cancelButtonText: cancelButtonText
+			}).then((result) => {
+				if (result.isConfirmed) {
+					let session_id = $(this).attr('session-id');
+					$.post({
+						url: project_admin_url + '/sessions/send_json/' + session_id,
+						data: '',
+						beforeSend: function() {
+							getTranslatedSelectAccess("Sending Json...").then((msg) => {
+								Swal.fire({
+									title: 'msg',
+										showCancelButton: false,
+										showConfirmButton: false,
+									onBeforeOpen: () => {
+										Swal.showLoading()
+									}
+								})
+							});
+						}
+					}).done(function(result) {
+	
+						result = JSON.parse(result)
+						console.log(result)
+						if (result.status == "ok") {
+							Swal.fire({
+								text: result.status,
+								icon: 'success',
+								title: successText
+							})
+						} else {
+							Swal.fire({
+								text: result.message,
+								icon: 'info',
+								title: infoText
+							})
+						}
+					});
+				}
+			})
+			
+		});
 	})
 
 	function getColorPreset(){

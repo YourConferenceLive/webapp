@@ -20,13 +20,13 @@
 
 							<div class="form-group">
 								<label>Email</label>
-								<input name="email" id="email" class="form-control" type="text" placeholder="User's email">
+								<input name="email" id="email" class="form-control" type="text" placeholder="User's email" required>
 								<small id="emailExistsError" class="form-text text-muted text-red" style="display: none;">Email already exists.</small>
 							</div>
 
 							<div class="form-group">
 								<label>Password</label>
-								<input name="password" id="password" class="form-control mb-2" type="text" placeholder="User's password">
+								<input name="password" id="password" class="form-control mb-2" type="text" placeholder="User's password" required>
 								<small class="mt-2">
 									Passwords are encrypted and cannot be displayed or updated in cleartext, you can only
 									<button type="button" id="reset-pass-update-modal" class="reset-user-pass-btn btn btn-xs btn-success text-white ml-2 mr-2" user-id="" user-name=""><i class="fas fa-lock-open"></i> Reset</button>
@@ -36,22 +36,22 @@
 						</div>
 					</div>
 
-					<div class="card">
+					<div class="card d-none">
 						<div class="card-header">
 							<i class="far fa-address-card"></i> <?=$this->project->name?> Membership
 						</div>
 						<div class="card-body">
 							<div class="form-group">
 								<label><?=$this->project->name?> Party ID</label>
-								<input name="idFromApi" id="idFromApi" class="form-control" type="text" placeholder="User's ID in <?=$this->project->name?> database">
+								<input name="idFromApi" id="idFromApi" class="form-control" type="text" placeholder="User's ID in <?=$this->project->name?> database" required>
 							</div>
 							<div class="form-group">
 								<label>Membership Type</label>
-								<input name="membership_type" id="membership_type" class="form-control" type="text" placeholder="User's membership type eg; C for contact">
+								<input name="membership_type" id="membership_type" class="form-control" type="text" placeholder="User's membership type eg; C for contact" required>
 							</div>
 							<div class="form-group">
 								<label>Membership Sub Type</label>
-								<input name="membership_sub_type" id="membership_sub_type" class="form-control" type="text" placeholder="User's membership sub type eg; MS for Medical Student (only some Non-members will have sub type)">
+								<input name="membership_sub_type" id="membership_sub_type" class="form-control" type="text" placeholder="User's membership sub type eg; MS for Medical Student (only some Non-members will have sub type)" required>
 							</div>
 						</div>
 					</div>
@@ -62,7 +62,7 @@
 						</div>
 						<div class="card-body">
 
-							<div class="form-group">
+							<div class="form-group d-none">
 								<label>Display Photo</label>
 								<div class="custom-file">
 									<input name="user-photo" id="user-photo" type="file" class="custom-file-input">
@@ -72,12 +72,12 @@
 							<img class="image-preview" id="user-photo-preview" src="" style="display: none;" width="75px">
 
 
-							<div class="form-group">
+							<div class="form-group d-none">
 								<label>Name Prefix</label>
 								<input name="name_prefix" id="name_prefix" class="form-control" type="text" placeholder="User's name prefix">
 							</div>
 
-							<div class="form-group">
+							<div class="form-group d-none">
 								<label>Credentials</label>
 								<input name="credentials" id="credentials" class="form-control" type="text" placeholder="User's credentials">
 							</div>
@@ -92,12 +92,12 @@
 								<input name="surname" id="surname" class="form-control" type="text" placeholder="User's surname">
 							</div>
 
-							<div class="form-group">
+							<div class="form-group d-none">
 								<label>Biography</label>
 								<input name="bio" id="bio" class="form-control" type="text" placeholder="User's bio">
 							</div>
 
-							<div class="form-group">
+							<div class="form-group d-none">
 								<label>Disclosure</label>
 								<input name="disclosure" id="disclosure" class="form-control" type="text" placeholder="User's disclosure">
 							</div>
@@ -112,7 +112,7 @@
 						<div class="card-body">
 
 							<div class="row">
-								<div class="col-2 offset-1">
+								<div class="col-2 offset-3">
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="attendee_access" id="attendee_access" checked="">
 										<label for="attendee_access" class="custom-control-label">Attendee</label>
@@ -130,7 +130,8 @@
 										<label for="moderator_access" class="custom-control-label">Moderator</label>
 									</div>
 								</div>
-								<div class="col-2">
+
+								<div class="col-2 offset-3">
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="admin_access" id="admin_access">
 										<label for="admin_access" class="custom-control-label">Admin</label>
@@ -140,6 +141,12 @@
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="exhibitor_access" id="exhibitor_access">
 										<label for="exhibitor_access" class="custom-control-label">Exhibitor</label>
+									</div>
+								</div>
+								<div class="col-2">
+									<div class="custom-control custom-checkbox">
+										<input class="custom-control-input" type="checkbox" name="guest_access" id="guest_access">
+										<label for="guest_access" class="custom-control-label">Guest</label>
 									</div>
 								</div>
 							</div>
@@ -160,7 +167,6 @@
 </div>
 
 <script>
-
 	// Live email existence checker
 	$('#email').on("focusout", function () {
 		if ($('#userId').val() != 0 || $('#email').val() == '')
@@ -198,6 +204,7 @@
 	});
 
 	$('#save-user').on('click', function () {
+		
 
 		if
 		(
@@ -207,7 +214,9 @@
 				! $('#admin_access').is(":checked")
 		)
 		{
-			toastr.warning('You must select at least one access');
+			getTranslatedSelectAccess('You must select at least one access').then((msg) => {
+				toastr.warning(msg);
+			});
 			return false;
 		}
 
@@ -219,94 +228,154 @@
 
 	function addUser()
 	{
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Adding the user...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
+		const translationData = fetchAllText(); // Fetch the translation data
 
-		let formData = new FormData(document.getElementById('addUserForm'));
+		translationData.then((arrData) => {
+			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
 
-		$.ajax({
-			type: "POST",
-			url: project_admin_url+"/users/create",
-			data: formData,
-			processData: false,
-			contentType: false,
-			error: function(jqXHR, textStatus, errorMessage)
-			{
-				Swal.close();
-				toastr.error(errorMessage);
-				//console.log(errorMessage); // Optional
-			},
-			success: function(data)
-			{
-				Swal.close();
+			// Find the translations for the dialog text
+			let dialogTitle = 'Please Wait';
+			let dialogText = 'Adding the user...';
+			let imageAltText = 'Loading...';
 
-				data = JSON.parse(data);
-
-				if (data.status == 'success')
-				{
-					listUsers();
-					toastr.success('User added');
-					$('#addUserModal').modal('hide');
-
-				}else{
-					toastr.error("Error");
+			for (let i = 0; i < arrData.length; i++) {
+				if (arrData[i].english_text === dialogTitle) {
+					dialogTitle = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === dialogText) {
+					dialogText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === imageAltText) {
+					imageAltText = arrData[i][selectedLanguage + '_text'];
 				}
 			}
+
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			let formData = new FormData(document.getElementById('addUserForm'));
+	
+			$.ajax({
+				type: "POST",
+				url: project_admin_url+"/users/create",
+				data: formData,
+				processData: false,
+				contentType: false,
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(data)
+				{
+					Swal.close();
+	
+					data = JSON.parse(data);
+					console.log(data);
+					if (data.status == 'success')
+					{
+						listUsers();
+						getTranslatedSelectAccess('User added').then((msg) => {
+							toastr.success(msg);
+						});
+						$('#addUserModal').modal('hide');
+	
+					}else if(data.status == 'duplicate'){
+						getTranslatedSelectAccess('This user is already in the database').then((msg) => {
+							toastr.error(msg);
+						});
+					}else{
+						getTranslatedSelectAccess('Error').then((msg) => {
+							toastr.error(msg);
+						});
+					}
+				}
+			});
 		});
 	}
 
 	function updateUser()
 	{
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Updating the sponsor...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
+		const translationData = fetchAllText(); // Fetch the translation data
 
-		let formData = new FormData(document.getElementById('addUserForm'));
+		translationData.then((arrData) => {
+			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
 
-		$.ajax({
-			type: "POST",
-			url: project_admin_url+"/users/update",
-			data: formData,
-			processData: false,
-			contentType: false,
-			error: function(jqXHR, textStatus, errorMessage)
-			{
-				Swal.close();
-				toastr.error(errorMessage);
-				//console.log(errorMessage); // Optional
-			},
-			success: function(data)
-			{
-				Swal.close();
+			// Find the translations for the dialog text
+			let dialogTitle = 'Please Wait';
+			let dialogText = 'Updating the sponsor...';
+			let imageAltText = 'Loading...';
 
-				data = JSON.parse(data);
-
-				if (data.status == 'success')
-				{
-					listUsers();
-					toastr.success('User updated');
-
-				}else if(data.status == 'failed'){
-					toastr.success('No changes made');
-				}else{
-					toastr.error("Error");
+			for (let i = 0; i < arrData.length; i++) {
+				if (arrData[i].english_text === dialogTitle) {
+					dialogTitle = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === dialogText) {
+					dialogText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === imageAltText) {
+					imageAltText = arrData[i][selectedLanguage + '_text'];
 				}
 			}
+
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			let formData = new FormData(document.getElementById('addUserForm'));
+	
+			$.ajax({
+				type: "POST",
+				url: project_admin_url+"/users/update",
+				data: formData,
+				processData: false,
+				contentType: false,
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(data)
+				{
+					Swal.close();
+	
+					data = JSON.parse(data);
+	
+					if (data.status == 'success')
+					{
+						listUsers();
+						getTranslatedSelectAccess('User updated').then((msg) => {
+							toastr.success(msg);
+						});
+	
+					}else if(data.status == 'failed'){
+						getTranslatedSelectAccess('No changes made').then((msg) => {
+							toastr.success(msg);
+						});
+					}else{
+						getTranslatedSelectAccess('Error').then((msg) => {
+							toastr.error(msg);
+						});
+					}
+				}
+			});
 		});
 	}
 

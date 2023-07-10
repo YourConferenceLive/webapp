@@ -103,8 +103,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('select[name="boothAdmins[]"] option').prop('selected', false);
 			$('select[name="boothAdmins[]"]').bootstrapDualListbox('refresh', true);
-
-			$('#save-sponsor').html('<i class="fas fa-plus"></i> Create');
+			
+			getTranslatedSelectAccess('Create').then((msg) => {
+				$('#save-sponsor').html('<i class="fas fa-plus"></i> '+msg);
+			});
 
 			$('#createSponsorModal').modal({
 				backdrop: 'static',
@@ -114,16 +116,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$('#sponsorsTable').on('click', '.manage-sponsor', function () {
 
-			Swal.fire({
-				title: 'Please Wait',
-				text: 'Loading sponsor details...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
+			const translationData = fetchAllText(); // Fetch the translation data
+
+			translationData.then((arrData) => {
+				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+				// Find the translations for the dialog text
+				let dialogTitle = 'Please Wait';
+				let dialogText = 'Loading sponsor details...';
+				let imageAltText = 'Loading...';
+
+				for (let i = 0; i < arrData.length; i++) {
+					if (arrData[i].english_text === dialogTitle) {
+						dialogTitle = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === dialogText) {
+						dialogText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === imageAltText) {
+					imageAltText = arrData[i][selectedLanguage + '_text'];
+				}
+					
+				}
+				Swal.fire({
+					title: dialogTitle,
+					text: dialogText,
+					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+					imageAlt: imageAltText,
+					showCancelButton: false,
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
 			});
+
 
 			let sponsorId = $(this).attr('sponsor-id');
 
@@ -164,46 +190,112 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let sponsorId = $(this).attr('sponsor-id');
 			let sponsorName = $(this).attr('sponsor-name');
 
-			Swal.fire({
-				title: 'Are you sure?',
-				html:
-						`This will delete all the assets, admins attached, chats etc of this sponsor (`+sponsorName+`)
-						 <br><small>(This won't delete the accounts of admins attached to this booth though)</small>
-						 <br><br> You won't be able to revert this!`,
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
+			const translationData = fetchAllText(); // Fetch the translation data
 
-					Swal.fire({
-						title: 'Please Wait',
-						text: 'Deleting the sponsor...',
-						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-						imageAlt: 'Loading...',
-						showCancelButton: false,
-						showConfirmButton: false,
-						allowOutsideClick: false
-					});
+			translationData.then((arrData) => {
+				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
 
-					$.get(project_admin_url+"/sponsors/delete/"+sponsorId, function (response)
-					{
-						Swal.close();
+				// Find the translations for the dialog text
+				let dialogTitle = 'Are you sure?';
+				let html1 = 'This will delete all the assets, admins attached, chats etc of this sponsor';
+				let html2 = "(This won't delete the accounts of admins attached to this booth though)";
+				let html3 = "You won't be able to revert this!";
+				let confirmButtonText = 'Yes, delete it!';
+				let cancelButtonText = 'Cancel';
 
-						response = JSON.parse(response);
+				// Swal2
+				let dialogTitle2 = 'Please Wait';
+				let dialogText2 = 'Deleting the sponsor...';
+				let imageAltText2 = 'Loading...';
+				
+				// Toast
+				let sponsorText = "Sponsor";
+				let deletedText = "deleted";
+				let errorText = "Error";
 
-						if (response.status == 'success')
-							toastr.success('Sponsor ('+sponsorName+') deleted');
-						else
-							toastr.error('Error');
+				for (let i = 0; i < arrData.length; i++) {
+					if (arrData[i].english_text === dialogTitle) {
+						dialogTitle = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === html1) {
+						html1 = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === html2) {
+						html2 = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === html3) {
+						html3 = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === confirmButtonText) {
+						confirmButtonText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === cancelButtonText) {
+						cancelButtonText = arrData[i][selectedLanguage + '_text'];
+					}
 
-						listSponsors();
-					});
+					if (arrData[i].english_text === dialogTitle2) {
+						dialogTitle2 = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === dialogText2) {
+						dialogText2 = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === imageAltText2) {
+						imageAltText2 = arrData[i][selectedLanguage + '_text'];
+					}
+
+					if (arrData[i].english_text === sponsorText) {
+						sponsorText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === deletedText) {
+						deletedText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === errorText) {
+						errorText = arrData[i][selectedLanguage + '_text'];
+					}
 				}
-			})
+				Swal.fire({
+					title: dialogTitle,
+					html:
+							html1+` (`+sponsorName+`)
+							 <br><small>`+html2+`</small>
+							 <br><br> `+hmtl3,
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: confirmButtonText,
+					cancelButtonText: cancelButtonText
+				}).then((result) => {
+					if (result.isConfirmed) {
+	
+						Swal.fire({
+							title: dialogTitle2,
+							text: dialogText2,
+							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+							imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+							imageAlt: imageAltText2,
+							showCancelButton: false,
+							showConfirmButton: false,
+							allowOutsideClick: false
+						});
+	
+						$.get(project_admin_url+"/sponsors/delete/"+sponsorId, function (response)
+						{
+							Swal.close();
+	
+							response = JSON.parse(response);
+	
+							if (response.status == 'success')
+								toastr.success(dialogTitle2+' ('+sponsorName+') '+deletedText);
+							else
+								toastr.error(errorText);
+	
+							listSponsors();
+						});
+					}
+				})
+			});
+
 		});
 
 	});

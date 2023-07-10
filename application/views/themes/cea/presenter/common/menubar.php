@@ -45,6 +45,14 @@ $ci_method = $this->router->fetch_method();
 				Starts In: __ __
 			</a>
 		</li>
+		<li class="nav-item">
+			<select class="custom-select border-0" id="languageSelect">
+				<option value="" disabled selected>Lang</option>
+				<option value="english">English</option>
+				<option value="spanish">Spanish</option>
+			</select>
+		</li>
+
 
 
 		<!-- Navbar Search -->

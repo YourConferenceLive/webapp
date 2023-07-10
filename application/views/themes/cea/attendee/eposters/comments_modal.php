@@ -56,16 +56,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<script type="text/javascript">
 		$('#post-comment').on('click', function () {
-			Swal.fire({
-				title: 'Please Wait',
-				text: 'Posting your comments...',
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
+
+			const translationData = fetchAllText(); // Fetch the translation data
+
+			translationData.then((arrData) => {
+				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+				// Find the translations for the dialog text
+				let dialogTitle = 'Please Wait';
+				let dialogText = 'Posting your comments...';
+				let imageAltText = 'Loading...';
+
+				for (let i = 0; i < arrData.length; i++) {
+					if (arrData[i].english_text === dialogTitle) {
+						dialogTitle = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === dialogText) {
+						dialogText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === imageAltText) {
+						imageAltText = arrData[i][selectedLanguage + '_text'];
+					}
+				}
+				Swal.fire({
+					title: dialogTitle,
+					text: dialogText,
+					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+					imageAlt: imageAltText,
+					showCancelButton: false,
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
 			});
+
 
 			let formData = new FormData(document.getElementById('addUserComments'));
 
@@ -90,10 +114,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					if (data.status == 'success') {
 						$('#comments_list_container').html('');
 						loadComments(formData.get('eposterId'), comment_page);
-						toastr.success('Comment has been added.');
+						getTranslatedSelectAccess('Comment has been added.').then((msg) => {
+							toastr.success(msg);
+						});
 						$('#comments').val('');
 					}else{
-						toastr.error("Error");
+						getTranslatedSelectAccess('Error').then((msg) => {
+							toastr.error(msg);
+						});
 					}
 				}
 			});

@@ -15,6 +15,7 @@ class Authentication_Model extends CI_Model
 		$this->db->from('user');
 		$this->db->where('user.email', $username);
 		$result = $this->db->get();
+		
 		if ($result->num_rows() > 0)
 		{
 			if (password_verify($password, $result->row()->password))

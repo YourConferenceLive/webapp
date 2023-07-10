@@ -24,5 +24,58 @@ $ci_method = $this->router->fetch_method();
 </div>
 <!-- ./wrapper -->
 
+<script src="<?= ycl_base_url ?>/ycl_assets/js/translater.js"></script>
+
+<!-- Lang-Translate Version 3 -->
+<script>
+    const userType= "admin";
+    const baseUrl = "<?=$this->project_url?>/" + userType + "/";
+   
+    $(document).ready(function() {
+
+        const currentUrl = "<?= current_url() ?>";
+        const projUrl = "<?= $this->project_url?>";
+
+        // Used on logged in, if the url is for login => dont translate
+        if(currentUrl != projUrl)
+        {
+            initializeLanguageSettings();
+        }
+
+
+        // Reinitialize the language when sorting table
+        $('table thead th').on('click', function() {
+            initializeLanguageSettings();
+        });
+
+        // Onchange event for switching language
+        const languageSelect = document.getElementById("languageSelect");
+        $(languageSelect).on("change", function() {
+            Swal.fire({
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                    Swal.getContainer().style.pointerEvents = 'none'; // Disable user input
+                }
+            });
+
+            let language = languageSelect.value;
+            (async () => {
+                console.log("Initializing : " + language);
+                await updatePageLanguage(language);
+                await updateUserLanguage(language);
+                await closeSwal();
+            })();
+            
+        });
+    });
+    
+
+</script>
+
 </body>
 </html>
+
+

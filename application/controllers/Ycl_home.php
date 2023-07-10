@@ -12,6 +12,12 @@ class Ycl_home extends CI_Controller {
 		$this->load->view('ycl_website/new_website/index');
 	}
 
+	public function test()
+	{
+		$this->load->view('ycl_website/new_website/contacts');
+
+	}
+	
 	public function contacts()
 	{
 		$this->load->view('ycl_website/new_website/contacts');

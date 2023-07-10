@@ -47,6 +47,27 @@ class Sessions extends CI_Controller
 		;
 	}
 
+	public function test() {
+		$sidebar_data['user'] = $this->user;
+
+		$data["sessions"] = $this->sessions->getAllSessionsByPresenterModeratorKeynote($this->user->user_id);
+		if($data['sessions']){
+			$session_array = array();
+			foreach($data['sessions'] as $session){
+				$session->presenters = $this->sessions->getPresentersPerSession($session->id);
+				$session_array[] = $session;
+			}
+			$data["sessions"] = $session_array;
+		}
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header2")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/test")
+		;
+	}
+
 	public function view($id)
 	{
 		//$sidebar_data['user'] = $this->user;
