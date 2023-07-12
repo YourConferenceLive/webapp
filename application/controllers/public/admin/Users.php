@@ -10,8 +10,8 @@ class Users extends CI_Controller
 		if (!isset($_SESSION['project_sessions']["project_{$this->project->id}"]) || $_SESSION['project_sessions']["project_{$this->project->id}"]['is_admin'] != 1)
 			redirect(base_url() . $this->project->main_route . "/admin/login"); // Not logged-in
 
-		// $this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
-		$this->user = 7;
+		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
+		// $this->user = 7;
 
 		$this->load->model('Users_Model', 'users');
 		$this->load->model('Account_Model', 'account');
