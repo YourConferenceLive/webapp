@@ -1,4 +1,3 @@
-
 function closeSwal() {
     const container = Swal.getContainer();
     if (container !== null) {
@@ -9,29 +8,24 @@ function closeSwal() {
 }
 
 function initializeLanguage() {
-    return new Promise((resolve, reject) => {
-        Swal.showLoading();
-        Swal.getContainer().style.pointerEvents = 'none';
-        $.ajax({
-            url: baseUrl + "translator/initializeUserLanguageSetting",
-            dataType: "JSON",
-            method: "POST",
-            success: function(response) {
-                if(response) {
-                    let language = response[0].language;
-                    $('#languageSelect').val(language);
-                    resolve(language);
-                }
-                else
-                {
-                    reject("Error response");
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("No response from server.");
-                closeSwal();
+    console.log("for language...");
+    Swal.showLoading();
+    Swal.getContainer().style.pointerEvents = 'none';
+    $.ajax({
+        url: baseUrl + "translator/initializeUserLanguageSetting",
+        dataType: "JSON",
+        method: "POST",
+        success: function(response) {
+            if(response) {
+                let language = response[0].language;
+                $('#languageSelect').val(language);
             }
-        });
+            
+        },
+        error: function() {
+            console.log("No response from server.");
+            closeSwal();
+        }
     });
 }
 
@@ -60,11 +54,6 @@ function initializeLanguageSettings() {
                     console.log("Initializing : " + language);
                     $('#languageSelect').val(language);
 
-                    /**
-                     * Update the page language here
-                     * async-await
-                     * 
-                     */
                     (async () => {
                         await updatePageLanguage(language);
                         await closeSwal();

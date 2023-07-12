@@ -94,31 +94,27 @@ $ci_method = $this->router->fetch_method();
 
 <script src="<?= ycl_base_url ?>/ycl_assets/js/translater.js"></script>
 
-<!-- Switch Languange  -->
-<!-- Update Version V.3 -->
-<!-- Simplified Version -->
-
 <script>
     const userType= "presenter";
     const baseUrl = "<?=$this->project_url?>/" +userType+"/"; // use this as url
 
-	if ($('#elementId').is('*')) {
-		// alternative to counter the bug for loading
-		initializeLanguage().then(() => {});
+	if ($('#languageSelect').length) {
+		/* alternative to counter the bug for loading */
+		initializeLanguage();
 	} 
     $(document).ready(function() {
         
-        // check if languageSelect exist ** required for translation
-        if ($('#elementId').is('*')) {
+        /* check if languageSelect exist ** required for translation */
+        if ($('#languageSelect').length) {
 			initializeLanguageSettings();
 		}
 
-        // Reinitialize the language when sorting table
+        /* Reinitialize the language when sorting table */
         $('table.dataTable thead th').on('click', function() {
             initializeLanguageSettings();
         });
 
-        // Onchange event for switching language
+        /* Onchange event for switching language */
         const languageSelect = document.getElementById("languageSelect");
         $(languageSelect).on("change", function() {
             Swal.fire({
@@ -127,7 +123,7 @@ $ci_method = $this->router->fetch_method();
                 showConfirmButton: false,
                 willOpen: () => {
                     Swal.showLoading();
-                    Swal.getContainer().style.pointerEvents = 'none'; // Disable user input
+                    Swal.getContainer().style.pointerEvents = 'none'; /* Disable user input */
                 }
             });
 

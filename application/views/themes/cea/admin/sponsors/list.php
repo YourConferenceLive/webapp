@@ -148,42 +148,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					showConfirmButton: false,
 					allowOutsideClick: false
 				});
+				let sponsorId = $(this).attr('sponsor-id');
+	
+				$.get(project_admin_url+"/sponsors/getByIdJson/"+sponsorId, function (sponsor)
+				{
+					sponsor = JSON.parse(sponsor);
+	
+					$('#sponsor_name').val(sponsor.name);
+					$('#about_us').val(sponsor.about_us);
+					$('#sponsorId').val(sponsor.id);
+					$('#logo_preview').attr('src', '<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/logo/'+sponsor.logo);
+					$('#banner_preview').attr('src', '<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/cover_photo/'+sponsor.cover_photo);
+	
+					$('#logo_label').text((sponsor.logo).substring((sponsor.logo).indexOf('_') + 1));
+					$('#logo_preview').show();
+					$('#banner_label').text((sponsor.cover_photo).substring((sponsor.cover_photo).indexOf('_') + 1));
+					$('#banner_preview').show();
+	
+					$('select[name="boothAdmins[]"] option').prop('selected', false);
+					$('select[name="boothAdmins[]"]').bootstrapDualListbox('refresh', true);
+					$.each(sponsor.admins, function(key, admins){
+						$('select[name="boothAdmins[]"] option[value="'+admins.id+'"]').prop('selected', true);
+					});
+					$('select[name="boothAdmins[]"]').bootstrapDualListbox('refresh', true);
+	
+					$('#save-sponsor').html('<i class="fas fa-save"></i> Save');
+	
+					$('#createSponsorModal').modal({
+						backdrop: 'static',
+						keyboard: false
+					});
+	
+					Swal.close();
+				});
 			});
 
 
-			let sponsorId = $(this).attr('sponsor-id');
-
-			$.get(project_admin_url+"/sponsors/getByIdJson/"+sponsorId, function (sponsor)
-			{
-				sponsor = JSON.parse(sponsor);
-
-				$('#sponsor_name').val(sponsor.name);
-				$('#about_us').val(sponsor.about_us);
-				$('#sponsorId').val(sponsor.id);
-				$('#logo_preview').attr('src', '<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/logo/'+sponsor.logo);
-				$('#banner_preview').attr('src', '<?=ycl_base_url?>/cms_uploads/projects/<?=$this->project->id?>/sponsor_assets/uploads/cover_photo/'+sponsor.cover_photo);
-
-				$('#logo_label').text((sponsor.logo).substring((sponsor.logo).indexOf('_') + 1));
-				$('#logo_preview').show();
-				$('#banner_label').text((sponsor.cover_photo).substring((sponsor.cover_photo).indexOf('_') + 1));
-				$('#banner_preview').show();
-
-				$('select[name="boothAdmins[]"] option').prop('selected', false);
-				$('select[name="boothAdmins[]"]').bootstrapDualListbox('refresh', true);
-				$.each(sponsor.admins, function(key, admins){
-					$('select[name="boothAdmins[]"] option[value="'+admins.id+'"]').prop('selected', true);
-				});
-				$('select[name="boothAdmins[]"]').bootstrapDualListbox('refresh', true);
-
-				$('#save-sponsor').html('<i class="fas fa-save"></i> Save');
-
-				$('#createSponsorModal').modal({
-					backdrop: 'static',
-					keyboard: false
-				});
-
-				Swal.close();
-			});
 		});
 
 		$('#sponsorsTable').on('click', '.delete-sponsor', function () {
@@ -253,12 +253,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						errorText = arrData[i][selectedLanguage + '_text'];
 					}
 				}
+				
 				Swal.fire({
 					title: dialogTitle,
 					html:
 							html1+` (`+sponsorName+`)
 							 <br><small>`+html2+`</small>
-							 <br><br> `+hmtl3,
+							 <br><br> `+html3,
 					icon: 'warning',
 					showCancelButton: true,
 					confirmButtonColor: '#3085d6',

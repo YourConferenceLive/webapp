@@ -27,26 +27,26 @@ $ci_method = $this->router->fetch_method();
 <script src="<?= ycl_base_url ?>/ycl_assets/js/translater.js"></script>
 
 <script>
-	// use in translation.js
+
+	/* use in translation.js */
     const baseUrl = "<?=$this->project_url?>/admin/";
    
-    if (! $('#elementId').is('*')) {
-		// alternative to counter the bug for loading
-        initializeLanguage().then(() => {});
+    if ($('#languageSelect').length) {
+		/* alternative to counter the bug for loading */
+        initializeLanguage();
 	}
     $(document).ready(function() {
 
-        // check if languageSelect exist ** required for translation
+        /* check if languageSelect exist ** required for translati*/
         if ($('#languageSelect').length) {
 			initializeLanguageSettings();
 		} 
 
-        // Reinitialize the language when sorting table
         $('table thead th').on('click', function() {
             initializeLanguageSettings();
         });
 
-        // Onchange event for switching language
+        /* Onchange event for switching language */
         const languageSelect = document.getElementById("languageSelect");
         $(languageSelect).on("change", function() {
             Swal.fire({
@@ -55,7 +55,7 @@ $ci_method = $this->router->fetch_method();
                 showConfirmButton: false,
                 willOpen: () => {
                     Swal.showLoading();
-                    Swal.getContainer().style.pointerEvents = 'none'; // Disable user input
+                    Swal.getContainer().style.pointerEvents = 'none';
                 }
             });
 
