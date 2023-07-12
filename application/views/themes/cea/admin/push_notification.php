@@ -195,12 +195,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						})
 						
 					});
-
-
 					socket.emit('send_push_notification', {
 						'project_id': project_id
 					})
-
 					var delayInMilliseconds = 3000; //1 second
 					setTimeout(function () {
 						console.log('time');

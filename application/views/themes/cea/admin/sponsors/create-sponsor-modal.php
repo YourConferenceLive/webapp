@@ -124,7 +124,6 @@
 
 	function createSponsor()
 	{
-
 		const translationData = fetchAllText(); // Fetch the translation data
 
 		translationData.then((arrData) => {
@@ -280,9 +279,6 @@
 				}
 			});
 		});
-
-
-		
 	}
 
 </script>

@@ -477,7 +477,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('#starred-questions-tab-content').on('click', '.hide-saved-question', function(){
 		let question_id = $(this).attr('question-id');
 
-
 		const translationData = fetchAllText(); // Fetch the translation data
 
 		translationData.then((arrData) => {
@@ -541,10 +540,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 			})
 		});
-
-
-
-		
 	})
 
 //	############################
@@ -784,7 +779,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('#endChatBtn').on('click', function () {
 
 		let userId = $(this).attr('userId');
-
 
 		const translationData = fetchAllText(); // Fetch the translation data
 

@@ -88,42 +88,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					showConfirmButton: false,
 					allowOutsideClick: false
 				});
-			});
-
-
-			let formData = new FormData(document.getElementById('addUserComments'));
-
-			$.ajax({
-				type: "POST",
-				url: project_url+"/eposters/post_comments",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
-				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-					Swal.close();
-
-					data = JSON.parse(data);
-
-					if (data.status == 'success') {
-						$('#comments_list_container').html('');
-						loadComments(formData.get('eposterId'), comment_page);
-						getTranslatedSelectAccess('Comment has been added.').then((msg) => {
-							toastr.success(msg);
-						});
-						$('#comments').val('');
-					}else{
-						getTranslatedSelectAccess('Error').then((msg) => {
-							toastr.error(msg);
-						});
+				
+				let formData = new FormData(document.getElementById('addUserComments'));
+	
+				$.ajax({
+					type: "POST",
+					url: project_url+"/eposters/post_comments",
+					data: formData,
+					processData: false,
+					contentType: false,
+					error: function(jqXHR, textStatus, errorMessage)
+					{
+						Swal.close();
+						toastr.error(errorMessage);
+						//console.log(errorMessage); // Optional
+					},
+					success: function(data)
+					{
+						Swal.close();
+	
+						data = JSON.parse(data);
+	
+						if (data.status == 'success') {
+							$('#comments_list_container').html('');
+							loadComments(formData.get('eposterId'), comment_page);
+							getTranslatedSelectAccess('Comment has been added.').then((msg) => {
+								toastr.success(msg);
+							});
+							$('#comments').val('');
+						}else{
+							getTranslatedSelectAccess('Error').then((msg) => {
+								toastr.error(msg);
+							});
+						}
 					}
-				}
+				});
 			});
 		});
 		</script>

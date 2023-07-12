@@ -368,101 +368,98 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				allowOutsideClick: false
 			});
 			
-		});
-
-
-
-
-		$.get(project_admin_url+"/eposters/getAllJson", function (eposters) {
-			eposters = JSON.parse(eposters);
-
-			$('#eposterTableBody').html('');
-			if ($.fn.DataTable.isDataTable('#eposterTable'))
-			{
-				$('#eposterTable').dataTable().fnClearTable();
-				$('#eposterTable').dataTable().fnDestroy();
-			}
-
-			$.each(eposters, function(key, eposter)
-			{
-				// Authors badge
-				let authorsList = '';
-				let authorsNumber = Object.keys(eposter.authors).length;
-				let authorBadgeType = 'badge-danger';
-				if (authorsNumber > 0)
-					authorsList += '<strong>Authors List</strong><br><br>';
-				$.each(eposter.authors, function(key, author)
+			$.get(project_admin_url+"/eposters/getAllJson", function (eposters) {
+				eposters = JSON.parse(eposters);
+	
+				$('#eposterTableBody').html('');
+				if ($.fn.DataTable.isDataTable('#eposterTable'))
 				{
-					authorsList += author.name+' '+author.surname+' <br>('+author.email+')<br><br>';
-				});
-
-				if (authorsNumber > 0)
-					authorBadgeType = 'badge-success';
-				let authorsBadge = '<badge class="badge badge-pill '+authorBadgeType+'" data-html="true" data-toggle="tooltip" title="'+authorsList+'">A ('+authorsNumber+')</badge>';
-
-				let iPrize = 'N/A';
-
-				if (typeof(eposter.prize) == 'string') {
-					iPrize = eposter.prize;
-					iPrize = iPrize.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-	    				return letter.toUpperCase();
-					});
+					$('#eposterTable').dataTable().fnClearTable();
+					$('#eposterTable').dataTable().fnDestroy();
 				}
-
-				$('#eposterTableBody').append(
-					'<tr>' +
-					'	<td>' +
-					'		'+eposter.id+
-					'	</td>' +
-					'	<td>' +
-					'		'+eposter.track+
-					'	</td>' +
-					'	<td>' +
-					'		'+((eposter.type == 'eposter') ? 'ePoster' : 'Surgical Video' )+
-					'	</td>' +
-					'	<td>' +
-					'		'+eposter.title+
-					'	</td>' +
-					'	<td>' +
-					'		'+eposter.credits+
-					'	</td>' +
-					'	<td>' +
-					'		'+authorsBadge+
-					'	</td>' +
-					'	<td>' +
-					'		'+iPrize+
-					'	</td>' +
-					'	<td>' +
-					'		'+((eposter.status == 1) ? 'Active' : 'Inactive' )+
-					'	</td>' +
-					'	<td>' +
-					'		<a href="'+project_url+'/admin/eposters/view/'+eposter.id+'">' +
-					'			<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>' +
-					'		</a>' +
-					'	</td>' +
-					'	<td>' +
-					'		<button class="manageEposter btn btn-sm btn-primary m-1" eposter-id="'+eposter.id+'"><i class="fas fa-edit"></i> Edit</button>' +
-					'		<button class="removeEposter btn btn-sm btn-danger m-1" eposter-id="'+eposter.id+'" eposter-name="'+eposter.title+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
-					'	</td>' +
-					'</tr>'
-				);
+	
+				$.each(eposters, function(key, eposter)
+				{
+					// Authors badge
+					let authorsList = '';
+					let authorsNumber = Object.keys(eposter.authors).length;
+					let authorBadgeType = 'badge-danger';
+					if (authorsNumber > 0)
+						authorsList += '<strong>Authors List</strong><br><br>';
+					$.each(eposter.authors, function(key, author)
+					{
+						authorsList += author.name+' '+author.surname+' <br>('+author.email+')<br><br>';
+					});
+	
+					if (authorsNumber > 0)
+						authorBadgeType = 'badge-success';
+					let authorsBadge = '<badge class="badge badge-pill '+authorBadgeType+'" data-html="true" data-toggle="tooltip" title="'+authorsList+'">A ('+authorsNumber+')</badge>';
+	
+					let iPrize = 'N/A';
+	
+					if (typeof(eposter.prize) == 'string') {
+						iPrize = eposter.prize;
+						iPrize = iPrize.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+							return letter.toUpperCase();
+						});
+					}
+	
+					$('#eposterTableBody').append(
+						'<tr>' +
+						'	<td>' +
+						'		'+eposter.id+
+						'	</td>' +
+						'	<td>' +
+						'		'+eposter.track+
+						'	</td>' +
+						'	<td>' +
+						'		'+((eposter.type == 'eposter') ? 'ePoster' : 'Surgical Video' )+
+						'	</td>' +
+						'	<td>' +
+						'		'+eposter.title+
+						'	</td>' +
+						'	<td>' +
+						'		'+eposter.credits+
+						'	</td>' +
+						'	<td>' +
+						'		'+authorsBadge+
+						'	</td>' +
+						'	<td>' +
+						'		'+iPrize+
+						'	</td>' +
+						'	<td>' +
+						'		'+((eposter.status == 1) ? 'Active' : 'Inactive' )+
+						'	</td>' +
+						'	<td>' +
+						'		<a href="'+project_url+'/admin/eposters/view/'+eposter.id+'">' +
+						'			<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>' +
+						'		</a>' +
+						'	</td>' +
+						'	<td>' +
+						'		<button class="manageEposter btn btn-sm btn-primary m-1" eposter-id="'+eposter.id+'"><i class="fas fa-edit"></i> Edit</button>' +
+						'		<button class="removeEposter btn btn-sm btn-danger m-1" eposter-id="'+eposter.id+'" eposter-name="'+eposter.title+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+						'	</td>' +
+						'</tr>'
+					);
+				});
+	
+				$('[data-toggle="tooltip"]').tooltip();
+	
+				$('#eposterTable').DataTable({
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": true,
+					"responsive": false,
+					"order": [[ 0, "desc" ]],
+					"destroy": true
+				});
+	
+				Swal.close();
 			});
-
-			$('[data-toggle="tooltip"]').tooltip();
-
-			$('#eposterTable').DataTable({
-				"paging": true,
-				"lengthChange": true,
-				"searching": true,
-				"ordering": true,
-				"info": true,
-				"autoWidth": true,
-				"responsive": false,
-				"order": [[ 0, "desc" ]],
-				"destroy": true
-			});
-
-			Swal.close();
 		});
+
 	}
 </script>

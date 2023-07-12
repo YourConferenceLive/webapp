@@ -1047,10 +1047,7 @@ if (isset($settings) && !empty($settings->poll_music)) {
 			})
 
 		});
-
 	});
-
-
 
 	/** Live users per session **/
 	socket.emit(`ycl_session_active_users`, `${projectId}_${session_id}`);

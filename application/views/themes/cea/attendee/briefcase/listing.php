@@ -537,24 +537,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						allowOutsideClick: false
 					});
 
+					var buttonElement = $(this);
+	
+					$.ajax({type: "POST",
+							url: project_url+"/briefcase/delete",
+							data: {'session_id' : $(this).data('session-id')},
+							error: function(jqXHR, textStatus, errorMessage)
+							{
+								Swal.close();
+								toastr.error(errorMessage);
+							},
+							success: function(response){
+								$(buttonElement).parent().parent().parent().parent().parent().hide('slow').remove();
+								Swal.close();
+								toastr.success(removeText);
+							}
+					});
 				});
 
-				var buttonElement = $(this);
-
-				$.ajax({type: "POST",
-						url: project_url+"/briefcase/delete",
-						data: {'session_id' : $(this).data('session-id')},
-						error: function(jqXHR, textStatus, errorMessage)
-						{
-							Swal.close();
-							toastr.error(errorMessage);
-						},
-						success: function(response){
-							$(buttonElement).parent().parent().parent().parent().parent().hide('slow').remove();
-							Swal.close();
-							toastr.success(removeText);
-						}
-				});
 			});
 		});
 	</script>

@@ -389,55 +389,55 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					allowOutsideClick: false
 				});
 				
-			});
-
-			$.get(project_presenter_url+"/sessions/getPollByIdJson/"+pollId, function (poll) {
-
-				socket.emit('ycl_launch_poll', JSON.parse(poll));
-				const translationData = fetchAllText(); // Fetch the translation data
-
-				translationData.then((arrData) => {
-					const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-					// Find the translations for the dialog text
-					let dialogTitle = 'Done!';
-					let html1 = 'Poll';
-					let html2 = 'launch initiated';
-					let html3 = 'Launch Again';
-
-					for (let i = 0; i < arrData.length; i++) {
-						if (arrData[i].english_text === dialogTitle) {
-							dialogTitle = arrData[i][selectedLanguage + '_text'];
+				$.get(project_presenter_url+"/sessions/getPollByIdJson/"+pollId, function (poll) {
+	
+					socket.emit('ycl_launch_poll', JSON.parse(poll));
+					const translationData = fetchAllText(); // Fetch the translation data
+	
+					translationData.then((arrData) => {
+						const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+	
+						// Find the translations for the dialog text
+						let dialogTitle = 'Done!';
+						let html1 = 'Poll';
+						let html2 = 'launch initiated';
+						let html3 = 'Launch Again';
+	
+						for (let i = 0; i < arrData.length; i++) {
+							if (arrData[i].english_text === dialogTitle) {
+								dialogTitle = arrData[i][selectedLanguage + '_text'];
+							}
+							if (arrData[i].english_text === html1) {
+								html1 = arrData[i][selectedLanguage + '_text'];
+							}
+							if (arrData[i].english_text === html2) {
+								html2 = arrData[i][selectedLanguage + '_text'];
+							}
+							if (arrData[i].english_text === html3) {
+								html3 = arrData[i][selectedLanguage + '_text'];
+							}
 						}
-						if (arrData[i].english_text === html1) {
-							html1 = arrData[i][selectedLanguage + '_text'];
-						}
-						if (arrData[i].english_text === html2) {
-							html2 = arrData[i][selectedLanguage + '_text'];
-						}
-						if (arrData[i].english_text === html3) {
-							html3 = arrData[i][selectedLanguage + '_text'];
-						}
-					}
+						Swal.fire(
+							dialogTitle,
+							html1+' ['+pollId+'] '+html2,
+							'success'
+						)
+						$(that).html('<i class="fas fa-sync-alt"></i> '+html3).removeClass('btn-info').addClass('btn-warning');
+						
+					});
+	
+				}).fail((error)=>{
+					let errorTitle = "Error!";
+					getTranslatedSelectAccess(errorTitle).then((msg) => {
+						errorTitle = msg;
+					});
 					Swal.fire(
-						dialogTitle,
-						html1+' ['+pollId+'] '+html2,
-						'success'
-					)
-					$(that).html('<i class="fas fa-sync-alt"></i> '+html3).removeClass('btn-info').addClass('btn-warning');
-					
+						errorTitle,
+						error,
+						'error');
 				});
-
-			}).fail((error)=>{
-				let errorTitle = "Error!";
-				getTranslatedSelectAccess(errorTitle).then((msg) => {
-					errorTitle = msg;
-				});
-				Swal.fire(
-					errorTitle,
-					error,
-					'error');
 			});
+
 		});
 
 		$('#pollsTable').on('click', '.launch-result-btn', function () {
@@ -529,8 +529,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				})
 				
 			});
-
-
 		})
 
 		/*############### End function ############*/
@@ -632,8 +630,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'error');
 			});
 		});
-		
-
 	}
 
 	function listPolls()
@@ -757,7 +753,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 			
 		});
-		
 	}
 
 	function removePoll(poll_id){
@@ -794,7 +789,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								listPolls();
 							}, 1000);
 					});
-
 				}
 			}
 		})

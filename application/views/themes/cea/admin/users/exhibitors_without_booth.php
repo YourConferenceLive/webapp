@@ -118,7 +118,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$('#usersTable').on('click', '.manage-user', function () {
 
-
 			const translationData = fetchAllText(); // Fetch the translation data
 
 			translationData.then((arrData) => {
@@ -212,7 +211,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#sponsorsTable').on('click', '.delete-sponsor', function () {
 			let sponsorId = $(this).attr('sponsor-id');
 			let sponsorName = $(this).attr('sponsor-name');
-
 
 			// Working code
 			const translationData = fetchAllText(); // Fetch the translation data
@@ -332,7 +330,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function listUsers()
 	{
-
 		// Working code
 		const translationData = fetchAllText(); // Fetch the translation data
 
@@ -570,8 +567,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			})
 			
 		});
-
-
-
 	}
 </script>

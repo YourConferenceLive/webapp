@@ -321,8 +321,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				})
                 
             });
-
-
 		});
 
 		$('#usersTable').on('click', '.reset-user-pass-btn', function () {
@@ -453,13 +451,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			
 		});
-
 	}
 
 	function resetUserPassword(userId, userName)
 	{
-
-
 		const translationData = fetchAllText(); // Fetch the translation data
 
 		translationData.then((arrData) => {
@@ -572,9 +567,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			})
 			
 		});
-
-
-
 	}
 
 	function suspendUser(){

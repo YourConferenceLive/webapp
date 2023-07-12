@@ -373,41 +373,39 @@
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-        });
-		
-
-
-		let formData = new FormData(document.getElementById('addPollForm'));
-
-		$.ajax({
-			type: "POST",
-			url: project_admin_url+"/sessions/addPollJson/<?=$session->id?>",
-			data: formData,
-			processData: false,
-			contentType: false,
-			error: function(jqXHR, textStatus, errorMessage)
-			{
-				Swal.close();
-				toastr.error(errorMessage);
-				//console.log(errorMessage); // Optional
-			},
-			success: function(data)
-			{
-				Swal.close();
-
-				data = JSON.parse(data);
-
-				if (data.status == 'success')
+			
+			let formData = new FormData(document.getElementById('addPollForm'));
+	
+			$.ajax({
+				type: "POST",
+				url: project_admin_url+"/sessions/addPollJson/<?=$session->id?>",
+				data: formData,
+				processData: false,
+				contentType: false,
+				error: function(jqXHR, textStatus, errorMessage)
 				{
-					listPolls();
-					toastr.success(data.msg);
-					$('#addPollModal').modal('hide');
-
-				}else{
-					toastr.error(data.msg);
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(data)
+				{
+					Swal.close();
+	
+					data = JSON.parse(data);
+	
+					if (data.status == 'success')
+					{
+						listPolls();
+						toastr.success(data.msg);
+						$('#addPollModal').modal('hide');
+	
+					}else{
+						toastr.error(data.msg);
+					}
 				}
-			}
-		});
+			});
+        });
 	}
 
 	function updatePoll(pollOptionsDeleted){

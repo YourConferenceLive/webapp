@@ -75,7 +75,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(function()
 	{
-
 		evaluation_list();
 
 		$('.evaluation-table-body').on('click', '#btn-view', function(){
@@ -87,7 +86,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function evaluation_list()
 	{
-
 		const translationData = fetchAllText(); // Fetch the translation data
 
 		translationData.then((arrData) => {
