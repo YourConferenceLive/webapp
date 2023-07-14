@@ -175,7 +175,6 @@ function getTranslatedSelectAccess(textData) {
     return new Promise((resolve, reject) => {
         // const selectedLanguage = "spanish";
         const selectedLanguage = $('#languageSelect').val();
-
         const translationData = fetchAllText();
         
         translationData.then((arrData) => {

@@ -238,6 +238,12 @@
 			let dialogText = 'Adding the user...';
 			let imageAltText = 'Loading...';
 
+			// Toast
+			let userAddedText = "User added";
+			let duplicateText = "This user is already in the database";
+			let errorText = "Error";
+
+
 			for (let i = 0; i < arrData.length; i++) {
 				if (arrData[i].english_text === dialogTitle) {
 					dialogTitle = arrData[i][selectedLanguage + '_text'];
@@ -247,6 +253,16 @@
 				}
 				if (arrData[i].english_text === imageAltText) {
 					imageAltText = arrData[i][selectedLanguage + '_text'];
+				}
+
+				if (arrData[i].english_text === userAddedText) {
+					userAddedText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === duplicateText) {
+					duplicateText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === errorText) {
+					errorText = arrData[i][selectedLanguage + '_text'];
 				}
 			}
 
@@ -284,19 +300,13 @@
 					if (data.status == 'success')
 					{
 						listUsers();
-						getTranslatedSelectAccess('User added').then((msg) => {
-							toastr.success(msg);
-						});
+						toastr.success(userAddedText);
 						$('#addUserModal').modal('hide');
 	
 					}else if(data.status == 'duplicate'){
-						getTranslatedSelectAccess('This user is already in the database').then((msg) => {
-							toastr.error(msg);
-						});
+						toastr.error(duplicateText);
 					}else{
-						getTranslatedSelectAccess('Error').then((msg) => {
-							toastr.error(msg);
-						});
+						toastr.error(errorText);
 					}
 				}
 			});
