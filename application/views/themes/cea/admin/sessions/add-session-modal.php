@@ -681,7 +681,6 @@
 	});
 
 	$('#save-session').on('click', function () {
-
 		if($('input[name="startDateTime"]').val() == '')
 		{
 			getTranslatedSelectAccess('Please select start date and time!').then((msg) => {
@@ -703,15 +702,19 @@
 		// 	toastr.warning('Credit must be a positive number!')
 		// 	return false;
 		// }
+		let translationData = fetchAllText(); // Fetch the translation data
 
-
-
-		const translationData = fetchAllText(); // Fetch the translation data
 
             translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+				console.log("Before");
 
-                // Find the translations for the dialog text
+				
+		
+		
+                let selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+				console.log(selectedLanguage);
+                // // Find the translations for the dialog text
                 let dialogTitle = 'Are you sure?';
                 let confirmButtonText = 'Yes, save it!';
                 let cancelButtonText = 'No';
@@ -741,13 +744,13 @@
 					title: dialogTitle,
 					html: '<span style="color: white;">'+sessionName+
 							'<br><br> <small>'+html1+'</small> '+$('#startDateTimeInput').val()+
-							'<br> <small>'html2'</small> '+$('#endDateTimeInput').val()+' ? </span>',
+							'<br> <small>'+html2+'</small> '+$('#endDateTimeInput').val()+' ? </span>',
 					icon: 'warning',
 					showCancelButton: true,
 					confirmButtonColor: '#3085d6',
 					cancelButtonColor: '#d33',
 					confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText
+					cancelButtonText: cancelButtonText
 				}).then((result) => {
 					if (result.isConfirmed) {
 						if ($('#sessionId').val() == 0)
@@ -778,7 +781,7 @@
 
 	function addSession()
 	{
-		const translationData = fetchAllText(); // Fetch the translation data
+		let translationData = fetchAllText(); // Fetch the translation data
 
 		translationData.then((arrData) => {
 			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
@@ -858,7 +861,7 @@
 
 	function updateSession()
 	{
-		const translationData = fetchAllText(); // Fetch the translation data
+		let translationData = fetchAllText(); // Fetch the translation data
 
 		translationData.then((arrData) => {
 			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
@@ -879,13 +882,6 @@
 				if (arrData[i].english_text === dialogText) {
 					dialogText = arrData[i][selectedLanguage + '_text'];
 				}
-				if (arrData[i].english_text === confirmButtonText) {
-					confirmButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === cancelButtonText) {
-					cancelButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-
 				if (arrData[i].english_text === sessionUpdateText) {
 					sessionUpdateText = arrData[i][selectedLanguage + '_text'];
 				}
