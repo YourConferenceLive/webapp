@@ -380,7 +380,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				allowOutsideClick: false
 			});
 
-			$.get(project_admin_url+"/users/getAllJson", function (users) {
+			$.get(project_admin_url+"/users/getAllNoProjectidJson", function (users) {
 				users = JSON.parse(users);
 	
 				$('#usersTableBody').html('');

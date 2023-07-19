@@ -38,6 +38,33 @@ class Users_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getAllNoProjectid()
+	{
+		$user_ids = $this->db
+			->select('user_id')
+			// ->where('project_id', $this->project->id)
+			->group_by('user_id')
+			->get_compiled_select('user_project_access', true);
+
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
+		$this->db->from('user');
+		$this->db->where('id IN ('.$user_ids.')');
+		$this->db->order_by("surname", "asc");
+		$users = $this->db->get();
+		if ($users->num_rows() > 0)
+		{
+			foreach ($users->result() as $user)
+			{
+				$user->company_name = $this->getCompanyName($user->id);
+				$user->accesses = $this->getAllProjectAccesses($user->id);
+			}
+
+			return $users->result();
+		}
+
+		return new stdClass();
+	}
+
 	public function getById($id)
 	{
 		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
@@ -48,6 +75,22 @@ class Users_Model extends CI_Model
 		{
 			$user->result()[0]->company_name = $this->getCompanyName($user->result()[0]->id);
 			$user->result()[0]->accesses = $this->getProjectAccesses($user->result()[0]->id);
+			return $user->result()[0];
+		}
+
+		return new stdClass();
+	}
+
+	public function getByIdNoProjectid($id)
+	{
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
+		$this->db->from('user');
+		$this->db->where('id', $id);
+		$user = $this->db->get();
+		if ($user->num_rows() > 0)
+		{
+			$user->result()[0]->company_name = $this->getCompanyName($user->result()[0]->id);
+			$user->result()[0]->accesses = $this->getAllProjectAccesses($user->result()[0]->id);
 			return $user->result()[0];
 		}
 
@@ -210,6 +253,17 @@ class Users_Model extends CI_Model
 			->select('level')
 			->where(array('user_id' => $user_id, 'project_id' => $this->project->id))
 			->from('user_project_access')
+			->get()
+			->result();
+	}
+
+	public function getAllProjectAccesses($user_id)
+	{
+		return $this->db
+			->select('level')
+			->where('user_id', $user_id)
+			->from('user_project_access')
+			->group_by('level')
 			->get()
 			->result();
 	}

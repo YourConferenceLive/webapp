@@ -35,9 +35,19 @@ class Users extends CI_Controller
 		echo json_encode($this->users->getAll());
 	}
 
+	public function getAllNoProjectidJson()
+	{
+		echo json_encode($this->users->getAllNoProjectid());
+	}
+
 	public function getByIdJson($id)
 	{
 		echo json_encode($this->users->getById($id));
+	}
+
+	public function getByIdNoProjectidJson($id)
+	{
+		echo json_encode($this->users->getByIdNoProjectid($id));
 	}
 
 	public function create()
