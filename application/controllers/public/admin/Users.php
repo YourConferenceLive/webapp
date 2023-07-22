@@ -52,16 +52,23 @@ class Users extends CI_Controller
 
 	public function create()
 	{
-		if ($this->users->create())
+		$verification = $this->users->create();
+
+		if ($verification && is_array($verification) != true)
 			echo json_encode(array('status' => 'success'));
+		else if($verification['status'] == 'duplicate')
+			echo json_encode($verification);
 		else
 			echo json_encode(array('status' => 'failed'));
 	}
 
 	public function update()
 	{
-		if ($this->users->update())
+		$verification = $this->users->update();
+		if ($verification && is_array($verification) != true)
 			echo json_encode(array('status' => 'success'));
+		else if($verification['status'] == 'duplicate')
+			echo json_encode($verification);
 		else
 			echo json_encode(array('status' => 'failed'));
 	}

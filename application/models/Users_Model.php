@@ -132,9 +132,9 @@ class Users_Model extends CI_Model
 
 		);
 
-		if($this->emailExists($post['email']) > 0)
+		if($this->emailExists($post['email']))
 		{
-			return "duplicate";
+			return array('status'=>"duplicate", 'msg'=>"This user already in the database.");
 		}
 		
 		$this->db->insert('user', $data);
@@ -200,6 +200,11 @@ class Users_Model extends CI_Model
 			'updated_by' => $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id']
 
 		);
+
+		if($this->emailExistsNotInId($post['email'], $post['userId'])) {
+			return array('status'=>"duplicate", 'msg'=>"This user already in the database.");
+		}
+
 		$this->db->set($data);
 		$this->db->where('id', $post['userId']);
 		$this->db->update('user');
@@ -284,6 +289,18 @@ class Users_Model extends CI_Model
 			->get()
 			->num_rows()
 			) > 0;
+	}
+
+	public function emailExistsNotInId($email, $excludeId = null)
+	{
+		return ($this->db
+			->select('id')
+			->from('user')
+			->where('email', $email)
+			->where($excludeId !== null ? 'id !=' : '', $excludeId)
+			->get()
+			->num_rows() > 0
+		);
 	}
 
 	public function getAllAttendees()

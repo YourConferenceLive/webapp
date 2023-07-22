@@ -241,7 +241,10 @@
 			// Toast
 			let userAddedText = "User added";
 			let duplicateText = "This user is already in the database";
+
 			let errorText = "Error";
+			let emailText = "Email is required.";
+			let passwordText = "Password is required.";
 
 
 			for (let i = 0; i < arrData.length; i++) {
@@ -261,9 +264,28 @@
 				if (arrData[i].english_text === duplicateText) {
 					duplicateText = arrData[i][selectedLanguage + '_text'];
 				}
+
 				if (arrData[i].english_text === errorText) {
 					errorText = arrData[i][selectedLanguage + '_text'];
 				}
+				if (arrData[i].english_text === emailText) {
+					emailText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === passwordText) {
+					passwordText = arrData[i][selectedLanguage + '_text'];
+				}
+			}
+
+			let email = $('#email').val();
+			let password = $('#password').val();
+
+			if (email.trim() === '') {
+				toastr.error(emailText);
+				return;
+			}
+			else if(password.trim() === '') {
+				toastr.error(passwordText);
+				return; 
 			}
 
 			Swal.fire({
@@ -325,6 +347,13 @@
 			let dialogText = 'Updating the sponsor...';
 			let imageAltText = 'Loading...';
 
+			// Toast
+			let emailText = 'Email is required.';
+			let userUpdatedText = 'User updated';
+			let duplicateText = "This user is already in the database";
+			let noChangeText = 'No changes made';
+			let errorText = 'Error';
+
 			for (let i = 0; i < arrData.length; i++) {
 				if (arrData[i].english_text === dialogTitle) {
 					dialogTitle = arrData[i][selectedLanguage + '_text'];
@@ -335,6 +364,32 @@
 				if (arrData[i].english_text === imageAltText) {
 					imageAltText = arrData[i][selectedLanguage + '_text'];
 				}
+
+				if (arrData[i].english_text === emailText) {
+					emailText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === userUpdatedText) {
+					userUpdatedText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === duplicateText) {
+					duplicateText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === noChangeText) {
+					noChangeText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === errorText) {
+					errorText = arrData[i][selectedLanguage + '_text'];
+				}
+
+
+
+			}
+
+			let email = $('#email').val();
+
+			if (email.trim() === '') {
+				toastr.error(emailText);
+				return;
 			}
 
 			Swal.fire({
@@ -371,18 +426,14 @@
 					if (data.status == 'success')
 					{
 						listUsers();
-						getTranslatedSelectAccess('User updated').then((msg) => {
-							toastr.success(msg);
-						});
-	
+						toastr.success(userUpdatedText);
+
+					}else if(data.status == 'duplicate'){
+						toastr.error(duplicateText);
 					}else if(data.status == 'failed'){
-						getTranslatedSelectAccess('No changes made').then((msg) => {
-							toastr.success(msg);
-						});
+						toastr.success(noChangeText);
 					}else{
-						getTranslatedSelectAccess('Error').then((msg) => {
-							toastr.error(msg);
-						});
+						toastr.error(errorText);
 					}
 				}
 			});
