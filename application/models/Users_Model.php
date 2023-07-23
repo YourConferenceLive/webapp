@@ -46,11 +46,15 @@ class Users_Model extends CI_Model
 			->group_by('user_id')
 			->get_compiled_select('user_project_access', true);
 
-		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
-		$this->db->from('user');
-		$this->db->where('id IN ('.$user_ids.')');
-		$this->db->order_by("surname", "asc");
+		$this->db->select('u.id, u.name, u.surname, u.email, u.active, u.bio, u.disclosures, u.photo , u.city, u.country, u.rcp_number, u.name_prefix, u.credentials, u.idFromApi, u.membership_type, u.membership_sub_type, upa.user_id, p.id AS project_id, p.name AS project_name');
+		$this->db->from('user u');
+		$this->db->join('(SELECT up.user_id, up.project_id FROM user_project_access up GROUP BY up.user_id) upa', 'u.id = upa.user_id', 'left');
+		$this->db->join('(SELECT p.name, p.id FROM project p) p', 'upa.project_id = p.id', 'left');
+		$this->db->where('u.id IN ('.$user_ids.')');
+		$this->db->order_by("u.surname", "asc");
 		$users = $this->db->get();
+
+
 		if ($users->num_rows() > 0)
 		{
 			foreach ($users->result() as $user)
@@ -294,10 +298,12 @@ class Users_Model extends CI_Model
 	public function emailExistsNotInId($email, $excludeId = null)
 	{
 		return ($this->db
-			->select('id')
-			->from('user')
-			->where('email', $email)
-			->where($excludeId !== null ? 'id !=' : '', $excludeId)
+			->select('u.id, upa.user_id, p.id AS project_id, p.name AS project_name')
+			->from('user u')
+			->join('(SELECT up.user_id, up.project_id FROM user_project_access up GROUP BY up.user_id) upa', 'u.id = upa.user_id', 'left')
+			->join('(SELECT p.name, p.id FROM project p) p', 'upa.project_id = p.id', 'left')
+			->where('u.email', $email)
+			->where($excludeId !== null ? 'u.id !=' : '', $excludeId)
 			->get()
 			->num_rows() > 0
 		);

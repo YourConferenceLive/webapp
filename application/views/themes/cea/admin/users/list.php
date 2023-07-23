@@ -50,6 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<thead>
 								<tr>
 									<th>User ID</th>
+									<th>Project ID</th>
+									<th>Project Name</th>
 									<th>First Name</th>
 									<th>Surname</th>
 									<th>Email</th>
@@ -382,7 +384,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$.get(project_admin_url+"/users/getAllNoProjectidJson", function (users) {
 				users = JSON.parse(users);
-	
 				$('#usersTableBody').html('');
 				if ($.fn.DataTable.isDataTable('#usersTable'))
 				{
@@ -405,6 +406,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							'<tr>' +
 							'	<td>' +
 							'		'+user.id+
+							'	</td>' +
+							'	<td>' +
+							'		'+user.project_id+
+							'	</td>' +
+							'	<td>' +
+							'		'+user.project_name+
 							'	</td>' +
 							'	<td>' +
 							'		'+user.name+
