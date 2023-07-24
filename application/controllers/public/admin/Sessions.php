@@ -160,14 +160,23 @@ class Sessions extends CI_Controller
 		$params['level'] = 'H';
 		$params['size'] = 10;
 		$params['savename'] = FCPATH.'/cms_uploads/projects/'.$this->project->id.'/qrcode/qr_'.$session_id.'.png';
+		$path = FCPATH.'/cms_uploads/projects/'.$this->project->id.'/qrcode';
+		
+		if (!file_exists($path)) {
+			if (mkdir($path, 0777, true)) {
+				// Code here if necessary...
+			} 
+		}
 
 		if($this->ciqrcode->generate($params)){
 			echo 'success';
 		}else{
 			echo 'error';
 		}
-
-//        echo '<img src="'.base_url().'assets/qrcode/qrcode.png" />';
+		
+		// echo '<img src="'.base_url().'assets/qrcode/qrcode.png" />';
+		// die();
+	   
 	}
 
 	public function getQuestionsAjax($session_id)

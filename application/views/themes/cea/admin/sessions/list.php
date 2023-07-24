@@ -122,6 +122,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		$('.add-session-btn').on('click', function () {
 
 			getColorPreset();
+			$('#addSessionModalLabelspan').text(`Add New Session`)
 			$('#addSessionForm')[0].reset();
 			$('#currentPhotoDiv').hide();
 			$('#currentSponsorLogoDiv').hide();
@@ -185,6 +186,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
 					session = JSON.parse(session);
 					console.log(session);
+
+					// set the session title here
+					$('#addSessionModalLabelspan').text(`Session ID: ${session.id}`)
+
 					$('#sessionId').val(session.id);
 					$('#sessionName').val(session.name);
 					$('#sessionNameOther').val(session.other_language_name);
@@ -826,6 +831,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			e.preventDefault();
 			let session_id = $(this).attr('session-id');
 			// var session_id = $(this).attr('data-session_id');
+			console.log(session_id);
 			$.post('<?= $this->project_url?>/admin/sessions/generateQRCode/'+session_id,
 				{}, function(success){
 					if(success=="success"){
@@ -835,7 +841,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							imageHeight: 300,
 							imageAlt: 'QRCODE'
 						})
+
 					}
+					
+					else console.log("Failed");
 				})
 		})
 	})

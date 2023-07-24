@@ -514,11 +514,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$.get(project_admin_url+"/sessions/getPollByIdJson/"+pollId, function (poll) {
 				poll = JSON.parse(poll);
 				if(socket.emit('ycl_launch_poll_result', {session_id:sessionId,poll_id:pollId, poll_question:poll.poll_question})) {
-				$.post(project_admin_url + "/sessions/updateShowedResult/" + pollId, function (poll) {
-					$('#launch-result_'+pollId).css('display', 'none')
-					$('#show-result-again_'+pollId).css('display', 'block')
-				})
-			}
+					$.post(project_admin_url + "/sessions/updateShowedResult/" + pollId, function (poll) {
+						$('#launch-result_'+pollId).css('display', 'none')
+						$('#show-result-again_'+pollId).css('display', 'block')
+					})
+				}
+			});
 			getTranslatedSelectAccess('Result popup triggered').then((msg) => {
 				toastr.success(msg);
 			});
@@ -953,7 +954,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 			}
 		})
-		}
+	}
 
 	function summerNote(object) {
 		$(object).summernote({
@@ -994,45 +995,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	}
-		function summerNoteOption(object){
-			$(object).summernote({
-				dialogsInBody: true,
-				inheritPlaceholder: true,
-				height: 100,
-				toolbar:
-					[
-						["history", ["undo", "redo"]],
-						["style", ["style"]],
-						["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
-						['fontsize', ['fontsize']],
-						["color", ["color"]],
-						["paragraph", ["ul", "ol", "paragraph", "height"]],
-						["table", ["table"]],
-						["insert", ["link", "resizedDataImage", "picture", "video"]],
-						["view", ["codeview"] ]
-					],
-				fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150'],
-				callbacks: {
-					onKeyup: function (e) {
 
-						appendCorrectAnswer1();
-						appendCorrectAnswer2();
-					},
-					onPaste: function (e) {
-						var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+	function summerNoteOption(object){
+		$(object).summernote({
+			dialogsInBody: true,
+			inheritPlaceholder: true,
+			height: 100,
+			toolbar:
+				[
+					["history", ["undo", "redo"]],
+					["style", ["style"]],
+					["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
+					['fontsize', ['fontsize']],
+					["color", ["color"]],
+					["paragraph", ["ul", "ol", "paragraph", "height"]],
+					["table", ["table"]],
+					["insert", ["link", "resizedDataImage", "picture", "video"]],
+					["view", ["codeview"] ]
+				],
+			fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150'],
+			callbacks: {
+				onKeyup: function (e) {
 
-						e.preventDefault();
+					appendCorrectAnswer1();
+					appendCorrectAnswer2();
+				},
+				onPaste: function (e) {
+					var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
 
-						// Firefox fix
-						setTimeout(function () {
-							document.execCommand('insertText', false, bufferText);
-						}, 10);
-					},
-					// onInit: function() {
-					// 	var $noteEditable = $('.note-editable');
-					// 	$noteEditable.html($noteEditable.html().replace(/^<br>/i, ''));
-					// }
-				}
-			});
+					e.preventDefault();
+
+					// Firefox fix
+					setTimeout(function () {
+						document.execCommand('insertText', false, bufferText);
+					}, 10);
+				},
+				// onInit: function() {
+				// 	var $noteEditable = $('.note-editable');
+				// 	$noteEditable.html($noteEditable.html().replace(/^<br>/i, ''));
+				// }
+			}
+		});
 	}
 </script>

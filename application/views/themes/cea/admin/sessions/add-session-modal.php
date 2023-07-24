@@ -14,7 +14,7 @@
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="addSessionModalLabel"><i class="fas fa-calendar-plus"></i> Add New Session</h5>
+				<h5 class="modal-title" id="addSessionModalLabel"><i class="fas fa-calendar-plus"></i> <span id="addSessionModalLabelspan">Add New Session</span></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
