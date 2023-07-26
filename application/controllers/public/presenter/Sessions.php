@@ -94,6 +94,7 @@ class Sessions extends CI_Controller
 		}
 		$data["session"] = $session;
 		$data["user"] = $this->user;
+		$data2["activepage"] = "sessionview";
 
 		//$menu_data['host_chat_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_host_chat", '', true);
 		//$menu_data['questions_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_questions.php", '', true);
@@ -112,7 +113,7 @@ class Sessions extends CI_Controller
 		
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
-			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar", $data2)
 			//->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_modal")

@@ -35,11 +35,18 @@ $ci_method = $this->router->fetch_method();
 				</a>
 			</li>
 		<?php endif; ?>
+
+		
 	</ul>
 
 	<!-- Right navbar links -->
 	<ul class="navbar-nav ml-auto">
 
+		<?php if(isset($activepage) && $activepage == "sessionview"): ?>
+			<li class="nav-item d-none d-sm-inline-block">
+				<a href="<?=$this->project_url.'/authentication/logout/'.base64_encode('presenter')?>" class="nav-link">Logout</a>
+			</li>
+		<?php endif;?>
 		<li class="nav-item">
 			<a id="presenter_timer" class="nav-link disabled" style="display: none;color: rgb(255, 255, 255);">
 				Starts In: __ __
