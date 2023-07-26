@@ -333,15 +333,9 @@
 				if (arrData[i].english_text === dialogTitle3) {
                     dialogTitle3 = arrData[i][selectedLanguage + '_text'];
                 }
-				if (arrData[i].english_text === dialogTex3) {
-                    dialogText3 = arrData[i][selectedLanguage + '_text'];
-                }
 
 				if (arrData[i].english_text === dialogTitle4) {
                     dialogTitle4 = arrData[i][selectedLanguage + '_text'];
-                }
-				if (arrData[i].english_text === dialogTex4) {
-                    dialogText4 = arrData[i][selectedLanguage + '_text'];
                 }
 				if (arrData[i].english_text === imageAltText4) {
                     imageAltText4 = arrData[i][selectedLanguage + '_text'];
