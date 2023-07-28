@@ -12,24 +12,33 @@ class Authentication extends CI_Controller {
 		$this->load->model('Logger_Model', 'logger');
 	}
 
+	public function test()
+	{
+		$response = 123;
+		echo json_encode($response);
+		return;
+	}
 	public function login()
 	{
+		
 		$project_id = $this->project->id;
 		$username = $this->input->post()['email'];
 		$password = $this->input->post()['password'];
 		$access_level = $this->input->post()['access_level'];
-//		print_r($username);exit;
+		
+		// print_r($username);exit;
 
-//		$email_org = explode('@', $username);
-//		if(ycl_env == 'production' && $access_level == 'attendee' && $email_org[1] != 'cos-sco.ca') // Only staff have access for now on prod
-//		{
-//			$response = array('status'=>'error', 'msg'=>"You are not a COS staff.");
-//			echo json_encode($response);
-//			return;
-//		}
+		//		$email_org = explode('@', $username);
+		//		if(ycl_env == 'production' && $access_level == 'attendee' && $email_org[1] != 'cos-sco.ca') // Only staff have access for now on prod
+		//		{
+		//			$response = array('status'=>'error', 'msg'=>"You are not a COS staff.");
+		//			echo json_encode($response);
+		//			return;
+		//		}
 
 		$this->updateProfileFromCos($username);
-
+		
+		
 		$verification = $this->auth->verifyLogin($project_id, $username, $password);
 
 		if ($verification['status'])
@@ -267,6 +276,7 @@ class Authentication extends CI_Controller {
 		echo json_encode($response);
 	}
 
+	
 	public function logout($where='')
 	{
 		$project_id = $this->project->id;
@@ -287,6 +297,10 @@ class Authentication extends CI_Controller {
 			'api_username' => $this->project->api_username,
 			'api_password' => $this->project->api_password
 		);
+
+		// echo "<pre>";
+		// var_dump($api_config);
+		// die();
 
 		if ($this->project->api_url == null)
 		{

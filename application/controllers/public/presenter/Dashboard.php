@@ -17,12 +17,14 @@ class Dashboard extends CI_Controller
 		)redirect(base_url().$this->project->main_route."/presenter/login"); // Not logged-in
 
 		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
+
+		$this->load->model('Translator_Model', 'translate');
 	}
 
 	public function index()
 	{
 		$sidebar_data['user'] = $this->user;
-
+		
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")

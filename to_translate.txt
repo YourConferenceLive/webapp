@@ -1,0 +1,521 @@
+## Documentation
+
+Files
+    * Controller    =>   Translator.php
+    * Model         =>   Translator_Model.php
+    * views
+            => menubar.php (cea/presenter)
+            => footer.php (cea/presenter)
+
+Database
+    * Table
+            => user_language_settings
+            => user_language_settings
+
+
+Used at
+    * Presenter
+
+
+
+
+Create
+Questions
+Polls
+Description
+Credits
+External Meeting URL (eg; Zoom Link)
+Other name (alternative language)
+Enter alternative session title/name eg; French
+Enter session title/name
+Settings
+Invisible Moderators
+Presenters
+Keynote Speakers
+Moderators
+Video
+Agenda
+Manage
+Reset Password
+Suspend
+General 
+Media
+Stream
+Authors
+Actions
+Prize
+Add
+ePosters
+ePoster
+Type
+users
+Overall
+Search
+Session
+Sessions
+View
+Visit
+Title
+OS
+All
+All rights reserved
+Notification
+Close
+Translation not found
+Loading
+Starts In:
+Presenter
+My Sessions
+ACCOUNT
+Logout
+CPU Traffic
+Likes
+Sales
+New Members
+Monthly Recap Report
+Action
+Another action
+Something else here
+Separated link
+Sales:
+Jan
+Jan,
+Jul
+Jul,
+Sales: 1 Jan, 2014 - 30 Jul, 2014
+Goal Completion
+Add Products to Cart
+Visit Premium Page
+TOTAL REVENUE
+TOTAL COST
+TOTAL PROFIT
+GOAL COMPLETIONS
+US-Visitors Report
+Visits
+Referrals
+Organic
+Direct Chat
+Is this template really for free? That's unbelievable!
+You better believe it!
+Working with AdminLTE on a great new app! Wanna join?
+I would love to.
+How have you been? I was...
+I will be waiting for...
+I'll call you back at...
+Where is your new...
+Can I take a look at...
+Never mind I found...
+Latest Members
+Type Message ...
+8 New Members
+View All Users
+Latest Orders
+Order ID
+Item
+Status
+Popularity
+Call of Duty IV
+Shipped
+Samsung Smart TV
+Pending
+iPhone 6 Plus
+Delivered
+Processing
+Place New Order
+View All Orders
+Inventory
+Mentions
+Downloads
+Direct Messages
+Browser Usage
+Recently Added Products
+Samsung 32" 1080p 60Hz LED Smart HDTV.
+26" Mongoose Dolomite Men's 7-speed, Navy Blue.
+Xbox One Console Bundle with Halo Master Chief Collection.
+PlayStation 4 500GB Console (PS4)
+PlayStation 4
+View All Products
+Presenter Landing Page - ToDo: Modify
+Presenter Login
+Login
+Email address
+Password
+Forgot password
+Analytics
+COS Annual General Meeting
+User ID
+Name
+First Name
+Surname
+Degree
+Email
+Memb Type
+Memb Sub Type
+City
+Time
+Export
+Export will consider your filters and search
+Unique
+Select unique to show only unique users
+You can combine filters. <br> eg; Unique users on 2021-06-24
+Awards Ceremony
+Filter by a particular day
+You can combine filters. Unique users on 2021-06-24
+Credits Report
+Section 1 - Group Learning (Sessions)
+ParticipantId
+ActivityId
+Participant Name
+EarnedAt
+MP_GroupLearningDirect
+MP_GroupLearing_Accredited
+MP_ActivityHours
+MP_DescribeGroupActivity(title)
+MP_ActivityConclusion
+MP_ActivityCompletionDate
+MP_Canmeds
+MP_Resources
+MP_Organization_Name
+MP_Location
+MP_reflection q1
+MP_reflection q2
+MP_reflection q3
+MP_CanMEDsCollaborator
+MP_CanMEDsCommunicator
+MP_CanMEDsHealthAdvocate
+MP_CanMEDsManager
+MP_CanMEDsMedicalExpert
+MP_CanMEDsProfessional
+MP_CanMEDsScholar
+Section 2 - Self - Learning (ePoster)
+MP_AssessmentActivityDirect
+MP_DescribeAssessmentActivity(title)
+MP_AssessmentCompletionDate
+Group Learning Export   
+Self Learning Export
+Practice Assessment Export
+ePosters/Surgical Videos
+ePoster ID
+Author
+ePoster Name
+ePoster Type
+Total Visitors
+Export Excel
+Exhibition Hall
+Booth
+Showing (_START_ to _END_) of _TOTAL_ Records
+(Unique Attendee) - filtering from _MAX_ Total Records
+booth(s)
+Select unique to show only unique users
+day(s)
+Logs
+All logs
+What
+Where
+ID Ref 1
+ID Ref 2
+Browser
+Overall Conference
+Info
+President's Celebration
+Session Join
+Relaxation Zone
+Scavenger Hunt
+(People who found all 10 items)
+Last Collected Item
+Last Collected
+Scientific Program / Sessions
+Total Attendees
+Session ID
+Session Name
+Session Attendees
+Session Evaluations
+Session Start Date
+Session Type
+Option
+Evaluations
+Sessions Q&A
+Total Questions
+Skills Transfer Courses
+Trivia Night
+Loading...
+Starts In: __ __
+Call me whenever you can..
+4 Hours Ago
+I got your message bro
+The subject goes here
+See All Messages
+15 Notifications
+4 new messages
+8 friend requests
+Exhibitors Without Booth
+Sponsors
+Live Support
+All Logs
+Scientific Sessions
+Session Recordings
+Section 1 - Credits Report
+Section 2 - Credits Report
+Section 3 - Credits Report
+N/A
+Track
+Control Number
+What is the control number of this eposter?
+How much credit user will receive by attending this eposter? (default:0 | min:0 | max:20)
+Choose file
+Current photo
+Video Link (Vimeo only)
+Enter Video URL (for example https://vimeo.com/12345789)
+ePoster name cannot be empty!
+Credit must be a positive number!
+Surgical Video cannot be empty!
+ePoster updated
+All ePosters
+Unable to remove
+Authors List
+Add New Poll
+Question
+Poll Options
+Click to add one more option
+Poll
+Automatically show result (for 5 seconds)
+Error
+Add New Session
+This link will open in a new tab (unless user blocked pop opening windows) once the meeting starts (always prefix the URL with protocol ie; http/https)
+Track or Add Track
+Select Track
+Enter session description
+Start date and time
+End date and time
+Session photo
+Choose file
+Enter session agenda
+Video
+Millicast stream name
+Presenter slides embed HTML
+Copy paste presenter slides iframe html
+Presenter Zoom Link
+Enter Zoom URL with password if any
+
+Select moderators from the box on the left
+(You must add moderators withSelecciona moderadores de la lista de la izquierda. 
+Moderator
+privilege in
+Users
+list in order to list them here
+
+Select keynote speakers from the box on the left)
+(You must add keynote speakers with
+Presenter
+privilege in
+Users
+list in order to list them here)
+
+Select presenters from the box on the left
+(You must add presenters with
+Presenter
+privilege in
+Users
+list in order to list them here)
+
+Select invisible moderators from the box on the left
+(You must add moderators with
+Moderator
+privilege in
+Users
+list in order to list them here)
+
+Header
+Header Settings
+Header Toolbox
+Right Sticky Toolbox
+Notes
+Resources
+Session End
+Text
+Session Ended
+Image
+Current Session End Image
+All sessions
+Day
+Start Time
+End Time
+People
+Loading session data...
+Are you sure?
+You are about to remove
+(We will still keep it in our records for auditing)
+Please Wait
+We are validating your credentials
+Unable To Register
+Unable To Login
+We are redirecting you
+Removing the session...
+Loading...
+Invisible Moderators
+Keynote Speakers List
+Presenters List
+Edit
+Remove
+Open Poll
+Close Poll
+Open Result
+Close Result
+Session Polls
+All polls for the session:
+Add
+Poll ID
+Auto-show Result
+Poll Triggers
+Result Triggers
+Yes, remove it!
+Error!
+Unable to remove
+Launching the poll
+Done!
+Poll
+launch initiated
+Loading poll data...
+Launch
+Show Result
+Close Result
+Host Chat
+Attendee Chat
+Type Message... (Host Chat)
+Send
+Starred Questions
+It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+What is the best way to treat this patient?
+Can you elaborate on this information?
+It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+Can you elaborate on this informatiion?
+This session ended
+ago
+Create New Sponsor
+Admins
+Sponsor name
+About us
+About the sponsor
+Logo
+Banner
+Select booth admins from the box on the left
+(You must add booth admins with
+Users
+list in order to list them here)
+Updating the sponsor...
+Sponsor updated
+User updated
+No changes made
+All sponsors
+Sponsor ID
+Loading sponsor details...
+This will delete all the assets, admins attached, chats etc of this sponsor
+(This won't delete the accounts of admins attached to this booth though)
+You won't be able to revert this!
+Yes, delete it!
+Deleting the sponsor...
+Add New User
+Login Credentials
+User's email
+Email already exists.
+User's password
+Passwords are encrypted and cannot be displayed or updated in cleartext, you can only
+Reset
+them.
+COS Membership
+COS Party ID
+User's ID in COS database
+Membership Type
+User's membership type eg; C for contact
+Membership Sub Type
+User's membership sub type eg; MS for Medical Student (only some Non-members will have sub type)
+Profile Details
+Display Photo
+Name Prefix
+User's name prefix
+Credentials
+User's credentials
+First name
+User's first name
+User's surname
+Biography
+User's bio
+Disclosure
+User's disclosure
+Accesses
+Accesses
+Attendee
+Admin
+Exhibitor
+Exhibitors without booth
+Exhibitors without booths
+Loading user details...
+This will delete all the assets, admins attached, chats etc of this sponsor
+(This won't delete the accounts of admins attached to this booth though)
+You won't be able to revert this!
+Loading users data...
+You are about to reset
+password to 'COS2021' (without quotes)
+password to '12345' (without quotes)
+Yes, reset it!
+Resetting
+password...
+password is now reset to COS2021
+password is now reset to 12345
+Unable to reset the password
+This will delete all the assets, admins attached, chats etc of this sponsor
+(This won't delete the accounts of admins attached to this booth though)
+You won't be able to revert this!
+Yes, delete it!
+Home
+Dashboard
+Complete Purchase
+Send Inquiries
+Today
+Yesterday
+Evaluation
+All evaluations
+Evaluation Name
+Evaluation Header
+Live Support Chat
+Enter message
+Send
+You should choose an attendee to send the text.
+Unable to load the chat.
+
+Please enter some message.
+We are changing the status
+Unable to change the status
+Live support status changed
+error
+Unable to load users list
+Admin Login
+Push Notification
+All Push Notification
+Visibility
+Whole Site
+Message :
+Message
+Save
+Notify to
+Auto close alert!
+Sending Notification Please Wait...
+Notification updated
+Attendee Settings
+Lobby
+Eposter
+Lounge
+Mail Menu Icon
+Profile Menu Icon
+Profile
+Briefcase
+Use CSS units for logo size. ex: 240px, 100vh etc. Without white space.
+Logo Size (Width x Height)
+Session Listing
+Session Background
+Session View
+Right Sticky Icon
+Poll Music
+Live Support Color
+Homepage
+Select Homepage

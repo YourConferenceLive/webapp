@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <body>
 <img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
@@ -63,8 +64,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="card"  style="min-height: 400px">
 								<div class="card-header">
 									<h6>Personal Information <i class="fas fa-id-card"></i>
-<!--										<span class="float-right btn btn-success btn-sm ml-2 save-btn"><i class="far fa-check-circle"></i> Save</span>-->
-<!--										<span class="float-right btn btn-info btn-sm edit-btn"><i class="far fa-edit"></i> Edit</span></h6>-->
+										<!-- <span class="float-right btn btn-success btn-sm ml-2 save-btn"><i class="far fa-check-circle"></i> Save</span> -->
+										<!-- <span class="float-right btn btn-info btn-sm edit-btn"><i class="far fa-edit"></i> Edit</span> -->
+									</h6>
 								</div>
 								<div class="card-body">
 									<div class="row">
@@ -198,7 +200,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				let fileExtension = fileName.substr(fileName.lastIndexOf('.')+1);
 
 				if (!valid_ext.includes(fileExtension)) {
-					toastr.error("File type "+fileExtension+" is not supported");
+					const translationData = fetchAllText(); // Fetch the translation data
+
+					translationData.then((arrData) => {
+						const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+						// Find the translations for the dialog text
+						let html1 = 'File type';
+						let html2 = 'is not supported';
+
+						for (let i = 0; i < arrData.length; i++) {
+							if (arrData[i].english_text === html1) {
+								html1 = arrData[i][selectedLanguage + '_text'];
+							}
+							if (arrData[i].english_text === html2) {
+								html2 = arrData[i][selectedLanguage + '_text'];
+							}
+							
+						}
+						toastr.error(html1+" "+fileExtension+" "+html2);
+					});
 					return false;
 				}
 
@@ -221,16 +242,64 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				// 	toastr['warning']('Royal College of Physicians Number Required!')
 				// 	return false;
 				// }
+				const translationData = fetchAllText(); // Fetch the translation data
 
+				translationData.then((arrData) => {
+					const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+					// Find the translations for the dialog text
+					let dialogTitle = 'Are you sure?';
+					let html1 = 'You are about to update your profile data';
+					let html2 = "(Some data are automatically synced from COS everytime you login)";
+					let confirmButtonText = 'Yes, save!';
+					let cancelButtonText = 'Cancel';
+
+					// Swal
+					let successText = 'Success';
+					let successMsg = 'Profile Information Updated';
+
+					// Toast
+					let errorText = "Something went wrong";
+
+					for (let i = 0; i < arrData.length; i++) {
+						if (arrData[i].english_text === dialogTitle) {
+							dialogTitle = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === html1) {
+							html1 = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === html2) {
+							html2 = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === confirmButtonText) {
+							confirmButtonText = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === cancelButtonText) {
+							cancelButtonText = arrData[i][selectedLanguage + '_text'];
+						}
+
+						if (arrData[i].english_text === successText) {
+							successText = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === successMsg) {
+							successMsg = arrData[i][selectedLanguage + '_text'];
+						}
+
+						if (arrData[i].english_text === errorText) {
+							errorText = arrData[i][selectedLanguage + '_text'];
+						}
+						
+					}
 					Swal.fire({
 						title: 'Are you sure?',
-						html: "You are about to update your profile data <br><br>" +
-								"<small>(Some data are automatically synced from COS everytime you login)</small>",
+						html: html1+" <br><br>" +
+								"<small>"+html2+"</small>",
 						icon: 'question',
 						showCancelButton: true,
 						confirmButtonColor: '#3085d6',
 						cancelButtonColor: '#d33',
-						confirmButtonText: 'Yes, save!'
+						confirmButtonText: confirmButtonText,
+                    	cancelButtonText: cancelButtonText
 					}).then((result) => {
 						if (result.isConfirmed) {
 							$.ajax({
@@ -250,18 +319,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									if (data.status == 'success')
 									{
 										Swal.fire(
-											'Success',
-											'Profile Information Updated',
+											successText,
+											successMsg,
 											'success'
 										)
 									}else{
-										toastr['error']('Something went wrong')
+										toastr['error'](errorText)
 									}
 								}
 							})
 						}
 					})
-				})
+				});
+
+			})
 
 			$('.edit-btn').click();
 		})

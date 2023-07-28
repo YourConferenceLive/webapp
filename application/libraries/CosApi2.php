@@ -31,7 +31,7 @@ class CosApi
 		$this->api_password = $api_config['api_password'];
 		$this->api_loc = "api/";
 
-		$this->token = $this->getToken(); // this always return null
+		$this->token = $this->getToken();
 	}
 
 
@@ -62,9 +62,7 @@ class CosApi
 		$response = (array) $response['AdditionalAttributes'];
 		$response = (array) $response['$values'];
 
-//		echo "<pre>";
-//		print_r($response);
-//		exit("</pre>");
+
 
 		foreach ($response as $attr)
 		{
@@ -105,6 +103,10 @@ class CosApi
 			"password" => $this->api_password
 		);
 
+		// echo "<pre>";
+		// print_r($params);
+		// exit("</pre>");
+
 		$curl = curl_init();
 		$fields_string = http_build_query($params);
 		curl_setopt($curl, CURLOPT_URL, $this->api_url.'/token');
@@ -113,6 +115,10 @@ class CosApi
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_string);
 		$response = curl_exec($curl);
 		curl_close($curl);
+		
+		echo "<pre>";
+		var_dump(CURLOPT_POSTFIELDS);
+		exit("</pre>");
 
 		return json_decode($response);
 	}
@@ -135,9 +141,8 @@ class CosApi
 	private function secureGet($url)
 	{
 		$authorization = "Authorization: Bearer ".$this->token->access_token;
-		
 		$headers = array('Accept: application/json' , $authorization );
-		
+
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

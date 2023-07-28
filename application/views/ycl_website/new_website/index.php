@@ -63,7 +63,7 @@
 								  <li><a href="<?=base_url()?>abstracts">Abstract Management</a></li>
                           </ul>
                         </li>
-                        <li><a href="<?=ycl_base_url?>contacts">Contact</a>
+                        <li><a href="<?=ycl_base_url?>ycl_home/contacts">Contact</a>
 							
                         </li>
                       </ul>
@@ -81,7 +81,7 @@
                 <div class="container">
                   <h1 data-caption-animate="fadeInUpSmall text-white"> <span>Webinars that Impress</span></h1>
                   <h3 data-caption-animate="fadeInUpSmall text-white" data-caption-delay="200">Webinars - Virtual Conferences - Hybrid Meetings</h3>
-                  <div class="group-lg group-middle"><a class="button button-primary" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="#section-see-features" data-custom-scroll-to="section-see-features">See Features</a><a class="button button-black" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="<?=ycl_base_url?>contacts">Contact Us</a></div>
+                  <div class="group-lg group-middle"><a class="button button-primary" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="#section-see-features" data-custom-scroll-to="section-see-features">See Features</a><a class="button button-black" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="<?=ycl_base_url?>ycl_home/contacts">Contact Us</a></div>
                 </div>
               </div>
             </div>
@@ -99,7 +99,7 @@
                         <div class="container">
                           <h2 data-caption-animate="fadeInUpSmall">Built for the future &amp; ready today!</h2>
                           <h5 class="text-width-2 block-centered" data-caption-animate="fadeInUpSmall" data-caption-delay="200">Your Conference Live brings people together for scientific sharing for all kinds of events. We've got a pack of tools for that.</h5>
-                          <div class="group-lg group-middle"><a class="button button-black" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="#section-see-features" data-custom-scroll-to="section-see-features">See Features</a><a class="button button-primary" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="<?=ycl_base_url?>contacts">Contact Us</a></div>
+                          <div class="group-lg group-middle"><a class="button button-black" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="#section-see-features" data-custom-scroll-to="section-see-features">See Features</a><a class="button button-primary" data-caption-animate="fadeInUpSmall" data-caption-delay="350" href="<?=ycl_base_url?>ycl_home/contacts">Contact Us</a></div>
                         </div>
                       </div>
                     </div>
@@ -234,7 +234,7 @@
                 <div class="parallax-content">
                   <div class="container section-xxl">
                     <h2>Picture Your Next Event</h2>
-                    <p>Do you want to see a polished, professional experience for every participant?</p><a class="button button-primary" href="<?=ycl_base_url?>contacts">Call Us</a>
+                    <p>Do you want to see a polished, professional experience for every participant?</p><a class="button button-primary" href="<?=ycl_base_url?>ycl_home/contacts">Call Us</a>
                   </div>
                 </div>
               </div>
@@ -430,7 +430,7 @@
       <section class="section-xl bg-white text-center novi-background bg-cover">
         <div class="container">
           <h5>Don't wait to get started! Tell us about your next meeting.<br> </h5>
-   <a class="button button-gray-light-outline" data-caption-animate="fadeInLeftSmall" data-caption-delay="200" href="<?=ycl_base_url?>contacts">Contact Us</a>
+   <a class="button button-gray-light-outline" data-caption-animate="fadeInLeftSmall" data-caption-delay="200" href="<?=ycl_base_url?>ycl_home/contacts">Contact Us</a>
         </div>
       </section>
 

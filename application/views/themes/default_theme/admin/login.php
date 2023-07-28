@@ -38,6 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 
 	$(function () {
+		console.log(123);
 
 		$('#login-btn').on('click', function () {
 

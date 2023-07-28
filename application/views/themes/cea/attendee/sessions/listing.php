@@ -35,7 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<?php if ($current_date == (date('Y-m-d', strtotime($session_day->start_date_time)))):?>
 								<div class="card-body p-0 pt-4 text-dark text-center rounded" style="height: 130px; background-color: #F78E1E">
 									<?php else:?>
-									<div class="card-body p-0 pt-4 text-center bg-light" style="height: 130px;color:#212529;">
+									<div class="card-body shadow p-0 pt-4 text-center bg-light rounded" style="height: 130px;color:#212529;">
 										<?php endif;?>
 										<h3><?= date('l', strtotime($session_day->start_date_time))?><br> <?= date('F d Y', strtotime($session_day->start_date_time)) ?></h3>
 									</div>
@@ -170,7 +170,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<span class="badge badge-pill badge-primary pull-right"><?php /*echo $session->session_track;*/?></span>
 									</div>-->
 									<div class="clearfix"></div>
-									<h3 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="p-0 mt-1" style="color:#F78E1E; font-weight:800"><?=$session->name?></a></h3>
+									<h3 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="p-0 mt-1" style="color:  <?= (isset($view_settings) && !empty($view_settings[0]->stickyIcon_color)? $view_settings[0]->stickyIcon_color:'') ?>; font-weight:800"><?=$session->name?></a></h3>
 									<h3 class="p-0 m-0 mt-1 mb-1"><a href="<?php echo (($session->session_track != 'Exhibit Hall' && $session->video_url == '') ? $this->project_url.'/sessions/join/'.$session->id : (($session->video_url != '') ? $this->project_url.'/sessions/view/'.$session->id : 'javascript:;' ) );?>" class="" style="color:#212529;"><?=$session->other_language_name?></a></h3>
 									<?php endif;?>
 									<p>
@@ -197,7 +197,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<!--<span><strong>Speakers:</strong></span>-->
 	<?php
 											foreach ($session->presenters as $index=>$presenter):
-												echo trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials)) ?' '.trim($presenter->credentials):'');
+												// echo trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials)) ?' '.trim($presenter->credentials):''); // comeback
 												echo '<br>';
 											endforeach;?><br>
 										<?php endif; ?>
@@ -222,7 +222,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<a href="<?=$this->project_url?>/sessions/view/<?=$session->id?>" class="btn btn-sm btn-warning m-1 rounded-0"><i class="fas fa-search"></i> View Recording</a>
 	<?php
 										else:?>
-											<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn m-1 rounded-0 " style="background-color: #F78E1E"><!--<i class="fas fa-plus"></i>--> Attend</a>
+											<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn m-1 rounded-0 " style="color:  <?= (isset($view_settings) && !empty($view_settings[0]->stickyIcon_color)? $view_settings[0]->stickyIcon_color:'') ?>; background-color: #F78E1E"><!--<i class="fas fa-plus"></i>--> Attend</a>
 	<?php
 										endif;
 									endif;?>
@@ -266,37 +266,65 @@ $(function(){
 
 	$('.briefcase-btn').on('click', function() {
 
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Adding to your briefcase...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
+		const translationData = fetchAllText(); // Fetch the translation data
 
-		var buttonElement = $(this);
+        translationData.then((arrData) => {
+            const selectedLanguage = $('#languageSelect').val(); // Get the selected language
 
-		$.ajax({type: "POST",
-				url: project_url+"/briefcase/add",
-				data: {'session_id' : $(this).data('session-id')},
-				error: function(jqXHR, textStatus, errorMessage)
-				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(response){
-					$(buttonElement).addClass('disabled not-allowed').removeClass('briefcase-btn').html('<i class="fas fa-calendar-check"></i> Added in Briefcase');
-					Swal.close();
-					toastr.success('Added successfully.');
-				}
-		});
+            // Find the translations for the dialog text
+            let dialogTitle = 'Please Wait';
+            let dialogText = 'Adding to your briefcase...';
+			let imageAltText = 'Loading...';
+
+			// Toast
+			let addedText = "Added successfully.";
+
+            for (let i = 0; i < arrData.length; i++) {
+                if (arrData[i].english_text === dialogTitle) {
+                    dialogTitle = arrData[i][selectedLanguage + '_text'];
+                }
+                if (arrData[i].english_text === dialogText) {
+                    dialogText = arrData[i][selectedLanguage + '_text'];
+                }
+				if (arrData[i].english_text === imageAltText) {
+                    imageAltText = arrData[i][selectedLanguage + '_text'];
+                }
+
+				if (arrData[i].english_text === addedText) {
+                    addedText = arrData[i][selectedLanguage + '_text'];
+                }
+            }
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+	
+			var buttonElement = $(this);
+	
+			$.ajax({type: "POST",
+					url: project_url+"/briefcase/add",
+					data: {'session_id' : $(this).data('session-id')},
+					error: function(jqXHR, textStatus, errorMessage)
+					{
+						Swal.close();
+						toastr.error(errorMessage);
+						//console.log(errorMessage); // Optional
+					},
+					success: function(response){
+						$(buttonElement).addClass('disabled not-allowed').removeClass('briefcase-btn').html('<i class="fas fa-calendar-check"></i> Added in Briefcase');
+						Swal.close();
+						toastr.success(addedText);
+					}
+			});
+        });
+
 	});
-
-
 
 	$("#frm-search").submit(function( event ) {
 		event.preventDefault();
@@ -316,16 +344,40 @@ $(function(){
 	});
 
     function applySearch() {
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Loading Sessions...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
+
+		const translationData = fetchAllText(); // Fetch the translation data
+
+        translationData.then((arrData) => {
+            const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+            // Find the translations for the dialog text
+            let dialogTitle = 'Please Wait';
+            let dialogText = 'Loading Sessions...';
+			let imageAltText = 'Loading...';
+
+            for (let i = 0; i < arrData.length; i++) {
+                if (arrData[i].english_text === dialogTitle) {
+                    dialogTitle = arrData[i][selectedLanguage + '_text'];
+                }
+                if (arrData[i].english_text === dialogText) {
+                    dialogText = arrData[i][selectedLanguage + '_text'];
+                }
+				if (arrData[i].english_text === imageAltText) {
+					imageAltText = arrData[i][selectedLanguage + '_text'];
+				}
+                
+            }
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+        });
 
 		var date 	= (($('#frm-search select[name="date"]').children("option:selected").val()) ? $('#frm-search select[name="date"]').children("option:selected").val() : 'NaN');
 		var track 	= (($('#frm-search select[name="track"]').children("option:selected").val()) ? $('#frm-search select[name="track"]').children("option:selected").val() : 'NaN');

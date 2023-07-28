@@ -87,5 +87,17 @@ class Push_Notification_Model extends CI_Model
 			return array('status' => 'error');
 	}
 
+	function deleteNotification($pid)
+	{
+		$this->db->where('id', $pid);
+		$this->db->delete('push_notification');
+
+		if ($this->db->affected_rows() > 0) {
+			return array('status'=>'success', 'msg'=>'Notification deleted.');
+		} else {
+			return array('status' => 'error');
+		}
+	}
+
 }
 
