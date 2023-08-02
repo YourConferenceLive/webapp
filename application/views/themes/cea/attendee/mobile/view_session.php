@@ -2,6 +2,7 @@
 <!---->
 <!--<!-- Please add styles only in this CSS file, NOT directly on this HTML file -->-->
 <!--<link href="--><?//= base_url() ?><!--front_assets/css/view_sessions.css?v=19" rel="stylesheet">-->
+<?php // print_R($session);exit;?>
 <section class="parallax" style="background-color: #FFFFFF; overflow: scroll" >
     <!--<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/Sessions_BG_screened.jpg); top: 0; padding-top: 0px;">-->
     <div class="container-fluid">
@@ -19,11 +20,11 @@
                                             <h4  style="color:#EF5D21"><b><?=$this->project->name?> Learner Resource App</b></h4>
                                             <div style="height: 1px;background-color: #EF5D21;" class="my-3"></div>
 
-                                            <?php if(isset($sess_data) && !empty($sess_data)): ?>
-<!--													--><?php //echo "<pre>"; print_r($sess_data);  exit?>
-                                                <b><p class="mx-3" id="sessionTitle" style="font-size: 25px; line-height: 1.2"><?=$sess_data->name?></b>
-                                                <?php if(isset ($sess_data->presenters) && !empty($sess_data->presenters)): ?>
-                                                    <?php foreach ($sess_data->presenters as $presenter):?>
+                                            <?php if(isset($session) && !empty($session)): ?>
+<!--													--><?php //echo "<pre>"; print_r($session);  exit?>
+                                                <b><p class="mx-3" id="sessionTitle" style="font-size: 25px; line-height: 1.2"><?=$session->name?></b>
+                                                <?php if(isset ($session->presenters) && !empty($session->presenters)): ?>
+                                                    <?php foreach ($session->presenters as $presenter):?>
                                                         <div id="moderators" style="font-size: 18px;">
                                                             <?=$presenter->name.' '.$presenter->surname.', '.$presenter->credentials?>
                                                         </div>
@@ -40,17 +41,17 @@
                         <div class="row justify-content-center mb-3">
                             <div class="col-12" style=" margin-left: 20px; margin-right: 20px;">
                                 <div class="card text-center align-items-center justify-content-center align-content-center mx-auto mt-2" style="background-image: url(https://yourconference.live/CCO/front_assets/images/bg_login.png); top: 0; padding-top: 0px; height: 100%; background-size: cover">
-                                    <?php if($sess_data->header_question == 1):?>
+                                    <?php if($session->header_question == 1):?>
                                     <button id="resource-btn" type="button"  class="btn btn-sm text-white" style="width: 95%; height: 70px; margin-top: 30px; background-color: #EF5D21; font-size: 20px; font-weight: 700">Resources <i class="fas fa-paperclip"></i></button>
                                     <?php endif; ?>
 <!--                                    <button id="notes-btn" class="btn btn-sm mt-2 text-white" style="width: 80%; height: 30px; background-color: #EF5D21;">Take Notes <i class="far fa-edit"></i></button>-->
-                                    <?php if($sess_data->right_sticky_question == 1):?>
+                                    <?php if($session->right_sticky_question == 1):?>
                                         <button id="question-btn" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px; background-color: #EF5D21;font-size: 20px; font-weight: 700">Ask a Question <i class="fas fa-question"></i></button>
                                     <?php endif; ?>
-                                    <?php if ($sess_data->claim_credit_link && $sess_data->claim_credit_link!=='') {
-                                    if ($sess_data->claim_credit_url !== '') {
+                                    <?php if ($session->claim_credit_link && $session->claim_credit_link!=='') {
+                                    if ($session->claim_credit_url !== '') {
                                     ?>
-                                    <button onclick="window.open('<?=isset($sess_data->claim_credit_url)?$sess_data->claim_credit_url:''?>', '_blank')" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px; background-color: #EF5D21;font-size: 20px; font-weight: 700" ><?=($sess_data->claim_credit_link !== '')?$sess_data->claim_credit_link:''?></button>
+                                    <button onclick="window.open('<?=isset($session->claim_credit_url)?$session->claim_credit_url:''?>', '_blank')" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px; background-color: #EF5D21;font-size: 20px; font-weight: 700" ><?=($session->claim_credit_link !== '')?$session->claim_credit_link:''?></button>
                                     <?php }} ?>
 
                                     <?php if(isset($isSessionWithPoll) && !empty($isSessionWithPoll)) : ?>
@@ -131,6 +132,18 @@
         <!-- END: SECTION -->
 
 
+<script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/sessions.js"></script>
+<script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/attendee_to_admin_chat.js"></script>
+<script>
+    let projectId = "<?=$this->project->id?>";
+    let sessionId = "<?=$session->id?>"
+    let session_id = "<?=$session->id?>"
+	var note_page = 1;
+   	let attendee_Fname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'] ?>";
+	let attendee_Lname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
+	let attendee_FullName = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'].' '.$_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
+	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
+</script>
 <script>
 $(function(){
 	$('#question-btn').on('click', function(){
@@ -172,7 +185,7 @@ $(function(){
 			$('#questionText').prop('disabled', true);
 
 			let question = $(this).val();
-			let sessionId = "<?=$session_id?>";
+			let sessionId = "<?=$session->id?>";
 
 			if(question == '') {
 				toastr.warning('Please enter your question');
@@ -214,5 +227,127 @@ $(function(){
 	});
 
 })
+
+$(function(){
+		$(document).on("click", "#questions_clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_happy", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#questions_thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#clapping", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#sad", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#happy", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#laughing", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_up", function () {
+			var value = $(this).attr("data-title_name");
+			var send_message = $("#questionText").val();
+			if (send_message != "") {
+				$("#questionText").val(send_message + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+
+		$(document).on("click", "#thumbs_down", function () {
+			var value = $(this).attr("data-title_name");
+			var questions = $("#questionText").val();
+			if (questions != "") {
+				$("#questionText").val(questions + ' ' + value);
+			} else {
+				$("#questionText").val(value);
+			}
+		});
+	})
 </script>
 
