@@ -187,6 +187,10 @@ $(function(){
 		$('#pollGuideModal').modal('show');
 	})
 
+	$('#askQuestionBtn').on('click', function(){
+		$('#questionText').trigger($.Event('keyup', { which: 13, key: 'Enter' }));
+	})
+
 
 	$('#questionText').on('keyup', function (e) {
 		if (e.key === 'Enter' || e.keyCode === 13) {
