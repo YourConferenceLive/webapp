@@ -1,5 +1,5 @@
 <style>
-    .admin-messages{
+    .chat_with_admin_body{
         padding: 5px 3px;
         max-height: 400px;
         min-height: 310px;
@@ -42,7 +42,7 @@
     .poll-modal-close{
         padding-top: 0 !important;
     }
-    .admin-messages{
+    .chat_with_admin_body{
         max-height: 275px;
     }
 </style>
@@ -58,18 +58,18 @@
 						<div style="padding:5px;">
 							<div style="text-align: center; display: flex; " id="questions_section">
 								<div class="col-md-12 input-group">
-									<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
+									<span class="input-group-addon" style="padding: 5px 6px"><img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/happy.png" id="questions_emjis_section_show" title="Check to Show Emoji" data-questions_emjis_section_show_status="0" style="width: 20px; height: 20px;" alt=""/></span>
 									<input type="text" id="questionText" class="form-control" placeholder="Press enter to send..." value="">
 								</div>
 								<a id="askQuestionBtn" class="button color btn" style="margin: 0px; padding: 15px 7px;" id="ask_questions_send"><span>Send</span></a>
 							</div>
 							<div style="text-align: left; padding-left: 10px; display: flex;" id="questions_emojis_section">
-								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/sad.png" title="Sad" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/laughing.png" title="Laughing" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/thumbs_up.png" title="Thumbs Up" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/thumbs_down.png" title="Thumbs Down" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
-								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/images/emoji/clapping.png" title="Clapping" id="questions_clapping" data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/happy.png" title="Happy" id="questions_happy" data-title_name="&#128578;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/sad.png" title="Sad" id="questions_sad" data-title_name="&#128543" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/laughing.png" title="Laughing" id="questions_laughing" data-title_name="😁" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/thumbs_up.png" title="Thumbs Up" id="questions_thumbs_up" data-title_name="&#128077;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/thumbs_down.png" title="Thumbs Down" id="questions_thumbs_down" data-title_name="&#128078" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
+								<img src="<?= ycl_root ?>/theme_assets/<?=$this->project->theme?>/assets/images/emoji/clapping.png" title="Clapping" id="questions_clapping" data-title_name="&#128079;" style="width: 40px; height: 40px; padding: 5px;" alt=""/>
 							</div>
 							<span id='error_questions' style='color:red;'></span>
 							<span id='success_questions' style='color:green;'></span>
@@ -106,17 +106,17 @@
     </div>
 </div>
 
-<div class="row adminChatStickybox" style="display: none">
+<div class="row adminChatStickyIcon" id="adminChatStickyIcon" style="display: none">
     <div class="col d-flex" >
         <div  class="fixed-bottom " >
             <div class="card " style="height: 400px; width: 100%; left:0%; ">
                 <div class="card-header text-white" style="background-color: #EF5D21; font-size: 22px">Chat with Admin <button id="adminChatStickyboxHide" class="btn fa fa-minus float-right text-white shadow-none"></button></div>
                 <div class="content">
-                    <div class="admin-messages">
+                    <div class="chat_with_admin_body">
                     </div>
 
                     <div class="input-group">
-                        <input type="text" class="form-control shadow-none" placeholder="Enter message" id='sendAdminChat'>
+                        <input type="text" class="form-control shadow-none" placeholder="Enter message" id='chat_with_admin_text'>
                         <button class="btn text-white" id="sendAdminChatBtn" style="background-color: #EF5D21">Send <i class="fas fa-paper-plane-o"></i></button>
                     </div>
 
@@ -206,6 +206,10 @@
 
         $('#resourcesStickyboxHide').on('click', function(){
             $('.resourcesStickybox').css('display', 'none');
+        })
+
+        $('#chatWithAdminHide').on('click', function(){
+            $('.adminChatStickyIcon').css('display', 'none');
         })
 
     })
