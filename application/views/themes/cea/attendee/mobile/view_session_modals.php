@@ -208,7 +208,7 @@
             $('.resourcesStickybox').css('display', 'none');
         })
 
-        $('#chatWithAdminHide').on('click', function(){
+        $('#adminChatStickyboxHide').on('click', function(){
             $('.adminChatStickyIcon').css('display', 'none');
         })
 
