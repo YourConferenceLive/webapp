@@ -661,3 +661,32 @@ ALTER TABLE `session_polls` ADD `is_result_showed` TINYINT(1) NOT NULL DEFAULT '
 
 ALTER TABLE `session_polls` ADD `is_poll_closed` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_result_showed`;
 ALTER TABLE `session_polls` ADD `is_result_closed` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_result_showed`;
+
+
+-- Carlos
+-- User language Settings
+-- 31st July, 2023
+DROP TABLE IF EXISTS `user_language_settings`;
+CREATE TABLE `user_language_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `language` varchar(50) NOT NULL,
+  `added_datetime` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userid` (`userid`),
+  CONSTRAINT `user_language_settings_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Carlos
+-- English to Spanish table
+-- 31st July, 2023
+-- Adminer 4.8.1 MySQL 5.6.21 dump
+
+DROP TABLE IF EXISTS `english_spanish_lang`;
+CREATE TABLE `english_spanish_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `english_text` longtext NOT NULL,
+  `spanish_text` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
