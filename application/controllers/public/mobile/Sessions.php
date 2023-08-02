@@ -79,7 +79,9 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/mobile/templates/menu-bar")
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/mobile/view_session", $data)
-			->view("{$this->themes_dir}/{$this->project->theme}/attendee/mobile/view_session_modals", $data);
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/mobile/view_session_modals", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/mobile/poll_modal", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/mobile/poll_result_modal", $data);
 //			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer");
 //		print_r('');
 
