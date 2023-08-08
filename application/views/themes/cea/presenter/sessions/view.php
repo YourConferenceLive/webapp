@@ -1049,6 +1049,12 @@ if (isset($settings) && !empty($settings->poll_music)) {
 		});
 	});
 
+	socket.on('end-attendee-to-admin-chat-notification', function(){
+		$('#attendeeChatModal').modal('hide')
+	})
+
+	//todo: check if affected from other applications using socket.
+
 	/** Live users per session **/
 	socket.emit(`ycl_session_active_users`, `${projectId}_${session_id}`);
 	socket.on(`ycl_session_active_users_count`, function (total_users) {
