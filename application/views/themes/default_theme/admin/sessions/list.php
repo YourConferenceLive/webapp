@@ -297,6 +297,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 	function listSessions()
 	{
+		(async () => {
+			await initializeLanguageSettings();
+		})();
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading sessions data...',

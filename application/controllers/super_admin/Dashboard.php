@@ -6,7 +6,14 @@ class Dashboard extends CI_Controller
 
 	public function index()
 	{
-		echo 1;
+		echo "Dashboard super</br>";
+		echo ycl_base_url."Dashboard super</br>";
+		echo rtrim(ycl_base_url, 'a/');
+	}
+
+	public function test()
+	{
+		echo "test";
 	}
 
 }

@@ -90,3 +90,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   
 </script>
 
+
+<script src="<?= ycl_base_url ?>/ycl_assets/js/translater.js"></script>
+
+<script>
+
+	/* use in translation.js */
+    const baseUrl = project_url + "/";
+
+	if ($('#languageSelect').is('*')) {
+		/* alternative to counter the bug for loading */
+		initializeLanguage();
+	} 
+    $(document).ready(function() {
+
+		/* check if languageSelect exist ** required for translation */
+        if ($('#languageSelect').length) {
+			initializeLanguageSettings();
+		} 
+
+        /* Reinitialize the language when sorting table */
+        $('table.dataTable thead th').on('click', function() {
+            initializeLanguageSettings();
+        });
+
+        /* Onchange event for switching language */
+        const languageSelect = document.getElementById("languageSelect");
+        $(languageSelect).on("change", function() {
+            Swal.fire({
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                    Swal.getContainer().style.pointerEvents = 'none'; /* Disable user input */
+                }
+            });
+
+            let language = languageSelect.value;
+            (async () => {
+                console.log("Initializing : " + language);
+                await updateUserLanguage(language);
+                await updatePageLanguage(language);
+                await closeSwal();
+            })();
+        });
+    });
+
+</script>
+

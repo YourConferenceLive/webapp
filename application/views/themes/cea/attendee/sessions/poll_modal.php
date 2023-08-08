@@ -68,7 +68,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					if (data.status == 'success')
 					{
 						$('#voteBtn').html('<i class="fas fa-check"></i> Voted')
-						toastr.success('Vote recorded');
+						getTranslatedSelectAccess('Vote recorded').then((msg) => {
+							toastr.success(msg);
+						});
 						setTimeout(function() {
 							$('#pollModal').modal('hide');
 						}, 1000);
@@ -77,7 +79,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						setTimeout(function() {
 							$('#pollModal').modal('hide');
 						}, 1000);
-						toastr.error('something went wrong')
+						getTranslatedSelectAccess('something went wrong').then((msg) => {
+							toastr.error(msg);
+						});
 					}
 				}
 			});

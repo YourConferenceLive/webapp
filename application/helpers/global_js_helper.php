@@ -20,8 +20,8 @@ if(!function_exists('global_js'))
 		let project_presenter_url = '{$CI->project_url}/presenter';
 		let ycl_root = '".ycl_root."';
 
-		let access_color_codes = {'admin':'#e60b2a', 'presenter':'#228893', 'moderator':'#b37f04', 'attendee':'#007bff', 'exhibitor':'#9409d2'};
-		let access_icons = {'admin':'fas fa-user-shield', 'presenter':'fas fa-id-card', 'moderator':'fas fa-user-tie', 'attendee':'fas fa-user', 'exhibitor':'fas fa-child'};";
+		let access_color_codes = {'admin':'#e60b2a', 'presenter':'#228893', 'moderator':'#b37f04', 'attendee':'#007bff', 'exhibitor':'#9409d2', 'guest':'#27E1C1'};
+		let access_icons = {'admin':'fas fa-user-shield', 'presenter':'fas fa-id-card', 'moderator':'fas fa-user-tie', 'attendee':'fas fa-user', 'exhibitor':'fas fa-child', 'guest':'fas fa-question-circle'};";
 
 
 		/**

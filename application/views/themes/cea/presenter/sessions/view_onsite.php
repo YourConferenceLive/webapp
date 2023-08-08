@@ -101,184 +101,226 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	?>
 	let session_start_datetime = "<?= date('M j, Y H:i:s', strtotime($session->start_date_time)).' '.(($timezone != '') ? $timezone : $gmtOffset ) ?>";
 	let session_end_datetime = "<?= date('M j, Y H:i:s', strtotime($session->end_date_time)).' '.(($timezone != '') ? $timezone : $gmtOffset ) ?>";
-$(function(){
-	fillQuestions();
-	fillSavedQuestions();
-		socket.on('ycl_session_question', function (data) {
-			if (data.sessionId == session_id)
-			{
-				console.log(data.question_id);
-				fillQuestions();
-		
-			}
-		});
-		
-		$('#questions-tab-content').on('click','.questionList', function(e){
-			e.preventDefault();
 
-			let sender_id = $(this).attr('sender_id');
-			let sender_name = $(this).attr('sender_name');
-			let sender_surname = $(this).attr('sender_surname');
-			let question_selected = $(this).attr('question');
-			let question_id = $(this).attr('question-id');
+	$(function(){
+		fillQuestions();
+		fillSavedQuestions();
+			socket.on('ycl_session_question', function (data) {
+				if (data.sessionId == session_id)
+				{
+					console.log(data.question_id);
+					fillQuestions();
+			
+				}
+			});
+			
+			$('#questions-tab-content').on('click','.questionList', function(e){
+				e.preventDefault();
 
-			questionListClick(sender_id,sender_name,sender_surname,question_selected, question_id)
-		})
+				let sender_id = $(this).attr('sender_id');
+				let sender_name = $(this).attr('sender_name');
+				let sender_surname = $(this).attr('sender_surname');
+				let question_selected = $(this).attr('question');
+				let question_id = $(this).attr('question-id');
+
+				questionListClick(sender_id,sender_name,sender_surname,question_selected, question_id)
+			})
 
 			$('#starred-questions-tab-content').on('click','.questionList', function(e){
-			e.preventDefault();
+				e.preventDefault();
 
-			let sender_id = $(this).attr('sender_id');
-			let sender_name = $(this).attr('sender_name');
-			let sender_surname = $(this).attr('sender_surname');
-			let question_selected = $(this).attr('question');
+				let sender_id = $(this).attr('sender_id');
+				let sender_name = $(this).attr('sender_name');
+				let sender_surname = $(this).attr('sender_surname');
+				let question_selected = $(this).attr('question');
 
-			questionListClick(sender_id,sender_name,sender_surname,question_selected)
-		})
+				questionListClick(sender_id,sender_name,sender_surname,question_selected)
+			})
 
 			$('#chatToAttendeeText').on('input', function(){
-			let question_id = $(this).attr('question-id');
-			socket.emit('typing-attendee-admin-chat',{
-				'userType': 'presenter',
-				'user_id': user_id,
-				'project_id': project_id,
-				'question_id': question_id,
+				let question_id = $(this).attr('question-id');
+				socket.emit('typing-attendee-admin-chat',{
+					'userType': 'presenter',
+					'user_id': user_id,
+					'project_id': project_id,
+					'question_id': question_id,
+				})
 			})
-		})
 
 			socket.on('typing-attendee-admin-chat-notification', function(data){
-			// console.log($('#attendeeChatModal').attr('question-id'));
-			if(data.user_id !== user_id && data.project_id === project_id){
-				// console.log(data.question_id);
-				if(data.question_id == $('#attendeeChatModal').attr('question-id')){
-					let timeout = 1000;
-					$('.typing-icon').css('display', 'block')
-					setTimeout(function () {
-						$('.typing-icon').css('display', 'none')
-					}, timeout);
-				}
-
-			}
-		})
-
-		$('#sendMessagetoAttendee').on('click', function(){
-			let chat = $('#chatToAttendeeText').val();
-			let sender_id = $(this).attr('sender_id');
-			let question_id = $(this).attr('question_id')
-			if(chat == ''){
-				toastr.info('Cannot send empty message');
-				return false;
-			}
-			let url = project_presenter_url+"/sessions/save_presenter_attendee_chat";
-
-			$.get(project_presenter_url+"/sessions/markQuestionReplied/"+question_id,function( data ) {
-            	});
-
-			$.post(url,
-				{
-					'chat': chat,
-					'sender_id': sender_id,
-					'session_id': session_id
-				}, function(response){
-					// console.log(response);
-					if(response.status == 'success') {
-
-						socket.emit('new-attendee-to-admin-chat', {"session_id":session_id, "sent_from":"admin", "sender_id": sender_id, "chat_text":chat, "from_id": user_id, 'presenter_name': user_name });
-						socket.emit('update-admin-attendee-chat');
-
-						$('#attendeeChatModalBody').append('<span class="admin-to-attendee-chat btn btn-warning float-right mr-2 my-1" style="width:90%"><span style="float: right; text-right margin-left:5px"><strong>' + user_name + ': </strong>' + chat + '</span></span>')
-						$('#chatToAttendeeText').val('');
-
-
-						$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
-					}else{
-						toastr.error(response.status)
+				// console.log($('#attendeeChatModal').attr('question-id'));
+				if(data.user_id !== user_id && data.project_id === project_id){
+					// console.log(data.question_id);
+					if(data.question_id == $('#attendeeChatModal').attr('question-id')){
+						let timeout = 1000;
+						$('.typing-icon').css('display', 'block')
+						setTimeout(function () {
+							$('.typing-icon').css('display', 'none')
+						}, timeout);
 					}
-			}, 'json')
 
-			fillQuestions()
-		})
-
-		socket.on('update-admin-attendee-chat', function(){
-			fillQuestions()
-		})
-
-		socket.on('new-attendee-to-admin-chat-notification', function (data) {
-			// console.log(data);
-				if (data.sent_from == 'attendee')
-				{
-					admin_chat_presenter_ids=data.cp_ids;
-					if(data.cp_ids.includes(user_id)){
-						attendeeChatPopup(data.from_id, data.user_name);
-					}
 				}
-		});
-
-		$('#questions-tab-content').on('click', '.save-question', function(){
-		let that = this;
-		let question_id = $(this).attr('question-id');
-
-		$.post(project_presenter_url+'/sessions/saveQuestionAjax/',
-				{
-					'question_id':question_id
-				},function(response){
-				if(response){
-					console.log(response);
-					fillSavedQuestions();
-					socket.emit('presenter_like_questions', {
-						"type": "like",
-						"question": response,
-					});
-					$(that).html('<i style="color:yellow" class="fas fa-star"></>')
-				}
-					// console.log(response);
 			})
-		})
 
-		$('#questions-tab-content').on('click', '.hide-question', function(){
+			$('#sendMessagetoAttendee').on('click', function(){
+				let chat = $('#chatToAttendeeText').val();
+				let sender_id = $(this).attr('sender_id');
+				let question_id = $(this).attr('question_id')
+				if(chat == ''){
+					toastr.info('Cannot send empty message');
+					return false;
+				}
+				let url = project_presenter_url+"/sessions/save_presenter_attendee_chat";
+
+				$.get(project_presenter_url+"/sessions/markQuestionReplied/"+question_id,function( data ) {
+					});
+
+				$.post(url,
+					{
+						'chat': chat,
+						'sender_id': sender_id,
+						'session_id': session_id
+					}, function(response){
+						// console.log(response);
+						if(response.status == 'success') {
+
+							socket.emit('new-attendee-to-admin-chat', {"session_id":session_id, "sent_from":"admin", "sender_id": sender_id, "chat_text":chat, "from_id": user_id, 'presenter_name': user_name });
+							socket.emit('update-admin-attendee-chat');
+
+							$('#attendeeChatModalBody').append('<span class="admin-to-attendee-chat btn btn-warning float-right mr-2 my-1" style="width:90%"><span style="float: right; text-right margin-left:5px"><strong>' + user_name + ': </strong>' + chat + '</span></span>')
+							$('#chatToAttendeeText').val('');
+
+
+							$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
+						}else{
+							toastr.error(response.status)
+						}
+				}, 'json')
+
+				fillQuestions()
+			})
+
+			socket.on('update-admin-attendee-chat', function(){
+				fillQuestions()
+			})
+
+			socket.on('new-attendee-to-admin-chat-notification', function (data) {
+				// console.log(data);
+					if (data.sent_from == 'attendee')
+					{
+						admin_chat_presenter_ids=data.cp_ids;
+						if(data.cp_ids.includes(user_id)){
+							attendeeChatPopup(data.from_id, data.user_name);
+						}
+					}
+			});
+
+			$('#questions-tab-content').on('click', '.save-question', function(){
+			let that = this;
 			let question_id = $(this).attr('question-id');
 
-			$.post(project_presenter_url+'/sessions/hideQuestionAjax/',
-				{
-					'question_id':question_id
-				},function(response){
-					// console.log(response);
-				if(response){
-					fillQuestions();
-				}
+			$.post(project_presenter_url+'/sessions/saveQuestionAjax/',
+					{
+						'question_id':question_id
+					},function(response){
+					if(response){
+						console.log(response);
+						fillSavedQuestions();
+						socket.emit('presenter_like_questions', {
+							"type": "like",
+							"question": response,
+						});
+						$(that).html('<i style="color:yellow" class="fas fa-star"></>')
+					}
+						// console.log(response);
 				})
-		})
+			})
+
+			$('#questions-tab-content').on('click', '.hide-question', function(){
+				let question_id = $(this).attr('question-id');
+
+				$.post(project_presenter_url+'/sessions/hideQuestionAjax/',
+					{
+						'question_id':question_id
+					},function(response){
+						// console.log(response);
+					if(response){
+						fillQuestions();
+					}
+					})
+			})
 
 			$('#starred-questions-tab-content').on('click', '.hide-saved-question', function(){
-			let question_id = $(this).attr('question-id');
+				let question_id = $(this).attr('question-id');
 
-			Swal.fire({
-				title: 'Remove From Starred Question',
-				text: "This starred question will be removed on admin and presenter",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, Remove it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					$.post(project_presenter_url+'/sessions/hideSavedQuestionAjax/',
-						{
-							'question_id':question_id
-						},function(response){
-							if(response){
-								fillSavedQuestions();
-								$('#save-question-'+question_id).children().removeClass('fas fa-star').addClass('far fa-star')
-								toastr.success('Starred question removed successfully');
-							}else{
-								toastr.error('Something went wrong');
-							}
-						})
-				}
+				const translationData = fetchAllText(); // Fetch the translation data
+
+				translationData.then((arrData) => {
+					const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+					// Find the translations for the dialog text
+					let dialogTitle = 'Remove From Starred Question';
+					let dialogText = 'This starred question will be removed on admin and presenter';
+					let confirmButtonText = 'Yes, Remove it!';
+					let cancelButtonText = 'Cancel';
+
+					// Toast
+					let starredText = "Starred question removed successfully";
+					let wrongText = "Something went wrong";
+
+					for (let i = 0; i < arrData.length; i++) {
+						if (arrData[i].english_text === dialogTitle) {
+							dialogTitle = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === dialogText) {
+							dialogText = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === confirmButtonText) {
+							confirmButtonText = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === cancelButtonText) {
+							cancelButtonText = arrData[i][selectedLanguage + '_text'];
+						}
+
+						if (arrData[i].english_text === starredText) {
+							starredText = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === wrongText) {
+							wrongText = arrData[i][selectedLanguage + '_text'];
+						}
+						
+					}
+					Swal.fire({
+						title: dialogTitle,
+						text: dialogText,
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: confirmButtonText,
+						cancelButtonText: cancelButtonText
+					}).then((result) => {
+						if (result.isConfirmed) {
+							$.post(project_presenter_url+'/sessions/hideSavedQuestionAjax/',
+								{
+									'question_id':question_id
+								},function(response){
+									if(response){
+										fillSavedQuestions();
+										$('#save-question-'+question_id).children().removeClass('fas fa-star').addClass('far fa-star')
+										toastr.success(starredText);
+									}else{
+										toastr.error(wrongText);
+									}
+								})
+						}
+					})
+				});
+				
 			})
-		})
 
-})
+	})
+
 	function fillQuestions() {
 		$.get(project_presenter_url+"/sessions/getQuestionsAjax/"+session_id, function (questions) {
 			questions = JSON.parse(questions);
@@ -350,7 +392,7 @@ $(function(){
 		});
 	}
 
-		function attendeeChatPopup(attendee_id, attendee_name, attendee_question, question_id){
+	function attendeeChatPopup(attendee_id, attendee_name, attendee_question, question_id){
 
 		$('#attendeeChatModalLabel').html("Chat With: "+attendee_name);
 		$('#chattAttendeeQuestion').text(attendee_question);
@@ -385,7 +427,9 @@ $(function(){
 				}
 			}
 		).fail((error)=>{
-			toastr.error('Unable to load the chat.');
+			getTranslatedSelectAccess('Unable to load the chat.').then((msg) => {
+				toastr.error(msg);
+			});
 		});
 
 		$('#attendeeChatModal').modal('show');
@@ -440,21 +484,50 @@ $(function(){
 
 		let userId = $(this).attr('userId');
 
-		Swal.fire({
-			title: 'Are you sure?',
-			text: "Ending chat will disable attendee from sending you texts until you texts attendee.",
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, end it!'
-		}).then((result) => {
-			if (result.isConfirmed) {
-				socket.emit('end-attendee-to-admin-chat', {"session_id":session_id, "from_id":"admin", "to_id":userId});
+		const translationData = fetchAllText(); // Fetch the translation data
 
-				$('#attendeeChatModal').modal('hide');
-			}
-		})
+        translationData.then((arrData) => {
+            const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+            // Find the translations for the dialog text
+            let dialogTitle = 'Are you sure?';
+            let dialogText = 'Ending chat will disable attendee from sending you texts until you texts attendee.';
+			let confirmButtonText = 'Yes, end it!';
+			let cancelButtonText = 'Cancel';
+
+            for (let i = 0; i < arrData.length; i++) {
+                if (arrData[i].english_text === dialogTitle) {
+                    dialogTitle = arrData[i][selectedLanguage + '_text'];
+                }
+                if (arrData[i].english_text === dialogText) {
+                    dialogText = arrData[i][selectedLanguage + '_text'];
+                }
+				if (arrData[i].english_text === confirmButtonText) {
+					confirmButtonText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === cancelButtonText) {
+					cancelButtonText = arrData[i][selectedLanguage + '_text'];
+				}
+                
+            }
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: confirmButtonText,
+				cancelButtonText: cancelButtonText
+			}).then((result) => {
+				if (result.isConfirmed) {
+					socket.emit('end-attendee-to-admin-chat', {"session_id":session_id, "from_id":"admin", "to_id":userId});
+	
+					$('#attendeeChatModal').modal('hide');
+				}
+			})
+        });
+		
 	});
 
 

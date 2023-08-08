@@ -10,5 +10,6 @@ class Logger extends CI_Controller
 		$this->load->model('Logger_Model', 'log');
 	}
 
+	
 
 }

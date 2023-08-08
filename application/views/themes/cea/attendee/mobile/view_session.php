@@ -224,15 +224,21 @@ $(function(){
 
 						$('#questionText').val('');
 						$('#questionElement').prepend('<p>'+question+'</p>');
-						toastr.success("Question sent");
+                        getTranslatedSelectAccess('Question sent').then((msg) => {
+                            toastr.success("Question sent");
+						});
 					} else {
-						toastr.error("Unable to send the question");
+                        getTranslatedSelectAccess('Unable to send the question').then((msg) => {
+							toastr.error(msg);
+						});
 					}
 
 					$('#questionText').prop('disabled', false);
 
 				}).fail((error)=>{
-				toastr.error("Unable to send the question");
+                getTranslatedSelectAccess('Unable to send the question').then((msg) => {
+                    toastr.error(msg);
+                });
 				$('#questionText').prop('disabled', false);
 			});
 		}

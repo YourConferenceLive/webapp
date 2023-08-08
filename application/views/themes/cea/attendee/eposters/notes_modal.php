@@ -48,21 +48,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<script type="text/javascript">
 			$('#add-note').on('click', function () {
-				Swal.fire({
-					title: 'Please Wait',
-					text: 'Posting your notes...',
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-					imageAlt: 'Loading...',
-					showCancelButton: false,
-					showConfirmButton: false,
-					allowOutsideClick: false
-				});
 
-				let formData = new FormData(document.getElementById('addUserNotes'));
-				let entity_type = formData.get('entity_type');
+				const translationData = fetchAllText(); // Fetch the translation data
 
-				$.ajax({type: "POST",
+				translationData.then((arrData) => {
+					const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+					// Find the translations for the dialog text
+					let dialogTitle = 'Please Wait';
+					let dialogText = 'Posting your notes...';
+
+					// Toast
+					let notedText = "Note added.";
+					let errorText = "Error";
+
+					for (let i = 0; i < arrData.length; i++) {
+						if (arrData[i].english_text === dialogTitle) {
+							dialogTitle = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === dialogText) {
+							dialogText = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === imageAltText) {
+							imageAltText = arrData[i][selectedLanguage + '_text'];
+						}
+
+						if (arrData[i].english_text === notedText) {
+							notedText = arrData[i][selectedLanguage + '_text'];
+						}
+						if (arrData[i].english_text === errorText) {
+							errorText = arrData[i][selectedLanguage + '_text'];
+						}
+						
+					}
+					Swal.fire({
+						title: dialogTitle,
+						text: dialogText,
+						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+						imageAlt: imageAltText,
+						showCancelButton: false,
+						showConfirmButton: false,
+						allowOutsideClick: false
+					});
+
+					let formData = new FormData(document.getElementById('addUserNotes'));
+					let entity_type = formData.get('entity_type');
+	
+					$.ajax({type: "POST",
 						url: project_url+"/eposters/add_notes/" + entity_type,
 						data: formData,
 						processData: false,
@@ -78,12 +111,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								$('#notes_list_container').html('');
 								$('textarea[name="notes"]').val('');
 								loadNotes(entity_type, formData.get('entity_type_id'), note_page);
-								toastr.success('Note added.');
+								toastr.success(notedText);
 								$('#notes').val('');
 							}else{
-								toastr.error("Error");
+								toastr.error(errorText);
 							}
 						}
+					});
 				});
 			});
 		</script>
