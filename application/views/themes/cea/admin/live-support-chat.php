@@ -428,8 +428,8 @@
 			    let imageAltText = 'Loading...';
 
                 // Toast
-                let loggedText= "You are not logged-in":
-                let liveText = "Live support status changed":
+                let loggedText= "You are not logged-in";
+                let liveText = "Live support status changed";
 
                 // Swal 2
                 let errorText2 = "Error":
