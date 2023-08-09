@@ -489,7 +489,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let cancelButtonText = 'Cancel';
 
 			// Toast
-			let removeText = "Starred question removed successfully":
+			let removeText = "Starred question removed successfully";
 			let errorMsg = "Something went wrong";
 
 
