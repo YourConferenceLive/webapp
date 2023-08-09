@@ -159,6 +159,8 @@ class Users_Model extends CI_Model
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'exhibitor'));
 			if (isset($post['guest_access']))
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'guest'));
+			if (isset($post['mobile_attendee_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'mobile_attendee'));
 
 			return true;
 		}
@@ -233,6 +235,8 @@ class Users_Model extends CI_Model
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'exhibitor'));
 			if (isset($post['guest_access']))
 				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'guest'));
+			if (isset($post['mobile_attendee_access']))
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'mobile_attendee'));
 
 			return true;
 		}
