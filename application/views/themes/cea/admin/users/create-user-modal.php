@@ -149,6 +149,12 @@
 										<label for="guest_access" class="custom-control-label">Guest</label>
 									</div>
 								</div>
+								<div class="col-2">
+									<div class="custom-control custom-checkbox">
+										<input class="custom-control-input" type="checkbox" name="mobile_attendee_access" id="mobile_attendee_access">
+										<label for="mobile_attendee_access" class="custom-control-label">Mobile</label>
+									</div>
+								</div>
 							</div>
 
 						</div>
@@ -211,7 +217,9 @@
 				! $('#attendee_access').is(":checked") &&
 				! $('#presenter_access').is(":checked") &&
 				! $('#moderator_access').is(":checked") &&
-				! $('#admin_access').is(":checked")
+				! $('#admin_access').is(":checked") && 
+				! $('#mobile_attendee_access').is(":checked") &&
+				! $('#guest_access').is(":checked")
 		)
 		{
 			getTranslatedSelectAccess('You must select at least one access').then((msg) => {

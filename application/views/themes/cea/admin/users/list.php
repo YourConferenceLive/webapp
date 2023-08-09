@@ -50,8 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<thead>
 								<tr>
 									<th>User ID</th>
-									<th>Project ID</th>
-									<th>Project Name</th>
+									<!-- <th>Project ID</th>
+									<th>Project Name</th> -->
 									<th>First Name</th>
 									<th>Surname</th>
 									<th>Email</th>
@@ -192,8 +192,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						$('#user-photo_label').text('');
 						$('#user-photo-preview').attr('src', '').hide();
 					}
-	
-					$('#attendee_access, #presenter_access, #moderator_access, #admin_access, #exhibitor_access').prop('checked', false);
+					$('#attendee_access, #presenter_access, #moderator_access, #admin_access, #exhibitor_access, #mobile_attendee_access, #guest_access').prop('checked', false);
 					$.each(user.accesses, function(key, access){
 						$('#'+access.level+'_access').prop('checked', true);
 					});
@@ -382,7 +381,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				allowOutsideClick: false
 			});
 
-			$.get(project_admin_url+"/users/getAllNoProjectidJson", function (users) {
+			$.get(project_admin_url+"/users/getAllJson", function (users) {
 				users = JSON.parse(users);
 				$('#usersTableBody').html('');
 				if ($.fn.DataTable.isDataTable('#usersTable'))
@@ -407,12 +406,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							'	<td>' +
 							'		'+user.id+
 							'	</td>' +
-							'	<td>' +
-							'		'+user.project_id+
-							'	</td>' +
-							'	<td>' +
-							'		'+user.project_name+
-							'	</td>' +
+							// '	<td>' +
+							// '		'+user.project_id+
+							// '	</td>' +
+							// '	<td>' +
+							// '		'+user.project_name+
+							// '	</td>' +
 							'	<td>' +
 							'		'+user.name+
 							'	</td>' +
