@@ -58,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 							<?php
 							foreach ($session->presenters as $index=>$presenter):
-								// echo " ".trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?', '.trim($presenter->credentials):''); // comeback
+								 echo " ".trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?', '.trim($presenter->credentials):''); // comeback
 								echo "<br>";
 							endforeach;?>
 						<?php endif; ?>
