@@ -432,7 +432,7 @@
                 let liveText = "Live support status changed";
 
                 // Swal 2
-                let errorText2 = "Error":
+                let errorText2 = "Error";
                 let errorMsg2 = "Unable to change the status";
 
                 for (let i = 0; i < arrData.length; i++) {
