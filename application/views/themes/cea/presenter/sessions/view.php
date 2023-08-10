@@ -56,8 +56,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 	.tool-box-section{
 		background-color: black;
-		padding-left:30px !important;
-		padding-right:15px !important;
 	}
 </style>
 
