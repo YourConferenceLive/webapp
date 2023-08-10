@@ -261,4 +261,21 @@ class Sessions extends CI_Controller
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/session_missing")
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer");
 	}
+
+	public function polls($session_id)
+	{
+		$session = $this->sessions->getById($session_id);
+		$data['session'] = $session;
+		$data['polls'] = $this->sessions->getAllPolls($session_id);
+		$data['user'] 		= $this->user;
+		$data['session_id'] = $session_id;
+		$data['view_settings'] = $this->settings->getAttendeeSettings($this->project->id);
+		
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/menu-bar", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/sessions/polls", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/footer")
+		;
+	}
 }
