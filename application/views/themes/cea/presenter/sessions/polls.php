@@ -21,7 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </style>
 
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper" style="background-image:linear-gradient(#D7D7D7, #D7D7D7); background-size:cover; height:100vh; width:100vw;">
+<div class="content-wrapper" >
 	<!-- Content Header (Page header) -->
 	<div class="content-header">
 		<div class="container-fluid">

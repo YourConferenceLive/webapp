@@ -95,9 +95,6 @@ $ci_method = $this->router->fetch_method();?>
 					<?php if(isset($session) && $session->button3_text !== ''):?>
 						<li class="nav-item"><a class="nav-link" href="<?=isset($session->button3_link)?$session->button3_link:''?>" target="_blank"><strong><?=$session->button3_text?></strong></a></li>
 					<?php endif;?>
-					<?php if(isset($session) && $session->id !== ''):?>
-						<li class="nav-item"><a class="nav-link" href="<?=$this->project_url?>/sessions/polls/<?=$session->id?>" id="viewPollList" target="_blank"><strong>Polls</strong></a></li>
-					<?php endif;?>
 					<?php if($this->router->fetch_class() == 'sessions'  && $this->router->fetch_method() == 'view' ) : ?>
 					<li class="nav-item dropdown " id="header-toolbox">
 						<a class="nav-link dropdown-toggle" style="font-weight:400" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
