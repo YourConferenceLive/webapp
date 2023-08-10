@@ -222,7 +222,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<a href="<?=$this->project_url?>/sessions/view/<?=$session->id?>" class="btn btn-sm btn-warning m-1 rounded-0"><i class="fas fa-search"></i> View Recording</a>
 	<?php
 										else:?>
-											<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn m-1 rounded-0 " style="color:  <?= (isset($view_settings) && !empty($view_settings[0]->stickyIcon_color)? $view_settings[0]->stickyIcon_color:'') ?>; background-color: #F78E1E"><!--<i class="fas fa-plus"></i>--> Attend</a>
+											<a href="<?=$this->project_url?>/sessions/join/<?=$session->id?>" class="btn m-1 rounded-0 " style="color: black ; background-color: #F78E1E"><!--<i class="fas fa-plus"></i>--> Attend</a>
 	<?php
 										endif;
 									endif;?>
