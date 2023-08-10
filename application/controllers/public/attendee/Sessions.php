@@ -269,7 +269,11 @@ class Sessions extends CI_Controller
 		$data['polls'] = $this->sessions->getAllPolls($session_id);
 		$data['user'] 		= $this->user;
 		$data['session_id'] = $session_id;
-		$data['view_settings'] = $this->settings->getAttendeeSettings($this->project->id);
+		if($data['session']->attendee_settings_id != 0 && $data['session']->attendee_settings_id != '' && $data['session']->attendee_settings_id != null ){
+			$data['view_settings']		= $this->settings->getSessionSettings($this->project->id, $data['session']->attendee_settings_id );
+		}else{
+			$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id, $session_id);
+		}
 		
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/header", $data)
