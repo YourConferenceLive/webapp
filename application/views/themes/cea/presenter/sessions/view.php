@@ -241,6 +241,11 @@ if (isset($settings) && !empty($settings->poll_music)) {
 	//var socket_session_name = "<?//=getAppName('_admin-to-attendee-chat')?>//";
 
 	$(function () {
+
+		$('#viewPollList').on('click', function(e){
+			e.preventDefault();
+			viewPollList(session_id);
+		});
 		$('#mainTopMenu').css('margin-left', 'unset !important');
 		$('#pushMenuItem').hide();
 
@@ -1184,6 +1189,10 @@ if (isset($settings) && !empty($settings->poll_music)) {
 		});
 	})
 
+
+	function viewPollList(session_id){
+		window.open(project_presenter_url+'/sessions/polls/'+session_id,'_blank')
+	}
 //	End Emojis functions
 
 </script>
