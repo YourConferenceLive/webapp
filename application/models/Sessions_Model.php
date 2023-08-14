@@ -2414,6 +2414,7 @@ class Sessions_Model extends CI_Model
 							}
 							$options[] = array(
 								'option_id' => (int) $val->id,
+								'external_reference' => $sessions_poll_question->external_reference,
 								'text' => $val->option_text,
 								'total_votes' => ($this->db->select('*')->from('session_poll_answers')->where('answer_id', $val->id)->get()->num_rows()),
 								'votes' => $votes
