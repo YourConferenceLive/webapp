@@ -58,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<th>Actions</th>
 										<th>Manage</th>
 										<th>Export</th>
-										<th>JSON(s)</th>
+										<th>Json(s)</th>
 									</tr>
 								</thead>
 								<tbody id="sessionsTableBody">

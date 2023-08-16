@@ -160,6 +160,11 @@ function replaceSpecificWords(searchWord, replacementWord) {
         // Check if the search word exists in the text content
         if (text.includes(searchWord)) {
             const escapedSearchWord = escapeRegExp(searchWord);
+            if(textNode.textContent.toLowerCase() == "json(s)" || textNode.textContent.toLowerCase() == "json")
+            {
+                continue;
+            }
+
             const replacedText = text.replace(new RegExp(escapedSearchWord, 'g'), replacementWord);
             textNode.textContent = replacedText;
         }
