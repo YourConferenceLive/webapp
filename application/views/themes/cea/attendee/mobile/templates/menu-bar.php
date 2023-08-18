@@ -95,7 +95,7 @@ $user_id = $this->session->userdata('project_sessions')['project_' . $this->proj
 			</div>
 		</nav>
 	</header>
-<?php $this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/live_support_chat") ?>
+<?php //$this->load->view("{$this->themes_dir}/{$this->project->theme}/attendee/common/live_support_chat") ?>
 <script>
 	let previous ='';
 		$('.stickyMenu').on('click', function(){
