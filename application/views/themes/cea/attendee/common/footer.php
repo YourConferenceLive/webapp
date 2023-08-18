@@ -100,7 +100,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	if ($('#languageSelect').is('*')) {
 		/* alternative to counter the bug for loading */
-		initializeLanguage();
+		(async () => {
+			await initializeLanguage();
+		})();
 	} 
     $(document).ready(function() {
 

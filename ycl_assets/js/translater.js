@@ -7,25 +7,28 @@ function closeSwal() {
     Swal.close();
 }
 
+
 function initializeLanguage() {
-    console.log("for language...");
-    Swal.showLoading();
-    Swal.getContainer().style.pointerEvents = 'none';
-    $.ajax({
-        url: baseUrl + "translator/initializeUserLanguageSetting",
-        dataType: "JSON",
-        method: "POST",
-        success: function(response) {
-            if(response) {
-                let language = response[0].language;
-                $('#languageSelect').val(language);
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: baseUrl + "translator/initializeUserLanguageSetting",
+            dataType: "JSON",
+            method: "POST",
+            success: function(response) {
+                if(response) {
+                    let language = response[0].language;
+                    if($('#languageSelect')) {
+                        $('#languageSelect').val(language);
+                    }
+                    resolve(language);
+                }
+                
+            },
+            error: function() {
+                const errorMessage = 'Failed to fetch language';
+                reject(errorMessage);
             }
-            
-        },
-        error: function() {
-            console.log("No response from server.");
-            closeSwal();
-        }
+        });
     });
 }
 
@@ -52,11 +55,13 @@ function initializeLanguageSettings() {
                 if (language)
                 {
                     console.log("Initializing : " + language);
-                    $('#languageSelect').val(language);
+                    if($('#languageSelect')){
+                        $('#languageSelect').val(language);
+                    }
 
                     (async () => {
                         await updatePageLanguage(language);
-                        await closeSwal();
+                        closeSwal();
                     })();
                     
                 }
@@ -119,6 +124,9 @@ function fetchAllText() {
             method: "POST",
             success: function(response) {
                 if(response) {
+                    (async () => {
+                        await initializeLanguage();
+                    })();
                     resolve(response);
                 }
                 else
@@ -132,22 +140,24 @@ function fetchAllText() {
 }
 
 function translateText(selectedLanguage, arrData) {
-    for(let i = 0; i < arrData.length; i++){
-        english_text = arrData[i].english_text;
-        spanish_text = arrData[i].spanish_text;
-        if(selectedLanguage == "spanish")
-        {
-            replaceSpecificWords(english_text, spanish_text); // searchWord, replacementWord
+    return new Promise((resolve, reject) => {
+        for(let i = 0; i < arrData.length; i++){
+            english_text = arrData[i].english_text;
+            spanish_text = arrData[i].spanish_text;
+            if(selectedLanguage == "spanish")
+            {
+                replaceSpecificWords(english_text, spanish_text); // searchWord, replacementWord
+            }
+            else if(selectedLanguage == "english")
+            {
+                replaceSpecificWords(spanish_text, english_text); // searchWord, replacementWord
+            }
+            else
+            {
+                console.log("Translation failed.");
+            }
         }
-        else if(selectedLanguage == "english")
-        {
-            replaceSpecificWords(spanish_text, english_text); // searchWord, replacementWord
-        }
-        else
-        {
-            console.log("Translation failed.");
-        }
-    }
+    });
 }
 
 function replaceSpecificWords(searchWord, replacementWord) {

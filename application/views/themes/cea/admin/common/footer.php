@@ -33,7 +33,9 @@ $ci_method = $this->router->fetch_method();
    
     if ($('#languageSelect').length) {
 		/* alternative to counter the bug for loading */
-        initializeLanguage();
+        (async () => {
+            await initializeLanguage();
+        })();
 	}
     $(document).ready(function() {
 
