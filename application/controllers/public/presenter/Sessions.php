@@ -95,11 +95,12 @@ class Sessions extends CI_Controller
 		$data["session"] = $session;
 		$data["user"] = $this->user;
 		$data2["activepage"] = "sessionview";
+		$data["session_id"] = $id;
 
 		//$menu_data['host_chat_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_host_chat", '', true);
 		//$menu_data['questions_html'] = $this->load->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/session_questions.php", '', true);
 		// print_r($this->user);exit;
-		if($this->user->email == "rexterdayuta@gmail.com"){
+		if($this->user->email == "q@a.com"){
 			$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
 			// ->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar")
@@ -114,7 +115,6 @@ class Sessions extends CI_Controller
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar", $data2)
-			//->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/view", $data)
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_modal")
 			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/poll_result_modal")
@@ -252,6 +252,29 @@ class Sessions extends CI_Controller
 	public function getPollByIdJson($id)
 	{
 		echo json_encode($this->sessions->getPollById($id));
+	}
+
+	public function polls($session_id)
+	{
+		$sidebar_data['user'] = $this->user;
+		$session = $this->sessions->getById($session_id);
+		$data['session'] = $session;
+		$data['polls'] = $this->sessions->getAllPolls($session_id);
+		$data['user'] = $this->user;
+		$data['session_id'] = $session_id;
+		if($data['session']->attendee_settings_id != 0 && $data['session']->attendee_settings_id != '' && $data['session']->attendee_settings_id != null ){
+			$data['view_settings']		= $this->settings->getSessionSettings($this->project->id, $data['session']->attendee_settings_id );
+		}else{
+			$data['view_settings']		= $this->settings->getAttendeeSettings($this->project->id, $session_id);
+		}
+		
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/header", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/menubar", $data)
+				->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/sessions/polls", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/presenter/common/footer")
+		;
 	}
 
 }

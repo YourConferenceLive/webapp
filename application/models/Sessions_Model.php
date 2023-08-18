@@ -2156,7 +2156,7 @@ class Sessions_Model extends CI_Model
 							}
 							$options[] = array(
 								'option_id' => (int) $val->id,
-								'external_reference' => $sessions_poll_question->external_reference,
+								'external_reference' => $val->external_reference,
 								'text' => $val->option_text,
 								'total_votes' => ($this->db->select('*')->from('session_poll_answers')->where('answer_id', $val->id)->get()->num_rows()),
 								'votes' => $votes
@@ -2215,6 +2215,7 @@ class Sessions_Model extends CI_Model
 				}
 			}
 
+			print_R($polls);exit;
 
 			$this->db->select('*');
 			$this->db->from('session_questions');
@@ -2414,6 +2415,7 @@ class Sessions_Model extends CI_Model
 							}
 							$options[] = array(
 								'option_id' => (int) $val->id,
+								'external_reference' => $val->external_reference,
 								'text' => $val->option_text,
 								'total_votes' => ($this->db->select('*')->from('session_poll_answers')->where('answer_id', $val->id)->get()->num_rows()),
 								'votes' => $votes

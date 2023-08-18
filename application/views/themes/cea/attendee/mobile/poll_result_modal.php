@@ -2,23 +2,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 //echo"<pre>";print_r($sessions);exit("</pre>");
 ?>
-
 <!-- Poll Result Modal - attendee -->
-<div class="modal fade" id="pollResultModal" tabindex="-1" role="dialog" aria-labelledby="pollResultModalLabel" aria-hidden="true" style="margin-top:3vh">
-	<div class="modal-dialog modal-lg" role="document" style=" width:100% !important; min-width:93vw;  overflow-y:auto; overflow-x:hidden">
+<div class="modal fade" id="pollResultModal" tabindex="-1" role="dialog" aria-labelledby="pollResultModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content" style="background-color: #F1F3F4" >
-			<div class="modal-header"  style="padding:0; border-bottom:0">
-				<i class="zoom-tool-bar2" style="width:100%"></i>
+			<div class="modal-header">
+				<div class="modal-title" id="pollResultModalLabel">What would you do next?</div>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body " id="contentResult" style="padding: 0 1rem">
-				
-				<img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/<?=(isset($session)&& $session !== '')? $session->session_logo : ''?>" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="width:45px; margin-top:-10px">
-				<span class="mt-2 font-weight-bold"  style="font-size:20px !important">LIVE POLL</span>
-				<div class="modal-title"><div  id="pollResultModalLabel"></div></div>
-				<hr style="margin:0 -1rem 1rem -1rem;">
+			<div class="modal-body">
 				<div class="row">
 					<div id="pollResults" class="col-12">
 
@@ -55,4 +49,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 </div>
-<!-- <script src="<?= base_url() ?>front_assets/js/jquery-3.5.1.min.js"></script> -->

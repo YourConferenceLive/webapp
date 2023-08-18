@@ -31,56 +31,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 			<div class="modal-footer">
 				<span id="howMuchSecondsLeft"></span>
-				<button id="voteBtn" type="button" class="btn btn-primary"><i class="fas fa-vote-yea"></i> Vote</button>
+				<!-- <button id="voteBtn" type="button" class="btn btn-primary"><i class="fas fa-vote-yea"></i> Vote</button> -->
 			</div>
 		</div>
 	</div>
 </div>
 
-
-<script>
-	$(function () {
-		$('#voteBtn').on('click', function () {
-
-			let formData = new FormData(document.getElementById('pollAnswerForm'));
-
-			$.ajax({
-				type: "POST",
-				url: project_url+"/sessions/vote",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
-				{
-					$('#pollModal').modal('hide');
-					//toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-
-					data = JSON.parse(data);
-
-					if (data.status == 'success')
-					{
-						$('#voteBtn').html('<i class="fas fa-check"></i> Voted')
-						getTranslatedSelectAccess('Vote recorded').then((msg) => {
-							toastr.success(msg);
-						});
-						setTimeout(function() {
-							$('#pollModal').modal('hide');
-						}, 1000);
-
-					}else{
-						setTimeout(function() {
-							$('#pollModal').modal('hide');
-						}, 1000);
-						getTranslatedSelectAccess('something went wrong').then((msg) => {
-							toastr.error(msg);
-						});
-					}
-				}
-			});
-		});
-	})
-</script>

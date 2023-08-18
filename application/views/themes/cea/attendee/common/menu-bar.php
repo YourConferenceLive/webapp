@@ -114,6 +114,11 @@ $ci_method = $this->router->fetch_method();?>
 						<a class="nav-link claim_credit_href" href="" target="_blank"><strong id="header_claim_credit_link"></strong></a>
 					</li>
 
+					<li class="nav-item" id="help-desk" style=" display: <?=(liveSupportChatStatus())?'none':'block'?>"><a class="nav-link" href="https://yourconference.live/support/" target="_blank"><strong>Help Desk</strong></a></li>
+					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
+						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (isset($view_settings) && !empty($view_settings[0]->live_support_color)? $view_settings[0]->live_support_color:'') ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Technical Support</button>
+					<?php endif; ?>
+
 					<li class="nav-item">
 						<select class="custom-select border-0" id="languageSelect">
 							<option value="" disabled selected>Lang</option>
@@ -121,10 +126,6 @@ $ci_method = $this->router->fetch_method();?>
 							<option value="spanish">Spanish</option>
 						</select>
 					</li>
-					<li class="nav-item" id="help-desk" style=" display: <?=(liveSupportChatStatus())?'none':'block'?>"><a class="nav-link" href="https://yourconference.live/support/" target="_blank"><strong>Help Desk</strong></a></li>
-					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
-						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (isset($view_settings) && !empty($view_settings[0]->live_support_color)? $view_settings[0]->live_support_color:'') ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Technical Support</button>
-					<?php endif; ?>
 					<?php if(empty($view_settings) || $view_settings[0]->mail_menu == 1):?>
 					<li class="nav-item dropdown">
 						<a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
