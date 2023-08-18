@@ -1,9 +1,5 @@
-<!--<link href="--><?//= base_url() ?><!--assets/css/attendee-session-view.css?v=201" rel="stylesheet">-->
-<!---->
-<!--<!-- Please add styles only in this CSS file, NOT directly on this HTML file -->-->
-<!--<link href="--><?//= base_url() ?><!--front_assets/css/view_sessions.css?v=19" rel="stylesheet">-->
-<?php // print_R($session);exit;?>
-<section class="parallax" style="background-color: #FFFFFF; overflow: scroll" >
+
+<section class="parallax" style="background-color: #FFFFFF;" >
     <!--<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/Sessions_BG_screened.jpg); top: 0; padding-top: 0px;">-->
     <div class="container-fluid">
         <!-- CONTENT -->
@@ -11,7 +7,7 @@
             <div>
                 <div class="videContent">
 
-                        <div class="row justify-content-center">
+                        <div class="row row1 justify-content-center">
                             <div class="col-12" style="margin-top: 30px; margin-left: 20px; margin-right: 20px;">
                                 <div class="card m-auto text-center">
                                     <div class="row">
@@ -38,7 +34,7 @@
                             </div>
                         </div>
 
-                        <div class="row justify-content-center mb-3">
+                        <div class="row row2 d-flex justify-content-center mb-3">
                             <div class="col-12" style=" margin-left: 20px; margin-right: 20px;">
                                 <div class="card text-center align-items-center justify-content-center align-content-center mx-auto mt-2" style="background-image: url(https://yourconference.live/CCO/front_assets/images/bg_login.png); top: 0; padding-top: 0px; height: 100%; background-size: cover">
                                     <?php if($session->header_question == 1):?>
@@ -134,6 +130,7 @@
 
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/sessions.js"></script>
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/attendee_to_admin_chat.js"></script>
+<script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/front_assets/view_session.js"></script>
 <script>
     let projectId = "<?=$this->project->id?>";
     let sessionId = "<?=$session->id?>"
@@ -204,7 +201,7 @@ $(function(){
 				return false;
 			}
 
-			$.post(project_url+"/sessions/askQuestionAjax",{
+			$.post(project_url+"/mobile/sessions/askQuestionAjax",{
 					session_id:sessionId,
 					question:question,
 				},
@@ -224,21 +221,15 @@ $(function(){
 
 						$('#questionText').val('');
 						$('#questionElement').prepend('<p>'+question+'</p>');
-                        getTranslatedSelectAccess('Question sent').then((msg) => {
                             toastr.success("Question sent");
-						});
 					} else {
-                        getTranslatedSelectAccess('Unable to send the question').then((msg) => {
 							toastr.error(msg);
-						});
 					}
 
 					$('#questionText').prop('disabled', false);
 
 				}).fail((error)=>{
-                getTranslatedSelectAccess('Unable to send the question').then((msg) => {
                     toastr.error(msg);
-                });
 				$('#questionText').prop('disabled', false);
 			});
 		}
@@ -480,7 +471,7 @@ $(function(){
 						$('#voteBtn').attr('disabled', 'disabled');
 						$('#pollModal').modal('hide');
 						if (data.show_result == 1) {// Show result automatically
-							$.get(project_url + "/sessions/getPollResultAjax/" + data.id, function (results) {
+							$.get(project_url + "/mobile/sessions/getPollResultAjax/" + data.id, function (results) {
 								results = JSON.parse(results);
 
 								$('#pollResults').html('');
@@ -528,7 +519,7 @@ $(function(){
 			if(data.session_id == sessionId) {
 				$('#pollModal').modal('hide');
 				$('#pollResultModalLabel').html(data.poll_question);
-				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
+				$.get(project_url+"/mobile/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
 					$('#pollResults').html('');
 					// console.log(results);
@@ -616,7 +607,7 @@ $(function(){
 	});
 
 	function markLaunchedPoll(poll_id){
-		$.post(project_url+"/sessions/markLaunchedPoll/"+poll_id, function (results) {
+		$.post(project_url+"/mobile/sessions/markLaunchedPoll/"+poll_id, function (results) {
 			console.log(results)
 		});
 	}
@@ -626,7 +617,7 @@ $(function(){
 
 	function saveTimeSpentOnSessionAfterSessionFinished(){
 		$.ajax({
-			url: project_url+"/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
+			url: project_url+"/mobile/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
 			type: "post",
 			data: {'time': timeSpentUntilNow},
 			dataType: "json",
@@ -645,7 +636,7 @@ $(function(){
 	function saveTimeSpentOnSession(){
 		// console.log(timeSpentUntilNow)
 		$.ajax({
-			url: project_url+"/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
+			url: project_url+"/mobile/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
 			type: "post",
 			data: {'time': timeSpentUntilNow},
 			dataType: "json",
@@ -658,7 +649,7 @@ $(function(){
 
 	function getTimeSpentOnSession(){
 		$.ajax({
-			url: project_url+"/sessions/getTimeSpentOnSession/"+sessionId+'/'+uid,
+			url: project_url+"/mobile/sessions/getTimeSpentOnSession/"+sessionId+'/'+uid,
 			type: "post",
 			dataType: "json",
 			success: function (data) {
@@ -705,7 +696,7 @@ $(function(){
 	function update_viewsessions_history_open()
 	{
 		$.ajax({
-			url: base_url+"/sessions/update_viewsessions_history_open/"+sessionId,
+			url: base_url+"/mobile/sessions/update_viewsessions_history_open/"+sessionId,
 			type: "post",
 			data: {'logs_id': $("#logs_id").val()},
 			dataType: "json",
@@ -735,7 +726,7 @@ $(function(){
 	function get_sessions_history_open(sessionId){
 		var resolution = screen.width + "x " + screen.height + "y";
 		$.ajax({
-			url: project_url+"/sessions/add_viewsessions_history_open",
+			url: project_url+"/mobile/sessions/add_viewsessions_history_open",
 			type: "post",
 			data: {'sessions_id': sessionId, 'resolution': resolution},
 			dataType: "json",
