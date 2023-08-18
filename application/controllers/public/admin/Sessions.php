@@ -152,11 +152,11 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->updatePoll($session_id));
 	}
 	
-	public function generateQRCode($session_id){
+	public function generateQRCode($session_id, $room_id){
 
 		$this->load->library('ciqrcode');
 
-		$params['data'] = $this->project_url.'/mobile/sessions/id/'.$session_id;
+		$params['data'] = $this->project_url.'/mobile/sessions/room/'.$room_id;
 		$params['level'] = 'H';
 		$params['size'] = 10;
 		$params['savename'] = FCPATH.'/cms_uploads/projects/'.$this->project->id.'/qrcode/qr_'.$session_id.'.png';
