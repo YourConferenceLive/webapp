@@ -35,9 +35,14 @@ $user_id = $this->session->userdata('project_sessions')['project_' . $this->proj
 			}
 		}
 
+		.navbar{
+			background-color: #a3a1a1;
+		}
+		
+
 	</style>
 	<header>
-		<nav id="mainMenu" class="navbar  navbar-light bg-white <?=(($ci_controller == 'sessions' && $ci_method == 'viewMobileSession'))?'':'fixed-top'?>">
+		<nav id="mainMenu" class="navbar  navbar-light <?=(($ci_controller == 'sessions' && $ci_method == 'viewMobileSession'))?'':'fixed-top'?>">
 			<a class="navbar-brand" href="#"><img src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/logo.png" alt="<?=$this->project->name?> Logo" onerror="this.src='<?=ycl_root?>/ycl_assets/ycl_logo.png'" style="<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_width)? 'width:'.$view_settings[0]->header_logo_width:'max-width:80px'?>;height:<?=(isset($view_settings[0]->header_logo_width) && $view_settings[0]->header_logo_height)?'height:'.$view_settings[0]->header_logo_height:''?>"></a>
 			<button class="navbar-toggler collapsed navbar-light" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -65,7 +70,7 @@ $user_id = $this->session->userdata('project_sessions')['project_' . $this->proj
 						<a class="nav-link dropdown-toggle" style="font-weight:400" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<strong>Toolbox</strong>
 						</a>
-						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+						<div class="dropdown-menu dropdown-menu-right mb-4" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item stickyMenu" data-sticky="questionsSticky" id="questionStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-question"></i> Ask Question</a>
 							<a class="dropdown-item stickyMenu" data-sticky="notesSticky" id="notesStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-edit"></i> Take Notes</a>
 <!--							<a class="dropdown-item stickyMenu" data-sticky="questionsSticky" id="questionsStickyMenu" href="#" style="color: rgb(72, 115, 145) !important;"><i class="fas fa-comments"></i> Chat</a>-->
@@ -79,13 +84,13 @@ $user_id = $this->session->userdata('project_sessions')['project_' . $this->proj
 						<a class="nav-link claim_credit_href" href="" target="_blank"><strong id="header_claim_credit_link"></strong></a>
 					</li>
 
-					<li class="nav-item" id="help-desk" style=" display: <?=(liveSupportChatStatus())?'none':'block'?>"><a class="nav-link" href="https://yourconference.live/support/" target="_blank"><strong>Help Desk</strong></a></li>
+					<!-- <li class="nav-item" id="help-desk" style=" display: <?=(liveSupportChatStatus())?'none':'block'?>"><a class="nav-link" href="https://yourconference.live/support/" target="_blank"><strong>Help Desk</strong></a></li>
 					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
 						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (isset($view_settings) && !empty($view_settings[0]->live_support_color)? $view_settings[0]->live_support_color:'') ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Technical Support</button>
-					<?php endif; ?>
-					<?php if ($user_id): // Don't need support button in booths ?>
+					<?php endif; ?> -->
+					<!-- <?php if ($user_id): // Don't need support button in booths ?>
 						<a href="" class=" nav-item btn btn-primary btn-sm mt-4" id="logoutBtn" ><i class="far fa-logout"></i> Log Out</a>
-					<?php endif; ?>
+					<?php endif; ?> -->
 				</ul>
 			</div>
 		</nav>
