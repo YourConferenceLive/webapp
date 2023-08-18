@@ -606,6 +606,21 @@ $(function(){
 		}
 	});
 
+	socket.on('reload-attendee-signal', function () {
+			// location.reload();session_end_datetime
+		const sessionEnd = new Date(session_end_datetime);
+	
+		console.log('end'+ sessionEnd)
+		console.log('now'+ new Date())
+		
+		if(sessionEnd < new Date() ){
+			window.location = (project_url+"/mobile/sessions/room/<?=$session->room_id?>")
+		}else{
+			location.reload();
+		}
+			
+		});
+
 	function markLaunchedPoll(poll_id){
 		$.post(project_url+"/mobile/sessions/markLaunchedPoll/"+poll_id, function (results) {
 			console.log(results)
@@ -696,7 +711,7 @@ $(function(){
 	function update_viewsessions_history_open()
 	{
 		$.ajax({
-			url: base_url+"/mobile/sessions/update_viewsessions_history_open/"+sessionId,
+			url: project_url+"/mobile/sessions/update_viewsessions_history_open/"+sessionId,
 			type: "post",
 			data: {'logs_id': $("#logs_id").val()},
 			dataType: "json",
