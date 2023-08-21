@@ -498,7 +498,7 @@ class Authentication extends CI_Controller {
 	}
 
 	public function mobile_login($room_id){
-		//   session_destroy();;exit;
+		$this->load->helper('string');
 		if(($this->session->userdata('project_sessions'))){
 			echo "You are loggedin as ". ($this->session->userdata('project_sessions')['project_'.$this->project->id]['name']);
 			echo "<br>Click here to continue";
@@ -507,11 +507,10 @@ class Authentication extends CI_Controller {
 		}
 		$project_id = $this->project->id;
 		$access_level = "mobile_attendee";
-		$randomNum = random_int(1, 10000);
-		$randomEmail = 'guest'.$randomNum.'@test.com';
-		// $email = 'rexterdayuta@gmail.com';
-		$randomGuestName = 'guest'.$randomNum;
-		$randomGuestSurName = 'guest'.$randomNum;
+		$randomNum =  random_string('numeric', '8');
+		$randomEmail = 'guest_'.$randomNum.'@mycea.com';
+		$randomGuestName = 'Guest_'.$randomNum;
+		$randomGuestSurName = 'Attendee';
 		$account = $this->account_m->addRandomGuestUser($randomEmail, $randomGuestName, $randomGuestSurName);
 		if($account['insert_id']){
 			$token = $this->auth->update_user_token($account['insert_id']);
