@@ -144,12 +144,15 @@ function translateText(selectedLanguage, arrData) {
         for(let i = 0; i < arrData.length; i++){
             english_text = arrData[i].english_text;
             spanish_text = arrData[i].spanish_text;
+            let isReplaced = false;
             if(selectedLanguage == "spanish")
             {
+                isReplaced = true;
                 replaceSpecificWords(english_text, spanish_text); // searchWord, replacementWord
             }
             else if(selectedLanguage == "english")
             {
+                isReplaced = true;
                 replaceSpecificWords(spanish_text, english_text); // searchWord, replacementWord
             }
             else
