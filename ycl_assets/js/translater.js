@@ -141,16 +141,18 @@ function fetchAllText() {
 
 function translateText(selectedLanguage, arrData) {
     return new Promise((resolve, reject) => {
+        let finishText = new Array();
+        
         for(let i = 0; i < arrData.length; i++){
             english_text = arrData[i].english_text;
             spanish_text = arrData[i].spanish_text;
             let isReplaced = false;
-            if(selectedLanguage == "spanish")
+            if(selectedLanguage == "spanish" && isReplaced == false)
             {
                 isReplaced = true;
                 replaceSpecificWords(english_text, spanish_text); // searchWord, replacementWord
             }
-            else if(selectedLanguage == "english")
+            else if(selectedLanguage == "english" && isReplaced == false)
             {
                 isReplaced = true;
                 replaceSpecificWords(spanish_text, english_text); // searchWord, replacementWord
