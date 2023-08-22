@@ -189,6 +189,7 @@ class Account_Model extends CI_Model
 				'surname' => $surname,
 				'email' => $email,
 				'password' => $password,
+				'is_random_guest'=> 1,
 				'created_on' => date('Y-m-d H:i:s')
 			);
 
