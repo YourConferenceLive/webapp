@@ -164,4 +164,55 @@ class Account_Model extends CI_Model
 			return true;
 		return false;
 	}
+
+	public function addRandomGuestUser($randomEmail, $randomGuestName, $randomGuestSurName)
+	{
+		try
+			{
+				
+				$project_id = $this->project->id;
+				$name = $randomGuestName;
+				$surname = $randomGuestSurName;
+				$email = $randomEmail;
+				$password = password_hash('12345', PASSWORD_DEFAULT);
+
+			}
+			catch(Exception $error)
+			{
+				return array('status'=>'error', 'msg'=>'Missing required parameters', 'error'=>$error->getMessage());
+			}
+
+			$this->db->trans_begin();
+
+			$data = array(
+				'name' => $name,
+				'surname' => $surname,
+				'email' => $email,
+				'password' => $password,
+				'created_on' => date('Y-m-d H:i:s')
+			);
+
+			 $this->db->insert('user', $data);
+				$user_insertID = $this->db->insert_id();
+			if ($this->db->affected_rows() > 0) {
+
+				$user_id = $this->db->insert_id();
+				$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$project_id, 'level'=>'mobile_attendee'));
+
+				if ($this->db->trans_status() === FALSE)
+				{
+					$this->db->trans_rollback();
+
+					return array('status'=>'error', 'msg'=>'Unable to register', 'error'=>$this->db->error());
+				}
+				else
+				{
+					$this->db->trans_commit();
+					$this->logger->add($project_id, $user_id, 'Registered', 'As a random guest');
+					return array('status'=>'success', 'insert_id'=>$user_insertID, 'msg'=>'Account created');
+				}
+			} else {
+				return array('status'=>'error', 'msg'=>'Unable to register', 'error'=>$this->db->error());
+			}
+	}
 }

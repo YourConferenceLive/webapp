@@ -81,6 +81,12 @@
 										<label for="sessionNameOther">Other name (alternative language)</label>
 										<input type="text" class="form-control" id="sessionNameOther" name="sessionNameOther" placeholder="Enter alternative session title/name eg; French">
 									</div>
+
+									<div class="form-group">
+										<label for="sessionNameOther">Room ID (For mobile sessions)</label>
+										<input type="number" class="form-control" id="roomID" name="roomID" placeholder="" value="0">
+									</div>
+
 									<div class="form-group">
 										<label for="sessionNameOther">Session Notes</label>
 										<input type="text" class="form-control" id="sessionNotes" name="sessionNotes" placeholder="Enter your notes here...">
@@ -814,6 +820,11 @@
 				}
 			}
 
+			if (isNaN(parseInt($('#roomID').val()))) {
+				toastr.error('Room ID should be a number');
+				return false;
+			}
+
 			Swal.fire({
 				title: dialogTitle,
 				text: dialogText,
@@ -885,6 +896,11 @@
 				if (arrData[i].english_text === sessionUpdateText) {
 					sessionUpdateText = arrData[i][selectedLanguage + '_text'];
 				}
+			}
+
+			if (isNaN(parseInt($('#roomID').val()))) {
+				toastr.error('Room ID should be a number');
+				return false;
 			}
 
 			Swal.fire({

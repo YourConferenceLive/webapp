@@ -4,7 +4,7 @@ let admin_chat_presenter_ids=[];
 $(function(){
 
 	/**************** Loading admin chats *********************/
-	$.post(project_url+"/sessions/getAdminChatsAjax",
+	$.post(project_url+"/mobile/sessions/getAdminChatsAjax",
 		{
 
 			session_id: sessionId,
@@ -54,7 +54,7 @@ $(function(){
 				toastr.warning('Please enter your message');
 				return false;
 			}
-			$.post(project_url+"/sessions/chatAdminajax",{
+			$.post(project_url+"/mobile/sessions/chatAdminajax",{
 					session_id:sessionId,
 					chat:chat,
 				},

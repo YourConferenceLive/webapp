@@ -193,6 +193,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					$('#sessionId').val(session.id);
 					$('#sessionName').val(session.name);
 					$('#sessionNameOther').val(session.other_language_name);
+
+					$(`#roomID`).val(session.room_id);
+
 					$('#eventID').val(session.event_id);
 					$(`#sessionTrack option[value="${session.track}"]`).prop('selected', true);
 	
@@ -638,7 +641,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
 						'		</a>' +
 						'		<button class="reload_attendee btn btn-sm btn-danger m-1"><i class="fas fa-sync"></i> Reload Atendee</button>' +
-						'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
+						'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'" room_id="'+session.room_id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
 						'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
 						'	</td>' +
 						'	<td>' +
@@ -830,13 +833,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		$('#sessionsTableBody').on('click', '.mobileSessionQR', function(e){
 			e.preventDefault();
 			let session_id = $(this).attr('session-id');
-			// var session_id = $(this).attr('data-session_id');
-			console.log(session_id);
-			$.post('<?= $this->project_url?>/admin/sessions/generateQRCode/'+session_id,
+			let room_id = $(this).attr('room_id');
+			
+			console.log(room_id);
+			$.post('<?= $this->project_url?>/admin/sessions/generateQRCode/'+session_id+'/'+room_id,
 				{}, function(success){
 					if(success=="success"){
 						Swal.fire({
-							text:'<?=$this->project_url?>/mobile/sessions/id/'+session_id,
+							text:'<?=$this->project_url?>/mobile/sessions/room/'+room_id,
 							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/qrcode/qr_'+session_id+'.png',
 							imageHeight: 300,
 							imageAlt: 'QRCODE'

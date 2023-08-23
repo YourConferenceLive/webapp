@@ -10,6 +10,7 @@ class Authentication extends CI_Controller {
 		$this->load->model('Authentication_Model', 'auth');
 		$this->load->model('Users_Model', 'user_m');
 		$this->load->model('Logger_Model', 'logger');
+		$this->load->model('Account_Model', 'account_m');
 	}
 
 	public function test()
@@ -495,5 +496,44 @@ class Authentication extends CI_Controller {
 	public function decode(){
 		print_R(base64_decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ.uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo'));
 	}
+
+	public function mobile_login($room_id){
+		$this->load->helper('string');
+		if(($this->session->userdata('project_sessions'))){
+			echo "You are loggedin as ". ($this->session->userdata('project_sessions')['project_'.$this->project->id]['name']);
+			echo "<br>Click here to continue";
+			redirect(base_url().$this->project->name.'/mobile/sessions/room/'.$room_id);
+			exit;
+		}
+		$project_id = $this->project->id;
+		$access_level = "mobile_attendee";
+		$randomNum =  random_string('numeric', '8');
+		$randomEmail = 'guest_'.$randomNum.'@mycea.com';
+		$randomGuestName = 'Guest_'.$randomNum;
+		$randomGuestSurName = 'Attendee';
+		$account = $this->account_m->addRandomGuestUser($randomEmail, $randomGuestName, $randomGuestSurName);
+		if($account['insert_id']){
+			$token = $this->auth->update_user_token($account['insert_id']);
+				$current_project_sessions = $this->session->userdata('project_sessions');
+				$current_project_sessions["project_$project_id"] = array(
+					'user_id' => $account['insert_id'],
+					'name' => $randomGuestName,
+					'surname' => $randomGuestSurName,
+					'email' => $randomEmail,
+					'homepage_redirect' => 'session_list',
+					'is_mobile_attendee' => 1,
+					'is_attendee' => 0,
+					'token'=>$token,
+				);
+			$this->logger->add($project_id, $account['insert_id'], 'Mobile-Logged-in');
+			$this->session->set_userdata(array('project_sessions' => $current_project_sessions));
+
+			redirect(base_url().$this->project->name.'/mobile/sessions/room/'.$room_id);
+			exit;
+		}else{
+			return '';
+		}
+			
+		}
 
 }
