@@ -298,17 +298,12 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 </div>
-<?php
-if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
-	foreach($view_settings as $music_setting){
-		if ($music_setting->poll_music != "") {
-			?>
-			<audio allow="autoplay" id="audio_<?=$this->project->id?>" src="<?= ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$music_setting->poll_music ?>" ></audio>
-			<?php
-		}
-	}
-}
-?>
+<?php if (isset($view_settings) && !empty($view_settings[0]->poll_music)):
+		if ($view_settings[0]->poll_music != "") : ?>
+			<audio allow="autoplay" id="audio_<?=$this->project->id?>" src="<?= ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$view_settings[0]->poll_music ?>" ></audio>
+
+<?php endif; endif ?>
+
 
 <input type="hidden" id="logs_id" value="">
 <style>
@@ -1029,11 +1024,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	/******* End of saving time spent on session - by Rexter ************/
 
 	function play_music() {
-		var audio = document.getElementById("audio_"+<?=$this->project->id?>);
+		var audio = document.getElementById("audio_<?=$this->project->id?>");
 		audio.play();
 	}
 	function stop_music() {
-		var audio1 = document.getElementById("audio_"+<?=$this->project->id?>);
+		var audio1 = document.getElementById("audio_<?=$this->project->id?>");
 		audio1.pause();
 		audio1.currentTime = 0;
 	}
