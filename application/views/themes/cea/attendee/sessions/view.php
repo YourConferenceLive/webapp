@@ -620,7 +620,8 @@ body{overflow: hidden;background-color: #151515;}
 		});
 
 		socket.on('start_poll_timer_notification', (data)=> {
-			console.log(data);
+			// console.log('here');
+			// console.log(data);
 			if($('#pollId').val() == data.id) {
 				var timeleft = data.timer;
 				var downloadTimer = setInterval(function () {
@@ -633,25 +634,8 @@ body{overflow: hidden;background-color: #151515;}
 						$('#voteBtn').attr('disabled', 'disabled');
 						$('#pollModal').modal('hide');
 						if (data.show_result == 1) {// Show result automatically
-							$.get(project_url + "/sessions/getPollResultAjax/" + data.id, function (results) {
-								results = JSON.parse(results);
-
-								$('#pollResults').html('');
-								$('#pollResultModalLabel').text(data.poll_question);
-								$.each(results, function (poll_id, option_details) {
-									$('#pollResults').append('' +
-										'<div class="form-group">' +
-										'  <label class="form-check-label">' + option_details.option_name + '</label>' +
-										'  <div class="progress" style="height: 25px;">' +
-										'    <div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage + '%;" aria-valuenow="' + option_details.vote_percentage + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage + '%</div>' +
-										'  </div>' +
-										'</div>');
-								});
-
-								$('#pollResultModal').modal({
-									backdrop: 'static',
-									keyboard: false
-								});
+							$.get(project_url+"/sessions/getPollResultAjax/"+data.id, function (results) {
+								show_poll_result(results)
 
 								var resultTimeleft = 5;
 								var resultTimer = setInterval(function () {
@@ -664,6 +648,24 @@ body{overflow: hidden;background-color: #151515;}
 									}
 									resultTimeleft -= 1;
 								}, 1000);
+							}).then(function(obj,results){
+								obj = JSON.parse(obj);
+								if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
+									$('.progress-label').attr('style', 'margin-left:30px')
+								}else{
+									$('.progress-label').attr('style', '')
+								}
+								if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
+									if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
+										// console.log('tdsadsa');
+										//
+										$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+										$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+
+										$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
+										$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+									}
+								}
 							});
 						}
 					} else {
@@ -682,7 +684,39 @@ body{overflow: hidden;background-color: #151515;}
 				$('#pollModal').modal('hide');
 				$('#pollResultModalLabel').html(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
-					results = JSON.parse(results);
+					show_poll_result(results)
+				}).then(function(obj,results){
+					obj = JSON.parse(obj);
+					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
+						$('.progress-label').attr('style', 'margin-left:30px')
+					}else{
+						$('.progress-label').attr('style', '')
+					}
+					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
+						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
+							// console.log('tdsadsa');
+							//
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+
+							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
+							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+						}
+					}
+				});
+			}
+		});
+
+		socket.on('ycl_close_poll_result', (data)=>{
+			if(data.session_id == sessionId) {
+				$('#pollResultModal').modal('hide');
+			}
+		});
+	});
+
+	function show_poll_result(results){
+		$('#howMuchSecondsLeftResult').text("");
+			results = JSON.parse(results);
 					$('#pollResults').html('');
 					// console.log(results);
 
@@ -733,34 +767,7 @@ body{overflow: hidden;background-color: #151515;}
 						backdrop: 'static',
 						keyboard: false
 					});
-				}).then(function(obj,results){
-					obj = JSON.parse(obj);
-					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
-						$('.progress-label').attr('style', 'margin-left:30px')
-					}else{
-						$('.progress-label').attr('style', '')
-					}
-					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
-						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
-							// console.log('tdsadsa');
-							//
-							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
-							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
-
-							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
-							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
-						}
-					}
-				});
-			}
-		});
-
-		socket.on('ycl_close_poll_result', (data)=>{
-			if(data.session_id == sessionId) {
-				$('#pollResultModal').modal('hide');
-			}
-		});
-	});
+	}
 
 	socket.on('poll_close_notification', (data)=>{
 		if(data.session_id == sessionId) {
