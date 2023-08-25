@@ -20,11 +20,11 @@
 	
 </style>
 
-<div class="parallax" style="background-image: url(https://yourconference.live/CCO/front_assets/images/bg_login.png); height: 100vh" >
+<body class="parallax" style="background-image: url(https://yourconference.live/CCO/front_assets/images/bg_login.png); height: 100vh" >
 <div class="container-fluid text-center">
 	<?php foreach ($sessions as $session): ?>
 					<!-- Session Listing Item -->
-					<div class="card mt-3 sessionList" style="width: 100%;" href="<?=$this->project_url?>/mobile/sessions/view/<?=$session->id?>">
+					<div class="card mt-3 sessionList" style="max-width: 250px;" href="<?=$this->project_url?>/mobile/sessions/view/<?=$session->id?>">
 						<div style="height:150px; display:flex; align-items:center; margin:auto; text-align:center" >
 							<img class="session-img img-fluid" style="margin:auto"
 								src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->thumbnail?>"
@@ -40,7 +40,7 @@
 </div>
 
 <br><br>
-</div>
+</body>
 <script>
 	$(function(){
 		$('.sessionList').on('click', function(e){

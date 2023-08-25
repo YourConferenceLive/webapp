@@ -2153,7 +2153,9 @@ class Sessions_Model extends CI_Model
 							$tbl_poll_voting = $this->db->get();
 							if ($tbl_poll_voting->num_rows() > 0) {
 								foreach ($tbl_poll_voting->result() as $tbl_poll_voting) {
-									$votes[] = (int) $tbl_poll_voting->user_id;
+									if($this->is_random_guest($tbl_poll_voting->user_id)){
+										$votes[] = (int) $tbl_poll_voting->user_id;
+									}
 								}
 							}
 							$options[] = array(
@@ -2412,7 +2414,9 @@ class Sessions_Model extends CI_Model
 							$tbl_poll_voting = $this->db->get();
 							if ($tbl_poll_voting->num_rows() > 0) {
 								foreach ($tbl_poll_voting->result() as $tbl_poll_voting) {
-									$votes[] = (int) $tbl_poll_voting->user_id;
+									if($this->is_random_guest($tbl_poll_voting->user_id)){
+										$votes[] = (int) $tbl_poll_voting->user_id;
+									}
 								}
 							}
 							$options[] = array(
@@ -2599,6 +2603,14 @@ class Sessions_Model extends CI_Model
 		} else {
 			return FALSE;
 		}
+	}
+
+	function is_random_guest($user_id){
+		$result = $this->db->select('*')->from('user')->where(['id'=>$user_id, 'is_random_guest'=>0])->get();
+		if($result->num_rows() > 0) {
+			return true;
+		}
+		return '';
 	}
 
 	function updateShowedResult($poll_id){
