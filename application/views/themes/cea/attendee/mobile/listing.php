@@ -24,8 +24,8 @@
 <div class="container-fluid text-center">
 	<?php foreach ($sessions as $session): ?>
 					<!-- Session Listing Item -->
-					<div class="card mt-3 sessionList" style="max-width: 250px;" href="<?=$this->project_url?>/mobile/sessions/view/<?=$session->id?>">
-						<div style="height:150px; display:flex; align-items:center; margin:auto; text-align:center" >
+					<div class="card mt-3 sessionList" style="" href="<?=$this->project_url?>/mobile/sessions/view/<?=$session->id?>">
+						<div style="height:150px; display:flex; max-width: 250px; align-items:center; margin:auto; text-align:center" >
 							<img class="session-img img-fluid" style="margin:auto"
 								src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/<?=$session->thumbnail?>"
 								onerror="this.src='<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/default'">
