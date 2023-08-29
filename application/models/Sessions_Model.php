@@ -44,6 +44,15 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getAllSessions(){
+		$sessions = $this->db->select('*')->from('sessions')->where('project_id', $this->project->id)->get();
+		if ($sessions->num_rows() > 0)
+		{
+			return $sessions;
+		}
+		return new stdClass();
+	}
+
 	public function getAllArchived()
 	{
 		$this->db->select('s.*, st.name as session_track');
@@ -396,6 +405,7 @@ class Sessions_Model extends CI_Model
 			'session_end_image' => $session_end_image,
 			'claim_credit_link' => (isset($session_data['claim_credit_link'])?trim($session_data['claim_credit_link']):''),
 			'claim_credit_url' => (isset($session_data['claim_credit_url'])?trim($session_data['claim_credit_url']):''),
+			'session_end_redirect' => (isset($session_data['sessionEndRedirect'])?trim($session_data['sessionEndRedirect']):''),
 			'toolbox_note_text' => (isset($session_data['notes_text'])?trim($session_data['notes_text']):''),
 			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
 			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
@@ -586,6 +596,7 @@ class Sessions_Model extends CI_Model
 			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
 			'claim_credit_link' => (isset($session_data['claim_credit_link'])?trim($session_data['claim_credit_link']):''),
 			'claim_credit_url' => (isset($session_data['claim_credit_url'])?trim($session_data['claim_credit_url']):''),
+			'session_end_redirect' => (isset($session_data['sessionEndRedirect'])?trim($session_data['sessionEndRedirect']):''),
 			'toolbox_note_text' => (isset($session_data['notes_text'])?trim($session_data['notes_text']):''),
 			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
 			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
