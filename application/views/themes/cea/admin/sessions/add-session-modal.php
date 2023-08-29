@@ -111,13 +111,13 @@
 										<input type="text" class="form-control" id="sessionExternalUrl" name="sessionExternalUrl" placeholder="This link will open in a new tab (unless user blocked pop opening windows) once the meeting starts (always prefix the URL with protocol ie; http/https)">
 									</div>
 
-									<div class="form-group" id="sessionEndRedirect" style="display: block;">
+									<div class="form-group" id="sessionEndRedirectDiv" style="display: block;">
 										<label for="sessionEndRedirect">Session End Redirect</label>
-										<select name="sessionEndRedirect" class="form-control">
+										<select name="sessionEndRedirect" id="sessionEndRedirect" class="form-control">
 											<option value="null">-- Select Session Redirect --</option>
 											<?php if(!empty($session_list)): 
 												foreach($session_list as $key => $session): ?>
-												<option value="<?=$session->id?>"> Session (<?=$session->id?>) <?=$session->name?></option>
+												<option  value="<?=$session->id?>"> Session (<?=$session->id?>) <?=$session->name?></option>
 											<?php endforeach?>
 											<?php endif ?>
 										</select>
