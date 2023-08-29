@@ -38,20 +38,20 @@
                             <div class="col-12" style=" margin-left: 20px; margin-right: 20px;">
                                 <div class="card text-center align-items-center justify-content-center align-content-center mx-auto mt-2" style="background-image: url(https://yourconference.live/CCO/front_assets/images/bg_login.png); top: 0; padding-top: 0px; height: 100%; background-size: cover">
                                     <?php if($session->header_question == 1):?>
-                                    <button id="resource-btn" type="button"  class="btn btn-sm text-white" style="width: 95%; height: 70px; margin-top: 30px; background-color: #EF5D21; font-size: 20px; font-weight: 700">Resources <i class="fas fa-paperclip"></i></button>
+                                    <button id="resource-btn" type="button"  class="btn btn-sm text-white" style="width: 95%; height: 70px; margin-top: 30px; <?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'#EF5D21':'#EF5D21'?>; font-size: 20px; font-weight: 700">Resources <i class="fas fa-paperclip"></i></button>
                                     <?php endif; ?>
 <!--                                    <button id="notes-btn" class="btn btn-sm mt-2 text-white" style="width: 80%; height: 30px; background-color: #EF5D21;">Take Notes <i class="far fa-edit"></i></button>-->
                                     <?php if($session->right_sticky_question == 1):?>
-                                        <button id="question-btn" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px; background-color: #EF5D21;font-size: 20px; font-weight: 700">Ask a Question <i class="fas fa-question"></i></button>
+                                        <button id="question-btn" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px;  <?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'#EF5D21':'#EF5D21'?>; font-size: 20px; font-weight: 700">Ask a Question <i class="fas fa-question"></i></button>
                                     <?php endif; ?>
                                     <?php if ($session->claim_credit_link && $session->claim_credit_link!=='') {
                                     if ($session->claim_credit_url !== '') {
                                     ?>
-                                    <button onclick="window.open('<?=isset($session->claim_credit_url)?$session->claim_credit_url:''?>', '_blank')" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px; background-color: #EF5D21;font-size: 20px; font-weight: 700" ><?=($session->claim_credit_link !== '')?$session->claim_credit_link:''?></button>
+                                    <button onclick="window.open('<?=isset($session->claim_credit_url)?$session->claim_credit_url:''?>', '_blank')" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px; <?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'#EF5D21':'#EF5D21'?>; font-size: 20px; font-weight: 700" ><?=($session->claim_credit_link !== '')?$session->claim_credit_link:''?></button>
                                     <?php }} ?>
 
                                     <?php if(isset($isSessionWithPoll) && !empty($isSessionWithPoll)) : ?>
-                                        <button id="polling-guide-btn" style="width: 95%; height: 70px; background-color: #EF5D21;font-size: 20px; font-weight: 700" class="btn btn-sm mt-3 text-white" >Polling Guide <i class="fa fa-book"></i></button>
+                                        <button id="polling-guide-btn" style="width: 95%; height: 70px;  <?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'#EF5D21':'#EF5D21'?>;font-size: 20px; font-weight: 700" class="btn btn-sm mt-3 text-white" >Polling Guide <i class="fa fa-book"></i></button>
                                     <?php endif ?>
 
                                     <!-- <button id="live_support-btn" onclick="openLiveSupportChat()" style="display:block;width: 95%; height: 70px; margin-bottom: 30px; background-color: #EF5D21;font-size: 20px; font-weight: 700" class="btn btn-sm mt-3 text-white" >Live Technical Support <i class="far fa-life-ring"></i></button> -->
