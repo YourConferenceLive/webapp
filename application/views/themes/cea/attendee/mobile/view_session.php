@@ -601,17 +601,17 @@ $(function(){
 	socket.on('reload-attendee-signal', function () {
 			// location.reload();session_end_datetime
 		const sessionEnd = new Date(session_end_datetime);
-	
-		console.log('end'+ sessionEnd)
-		console.log('now'+ new Date())
+		const sessionEndTime = sessionEnd.getTime();
+		const dateNow = new Date() ;
+		const dateNowTime = dateNow.getTime();
 		
-		if(sessionEnd < new Date() ){
+		if(sessionEndTime < dateNowTime){
 			window.location = (project_url+"/mobile/sessions/room/<?=$session->room_id?>")
 		}else{
 			location.reload();
 		}
 			
-		});
+	});
 
 	function markLaunchedPoll(poll_id){
 		$.post(project_url+"/mobile/sessions/markLaunchedPoll/"+poll_id, function (results) {
