@@ -36,7 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 				<div class="modal-footer">
-					<!-- <span id="howMuchSecondsLeft" ></span> -->
+					<span id="howMuchSecondsLeft" ></span>
 					<!-- <button id="voteBtn" type="button" class="btn text-white" style="<?= isset($view_settings) && $view_settings?( $view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'btn-primary':'btn-primary'?>"><i class="fas fa-vote-yea"></i> Vote</button> -->
 				</div>
 			</div>
