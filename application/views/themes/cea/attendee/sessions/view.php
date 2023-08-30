@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-//print_r($_SESSION['project_sessions']["project_{$this->project->id}"]);exit;
+// print_r($session->session_end_redirect);exit;
 
 ?>
 <style>
@@ -1198,27 +1198,29 @@ function sessionEndAutoRedirect(){
  
 	let sessionEndDate = new Date(session_end_datetime)
 	const sessionEndDateTimeStamp = sessionEndDate.getTime();
-	console.log(sessionEndDateTimeStamp);
 
 	const currentDate = new Date();
 	const currentDateTimeStamp = currentDate.getTime();
-	console.log(currentDateTimeStamp);
 	
 	const timeDifference = sessionEndDateTimeStamp - currentDateTimeStamp;
 
-    if (timeDifference <= 0) {
-      clearInterval(countdownInterval);
-	  if(session_redirect !== ''){
-		window.location.href= project_url+"/sessions/join/"+session_redirect
-	  }
-    } else {
-      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+	if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
+		console.log(session_redirect)
+		if (timeDifference <= 0) {
+		clearInterval(countdownInterval);
+			// window.location.href= project_url+"/sessions/join/"+session_redirect
 
-      console.log(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-    }
+		} else {
+		const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+		const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+		const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+		if(timeDifference < 5000){
+			toastr.info("Redirecting in "+`${seconds}s`);
+		}
+		}
+	}
   }, 1000); // Update every 1 second
 }
 </script>

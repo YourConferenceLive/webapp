@@ -1,7 +1,7 @@
 <?php
-//echo "<pre>";
-//print_r($sessions);
-//exit("</pre>");
+// echo "<pre>";
+// print_r($session_list);
+// exit("</pre>");
 ?>
 <!--Add Session Modal-->
 <style>
@@ -114,7 +114,7 @@
 									<div class="form-group" id="sessionEndRedirectDiv" style="display: block;">
 										<label for="sessionEndRedirect">Session End Redirect</label>
 										<select name="sessionEndRedirect" id="sessionEndRedirect" class="form-control">
-											<option value="null">-- Select Session Redirect --</option>
+											<option value="">-- Select Session Redirect --</option>
 											<?php if(!empty($session_list)): 
 												foreach($session_list as $key => $session): ?>
 												<option  value="<?=$session->id?>"> Session (<?=$session->id?>) <?=$session->name?></option>
