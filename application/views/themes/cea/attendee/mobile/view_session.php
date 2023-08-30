@@ -140,7 +140,7 @@
 	let attendee_Lname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let attendee_FullName = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'].' '.$_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
-
+	let room_id = "<?=($session->room_id && $session->room_id !== null) ? $session->room_id : ''?>"
 
 	var timeSpentOnSessionFromDb;
 	var timeSpentUntilNow;
@@ -234,6 +234,10 @@ $(function(){
 			});
 		}
 	});
+
+	$("#returnBtn").on('click', function(){
+		window.location.href = project_url+"/mobile/sessions/room/"+room_id;
+	})
 
 })
 
@@ -597,17 +601,17 @@ $(function(){
 	socket.on('reload-attendee-signal', function () {
 			// location.reload();session_end_datetime
 		const sessionEnd = new Date(session_end_datetime);
-	
-		console.log('end'+ sessionEnd)
-		console.log('now'+ new Date())
+		const sessionEndTime = sessionEnd.getTime();
+		const dateNow = new Date() ;
+		const dateNowTime = dateNow.getTime();
 		
-		if(sessionEnd < new Date() ){
+		if(sessionEndTime < dateNowTime){
 			window.location = (project_url+"/mobile/sessions/room/<?=$session->room_id?>")
 		}else{
 			location.reload();
 		}
 			
-		});
+	});
 
 	function markLaunchedPoll(poll_id){
 		$.post(project_url+"/mobile/sessions/markLaunchedPoll/"+poll_id, function (results) {

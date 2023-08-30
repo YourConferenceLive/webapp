@@ -1,7 +1,7 @@
 <?php
-//echo "<pre>";
-//print_r($sessions);
-//exit("</pre>");
+// echo "<pre>";
+// print_r($session_list);
+// exit("</pre>");
 ?>
 <!--Add Session Modal-->
 <style>
@@ -109,6 +109,18 @@
 									<div class="form-group" id="sessionExternalUrlDiv" style="display: none;">
 										<label for="sessionExternalUrl">External Meeting URL (eg; Zoom Link)</label>
 										<input type="text" class="form-control" id="sessionExternalUrl" name="sessionExternalUrl" placeholder="This link will open in a new tab (unless user blocked pop opening windows) once the meeting starts (always prefix the URL with protocol ie; http/https)">
+									</div>
+
+									<div class="form-group" id="sessionEndRedirectDiv" style="display: block;">
+										<label for="sessionEndRedirect">Session End Redirect</label>
+										<select name="sessionEndRedirect" id="sessionEndRedirect" class="form-control">
+											<option value="">-- Select Session Redirect --</option>
+											<?php if(!empty($session_list)): 
+												foreach($session_list as $key => $session): ?>
+												<option  value="<?=$session->id?>"> Session (<?=$session->id?>) <?=$session->name?></option>
+											<?php endforeach?>
+											<?php endif ?>
+										</select>
 									</div>
 
 									<div class="form-group" id="sessionClaimCreditDiv">

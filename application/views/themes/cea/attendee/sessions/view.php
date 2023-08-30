@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-//print_r($_SESSION['project_sessions']["project_{$this->project->id}"]);exit;
+// print_r($session->session_end_redirect);exit;
 
 ?>
 <style>
@@ -326,6 +326,8 @@ body{overflow: hidden;background-color: #151515;}
 	let attendee_FullName = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'].' '.$_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
 
+	let session_redirect = "<?=$session->session_end_redirect?>";
+	
 	var timeSpentOnSessionFromDb;
 	var timeSpentUntilNow;
 
@@ -408,6 +410,7 @@ body{overflow: hidden;background-color: #151515;}
 	})
 
 	$(function (){
+		sessionEndAutoRedirect();
 		ask_a_rep();
 		iframeResize();
 		$(window).on('resize', function(){
@@ -1190,4 +1193,32 @@ body{overflow: hidden;background-color: #151515;}
 		});
 	})
 
+function sessionEndAutoRedirect(){
+	const countdownInterval = setInterval(function () {
+ 
+	let sessionEndDate = new Date(session_end_datetime)
+	const sessionEndDateTimeStamp = sessionEndDate.getTime();
+
+	const currentDate = new Date();
+	const currentDateTimeStamp = currentDate.getTime();
+	
+	const timeDifference = sessionEndDateTimeStamp - currentDateTimeStamp;
+
+	if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
+		if (timeDifference <= 0) {
+		clearInterval(countdownInterval);
+			window.location.href= project_url+"/sessions/join/"+session_redirect
+		} else {
+		const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+		const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+		const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+			if(timeDifference < 5000){
+				toastr.info("Redirecting in "+`${seconds}s`);
+			}
+		}
+	}
+  }, 1000); // Update every 1 second
+}
 </script>
