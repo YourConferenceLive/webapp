@@ -140,7 +140,7 @@
 	let attendee_Lname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let attendee_FullName = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'].' '.$_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
-
+	let room_id = "<?=($session->room_id && $session->room_id !== null) ? $session->room_id : ''?>"
 
 	var timeSpentOnSessionFromDb;
 	var timeSpentUntilNow;
@@ -234,6 +234,10 @@ $(function(){
 			});
 		}
 	});
+
+	$("#returnBtn").on('click', function(){
+		window.location.href = project_url+"/mobile/sessions/room/"+room_id;
+	})
 
 })
 
