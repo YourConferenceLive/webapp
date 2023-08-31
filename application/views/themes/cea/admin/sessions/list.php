@@ -236,6 +236,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					}else{
 						$('#currentSessionLogoDiv').hide();
 					}
+					
+					if(session.session_logo  !== '') {
+							$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + session.mobile_session_background);
+							$('#currentMobileSessionBackgroundDiv').show();
+					}else
+						$('#currentMobileSessionBackgroundDiv').hide();
 	
 					$('#sponsorLogoWidth').val(session.sponsor_logo_width);
 					$('#sponsorLogoHeight').val(session.sponsor_logo_height);
