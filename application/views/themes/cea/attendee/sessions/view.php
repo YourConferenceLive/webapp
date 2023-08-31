@@ -327,7 +327,8 @@ body{overflow: hidden;background-color: #151515;}
 	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
 
 	let session_redirect = "<?=$session->session_end_redirect?>";
-	
+	let sessionAutoRedirectStatus = "<?=$session->auto_redirect_status?>";
+
 	var timeSpentOnSessionFromDb;
 	var timeSpentUntilNow;
 
@@ -410,7 +411,11 @@ body{overflow: hidden;background-color: #151515;}
 	})
 
 	$(function (){
-		sessionEndAutoRedirect();
+		
+		if(sessionAutoRedirectStatus == 1){
+			sessionEndAutoRedirect();
+		}
+		
 		ask_a_rep();
 		iframeResize();
 		$(window).on('resize', function(){
@@ -896,10 +901,13 @@ body{overflow: hidden;background-color: #151515;}
 			$('#header_claim_credit').css('display','none')
 		}
 
-		socket.on('reload-attendee-signal', function () {
+		socket.on('reload-attendee-signal', function (data) {
+			console.log(data);
+			if(sessionId == data.session_id){
 				update_viewsessions_history_open();
 				saveTimeSpentOnSessionAfterSessionFinished();
-
+				sessionEndAutoRedirect();
+			}
 		});
 
 	})
