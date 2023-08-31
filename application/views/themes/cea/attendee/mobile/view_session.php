@@ -36,7 +36,7 @@
 
                         <div class="row row2 d-flex justify-content-center mb-3">
                             <div class="col-12" style=" margin-left: 20px; margin-right: 20px;">
-                                <div class="card text-center align-items-center justify-content-center align-content-center mx-auto mt-2" style="background-image: url(https://yourconference.live/CCO/front_assets/images/bg_login.png); top: 0; padding-top: 0px; height: 100%; background-size: cover">
+                                <div class="card text-center align-items-center justify-content-center align-content-center mx-auto mt-2" style="background-image:url(<?=((!empty($session->mobile_session_background) || $session->mobile_session_background !== null)? ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/images/background/'.$session->mobile_session_background : "https://yourconference.live/CCO/front_assets/images/bg_login.png" )?>); top: 0; padding-top: 0px; height: 100%; background-size: cover">
                                     <?php if($session->header_question == 1):?>
                                     <button id="resource-btn" type="button"  class="btn btn-sm text-white" style="width: 95%; height: 70px; margin-top: 30px; <?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'#EF5D21':'#EF5D21'?>; font-size: 20px; font-weight: 700">Resources <i class="fas fa-paperclip"></i></button>
                                     <?php endif; ?>
