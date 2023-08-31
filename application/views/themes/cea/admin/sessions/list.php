@@ -653,7 +653,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						'		<a target="_blank" href="'+project_admin_url+'/sessions/polls/'+session.id+'">' +
 						'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
 						'		</a>' +
-						'		<button class="reload_attendee btn btn-sm btn-danger m-1"><i class="fas fa-sync"></i> Reload Atendee</button>' +
+						'		<button class="reload_attendee btn btn-sm btn-danger m-1" session-id="'+session.id+'"><i class="fas fa-sync"></i> Reload Atendee</button>' +
 						'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'" room_id="'+session.room_id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
 						'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
 						'	</td>' +
@@ -828,7 +828,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							successMsg,
 							'success'
 						)
-						socket.emit('reload-attendee');
+						socket.emit('reload-attendee',{'session_id':$(this).attr('session-id')});
 					}
 				})
 			});
