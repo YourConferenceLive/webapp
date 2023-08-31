@@ -436,6 +436,18 @@
 											</div>
 										</div>
 									</div>
+									<div class="form-group">
+										<label>Mobile Session Background</label>
+										<div class="custom-file">
+											<input type="file" accept="image/png, image/jpeg" class="custom-file-input" id="mobileSessionBackground" name="mobileSessionBackground" previewImage="currentMobileSessionBackground">
+											<label class="custom-file-label" for="sessionLogo">Choose file</label>
+										</div>
+									</div>
+									<div class="form-group" id="currentMobileSessionBackgroundDiv" style="display: none;">
+										<label for="currentMobileSessionBackgroundDiv"><small>Current Session Logo</small></label>
+										<br>
+										<img id="currentMobileSessionBackground" src="" width="200px">
+									</div>
 
 									<div class="form-group">
 										<label>Session End</label><br>
@@ -682,6 +694,12 @@
 			$('#isSessionLogoRemoved').val('0');
 			previewUpload(this);
 			$('#currentSessionLogoDiv').show();
+		})
+
+		$('#mobileSessionBackground').on('change', function(){
+			$('#isSponsorLogoRemoved').val('0');
+			previewUpload(this);
+			$('#currentMobileSessionBackgroundDiv').show();
 		})
 
 	});
@@ -962,6 +980,12 @@
 						}else
 							$('#currentSessionLogoDiv').hide();
 	
+						if(data.session.session_logo  !== '') {
+							$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + data.session.mobile_session_background);
+							$('#currentMobileSessionBackgroundDiv').show();
+						}else
+							$('#currentMobileSessionBackgroundDiv').hide();
+
 						listSessions();
 						toastr.success(sessionUpdateText);
 					}else if(data.status == 'warning'){
