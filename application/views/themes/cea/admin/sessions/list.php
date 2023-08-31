@@ -782,8 +782,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 				// Find the translations for the dialog text
 				let dialogTitle = 'Are you sure?';
-				let dialogText = "You won't be able to revert this!";
-				let confirmButtonText = 'Yes, delete it!';
+				let dialogText = "";
+				let confirmButtonText = 'Yes, reload it!';
 				let cancelButtonText = 'Cancel';
 
 				// Toast
