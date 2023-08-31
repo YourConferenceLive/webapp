@@ -126,7 +126,7 @@
 									<div class="custom-control custom-switch mb-2">
 										<input type="checkbox" class="custom-control-input" id="autoRedirectSwitch" name="autoRedirectSwitch">
 										<label class="custom-control-label" for="autoRedirectSwitch">Auto Redirect
-										<i class="fas fa-info-circle" title="This is to switch the redirect from manual to automatic. Auto (ON) will be redirect automatically when session ends.(OFF) Will need the admin to trigger redirect button. Make sure that redirect is set before the attendee enters the session."></i>
+										<i class="fas fa-info-circle" title="This is to switch the redirect from manual to automatic. Auto (ON) will be redirect automatically when session ends.(OFF) Will need the admin to trigger reload button. Make sure that redirect is set before the attendee enters the session."></i>
 										</label>
 									</div>
 					
