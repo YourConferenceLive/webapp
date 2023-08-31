@@ -420,6 +420,7 @@ class Sessions_Model extends CI_Model
 			'button2_link' => (isset($session_data['button2_link'])?trim($session_data['button2_link']):''),
 			'button3_text' => (isset($session_data['button3_text'])?trim($session_data['button3_text']):''),
 			'button3_link' => (isset($session_data['button3_link'])?trim($session_data['button3_link']):''),
+			'auto_redirect_status' => (isset($session_data['autoRedirectSwitch']) && ($session_data['autoRedirectSwitch']=='on') ? 1:0),
 		);
 
 		if($session_data['isSponsorLogoRemoved'] == 0){
@@ -637,6 +638,7 @@ class Sessions_Model extends CI_Model
 			'button2_link' => (isset($session_data['button2_link'])?trim($session_data['button2_link']):''),
 			'button3_text' => (isset($session_data['button3_text'])?trim($session_data['button3_text']):''),
 			'button3_link' => (isset($session_data['button3_link'])?trim($session_data['button3_link']):''),
+			'auto_redirect_status' => (isset($session_data['autoRedirectSwitch']) && ($session_data['autoRedirectSwitch']=='on') ? 1:0),
 		);
 
 		if($session_end_image != '' && $session_end_image != null){

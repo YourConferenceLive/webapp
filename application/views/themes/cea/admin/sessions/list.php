@@ -272,6 +272,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	
 					$('#sessionColorPreset').val(session.attendee_settings_id);
 					$('#sessionEndRedirect').val(session.session_end_redirect);
+
+					if(session.auto_redirect_status == 1){
+						$('#autoRedirectSwitch').attr('checked','checked')
+					}else{
+						$('#autoRedirectSwitch').removeAttr('checked')
+					}
 					// Moderators
 					$('select[name="sessionModerators[]"] option').prop('selected', false);
 					$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
