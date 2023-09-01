@@ -896,7 +896,7 @@
 					if (data.status == 'success')
 					{
 						let getFrom =  $('#session_list_type').find(':selected').attr('url')
-						listSessions();
+						listSessions(getFrom);
 						toastr.success(sessionText);
 						$('#addSessionModal').modal('hide');
 	
@@ -995,7 +995,7 @@
 							$('#currentMobileSessionBackgroundDiv').hide();
 
 						let getFrom =  $('#session_list_type').find(':selected').attr('url')
-						listSessions();
+						listSessions(getFrom);
 						toastr.success(sessionUpdateText);
 					}else if(data.status == 'warning'){
 						toastr.warning(data.msg);
