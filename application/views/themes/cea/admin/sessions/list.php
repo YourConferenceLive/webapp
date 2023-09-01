@@ -94,19 +94,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <script>
 	$(function () {
-
-			// getAllJson
-		let session_list_type = $('#session_list_type').find(':selected').val();
-		let getFrom = $('#session_list_type').attr('url');
-		// console.log(session_list_type);return false;
-	
-		(getFrom == undefined)?getFrom="getAllJson":'';
-		listSessions(getFrom);
+	// let session_list_type = $('#session_list_type').find(':selected').val();
+		// let getFrom = $('#session_list_type').attr('url');
+		listSessions();
 		
 		$('#session_list_type').on('change', function(){
-			getFrom =  $('#session_list_type').find(':selected').attr('url')
-			console.log(getFrom)
-			listSessions(getFrom);
+			listSessions();
 		})
 
 		$('#sessionsTable').DataTable({
@@ -464,8 +457,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							response = JSON.parse(response);
 	
 							if (response.status == 'success') {
-								let getFrom =  $('#session_list_type').find(':selected').attr('url')
-								listSessions(getFrom);
+								listSessions();
 								toastr.success(session_name+" "+removedText);
 							}else{
 								Swal.fire(
@@ -499,11 +491,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		// });
 	});
 
-	function listSessions(getFrom = null)
+	function listSessions()
 	{
-		if(getFrom == null)
-		getFrom = "getAllJson";
-
+		let getFrom = $('#session_list_type').find(':selected').attr('url');
+		console.log(getFrom)
 		const translationData = fetchAllText(); // Fetch the translation data
 
 		translationData.then((arrData) => {
