@@ -362,6 +362,19 @@ class Sessions_Model extends CI_Model
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session end image', 'technical_data'=>$this->upload->display_errors());
 		}
 
+		$mobileSessionBackground = '';
+		if (isset($_FILES['mobileSessionBackground']) && $_FILES['mobileSessionBackground']['name'] != '')
+		{
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['file_name'] = $mobileSessionBackground = rand().'_'.str_replace(' ', '_', $_FILES['mobileSessionBackground']['name']);
+			$config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/images/background/';
+
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+			if ( ! $this->upload->do_upload('mobileSessionBackground'))
+				return array('status' => 'failed', 'msg'=>'Unable to upload mobile session background', 'technical_data'=>$this->upload->display_errors());
+		}
+
 		$start_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['startDateTime']);
 		$start_time_mysql = $start_time_object->format('Y-m-d H:i:s');
 
