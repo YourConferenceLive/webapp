@@ -904,9 +904,12 @@ body{overflow: hidden;background-color: #151515;}
 		socket.on('reload-attendee-signal', function (data) {
 			console.log(data);
 			if(sessionId == data.session_id){
-				update_viewsessions_history_open();
-				saveTimeSpentOnSessionAfterSessionFinished();
-				sessionEndAutoRedirect();
+				if(sessionAutoRedirectStatus == 1){
+					sessionEndAutoRedirect();
+				}else{
+					update_viewsessions_history_open();
+					saveTimeSpentOnSessionAfterSessionFinished();
+				}
 			}
 		});
 
