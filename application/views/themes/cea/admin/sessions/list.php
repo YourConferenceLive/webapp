@@ -464,6 +464,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							response = JSON.parse(response);
 	
 							if (response.status == 'success') {
+								let getFrom =  $('#session_list_type').find(':selected').attr('url')
 								listSessions(getFrom);
 								toastr.success(session_name+" "+removedText);
 							}else{
