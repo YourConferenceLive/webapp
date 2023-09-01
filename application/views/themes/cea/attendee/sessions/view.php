@@ -904,7 +904,7 @@ body{overflow: hidden;background-color: #151515;}
 		socket.on('reload-attendee-signal', function (data) {
 			console.log(data);
 			if(sessionId == data.session_id){
-				if(sessionAutoRedirectStatus == 1){
+				if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
 					sessionEndAutoRedirect();
 				}else{
 					update_viewsessions_history_open();
