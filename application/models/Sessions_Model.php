@@ -447,7 +447,7 @@ class Sessions_Model extends CI_Model
 			$data['session_end_image'] = $session_end_image;
 		}
 
-		if($mobileSessionBackground != '' && $mobileSessionBackground != null){
+		if(isset($mobileSessionBackground) && $mobileSessionBackground != '' && $mobileSessionBackground != null){
 			$data['mobile_session_background'] = $mobileSessionBackground;
 		}
 

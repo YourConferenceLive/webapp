@@ -134,8 +134,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				backdrop: 'static',
 				keyboard: false
 			});
-
-
+			
+			// Fix adding error 
+			$('#sessionId').val(0);
+			console.log($('#sessionId').val());
 		});
 
 		$('#sessionsTable').on('click', '.manageSession', function () {
