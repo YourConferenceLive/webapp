@@ -195,6 +195,8 @@ class Mobile_Sessions_Model extends CI_Model
 		$this->db->where('is_deleted', 0);
 		$this->db->where('project_id', $this->project->id);
 		$this->db->where('room_id', $room_id);
+		$this->db->order_by('(sessions.start_date_time)', 'ASC');
+		$this->db->order_by('(sessions.end_date_time)', 'ASC');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 		{
