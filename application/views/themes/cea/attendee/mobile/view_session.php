@@ -17,7 +17,7 @@
                                 <div class="card m-auto text-center">
                                     <div class="row">
                                         <div class="col-sm-12 " style="margin: 30px 0px" >
-                                            <h6 style="color:blue; text-wrap:nowrap; font-size:4vw "> <b> Welcome to the<?=$this->project->name?> Learner Resource App</h6>
+                                            <h6 style="color:blue; text-wrap:nowrap; font-size:4vw "> <b> Welcome to the <?=$this->project->name?> Learner Resource App</h6>
                                             
                                             <div style="height: 1px;background-color: #EF5D21;" class="my-3"></div>
 
