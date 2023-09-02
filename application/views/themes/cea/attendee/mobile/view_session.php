@@ -17,13 +17,13 @@
                                 <div class="card m-auto text-center">
                                     <div class="row">
                                         <div class="col-sm-12 " style="margin: 30px 0px" >
-                                            <h6 style="color:blue; text-wrap:nowrap; font-size:4vw "> <b> Welcome to the <?=$this->project->name?> Learner Resource App</h6>
+                                            <h6 style="color:blue; text-wrap:nowrap; font-size:4vw "> <b> Welcome to the <?=$this->project->name?> Learner Resource App </b></h6>
                                             
                                             <div style="height: 1px;background-color: #EF5D21;" class="my-3"></div>
 
                                             <?php if(isset($session) && !empty($session)): ?>
 <!--													--><?php //echo "<pre>"; print_r($session);  exit?>
-                                                <b><p class="mx-3" id="sessionTitle" style="font-size: 19px; line-height: 1.2"><?=$session->name?></b>
+                                               <p class="mx-3" id="sessionTitle" style="font-size: 19px; line-height: 1.2; font-weight: 900"><?=$session->name?>
                                                 <?php if(isset ($session->presenters) && !empty($session->presenters)): ?>
                                                     <?php foreach ($session->presenters as $presenter):?>
                                                         <div id="moderators" style="font-size: 18px;">
