@@ -1,4 +1,9 @@
-
+<style>
+	.card button{
+		position:absolute;
+		bottom:10px;
+	}
+	</style>
 <section class="parallax" style="background-color: #FFFFFF;" >
     <!--<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/Sessions_BG_screened.jpg); top: 0; padding-top: 0px;">-->
     <div class="container-fluid">
@@ -12,8 +17,8 @@
                                 <div class="card m-auto text-center">
                                     <div class="row">
                                         <div class="col-sm-12 " style="margin: 30px 0px" >
-                                            <h6 style="color:#EF5D21; font-size: 18px">Welcome to the</h6>
-                                            <h4  style="color:#EF5D21"><b><?=$this->project->name?> Learner Resource App</b></h4>
+                                            <h6 style="color:blue; text-wrap:nowrap; font-size:4vw "> <b> Welcome to the<?=$this->project->name?> Learner Resource App</h6>
+                                            
                                             <div style="height: 1px;background-color: #EF5D21;" class="my-3"></div>
 
                                             <?php if(isset($session) && !empty($session)): ?>
