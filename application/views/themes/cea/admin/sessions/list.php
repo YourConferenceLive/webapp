@@ -36,8 +36,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 								<select class="form-control" id="session_list_type">
 									<option value="all_sessions" url="getAllJson">Sessions</option>
 									<option value="today_sessions" url="getAllToday">Today Sessions</option>
-										<option value="tomorrow_sessions" url="getAllTomorrow">Tomorrow Sessions</option>
+									<option value="tomorrow_sessions" url="getAllTomorrow">Tomorrow Sessions</option>
 									<option value="archived_sessions" url="getAllArchived">Archived Sessions</option>
+									<option value="continuing_sessions" url="getAllContinuing">Continuing Sessions</option>
 								</select>
 							</h3>
 							<button class="add-session-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
@@ -94,19 +95,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <script>
 	$(function () {
-
-			// getAllJson
-		let session_list_type = $('#session_list_type').find(':selected').val();
-		let getFrom = $('#session_list_type').attr('url');
-		// console.log(session_list_type);return false;
-	
-		(getFrom == undefined)?getFrom="getAllJson":'';
-		listSessions(getFrom);
+		$('#session_list_type').val(getFilterCookie())
+		listSessions();
 		
 		$('#session_list_type').on('change', function(){
-			getFrom =  $('#session_list_type').find(':selected').attr('url')
-			console.log(getFrom)
-			listSessions(getFrom);
+			saveFilterCookie($(this).val());
+			listSessions();
 		})
 
 		$('#sessionsTable').DataTable({
@@ -117,6 +111,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			"info": true,
 			"autoWidth": false,
 			"responsive": true,
+			"order": [[ 1, 'asc'], [ 2, 'asc'], [ 3,  'asc']],
 		});
 
 		$('.add-session-btn').on('click', function () {
@@ -141,8 +136,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				backdrop: 'static',
 				keyboard: false
 			});
-
-
+			
+			// Fix adding error 
+			$('#sessionId').val(0);
+			console.log($('#sessionId').val());
 		});
 
 		$('#sessionsTable').on('click', '.manageSession', function () {
@@ -464,8 +461,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							response = JSON.parse(response);
 	
 							if (response.status == 'success') {
-								let getFrom =  $('#session_list_type').find(':selected').attr('url')
-								listSessions(getFrom);
+								listSessions();
 								toastr.success(session_name+" "+removedText);
 							}else{
 								Swal.fire(
@@ -499,11 +495,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		// });
 	});
 
-	function listSessions(getFrom = null)
+	function listSessions()
 	{
-		if(getFrom == null)
-		getFrom = "getAllJson";
-
+		let getFrom = $('#session_list_type').find(':selected').attr('url');
+		console.log(getFrom)
 		const translationData = fetchAllText(); // Fetch the translation data
 
 		translationData.then((arrData) => {
@@ -626,13 +621,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						'	<td>' +
 						'		'+session.id+
 						'	</td>' +
-						'	<td>' +
+						'	<td data-sort="'+session.start_date_time+'">' +
 						'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("MMMM Do (dddd)")+
 						'	</td>' +
-						'	<td>' +
+						'	<td data-sort="'+session.start_date_time+'">' +
 						'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 						'	</td>' +
-						'	<td>' +
+						'	<td data-sort="'+session.start_date_time+'">' +
 						'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 						'	</td>' +
 						'	<td>' +
@@ -693,7 +688,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					"info": true,
 					"autoWidth": true,
 					"responsive": false,
-					"order": [[ 0, "desc" ]],
+					"order": [[ 1, 'asc'], [ 2, 'asc'], [ 3,  'asc']],
 					"destroy": true
 				});
 	
@@ -969,4 +964,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				})
 			})
 	}
+
+	// Saving Filter Cookies
+	// $(function(){
+		
+	// 	let sortOrder = 'asc';
+	// 	$('#sessionsTable').on('click', 'thead th', function(){
+
+	// 		let savedSortOrder = (getSortOrderCookie()[0]);
+	// 		if(savedSortOrder){
+	// 			setOrderCookie($(this).index(), savedSortOrder);
+	// 		}else{
+	// 			setOrderCookie($(this).index(), sortOrder);
+	// 		}
+	// 		return false;
+	// 	})
+	// })
+
+	// function getSortOrderCookie(){
+	// 	let savedSortOrder = Cookies.get('datatable_sort_order');
+	// 	let savedSortColumn = Cookies.get('datatable_column');
+	// 	if (savedSortOrder) {
+	// 		sortOrder = savedSortOrder;
+	// 	}else{
+	// 		sortOrder = 'asc';
+	// 	}
+
+	// 	(savedSortColumn)?savedSortColumn:0
+
+	// 	return [savedSortOrder, savedSortColumn];
+	// }
+	// function setOrderCookie(columnIndex, savedSortOrder){ 
+	// 	let newSort = (savedSortOrder === "desc") ? "asc" : "desc"
+	// 	Cookies.set('datatable_sort_order', newSort, { expires: 7 }); // Expires in 7 days
+	// 	Cookies.set('datatable_column', columnIndex, { expires: 7 }); // Expires in 7 days
+	// }
+
+	function saveFilterCookie(filter){
+		Cookies.set('session_filter', filter, { expires: 7 }); // Expires in 7 days
+	}
+	function getFilterCookie(){
+		return (Cookies.get('session_filter'))?Cookies.get('session_filter'):'all_sessions'
+	}
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>

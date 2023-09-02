@@ -90,7 +90,33 @@ class Sessions_Model extends CI_Model
 		$this->db->where('s.is_deleted', 0);
 		$this->db->where('s.project_id', $this->project->id);
 		$this->db->where('DATE(s.start_date_time)', $date);
-		$this->db->order_by('s.start_date_time', 'ASC');
+		$this->db->order_by('s.start_date_time', 'asc');
+		$sessions = $this->db->get();
+		
+		if ($sessions->num_rows() > 0)
+		{
+			foreach ($sessions->result() as $session)
+			{
+				$session->briefcase = $this->getUserBriefcasePerSession($session->id);
+				$session->presenters = $this->getPresentersPerSession($session->id);
+				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
+				$session->moderators = $this->getModeratorsPerSession($session->id);
+				$session->invisible_moderators = $this->getInvisibleModeratorsPerSession($session->id);
+			}
+			return $sessions->result();
+		}
+		return new stdClass();
+	}
+
+	public function getAllContinuing($date)
+	{
+		$this->db->select('s.*, st.name as session_track');
+		$this->db->from('sessions s');
+		$this->db->join('session_tracks st', 's.track = st.id', 'left');
+		$this->db->where('s.is_deleted', 0);
+		$this->db->where('s.project_id', $this->project->id);
+		$this->db->where('DATE(s.end_date_time) >', $date);
+		$this->db->order_by('s.start_date_time', 'asc');
 		$sessions = $this->db->get();
 		
 		if ($sessions->num_rows() > 0)
@@ -362,6 +388,19 @@ class Sessions_Model extends CI_Model
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session end image', 'technical_data'=>$this->upload->display_errors());
 		}
 
+		$mobileSessionBackground = '';
+		if (isset($_FILES['mobileSessionBackground']) && $_FILES['mobileSessionBackground']['name'] != '')
+		{
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['file_name'] = $mobileSessionBackground = rand().'_'.str_replace(' ', '_', $_FILES['mobileSessionBackground']['name']);
+			$config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/images/background/';
+
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+			if ( ! $this->upload->do_upload('mobileSessionBackground'))
+				return array('status' => 'failed', 'msg'=>'Unable to upload mobile session background', 'technical_data'=>$this->upload->display_errors());
+		}
+
 		$start_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['startDateTime']);
 		$start_time_mysql = $start_time_object->format('Y-m-d H:i:s');
 
@@ -434,7 +473,7 @@ class Sessions_Model extends CI_Model
 			$data['session_end_image'] = $session_end_image;
 		}
 
-		if($mobileSessionBackground != '' && $mobileSessionBackground != null){
+		if(isset($mobileSessionBackground) && $mobileSessionBackground != '' && $mobileSessionBackground != null){
 			$data['mobile_session_background'] = $mobileSessionBackground;
 		}
 

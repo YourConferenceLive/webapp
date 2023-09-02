@@ -85,6 +85,13 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->getFromDay($date));
 	}
 
+	public function getAllContinuing()
+	{
+		$date = date('Y-m-d');
+		echo json_encode($this->sessions->getAllContinuing($date));
+	}
+
+
 	public function getByIdJson($session_id)
 	{
 		echo json_encode($this->sessions->getById($session_id));
