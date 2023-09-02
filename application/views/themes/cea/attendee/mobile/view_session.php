@@ -1,7 +1,7 @@
 <style>
 	.card button{
 		position:absolute;
-		bottom:10px;
+		bottom:60px;
 	}
 	</style>
 <section class="parallax" style="background-color: #FFFFFF;" >
