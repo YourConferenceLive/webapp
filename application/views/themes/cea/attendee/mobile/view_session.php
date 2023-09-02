@@ -23,11 +23,11 @@
 
                                             <?php if(isset($session) && !empty($session)): ?>
 <!--													--><?php //echo "<pre>"; print_r($session);  exit?>
-                                                <b><p class="mx-3" id="sessionTitle" style="font-size: 25px; line-height: 1.2"><?=$session->name?></b>
+                                                <b><p class="mx-3" id="sessionTitle" style="font-size: 19px; line-height: 1.2"><?=$session->name?></b>
                                                 <?php if(isset ($session->presenters) && !empty($session->presenters)): ?>
                                                     <?php foreach ($session->presenters as $presenter):?>
                                                         <div id="moderators" style="font-size: 18px;">
-                                                            <?=$presenter->name.' '.$presenter->surname.', '.$presenter->credentials?>
+                                                            <?=$presenter->name.' '.$presenter->surname.(($presenter->credentials)?', '.$presenter->credentials:'')?>
                                                         </div>
                                                     <?php endforeach;?>
                                                 <?php endif ?>
