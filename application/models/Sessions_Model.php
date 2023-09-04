@@ -2297,8 +2297,6 @@ class Sessions_Model extends CI_Model
 				}
 			}
 
-			print_R($polls);exit;
-
 			$this->db->select('*');
 			$this->db->from('session_questions');
 			$this->db->where("session_id", $sessions_id);
