@@ -44,6 +44,15 @@ class Sessions_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function getAllSessions(){
+		$sessions = $this->db->select('*')->from('sessions')->where('project_id', $this->project->id)->get();
+		if ($sessions->num_rows() > 0)
+		{
+			return $sessions;
+		}
+		return new stdClass();
+	}
+
 	public function getAllArchived()
 	{
 		$this->db->select('s.*, st.name as session_track');
@@ -81,7 +90,33 @@ class Sessions_Model extends CI_Model
 		$this->db->where('s.is_deleted', 0);
 		$this->db->where('s.project_id', $this->project->id);
 		$this->db->where('DATE(s.start_date_time)', $date);
-		$this->db->order_by('s.start_date_time', 'ASC');
+		$this->db->order_by('s.start_date_time', 'asc');
+		$sessions = $this->db->get();
+		
+		if ($sessions->num_rows() > 0)
+		{
+			foreach ($sessions->result() as $session)
+			{
+				$session->briefcase = $this->getUserBriefcasePerSession($session->id);
+				$session->presenters = $this->getPresentersPerSession($session->id);
+				$session->keynote_speakers = $this->getKeynoteSpeakersPerSession($session->id);
+				$session->moderators = $this->getModeratorsPerSession($session->id);
+				$session->invisible_moderators = $this->getInvisibleModeratorsPerSession($session->id);
+			}
+			return $sessions->result();
+		}
+		return new stdClass();
+	}
+
+	public function getAllContinuing($date)
+	{
+		$this->db->select('s.*, st.name as session_track');
+		$this->db->from('sessions s');
+		$this->db->join('session_tracks st', 's.track = st.id', 'left');
+		$this->db->where('s.is_deleted', 0);
+		$this->db->where('s.project_id', $this->project->id);
+		$this->db->where('DATE(s.end_date_time) >', $date);
+		$this->db->order_by('s.start_date_time', 'asc');
 		$sessions = $this->db->get();
 		
 		if ($sessions->num_rows() > 0)
@@ -353,6 +388,19 @@ class Sessions_Model extends CI_Model
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session end image', 'technical_data'=>$this->upload->display_errors());
 		}
 
+		$mobileSessionBackground = '';
+		if (isset($_FILES['mobileSessionBackground']) && $_FILES['mobileSessionBackground']['name'] != '')
+		{
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['file_name'] = $mobileSessionBackground = rand().'_'.str_replace(' ', '_', $_FILES['mobileSessionBackground']['name']);
+			$config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/images/background/';
+
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+			if ( ! $this->upload->do_upload('mobileSessionBackground'))
+				return array('status' => 'failed', 'msg'=>'Unable to upload mobile session background', 'technical_data'=>$this->upload->display_errors());
+		}
+
 		$start_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['startDateTime']);
 		$start_time_mysql = $start_time_object->format('Y-m-d H:i:s');
 
@@ -363,6 +411,7 @@ class Sessions_Model extends CI_Model
 			'project_id' => $this->project->id,
 			'name' => $session_data['sessionName'],
 			'other_language_name' => $session_data['sessionNameOther'],
+			'room_id' => $session_data['roomID'],
 			'description' => $session_data['sessionDescription'],
 			'thumbnail' => $session_photo,
 			'session_logo_width' => $session_data['sessionLogoWidth'],
@@ -395,6 +444,7 @@ class Sessions_Model extends CI_Model
 			'session_end_image' => $session_end_image,
 			'claim_credit_link' => (isset($session_data['claim_credit_link'])?trim($session_data['claim_credit_link']):''),
 			'claim_credit_url' => (isset($session_data['claim_credit_url'])?trim($session_data['claim_credit_url']):''),
+			'session_end_redirect' => (isset($session_data['sessionEndRedirect'])?trim($session_data['sessionEndRedirect']):null),
 			'toolbox_note_text' => (isset($session_data['notes_text'])?trim($session_data['notes_text']):''),
 			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
 			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
@@ -409,6 +459,7 @@ class Sessions_Model extends CI_Model
 			'button2_link' => (isset($session_data['button2_link'])?trim($session_data['button2_link']):''),
 			'button3_text' => (isset($session_data['button3_text'])?trim($session_data['button3_text']):''),
 			'button3_link' => (isset($session_data['button3_link'])?trim($session_data['button3_link']):''),
+			'auto_redirect_status' => (isset($session_data['autoRedirectSwitch']) && ($session_data['autoRedirectSwitch']=='on') ? 1:0),
 		);
 
 		if($session_data['isSponsorLogoRemoved'] == 0){
@@ -416,6 +467,14 @@ class Sessions_Model extends CI_Model
 		}
 		if($session_data['isSessionLogoRemoved'] == 0){
 			$data['sponsor_logo'] = $sessionLogo;
+		}
+
+		if($session_end_image != '' && $session_end_image != null){
+			$data['session_end_image'] = $session_end_image;
+		}
+
+		if(isset($mobileSessionBackground) && $mobileSessionBackground != '' && $mobileSessionBackground != null){
+			$data['mobile_session_background'] = $mobileSessionBackground;
 		}
 
 		$this->db->insert('sessions', $data);
@@ -548,6 +607,20 @@ class Sessions_Model extends CI_Model
 			if ( ! $this->upload->do_upload('sessionEndImage'))
 				return array('status' => 'failed', 'msg'=>'Unable to upload the session end image', 'technical_data'=>$this->upload->display_errors());
 		}
+
+		$mobileSessionBackground = '';
+		if (isset($_FILES['mobileSessionBackground']) && $_FILES['mobileSessionBackground']['name'] != '')
+		{
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['file_name'] = $mobileSessionBackground = rand().'_'.str_replace(' ', '_', $_FILES['mobileSessionBackground']['name']);
+			$config['upload_path'] = FCPATH.'cms_uploads/projects/'.$this->project->id.'/sessions/images/background/';
+
+			$this->load->library('upload', $config);
+			$this->upload->initialize($config);
+			if ( ! $this->upload->do_upload('mobileSessionBackground'))
+				return array('status' => 'failed', 'msg'=>'Unable to upload mobile session background', 'technical_data'=>$this->upload->display_errors());
+		}
+
 		$start_time_object = DateTime::createFromFormat('m/d/Y h:i A', $session_data['startDateTime']);
 		$start_time_mysql = $start_time_object->format('Y-m-d H:i:s');
 
@@ -558,6 +631,7 @@ class Sessions_Model extends CI_Model
 			'project_id' => $this->project->id,
 			'name' => $session_data['sessionName'],
 			'other_language_name' => $session_data['sessionNameOther'],
+			'room_id' => $session_data['roomID'],
 			'description' => $session_data['sessionDescription'],
 			'agenda' => $session_data['sessionAgenda'],
 			'session_type' => $session_data['sessionType'],
@@ -584,6 +658,7 @@ class Sessions_Model extends CI_Model
 			'session_end_text' => (isset($session_data['sessionEndText'])?trim($session_data['sessionEndText']):''),
 			'claim_credit_link' => (isset($session_data['claim_credit_link'])?trim($session_data['claim_credit_link']):''),
 			'claim_credit_url' => (isset($session_data['claim_credit_url'])?trim($session_data['claim_credit_url']):''),
+			'session_end_redirect' => (isset($session_data['sessionEndRedirect'])?trim($session_data['sessionEndRedirect']):null),
 			'toolbox_note_text' => (isset($session_data['notes_text'])?trim($session_data['notes_text']):''),
 			'toolbox_question_text' => (isset($session_data['question_text'])?trim($session_data['question_text']):''),
 			'toolbox_resource_text' => (isset($session_data['resource_text'])?trim($session_data['resource_text']):''),
@@ -602,6 +677,7 @@ class Sessions_Model extends CI_Model
 			'button2_link' => (isset($session_data['button2_link'])?trim($session_data['button2_link']):''),
 			'button3_text' => (isset($session_data['button3_text'])?trim($session_data['button3_text']):''),
 			'button3_link' => (isset($session_data['button3_link'])?trim($session_data['button3_link']):''),
+			'auto_redirect_status' => (isset($session_data['autoRedirectSwitch']) && ($session_data['autoRedirectSwitch']=='on') ? 1:0),
 		);
 
 		if($session_end_image != '' && $session_end_image != null){
@@ -618,6 +694,10 @@ class Sessions_Model extends CI_Model
 //
 		if( $sessionLogo != ''){
 			$data['session_logo'] = $sessionLogo;
+		}
+
+		if($mobileSessionBackground != '' && $mobileSessionBackground != null){
+			$data['mobile_session_background'] = $mobileSessionBackground;
 		}
 
 		if($session_data['isSessionLogoRemoved'] == 1 )
@@ -2151,7 +2231,9 @@ class Sessions_Model extends CI_Model
 							$tbl_poll_voting = $this->db->get();
 							if ($tbl_poll_voting->num_rows() > 0) {
 								foreach ($tbl_poll_voting->result() as $tbl_poll_voting) {
-									$votes[] = (int) $tbl_poll_voting->user_id;
+									if($this->is_random_guest($tbl_poll_voting->user_id)){
+										$votes[] = (int) $tbl_poll_voting->user_id;
+									}
 								}
 							}
 							$options[] = array(
@@ -2410,7 +2492,9 @@ class Sessions_Model extends CI_Model
 							$tbl_poll_voting = $this->db->get();
 							if ($tbl_poll_voting->num_rows() > 0) {
 								foreach ($tbl_poll_voting->result() as $tbl_poll_voting) {
-									$votes[] = (int) $tbl_poll_voting->user_id;
+									if($this->is_random_guest($tbl_poll_voting->user_id)){
+										$votes[] = (int) $tbl_poll_voting->user_id;
+									}
 								}
 							}
 							$options[] = array(
@@ -2597,6 +2681,14 @@ class Sessions_Model extends CI_Model
 		} else {
 			return FALSE;
 		}
+	}
+
+	function is_random_guest($user_id){
+		$result = $this->db->select('*')->from('user')->where(['id'=>$user_id, 'is_random_guest'=>0])->get();
+		if($result->num_rows() > 0) {
+			return true;
+		}
+		return '';
 	}
 
 	function updateShowedResult($poll_id){

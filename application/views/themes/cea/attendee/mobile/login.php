@@ -21,7 +21,7 @@
     }
 </style>
 
-<?php //echo"<pre>"; print_r($sessions);exit;?>
+<?php //echo"<pre>"; print_r($this->project_url);exit;?>
 <section class="parallax" style="background-image: url(https://yourconference.live/CCO/front_assets/images/bg_login.png); top: 0; padding-top: 0; height: 100vh" >
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -122,7 +122,7 @@
 			let password = $('#password').val();
 			let session_id = $('#sess_id').val();
 
-			$.post( "<?=$this->project_url.'/authentication/login'?>",
+			$.post( "<?=$this->project_url.'/authentication/mobile_login'?>",
 				{
 					email: email,
 					password: password,

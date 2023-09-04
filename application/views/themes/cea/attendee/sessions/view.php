@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-//print_r($_SESSION['project_sessions']["project_{$this->project->id}"]);exit;
+// print_r($session->session_end_redirect);exit;
 
 ?>
 <style>
@@ -298,17 +298,12 @@ body{overflow: hidden;background-color: #151515;}
 		</div>
 	</div>
 </div>
-<?php
-if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
-	foreach($view_settings as $music_setting){
-		if ($music_setting->poll_music != "") {
-			?>
-			<audio allow="autoplay" id="audio_<?=$this->project->id?>" src="<?= ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$music_setting->poll_music ?>" ></audio>
-			<?php
-		}
-	}
-}
-?>
+<?php if (isset($view_settings) && !empty($view_settings[0]->poll_music)):
+		if ($view_settings[0]->poll_music != "") : ?>
+			<audio allow="autoplay" id="audio_<?=$this->project->id?>" src="<?= ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$view_settings[0]->poll_music ?>" ></audio>
+
+<?php endif; endif ?>
+
 
 <input type="hidden" id="logs_id" value="">
 <style>
@@ -330,6 +325,9 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	let attendee_Lname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let attendee_FullName = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'].' '.$_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
+
+	let session_redirect = "<?=$session->session_end_redirect?>";
+	let sessionAutoRedirectStatus = "<?=$session->auto_redirect_status?>";
 
 	var timeSpentOnSessionFromDb;
 	var timeSpentUntilNow;
@@ -413,6 +411,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	})
 
 	$(function (){
+		
+		if(sessionAutoRedirectStatus == 1){
+			sessionEndAutoRedirect();
+		}
+		
 		ask_a_rep();
 		iframeResize();
 		$(window).on('resize', function(){
@@ -625,7 +628,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		});
 
 		socket.on('start_poll_timer_notification', (data)=> {
-			console.log(data);
+			// console.log('here');
+			// console.log(data);
 			if($('#pollId').val() == data.id) {
 				var timeleft = data.timer;
 				var downloadTimer = setInterval(function () {
@@ -638,25 +642,8 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 						$('#voteBtn').attr('disabled', 'disabled');
 						$('#pollModal').modal('hide');
 						if (data.show_result == 1) {// Show result automatically
-							$.get(project_url + "/sessions/getPollResultAjax/" + data.id, function (results) {
-								results = JSON.parse(results);
-
-								$('#pollResults').html('');
-								$('#pollResultModalLabel').text(data.poll_question);
-								$.each(results, function (poll_id, option_details) {
-									$('#pollResults').append('' +
-										'<div class="form-group">' +
-										'  <label class="form-check-label">' + option_details.option_name + '</label>' +
-										'  <div class="progress" style="height: 25px;">' +
-										'    <div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage + '%;" aria-valuenow="' + option_details.vote_percentage + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage + '%</div>' +
-										'  </div>' +
-										'</div>');
-								});
-
-								$('#pollResultModal').modal({
-									backdrop: 'static',
-									keyboard: false
-								});
+							$.get(project_url+"/sessions/getPollResultAjax/"+data.id, function (results) {
+								show_poll_result(results)
 
 								var resultTimeleft = 5;
 								var resultTimer = setInterval(function () {
@@ -669,6 +656,24 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 									}
 									resultTimeleft -= 1;
 								}, 1000);
+							}).then(function(obj,results){
+								obj = JSON.parse(obj);
+								if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
+									$('.progress-label').attr('style', 'margin-left:30px')
+								}else{
+									$('.progress-label').attr('style', '')
+								}
+								if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
+									if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
+										// console.log('tdsadsa');
+										//
+										$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+										$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+
+										$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
+										$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+									}
+								}
 							});
 						}
 					} else {
@@ -687,7 +692,39 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 				$('#pollModal').modal('hide');
 				$('#pollResultModalLabel').html(data.poll_question);
 				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
-					results = JSON.parse(results);
+					show_poll_result(results)
+				}).then(function(obj,results){
+					obj = JSON.parse(obj);
+					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
+						$('.progress-label').attr('style', 'margin-left:30px')
+					}else{
+						$('.progress-label').attr('style', '')
+					}
+					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
+						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
+							// console.log('tdsadsa');
+							//
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+
+							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
+							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+						}
+					}
+				});
+			}
+		});
+
+		socket.on('ycl_close_poll_result', (data)=>{
+			if(data.session_id == sessionId) {
+				$('#pollResultModal').modal('hide');
+			}
+		});
+	});
+
+	function show_poll_result(results){
+		$('#howMuchSecondsLeftResult').text("");
+			results = JSON.parse(results);
 					$('#pollResults').html('');
 					// console.log(results);
 
@@ -738,34 +775,7 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 						backdrop: 'static',
 						keyboard: false
 					});
-				}).then(function(obj,results){
-					obj = JSON.parse(obj);
-					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
-						$('.progress-label').attr('style', 'margin-left:30px')
-					}else{
-						$('.progress-label').attr('style', '')
-					}
-					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
-						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
-							// console.log('tdsadsa');
-							//
-							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
-							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
-
-							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
-							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
-						}
-					}
-				});
-			}
-		});
-
-		socket.on('ycl_close_poll_result', (data)=>{
-			if(data.session_id == sessionId) {
-				$('#pollResultModal').modal('hide');
-			}
-		});
-	});
+	}
 
 	socket.on('poll_close_notification', (data)=>{
 		if(data.session_id == sessionId) {
@@ -891,10 +901,16 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			$('#header_claim_credit').css('display','none')
 		}
 
-		socket.on('reload-attendee-signal', function () {
-				update_viewsessions_history_open();
-				saveTimeSpentOnSessionAfterSessionFinished();
-
+		socket.on('reload-attendee-signal', function (data) {
+			console.log(data);
+			if(sessionId == data.session_id){
+				if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
+					sessionEndAutoRedirect();
+				}else{
+					update_viewsessions_history_open();
+					saveTimeSpentOnSessionAfterSessionFinished();
+				}
+			}
 		});
 
 	})
@@ -1029,11 +1045,11 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	/******* End of saving time spent on session - by Rexter ************/
 
 	function play_music() {
-		var audio = document.getElementById("audio_"+<?=$this->project->id?>);
+		var audio = document.getElementById("audio_<?=$this->project->id?>");
 		audio.play();
 	}
 	function stop_music() {
-		var audio1 = document.getElementById("audio_"+<?=$this->project->id?>);
+		var audio1 = document.getElementById("audio_<?=$this->project->id?>");
 		audio1.pause();
 		audio1.currentTime = 0;
 	}
@@ -1188,4 +1204,32 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 		});
 	})
 
+function sessionEndAutoRedirect(){
+	const countdownInterval = setInterval(function () {
+ 
+	let sessionEndDate = new Date(session_end_datetime)
+	const sessionEndDateTimeStamp = sessionEndDate.getTime();
+
+	const currentDate = new Date();
+	const currentDateTimeStamp = currentDate.getTime();
+	
+	const timeDifference = sessionEndDateTimeStamp - currentDateTimeStamp;
+
+	if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
+		if (timeDifference <= 0) {
+		clearInterval(countdownInterval);
+			window.location.href= project_url+"/sessions/join/"+session_redirect
+		} else {
+		const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+		const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+		const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+			if(timeDifference < 5000){
+				toastr.info("Redirecting in "+`${seconds}s`);
+			}
+		}
+	}
+  }, 1000); // Update every 1 second
+}
 </script>

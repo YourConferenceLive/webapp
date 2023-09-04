@@ -77,7 +77,7 @@
 								<input name="name_prefix" id="name_prefix" class="form-control" type="text" placeholder="User's name prefix">
 							</div>
 
-							<div class="form-group d-none">
+							<div class="form-group">
 								<label>Credentials</label>
 								<input name="credentials" id="credentials" class="form-control" type="text" placeholder="User's credentials">
 							</div>

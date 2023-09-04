@@ -159,6 +159,8 @@ class Mobile_Sessions_Model extends CI_Model
 		$this->db->where('id', $id);
 		$this->db->where('is_deleted', 0);
 		$this->db->where('project_id', $this->project->id);
+		$this->db->order_by('sessions.start_date_time', 'ASC');
+		$this->db->order_by('sessions.end_date_time', 'ASC');
 		$sessions = $this->db->get();
 		if ($sessions->num_rows() > 0)
 		{
@@ -184,5 +186,23 @@ class Mobile_Sessions_Model extends CI_Model
 		} else {
 			return '';
 		}
+	}
+	
+	public function getAllByRoom($room_id){
+		// print_r($id);
+		$this->db->select('*');
+		$this->db->from('sessions');
+		$this->db->where('is_deleted', 0);
+		$this->db->where('project_id', $this->project->id);
+		$this->db->where('room_id', $room_id);
+		$this->db->order_by('(sessions.start_date_time)', 'ASC');
+		$this->db->order_by('(sessions.end_date_time)', 'ASC');
+		$sessions = $this->db->get();
+		if ($sessions->num_rows() > 0)
+		{
+			return $sessions->result();
+		}
+
+		return new stdClass();
 	}
 }

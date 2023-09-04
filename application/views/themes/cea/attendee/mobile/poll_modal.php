@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			
 			$.ajax({
 				type: "POST",
-				url: project_url+"/sessions/vote",
+				url: project_url+"/mobile/sessions/vote",
 				data: formData,
 				processData: false,
 				contentType: false,

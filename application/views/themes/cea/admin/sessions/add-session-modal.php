@@ -1,7 +1,7 @@
 <?php
-//echo "<pre>";
-//print_r($sessions);
-//exit("</pre>");
+// echo "<pre>";
+// print_r($session_list);
+// exit("</pre>");
 ?>
 <!--Add Session Modal-->
 <style>
@@ -81,6 +81,12 @@
 										<label for="sessionNameOther">Other name (alternative language)</label>
 										<input type="text" class="form-control" id="sessionNameOther" name="sessionNameOther" placeholder="Enter alternative session title/name eg; French">
 									</div>
+
+									<div class="form-group">
+										<label for="sessionNameOther">Room ID (For mobile sessions)</label>
+										<input type="number" class="form-control" id="roomID" name="roomID" placeholder="" value="0">
+									</div>
+
 									<div class="form-group">
 										<label for="sessionNameOther">Session Notes</label>
 										<input type="text" class="form-control" id="sessionNotes" name="sessionNotes" placeholder="Enter your notes here...">
@@ -105,6 +111,25 @@
 										<input type="text" class="form-control" id="sessionExternalUrl" name="sessionExternalUrl" placeholder="This link will open in a new tab (unless user blocked pop opening windows) once the meeting starts (always prefix the URL with protocol ie; http/https)">
 									</div>
 
+									<div class="form-group" id="sessionEndRedirectDiv" style="display: block;">
+										<label for="sessionEndRedirect">Session End Redirect</label>
+										<select name="sessionEndRedirect" id="sessionEndRedirect" class="form-control">
+											<option value="">-- Select Session Redirect --</option>
+											<?php if(!empty($session_list)): 
+												foreach($session_list as $key => $session): ?>
+												<option  value="<?=$session->id?>"> Session (<?=$session->id?>) <?=$session->name?></option>
+											<?php endforeach?>
+											<?php endif ?>
+										</select>
+									</div>
+									
+									<div class="custom-control custom-switch mb-2">
+										<input type="checkbox" class="custom-control-input" id="autoRedirectSwitch" name="autoRedirectSwitch">
+										<label class="custom-control-label" for="autoRedirectSwitch">Auto Redirect
+										<i class="fas fa-info-circle" title="This is to switch the redirect from manual to automatic. Auto (ON) will be redirect automatically when session ends.(OFF) Will need the admin to trigger reload button. Make sure that redirect is set before the attendee enters the session."></i>
+										</label>
+									</div>
+					
 									<div class="form-group" id="sessionClaimCreditDiv">
 										<label for="sessionExternalUrl">Claim Credit</label>
 										<div class="input-group mb-3">
@@ -418,6 +443,18 @@
 											</div>
 										</div>
 									</div>
+									<div class="form-group">
+										<label>Mobile Session Background</label>
+										<div class="custom-file">
+											<input type="file" accept="image/png, image/jpeg" class="custom-file-input" id="mobileSessionBackground" name="mobileSessionBackground" previewImage="currentMobileSessionBackground">
+											<label class="custom-file-label" for="sessionLogo">Choose file</label>
+										</div>
+									</div>
+									<div class="form-group" id="currentMobileSessionBackgroundDiv" style="display: none;">
+										<label for="currentMobileSessionBackgroundDiv"><small>Current Session Logo</small></label>
+										<br>
+										<img id="currentMobileSessionBackground" src="" width="200px">
+									</div>
 
 									<div class="form-group">
 										<label>Session End</label><br>
@@ -666,6 +703,12 @@
 			$('#currentSessionLogoDiv').show();
 		})
 
+		$('#mobileSessionBackground').on('change', function(){
+			$('#isSponsorLogoRemoved').val('0');
+			previewUpload(this);
+			$('#currentMobileSessionBackgroundDiv').show();
+		})
+
 	});
 
 	$('#logo, #banner').on('change',function(){
@@ -814,6 +857,11 @@
 				}
 			}
 
+			if (isNaN(parseInt($('#roomID').val()))) {
+				toastr.error('Room ID should be a number');
+				return false;
+			}
+
 			Swal.fire({
 				title: dialogTitle,
 				text: dialogText,
@@ -887,6 +935,11 @@
 				}
 			}
 
+			if (isNaN(parseInt($('#roomID').val()))) {
+				toastr.error('Room ID should be a number');
+				return false;
+			}
+
 			Swal.fire({
 				title: dialogTitle,
 				text: dialogText,
@@ -934,6 +987,12 @@
 						}else
 							$('#currentSessionLogoDiv').hide();
 	
+						if(data.session.session_logo  !== '') {
+							$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + data.session.mobile_session_background);
+							$('#currentMobileSessionBackgroundDiv').show();
+						}else
+							$('#currentMobileSessionBackgroundDiv').hide();
+
 						listSessions();
 						toastr.success(sessionUpdateText);
 					}else if(data.status == 'warning'){
