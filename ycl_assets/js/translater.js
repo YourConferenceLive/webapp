@@ -1,23 +1,58 @@
-function disableUserInput() {
-    $('body').css('pointer-events', 'none');
-    Swal.fire({
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showConfirmButton: false,
-        willOpen: () => {
-            Swal.showLoading();
-            Swal.getContainer().style.pointerEvents = 'none'; // Disable user input
+/**
+ * need to update depends on user type at header **
+ */
+const baseUrl = project_url + "/";
+
+// Global_Constants
+const languageData = fetchAllText();
+const userLanguage = initializeLanguage();
+
+async function updateUserLanguage(language) {
+    try {
+        const response = await $.ajax({
+            url: baseUrl + "translator/updateUserLanguage",
+            data: { selectedLanguage: language },
+            dataType: 'JSON',
+            method: 'POST'
+        });
+
+        if (response.bool) {
+            console.log(response.msg);
+        } else {
+            console.log("Error: " + response.msg);
         }
-    });
+    } catch (error) {
+        console.error(error);
+    }
 }
 
-function closeSwal() {
-    const container = Swal.getContainer();
-    if (container !== null) {
-        container.style.pointerEvents = 'auto';
+async function updatePageLanguage(language) {
+    try {
+        const arrEnglishToSpanishData = await fetchAllText();
+        (async () => {
+            await translateText(language, arrEnglishToSpanishData);
+        })();
+        
+    } catch (error) {
+        console.log(error);
     }
-    $('body').css('pointer-events', 'auto');
-    Swal.close();
+}
+
+async function translateData() {
+    try {
+        const arrData = await fetchAllText();
+        const userLanguage = await initializeLanguage();
+
+        const translationDataObject = {
+            arrData: arrData,
+            userLanguage: userLanguage
+        };
+
+        return translationDataObject;
+
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 function initializeLanguage() {
@@ -43,7 +78,6 @@ function initializeLanguage() {
         });
     });
 }
-
 
 function initializeLanguageSettings() {
     disableUserInput();
@@ -82,37 +116,6 @@ function initializeLanguageSettings() {
     });
 }
 
-async function updatePageLanguage(language) {
-    try {
-        const arrEnglishToSpanishData = await fetchAllText();
-        (async () => {
-            await translateText(language, arrEnglishToSpanishData);
-        })();
-        
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-async function updateUserLanguage(language) {
-    try {
-        const response = await $.ajax({
-            url: baseUrl + "translator/updateUserLanguage",
-            data: { selectedLanguage: language },
-            dataType: 'JSON',
-            method: 'POST'
-        });
-
-        if (response.bool) {
-            console.log(response.msg);
-        } else {
-            console.log("Error: " + response.msg);
-        }
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 function fetchAllText() {
     return new Promise((resolve, reject) => {
         $.ajax({
@@ -132,7 +135,6 @@ function fetchAllText() {
         });
     });
 }
-
 
 function translateText(selectedLanguage, arrData) {
     return new Promise((resolve, reject) => {
@@ -201,4 +203,29 @@ function getTranslatedSelectAccess(textData) {
             resolve(textData); // Resolve the promise with the final value of selectAccess
         }).catch(reject); // Reject the promise if there's an error fetching translationData
     });
+}
+
+
+
+// Utilities
+function disableUserInput() {
+    $('body').css('pointer-events', 'none');
+    Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+            Swal.getContainer().style.pointerEvents = 'none'; // Disable user input
+        }
+    });
+}
+
+function closeSwal() {
+    const container = Swal.getContainer();
+    if (container !== null) {
+        container.style.pointerEvents = 'auto';
+    }
+    $('body').css('pointer-events', 'auto');
+    Swal.close();
 }
