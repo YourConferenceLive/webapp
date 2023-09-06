@@ -24,48 +24,25 @@ $ci_method = $this->router->fetch_method();
 </div>
 <!-- ./wrapper -->
 
-<script src="<?= ycl_base_url ?>/ycl_assets/js/translater.js"></script>
 
 <script>
 
-	/* use in translation.js */
-    const baseUrl = "<?=$this->project_url?>/admin/";
-   
-    if ($('#languageSelect').length) {
-		/* alternative to counter the bug for loading */
-        (async () => {
-            await initializeLanguage();
-        })();
-	}
     $(document).ready(function() {
-
-        /* check if languageSelect exist ** required for translati*/
-        if ($('#languageSelect').length) {
-			initializeLanguageSettings();
-		} 
 
         $('table thead th').on('click', function() {
             initializeLanguageSettings();
         });
 
-        /* Onchange event for switching language */
-        const languageSelect = document.getElementById("languageSelect");
-        $(languageSelect).on("change", function() {
-            Swal.fire({
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                showConfirmButton: false,
-                willOpen: () => {
-                    Swal.showLoading();
-                    Swal.getContainer().style.pointerEvents = 'none';
-                }
-            });
+        $('#languageSelect').on("change", function() {
+            // Swal Loading
+            disableUserInput();
 
+            const languageSelect = document.getElementById("languageSelect");
             let language = languageSelect.value;
+
             (async () => {
-                console.log("Initializing : " + language);
-                await updatePageLanguage(language);
                 await updateUserLanguage(language);
+                await updatePageLanguage(language);
                 await closeSwal();
             })();
             

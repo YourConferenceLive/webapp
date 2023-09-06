@@ -1,3 +1,16 @@
+function disableUserInput() {
+    $('body').css('pointer-events', 'none');
+    Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+            Swal.getContainer().style.pointerEvents = 'none'; // Disable user input
+        }
+    });
+}
+
 function closeSwal() {
     const container = Swal.getContainer();
     if (container !== null) {
@@ -6,7 +19,6 @@ function closeSwal() {
     $('body').css('pointer-events', 'auto');
     Swal.close();
 }
-
 
 function initializeLanguage() {
     return new Promise((resolve, reject) => {
@@ -32,48 +44,34 @@ function initializeLanguage() {
     });
 }
 
-function initializeLanguageSettings() {
 
-    $('body').css('pointer-events', 'none');
-    Swal.fire({
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showConfirmButton: false,
-        willOpen: () => {
-            Swal.showLoading();
-            Swal.getContainer().style.pointerEvents = 'none'; // Disable user input
-        }
-    });
-    
+function initializeLanguageSettings() {
+    disableUserInput();
+
     $.ajax({
         url: baseUrl + "translator/initializeUserLanguageSetting",
         dataType: 'JSON',
         method: 'POST',
-        success: function(response) {
-            if(response) {
-                let language = response[0].language;
-                if (language)
-                {
-                    console.log("Initializing : " + language);
-                    if($('#languageSelect')){
-                        $('#languageSelect').val(language);
-                    }
+        success: async function(response) {
+            try {
+                if (response) {
+                    const language = response[0].language;
+                    if (language) {
+                        console.log("Initializing : " + language);
+                        if ($('#languageSelect')) {
+                            $('#languageSelect').val(language);
+                        }
 
-                    (async () => {
                         await updatePageLanguage(language);
-                        closeSwal();
-                    })();
-                    
+                    } else {
+                        console.log("There's no language.");
+                    }
+                } else {
+                    console.log("Error response.");
                 }
-                else 
-                {
-                    console.log("Theres no language.");
-                    closeSwal();
-                }
-            }
-            else
-            {
-                console.log("Error response");
+            } catch (error) {
+                console.error("An error occurred:", error);
+            } finally {
                 closeSwal();
             }
         },
@@ -85,35 +83,34 @@ function initializeLanguageSettings() {
 }
 
 async function updatePageLanguage(language) {
-    const arrEnglishToSpanishData = await fetchAllText();
-    (async () => {
-        await translateText(language, arrEnglishToSpanishData);
-    })();
+    try {
+        const arrEnglishToSpanishData = await fetchAllText();
+        (async () => {
+            await translateText(language, arrEnglishToSpanishData);
+        })();
+        
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-function updateUserLanguage(language) {
-    // Start Swal loading
-    Swal.showLoading();
-    $('body').css('pointer-events', 'auto');
+async function updateUserLanguage(language) {
+    try {
+        const response = await $.ajax({
+            url: baseUrl + "translator/updateUserLanguage",
+            data: { selectedLanguage: language },
+            dataType: 'JSON',
+            method: 'POST'
+        });
 
-    $.ajax({
-        url: baseUrl + "translator/updateUserLanguage",
-        data: {selectedLanguage : language},
-        dataType: 'JSON',
-        method: 'POST',
-        success: function(response) {
-            if(response.bool) {
-                // console.log(response.msg);
-            }
-            else
-            {
-                console.log("error: " + response.msg);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.log(status + ": " + error);
+        if (response.bool) {
+            console.log(response.msg);
+        } else {
+            console.log("Error: " + response.msg);
         }
-    });
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 function fetchAllText() {
@@ -124,9 +121,6 @@ function fetchAllText() {
             method: "POST",
             success: function(response) {
                 if(response) {
-                    (async () => {
-                        await initializeLanguage();
-                    })();
                     resolve(response);
                 }
                 else
@@ -138,6 +132,7 @@ function fetchAllText() {
         });
     });
 }
+
 
 function translateText(selectedLanguage, arrData) {
     return new Promise((resolve, reject) => {
