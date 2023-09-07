@@ -19,11 +19,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	#pollModal label{
 		margin-left: 10px !important;
 	}
+
+	.pollingBG{
+		background-image: url("<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/images/background-images/Polling_BG.jpg");
+		background-size: 100% 100%;
+	}
 </style>
 
 <link href="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/assets/css/sessions.css?v=<?= rand() ?>" rel="stylesheet">
 
-<div class="sessions-view-container container-fluid p-0">
+<div class="sessions-view-container container-fluid p-0 pollingBG">
 
 </div>
 
