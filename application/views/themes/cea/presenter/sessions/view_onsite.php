@@ -10,6 +10,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	#pollModal{
 		font-family: "Open Sans", Helvetica, Arial, sans-serif;
 	}
+
+	.questionCardBG{
+		background-image: url("<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/images/background-images/Polling_BG.jpg");
+		background-size: 100% 100%;
+	}
 </style>
 	
 <main>
@@ -17,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="card-header">
 			<h3>Attendee Questions</h3>
 		</div>
-		<div class="card-body">
+		<div class="card-body questionCardBG">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item" role="presentation">
 				<a class="nav-link active" id="question-tab" data-toggle="tab" href="#question" role="tab" aria-controls="question" aria-selected="true">Questions</a>
