@@ -4,9 +4,78 @@
 const baseUrl = project_url + "/";
 
 // Global_Constants
-const languageData = fetchAllText();
+const languageArrData = fetchAllText();
 const userLanguage = initializeLanguage();
 
+
+// Global Variables
+// var translator;
+
+
+/**************** Start : Run Logic here ****************/
+
+            // (async () => {
+            //     const arrData = await fetchAllText();
+            //     const userLang = await initializeLanguage();
+            //     const translator = new TranslationManager(arrData, userLang);
+
+            //     let dialogTitle = translator.translate('Please Wait');
+            // })();
+
+            (async () => {
+                const translator = await createLanguageTranslator();
+                let sampleTitle = translator.translate('Please Wait');
+            })();
+
+/**************** End : Run Logic here ****************/
+
+// Global Functions
+function fetchAllText() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: baseUrl + "translator/getTextData",
+            dataType: "JSON",
+            method: "POST",
+            success: function(response) {
+                if(response) {
+                    resolve(response);
+                }
+                else
+                {
+                    const errorMessage = 'Failed to fetch language data';
+                    reject(errorMessage);
+                }
+            }
+        });
+    });
+}
+
+function initializeLanguage() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: baseUrl + "translator/initializeUserLanguageSetting",
+            dataType: "JSON",
+            method: "POST",
+            success: function(response) {
+                if(response) {
+                    let language = response[0].language;
+                    if($('#languageSelect')) {
+                        $('#languageSelect').val(language);
+                    }
+                    resolve(language);
+                }
+                
+            },
+            error: function() {
+                const errorMessage = 'Failed to fetch language';
+                reject(errorMessage);
+            }
+        });
+    });
+}
+
+
+// Page translators
 async function updateUserLanguage(language) {
     try {
         const response = await $.ajax({
@@ -26,7 +95,7 @@ async function updateUserLanguage(language) {
     }
 }
 
-async function updatePageLanguage(language) {
+async function updatePageLanguage(language) { // comeback
     try {
         const arrEnglishToSpanishData = await fetchAllText();
         (async () => {
@@ -53,30 +122,6 @@ async function translateData() {
     } catch (error) {
         console.error(error);
     }
-}
-
-function initializeLanguage() {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: baseUrl + "translator/initializeUserLanguageSetting",
-            dataType: "JSON",
-            method: "POST",
-            success: function(response) {
-                if(response) {
-                    let language = response[0].language;
-                    if($('#languageSelect')) {
-                        $('#languageSelect').val(language);
-                    }
-                    resolve(language);
-                }
-                
-            },
-            error: function() {
-                const errorMessage = 'Failed to fetch language';
-                reject(errorMessage);
-            }
-        });
-    });
 }
 
 function initializeLanguageSettings() {
@@ -113,26 +158,6 @@ function initializeLanguageSettings() {
             console.log("No response from server.");
             closeSwal();
         }
-    });
-}
-
-function fetchAllText() {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: baseUrl + "translator/getTextData",
-            dataType: "JSON",
-            method: "POST",
-            success: function(response) {
-                if(response) {
-                    resolve(response);
-                }
-                else
-                {
-                    const errorMessage = 'Failed to fetch language data';
-                    reject(errorMessage);
-                }
-            }
-        });
     });
 }
 
@@ -205,9 +230,9 @@ function getTranslatedSelectAccess(textData) {
     });
 }
 
-
-
-// Utilities
+/**
+ * Utilities
+ */
 function disableUserInput() {
     $('body').css('pointer-events', 'none');
     Swal.fire({
@@ -228,4 +253,36 @@ function closeSwal() {
     }
     $('body').css('pointer-events', 'auto');
     Swal.close();
+}
+
+/**
+ * New Translation function, using Translation Manager
+ */
+
+async function getUserLanguageAndArrayData () {
+    try {
+        let lang = await userLanguage;
+        let arr = await languageArrData;
+
+        const resultObj = {
+            userLanguage : lang,
+            arrayLanguage: arr
+        }
+        return resultObj;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+async function createLanguageTranslator () {
+    try {
+        const resultData = await getUserLanguageAndArrayData();
+        const userLang = resultData.userLanguage;
+        const arrData = resultData.arrayLanguage;
+
+        return new TranslationManager(arrData, userLang);
+    } catch (error) {
+        console.log(error);
+    }
 }

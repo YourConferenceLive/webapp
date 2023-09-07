@@ -499,191 +499,189 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	{
 		let getFrom = $('#session_list_type').find(':selected').attr('url');
 		console.log(getFrom);
-		
-		userLanguage.then((language) => {
-			languageData.then((arr) => {
-				let translator = new TranslationManager(arr, language);
-				
-				let dialogTitle = translator.translate('Please Wait');
-				let dialogText = translator.translate('Loading sessions data...');
-				let imageAltText = translator.translate('Loading...');
-				
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-					imageAlt: imageAltText,
-					showCancelButton: false,
-					showConfirmButton: false,
-					allowOutsideClick: false
-				});
-				
-				$.get(project_admin_url+"/sessions/"+ getFrom, function (sessions) {
-					sessions = JSON.parse(sessions);
-		
-					$('#sessionsTableBody').html('');
-					if ($.fn.DataTable.isDataTable('#sessionsTable'))
-					{
-						$('#sessionsTable').dataTable().fnClearTable();
-						$('#sessionsTable').dataTable().fnDestroy();
-					}
-		
-					$.each(sessions, function(key, session)
-					{
-						// Moderators badge
-						let moderatorsList = '';
-						let moderatorsNumber = Object.keys(session.moderators).length;
-						let moderatorsBadgeType = 'badge-danger';
-		
-						if (moderatorsNumber > 0)
-							moderatorsList += '<strong>Moderators List</strong><br><br>';
-		
-						$.each(session.moderators, function(key, moderator)
-						{
-							moderatorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
-						});
-		
-						if (moderatorsNumber > 0)
-							moderatorsBadgeType = 'badge-success';
-		
-						let moderatorsBadge = '<badge class="badge badge-pill '+moderatorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+moderatorsList+'">M ('+moderatorsNumber+')</badge>';
-		
-						// Invisible Moderators badge
-						let invisibleModeratorsList = '';
-						let invisibleModeratorsNumber = Object.keys(session.invisible_moderators).length;
-						let invisibleModeratorsBadgeType = 'badge-danger';
-		
-						if (invisibleModeratorsNumber > 0)
-							invisibleModeratorsList += '<strong>Invisible Moderators</strong><br><br>';
-		
-						$.each(session.invisible_moderators, function(key, moderator)
-						{
-							invisibleModeratorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
-						});
-		
-						if (invisibleModeratorsNumber > 0)
-							invisibleModeratorsBadgeType = 'badge-success';
-		
-						let invisibleModeratorsBadge = '<badge class="badge badge-pill '+invisibleModeratorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+invisibleModeratorsList+'">InM ('+invisibleModeratorsNumber+')</badge>';
-		
-						// Keynote Speakers badge
-						let keynoteSpeakersList = '';
-						let keynoteSpeakersNumber = Object.keys(session.keynote_speakers).length;
-						let keynoteSpeakerBadgeType = 'badge-danger';
-		
-						if (keynoteSpeakersNumber > 0)
-							keynoteSpeakersList += '<strong>Keynote Speakers List</strong><br><br>';
-		
-						$.each(session.keynote_speakers, function(key, keynote_speaker)
-						{
-							keynoteSpeakersList += keynote_speaker.name+' '+keynote_speaker.surname+' <br>('+keynote_speaker.email+')<br><br>';
-						});
-		
-						if (keynoteSpeakersNumber > 0)
-							keynoteSpeakerBadgeType = 'badge-success';
-		
-						let keynoteSpeakersBadge = '<badge class="badge badge-pill '+keynoteSpeakerBadgeType+'" data-html="true" data-toggle="tooltip" title="'+keynoteSpeakersList+'">K ('+keynoteSpeakersNumber+')</badge>';
-		
-						// Presenters badge
-						let presentersList = '';
-						let presentersNumber = Object.keys(session.presenters).length;
-						let presenterBadgeType = 'badge-danger';
-		
-						if (presentersNumber > 0)
-							presentersList += '<strong>Presenters List</strong><br><br>';
-		
-						$.each(session.presenters, function(key, presenter)
-						{
-							presentersList += presenter.name+' '+presenter.surname+' <br>('+presenter.email+')<br><br>';
-						});
-		
-						if (presentersNumber > 0)
-							presenterBadgeType = 'badge-success';
-		
-						let presentersBadge = '<badge class="badge badge-pill '+presenterBadgeType+'" data-html="true" data-toggle="tooltip" title="'+presentersList+'">P ('+presentersNumber+')</badge>';
-		
-						$('#sessionsTableBody').append(
-							'<tr>' +
-							'	<td>' +
-							'		'+session.id+
-							'	</td>' +
-							'	<td data-sort="'+session.start_date_time+'">' +
-							'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("MMMM Do (dddd)")+
-							'	</td>' +
-							'	<td data-sort="'+session.start_date_time+'">' +
-							'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
-							'	</td>' +
-							'	<td data-sort="'+session.start_date_time+'">' +
-							'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
-							'	</td>' +
-							'	<td>' +
-							'		'+session.name+
-							'	</td>' +
-							'	<td>' +
-							'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+' '+invisibleModeratorsBadge+
-							'	</td>' +
-							'	<td>' +
-							'		'+session.credits+
-							'	</td>' +
-							'	<td>' +
-							'		'+session.notes+
-							'	</td>' +
-							'	<td>' +
-							'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +
-							'			<button class="btn btn-sm btn-info m-1"><i class="fas fa-tv"></i> View</button>' +
-							'		</a>' +
-							'		<a target="_blank" href="'+project_admin_url+'/sessions/polls/'+session.id+'">' +
-							'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
-							'		</a>' +
-							'		<button class="reload_attendee btn btn-sm btn-danger m-1" session-id="'+session.id+'"><i class="fas fa-sync"></i> Reload Atendee</button>' +
-							'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'" room_id="'+session.room_id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
-							'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
-							'	</td>' +
-							'	<td>' +
-							'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
-							'		<button class="removeSession btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
-							'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
-							'		<!--<button class="closePoll btn btn-sm btn-primary">Close Poll</button>-->' +
-							'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
-							'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
-							'	</td>' +
-							'<td>' +
-							'		<a href="'+project_admin_url+'/sessions/flash_report/'+session.id+'" style="width:80px; height:50px" class="flashReport btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Flash Report</a><br>' +
-							'		<a href="'+project_admin_url+'/sessions/polling_report/'+session.id+'" style="width:80px; height:50px" class="pollingReport btn btn-sm btn-success m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Polling Report</a><br>' +
-							'		<a  href="" style="width:80px; height:50px" class="askARepBtn btn btn-sm btn-warning m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Ask a Rep - Report</a><br>' +
-							'		<a href="'+project_admin_url+'/sessions/attendee_question_report/'+session.id+'" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Question Report</a><br>' +
-							'</td>'+
-							'<td>'+
-							'		<a  style="width:80px; height:50px" class="sendJsonBtn btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Send JSON </a><br>' +
-							'		<a href="'+project_admin_url+'/sessions/view_json/'+session.id+'" target="_blank" style="width:80px; height:50px" class="Question btn btn-sm btn-secondary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> View JSON </a><br>' +
-							'		<a href="" style="width:80px; height:50px" class="clearJsonBtn btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Clear JSON </a><br>' +
-							'		<a href="" style="width:80px; height:50px" class="Question btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Delete Session </a><br>' +
-		
-							'</td>'+
-							'</tr>'
-						);
-					});
-		
-					$('[data-toggle="tooltip"]').tooltip();
-		
-					$('#sessionsTable').DataTable({
-						"paging": true,
-						"lengthChange": true,
-						"searching": true,
-						"ordering": true,
-						"info": true,
-						"autoWidth": true,
-						"responsive": false,
-						"order": [[ 1, 'asc'], [ 2, 'asc'], [ 3,  'asc']],
-						"destroy": true
-					});
-		
-					Swal.close();
-				});
-			});
-		});
 
+		(async () => {
+			const translator = await createUserTranslator();
+			
+			let dialogTitle = translator.translate('Please Wait');
+			let dialogText = translator.translate('Loading sessions data...');
+			let imageAltText = translator.translate('Loading...');
+			
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+			
+			$.get(project_admin_url+"/sessions/"+ getFrom, function (sessions) {
+				sessions = JSON.parse(sessions);
+	
+				$('#sessionsTableBody').html('');
+				if ($.fn.DataTable.isDataTable('#sessionsTable'))
+				{
+					$('#sessionsTable').dataTable().fnClearTable();
+					$('#sessionsTable').dataTable().fnDestroy();
+				}
+	
+				$.each(sessions, function(key, session)
+				{
+					// Moderators badge
+					let moderatorsList = '';
+					let moderatorsNumber = Object.keys(session.moderators).length;
+					let moderatorsBadgeType = 'badge-danger';
+	
+					if (moderatorsNumber > 0)
+						moderatorsList += '<strong>Moderators List</strong><br><br>';
+	
+					$.each(session.moderators, function(key, moderator)
+					{
+						moderatorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
+					});
+	
+					if (moderatorsNumber > 0)
+						moderatorsBadgeType = 'badge-success';
+	
+					let moderatorsBadge = '<badge class="badge badge-pill '+moderatorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+moderatorsList+'">M ('+moderatorsNumber+')</badge>';
+	
+					// Invisible Moderators badge
+					let invisibleModeratorsList = '';
+					let invisibleModeratorsNumber = Object.keys(session.invisible_moderators).length;
+					let invisibleModeratorsBadgeType = 'badge-danger';
+	
+					if (invisibleModeratorsNumber > 0)
+						invisibleModeratorsList += '<strong>Invisible Moderators</strong><br><br>';
+	
+					$.each(session.invisible_moderators, function(key, moderator)
+					{
+						invisibleModeratorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
+					});
+	
+					if (invisibleModeratorsNumber > 0)
+						invisibleModeratorsBadgeType = 'badge-success';
+	
+					let invisibleModeratorsBadge = '<badge class="badge badge-pill '+invisibleModeratorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+invisibleModeratorsList+'">InM ('+invisibleModeratorsNumber+')</badge>';
+	
+					// Keynote Speakers badge
+					let keynoteSpeakersList = '';
+					let keynoteSpeakersNumber = Object.keys(session.keynote_speakers).length;
+					let keynoteSpeakerBadgeType = 'badge-danger';
+	
+					if (keynoteSpeakersNumber > 0)
+						keynoteSpeakersList += '<strong>Keynote Speakers List</strong><br><br>';
+	
+					$.each(session.keynote_speakers, function(key, keynote_speaker)
+					{
+						keynoteSpeakersList += keynote_speaker.name+' '+keynote_speaker.surname+' <br>('+keynote_speaker.email+')<br><br>';
+					});
+	
+					if (keynoteSpeakersNumber > 0)
+						keynoteSpeakerBadgeType = 'badge-success';
+	
+					let keynoteSpeakersBadge = '<badge class="badge badge-pill '+keynoteSpeakerBadgeType+'" data-html="true" data-toggle="tooltip" title="'+keynoteSpeakersList+'">K ('+keynoteSpeakersNumber+')</badge>';
+	
+					// Presenters badge
+					let presentersList = '';
+					let presentersNumber = Object.keys(session.presenters).length;
+					let presenterBadgeType = 'badge-danger';
+	
+					if (presentersNumber > 0)
+						presentersList += '<strong>Presenters List</strong><br><br>';
+	
+					$.each(session.presenters, function(key, presenter)
+					{
+						presentersList += presenter.name+' '+presenter.surname+' <br>('+presenter.email+')<br><br>';
+					});
+	
+					if (presentersNumber > 0)
+						presenterBadgeType = 'badge-success';
+	
+					let presentersBadge = '<badge class="badge badge-pill '+presenterBadgeType+'" data-html="true" data-toggle="tooltip" title="'+presentersList+'">P ('+presentersNumber+')</badge>';
+	
+					$('#sessionsTableBody').append(
+						'<tr>' +
+						'	<td>' +
+						'		'+session.id+
+						'	</td>' +
+						'	<td data-sort="'+session.start_date_time+'">' +
+						'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("MMMM Do (dddd)")+
+						'	</td>' +
+						'	<td data-sort="'+session.start_date_time+'">' +
+						'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
+						'	</td>' +
+						'	<td data-sort="'+session.start_date_time+'">' +
+						'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
+						'	</td>' +
+						'	<td>' +
+						'		'+session.name+
+						'	</td>' +
+						'	<td>' +
+						'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+' '+invisibleModeratorsBadge+
+						'	</td>' +
+						'	<td>' +
+						'		'+session.credits+
+						'	</td>' +
+						'	<td>' +
+						'		'+session.notes+
+						'	</td>' +
+						'	<td>' +
+						'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +
+						'			<button class="btn btn-sm btn-info m-1"><i class="fas fa-tv"></i> View</button>' +
+						'		</a>' +
+						'		<a target="_blank" href="'+project_admin_url+'/sessions/polls/'+session.id+'">' +
+						'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
+						'		</a>' +
+						'		<button class="reload_attendee btn btn-sm btn-danger m-1" session-id="'+session.id+'"><i class="fas fa-sync"></i> Reload Atendee</button>' +
+						'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'" room_id="'+session.room_id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
+						'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
+						'	</td>' +
+						'	<td>' +
+						'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
+						'		<button class="removeSession btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+						'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
+						'		<!--<button class="closePoll btn btn-sm btn-primary">Close Poll</button>-->' +
+						'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
+						'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
+						'	</td>' +
+						'<td>' +
+						'		<a href="'+project_admin_url+'/sessions/flash_report/'+session.id+'" style="width:80px; height:50px" class="flashReport btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Flash Report</a><br>' +
+						'		<a href="'+project_admin_url+'/sessions/polling_report/'+session.id+'" style="width:80px; height:50px" class="pollingReport btn btn-sm btn-success m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Polling Report</a><br>' +
+						'		<a  href="" style="width:80px; height:50px" class="askARepBtn btn btn-sm btn-warning m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Ask a Rep - Report</a><br>' +
+						'		<a href="'+project_admin_url+'/sessions/attendee_question_report/'+session.id+'" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Question Report</a><br>' +
+						'</td>'+
+						'<td>'+
+						'		<a  style="width:80px; height:50px" class="sendJsonBtn btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Send JSON </a><br>' +
+						'		<a href="'+project_admin_url+'/sessions/view_json/'+session.id+'" target="_blank" style="width:80px; height:50px" class="Question btn btn-sm btn-secondary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> View JSON </a><br>' +
+						'		<a href="" style="width:80px; height:50px" class="clearJsonBtn btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Clear JSON </a><br>' +
+						'		<a href="" style="width:80px; height:50px" class="Question btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Delete Session </a><br>' +
+	
+						'</td>'+
+						'</tr>'
+					);
+				});
+	
+				$('[data-toggle="tooltip"]').tooltip();
+	
+				$('#sessionsTable').DataTable({
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": true,
+					"responsive": false,
+					"order": [[ 1, 'asc'], [ 2, 'asc'], [ 3,  'asc']],
+					"destroy": true
+				});
+	
+				Swal.close();
+			});
+        })();
+		
 	}
 
 	$(function(){
@@ -759,64 +757,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
 
+            (async () => {
+				try {
+					const translator = await createLanguageTranslator();
 
-			const translationData = fetchAllText(); // Fetch the translation data
+					let dialogTitle = translator.translate('Are you sure?');
+					let confirmButtonText = translator.translate('Yes, reload it!');
+					let cancelButtonText = translator.translate('Cancel');
 
-			translationData.then((arrData) => {
-				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+					// Toast
+					let successText = translator.translate('Success');
+					let successMsg = translator.translate('Attendee Reloaded');
 
-				// Find the translations for the dialog text
-				let dialogTitle = 'Are you sure?';
-				let dialogText = "";
-				let confirmButtonText = 'Yes, reload it!';
-				let cancelButtonText = 'Cancel';
-
-				// Toast
-				let successText = "Success";
-				let successMsg = "Attendee Reloaded";
-
-				for (let i = 0; i < arrData.length; i++) {
-					if (arrData[i].english_text === dialogTitle) {
-						dialogTitle = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === dialogText) {
-						dialogText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === confirmButtonText) {
-						confirmButtonText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === cancelButtonText) {
-						cancelButtonText = arrData[i][selectedLanguage + '_text'];
-					}
-
-					if (arrData[i].english_text === successText) {
-						successText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === successMsg) {
-						successMsg = arrData[i][selectedLanguage + '_text'];
-					}
+					Swal.fire({
+						title: dialogTitle,
+						text: "",
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: confirmButtonText,
+						cancelButtonText: cancelButtonText
+					}).then((result) => {
+						if (result.isConfirmed) {
+							Swal.fire(
+								successText,
+								successMsg,
+								'success'
+							)
+							socket.emit('reload-attendee',{'session_id':$(this).attr('session-id')});
+						}
+					})
+				} catch (error) {
+					console.log(error);
 				}
-
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText
-				}).then((result) => {
-					if (result.isConfirmed) {
-						Swal.fire(
-							successText,
-							successMsg,
-							'success'
-						)
-						socket.emit('reload-attendee',{'session_id':$(this).attr('session-id')});
-					}
-				})
-			});
+            })();
 
 		})
 
