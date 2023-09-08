@@ -915,7 +915,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						beforeSend: function() {
 							getTranslatedSelectAccess("Sending Json...").then((msg) => {
 								Swal.fire({
-									title: 'msg',
+									title: msg,
 										showCancelButton: false,
 										showConfirmButton: false,
 									onBeforeOpen: () => {
@@ -927,16 +927,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					}).done(function(result) {
 	
 						result = JSON.parse(result)
-						console.log(result)
-						if (result.status == "ok") {
+						console.log('result is'+ result)
+						if (result == 1) {
 							Swal.fire({
-								text: result.status,
+								text: "",
 								icon: 'success',
 								title: successText
 							})
 						} else {
 							Swal.fire({
-								text: result.message,
+								text: "",
 								icon: 'info',
 								title: infoText
 							})
