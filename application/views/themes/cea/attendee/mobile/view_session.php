@@ -169,7 +169,6 @@
 </script>
 <script>
 $(function(){
-	sessionEndedRedirect();
 	$('#question-btn').on('click', function(){
 
 		$('.stickyQuestionbox').css('display', 'block');
