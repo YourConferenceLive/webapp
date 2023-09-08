@@ -169,6 +169,7 @@
 </script>
 <script>
 $(function(){
+	sessionEndedRedirect();
 	$('#question-btn').on('click', function(){
 
 		$('.stickyQuestionbox').css('display', 'block');
@@ -612,6 +613,11 @@ $(function(){
 
 	socket.on('reload-attendee-signal', function () {
 			// location.reload();session_end_datetime
+		sessionEndedRedirect();
+			
+	});
+
+	function sessionEndedRedirect(){
 		const sessionEnd = new Date(session_end_datetime);
 		const sessionEndTime = sessionEnd.getTime();
 		const dateNow = new Date() ;
@@ -622,9 +628,7 @@ $(function(){
 		}else{
 			location.reload();
 		}
-			
-	});
-
+	}
 	function markLaunchedPoll(poll_id){
 		$.post(project_url+"/mobile/sessions/markLaunchedPoll/"+poll_id, function (results) {
 			console.log(results)
