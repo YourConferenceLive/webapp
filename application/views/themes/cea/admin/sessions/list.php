@@ -923,25 +923,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 									}
 								})
 							});
-						}
-					}).done(function(result) {
-	
-						result = JSON.parse(result)
-						console.log('result is'+ result)
-						if (result == 1) {
-							Swal.fire({
-								text: "",
-								icon: 'success',
-								title: successText
-							})
-						} else {
-							Swal.fire({
-								text: "",
-								icon: 'info',
-								title: infoText
-							})
-						}
-					});
+						},
+						 success: function(data) {
+							console.log(data)
+							if (data == 1) {
+								Swal.fire({
+									text: "",
+									icon: 'success',
+									title: successText
+								})
+							} else {
+								Swal.fire({
+									text: "",
+									icon: 'info',
+									title: infoText
+								})
+							}
+						},
+					})
 				}
 			})
 			
