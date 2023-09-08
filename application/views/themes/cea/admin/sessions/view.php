@@ -202,7 +202,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 
 <script>
-
+	let projectId = "<?=$this->project->id?>";
 	let controllerPath = project_admin_url;
 
 	let session_id = "<?=$session->id?>";
@@ -824,6 +824,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
+	/** Live users per session **/
+	socket.emit(`ycl_session_active_users`, `${projectId}_${session_id}`);
+	socket.on(`ycl_session_active_users_count`, function (total_users) {
+		$('#attendeesOnline').html(`<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees on this session page"><i class="fas fa-eye"></i> ${total_users}</span>`);
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	
 </script>
 
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/host_chat.js"></script>
