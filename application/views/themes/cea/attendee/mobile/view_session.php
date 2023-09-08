@@ -25,11 +25,12 @@
 <!--													--><?php //echo "<pre>"; print_r($session);  exit?>
                                                <p class="mx-3" id="sessionTitle" style="font-size: 19px; line-height: 1.2; font-weight: 900"><?=$session->name?>
                                                 <?php if(isset ($session->presenters) && !empty($session->presenters)): ?>
-                                                    <?php foreach ($session->presenters as $presenter):?>
+                                                    <?php foreach ($session->presenters as $presenter):
+														 if(!in_array($presenter->email, array('q@a.com', 'q@a2.com'))): ?>
                                                         <div id="moderators" style="font-size: 18px;">
                                                             <?=$presenter->name.' '.$presenter->surname.(($presenter->credentials)?', '.$presenter->credentials:'')?>
                                                         </div>
-                                                    <?php endforeach;?>
+                                                    <?php endif; endforeach;?>
                                                 <?php endif ?>
                                             <?php endif; ?>
 
