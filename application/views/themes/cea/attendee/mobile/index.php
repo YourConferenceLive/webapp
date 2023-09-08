@@ -37,11 +37,12 @@
                             <b><p id="sessionTitle"><?=$sess_data->name?></b>
 
                             <?php if(isset($sess_data->presenters) && !empty($sess_data->presenters)) :
-                                foreach ($sess_data->presenters as $presenter): ?>
+                                foreach ($sess_data->presenters as $presenter): 
+                                if(!in_array($presenter->email, array('q@a.com', 'q@a2.com'))):?>
                            <p id="moderators" style="line-height: 0">
                             <?=$presenter->name.' '.$presenter->surname.', '.$presenter->credentials?>
                            </p>
-                                <?php endforeach;?>
+                                <?php endif; endforeach;?>
                             <?php endif;?>
                             <?php endif; ?>
                             </div>
