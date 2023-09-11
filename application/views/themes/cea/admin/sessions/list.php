@@ -147,28 +147,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			let session_id = $(this).attr('session-id');
 			getColorPreset();
 
-			const translationData = fetchAllText(); // Fetch the translation data
-
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-                // Find the translations for the dialog text
-                let dialogTitle = 'Please Wait';
-                let dialogText = 'Loading session data...';
-				let imageAltText = 'Loading...';
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === dialogText) {
-                        dialogText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === imageAltText) {
-                        imageAltText = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
+			(async () => {
+				const translator = await createLanguageTranslator();
 				
+				let dialogTitle = translator.translate('Please Wait');
+                let dialogText = translator.translate('Loading session data...');
+				let imageAltText = translator.translate('Loading...');
+
 				Swal.fire({
 					title: dialogTitle,
 					text: dialogText,
@@ -179,20 +164,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					showConfirmButton: false,
 					allowOutsideClick: false
 				});
-                
+				
 				$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
 					session = JSON.parse(session);
 					console.log(session);
-
+	
 					// set the session title here
 					$('#addSessionModalLabelspan').text(`Session ID: ${session.id}`)
-
+	
 					$('#sessionId').val(session.id);
 					$('#sessionName').val(session.name);
 					$('#sessionNameOther').val(session.other_language_name);
-
+	
 					$(`#roomID`).val(session.room_id);
-
+	
 					$('#eventID').val(session.event_id);
 					$(`#sessionTrack option[value="${session.track}"]`).prop('selected', true);
 	
@@ -269,7 +254,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	
 					$('#sessionColorPreset').val(session.attendee_settings_id);
 					$('#sessionEndRedirect').val(session.session_end_redirect);
-
+	
 					if(session.auto_redirect_status == 1){
 						$('#autoRedirectSwitch').attr('checked','checked')
 					}else{
@@ -363,76 +348,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						keyboard: false
 					});
 				});
-            });
+            })();
 
 		});
 
 		$('#sessionsTable').on('click', '.removeSession', function () {
 			let session_id = $(this).attr('session-id');
 			let session_name = $(this).attr('session-name');
-
-			const translationData = fetchAllText(); // Fetch the translation data
-
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-                // Find the translations for the dialog text
+			
+			(async () => {
+				const translator = await createLanguageTranslator();
+				
+				// Find the translations for the dialog text
                 let dialogTitle = 'Are you sure?';
-				let html1 = "You are about to remove";
-				let html2 = "(We will still keep it in our records for auditing)";
-                let confirmButtonText = 'Yes, remove it!';
-                let cancelButtonText = 'Cancel';
-
+				let html1 = translator.translate("Are you sure?");
+				let html2 = translator.translate("(We will still keep it in our records for auditing)");
+                let confirmButtonText = translator.translate("Yes, remove it!");
+                let cancelButtonText = translator.translate("Cancel");
+				
 				// Swal 2
-				let dialogTitle2 = 'Please Wait';
-				let dialogText2 = "Removing the session...";
-				let imageAltText2 = 'Loading...';
-
+				let dialogTitle2 = translator.translate("Please Wait");
+				let dialogText2 = translator.translate("Removing the session...");
+				let imageAltText2 = translator.translate("Loading...");
+				
 				// Swal 3
-				let errorText = "Error!";
-				let errorMsg = "Unable to remove";
-
+				let errorText = translator.translate("Error!");
+				let errorMsg = translator.translate("Unable to remove");
+				
 				// Toastr
-				let removedText = "has been removed!";
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === html1) {
-                        html1 = arrData[i][selectedLanguage + '_text'];
-                    }
-					if (arrData[i].english_text === html2) {
-                        html2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === confirmButtonText) {
-                        confirmButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === cancelButtonText) {
-                        cancelButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-
-					if (arrData[i].english_text === dialogTitle2) {
-                        dialogTitle2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === dialogText2) {
-                        dialogText2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === imageAltText2) {
-                        imageAltText2 = arrData[i][selectedLanguage + '_text'];
-                    }
-
-					if (arrData[i].english_text === errorText) {
-                        errorText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === errorMsg) {
-                        errorMsg = arrData[i][selectedLanguage + '_text'];
-                    }
-
-					if (arrData[i].english_text === removedText) {
-                        removedText = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
+				let removedText = translator.translate("has been removed!");
 
 				Swal.fire({
 					title: dialogTitle,
@@ -442,7 +386,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					confirmButtonColor: '#3085d6',
 					cancelButtonColor: '#d33',
 					confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText
+					cancelButtonText: cancelButtonText
 				}).then((result) => {
 					if (result.isConfirmed) {
 	
@@ -473,8 +417,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						});
 					}
 				});
-                
-            });
+
+            })();
+
 
 		});
 
@@ -680,6 +625,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	
 				Swal.close();
 			});
+
         })();
 		
 	}
@@ -690,42 +636,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			e.preventDefault();
 			let session_id = $(this).attr('session-id')
 
-			const translationData = fetchAllText(); // Fetch the translation data
-
-			translationData.then((arrData) => {
-				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
+			(async () => {
+				const translator = await createLanguageTranslator();
+				
 				// Find the translations for the dialog text
-				let dialogTitle = 'Are you sure?';
-				let dialogText = "You won't be able to revert this!";
-				let confirmButtonText = 'Yes, clear it!';
-				let cancelButtonText = 'Cancel';
-
+				let dialogTitle = translator.translate('Are you sure?');
+				let dialogText = translator.translate("You won't be able to revert this!");
+				let confirmButtonText = translator.translate("Yes, clear it!");
+				let cancelButtonText = translator.translate("Cancel");
+				
 				// Toast
-				let successText = "Success";
-				let successMsg = "Json Cleared";
-
-				for (let i = 0; i < arrData.length; i++) {
-					if (arrData[i].english_text === dialogTitle) {
-						dialogTitle = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === dialogText) {
-						dialogText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === confirmButtonText) {
-						confirmButtonText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === cancelButtonText) {
-						cancelButtonText = arrData[i][selectedLanguage + '_text'];
-					}
-
-					if (arrData[i].english_text === successText) {
-						successText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === successMsg) {
-						successMsg = arrData[i][selectedLanguage + '_text'];
-					}
-				}
+				let successText = translator.translate("Success");
+				let successMsg = translator.translate("Json Cleared");
 
 				Swal.fire({
 					title: dialogTitle,
@@ -735,7 +657,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					confirmButtonColor: '#3085d6',
 					cancelButtonColor: '#d33',
 					confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText
+					cancelButtonText: cancelButtonText
 				}).then((result) => {
 					if (result.isConfirmed) {
 						$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
@@ -751,8 +673,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							},'json')
 					}
 				})
-				
-			});
+
+            })();
 		});
 
 		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
@@ -791,6 +713,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				} catch (error) {
 					console.log(error);
 				}
+				
             })();
 
 		})
@@ -827,40 +750,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	})
 	
 	$('#sessionsTableBody').on('click', '.sendJsonBtn', function() {
-
-		const translationData = fetchAllText(); // Fetch the translation data
-
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
+		
+		(async () => {
+			const translator = await createLanguageTranslator();
+			
 			// Find the translations for the dialog text
-			let dialogTitle = 'Are you sure?';
-			let confirmButtonText = 'Yes, send it!';
-			let cancelButtonText = 'Cancel';
-
+			let dialogTitle = translator.translate("Are you sure?");
+			let confirmButtonText = translator.translate("Yes, send it!");
+			let cancelButtonText = translator.translate("Cancel");
+			
 			// Swal 2
-			let successText = "Success";
-			let infoText = "Info";
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === confirmButtonText) {
-					confirmButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === cancelButtonText) {
-					cancelButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-
-				if (arrData[i].english_text === successText) {
-					successText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === infoText) {
-					infoText = arrData[i][selectedLanguage + '_text'];
-				}
-			}
-
+			let successText = translator.translate("Success");
+			let infoText = translator.translate("Info");
+			
 			Swal.fire({
 				title: dialogTitle,
 				text: "",
@@ -909,7 +811,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				}
 			})
 			
-		});
+		})();
 	})
 
 	function getColorPreset(){

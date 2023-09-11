@@ -745,65 +745,38 @@
 		// 	toastr.warning('Credit must be a positive number!')
 		// 	return false;
 		// }
-		let translationData = fetchAllText(); // Fetch the translation data
 
+		(async () => {
+			const translator = await createLanguageTranslator();
 
-            translationData.then((arrData) => {
-				console.log("Before");
+			// Translations for the dialog text
+			let dialogTitle = translator.translate("Are you sure?");
+			let confirmButtonText = translator.translate("Yes, save it!");
+			let cancelButtonText = translator.translate("No");
+			let html1 = translator.translate("starts on");
+			let html2 = translator.translate("and ends on");
 
-				
-		
-		
-                let selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-				console.log(selectedLanguage);
-                // // Find the translations for the dialog text
-                let dialogTitle = 'Are you sure?';
-                let confirmButtonText = 'Yes, save it!';
-                let cancelButtonText = 'No';
-				let html1 = "starts on";
-				let html2 = "and ends on";
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === confirmButtonText) {
-                        confirmButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === cancelButtonText) {
-                        cancelButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-					if (arrData[i].english_text === html1) {
-                        html1 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === html2) {
-                        html2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
-
-				let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
-				Swal.fire({
-					title: dialogTitle,
-					html: '<span style="color: white;">'+sessionName+
-							'<br><br> <small>'+html1+'</small> '+$('#startDateTimeInput').val()+
-							'<br> <small>'+html2+'</small> '+$('#endDateTimeInput').val()+' ? </span>',
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: confirmButtonText,
-					cancelButtonText: cancelButtonText
-				}).then((result) => {
-					if (result.isConfirmed) {
-						if ($('#sessionId').val() == 0)
-							addSession();
-						else
-							updateSession();
-					}
-				})
-                
-            });
+			let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
+			Swal.fire({
+				title: dialogTitle,
+				html: '<span style="color: white;">'+sessionName+
+						'<br><br> <small>'+html1+'</small> '+$('#startDateTimeInput').val()+
+						'<br> <small>'+html2+'</small> '+$('#endDateTimeInput').val()+' ? </span>',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: confirmButtonText,
+				cancelButtonText: cancelButtonText
+			}).then((result) => {
+				if (result.isConfirmed) {
+					if ($('#sessionId').val() == 0)
+						addSession();
+					else
+						updateSession();
+				}
+			})
+		})();
 
 	});
 
@@ -824,44 +797,23 @@
 
 	function addSession()
 	{
-		let translationData = fetchAllText(); // Fetch the translation data
-
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-			// Find the translations for the dialog text
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Adding the session...';
-			let imageAltText = 'Loading...';
-
+		(async () => {
+			const translator = await createLanguageTranslator();
+			
+			// Translations for the dialog text
+			let dialogTitle = translator.translate("Please Wait");
+			let dialogText = translator.translate("Adding the session...");
+			let imageAltText = translator.translate("Loading...");
+			
 			// Toast
-			let sessionText = "Session added";
-			let errorText = "Error";
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
-
-				if (arrData[i].english_text === sessionText) {
-					sessionText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === errorText) {
-					errorText = arrData[i][selectedLanguage + '_text'];
-				}
-			}
+			let sessionText = translator.translate("Session added");
+			let errorText = translator.translate("Error");
 
 			if (isNaN(parseInt($('#roomID').val()))) {
 				toastr.error('Room ID should be a number');
 				return false;
 			}
-
+	
 			Swal.fire({
 				title: dialogTitle,
 				text: dialogText,
@@ -872,7 +824,7 @@
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
+	
 			let formData = new FormData(document.getElementById('addSessionForm'));
 	
 			$.ajax({
@@ -904,42 +856,27 @@
 					}
 				}
 			});
-		});
+		})();
 	}
 
 	function updateSession()
 	{
-		let translationData = fetchAllText(); // Fetch the translation data
-
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
+		(async () => {
+			const translator = await createLanguageTranslator();
+			
 			// Find the translations for the dialog text
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Updating the session...';
-			let imageAltText = 'Loading...';
-
+			let dialogTitle = translator.translate("Please Wait");
+			let dialogText = translator.translate("Updating the session...");
+			let imageAltText = translator.translate("Loading...");
+			
 			// Toast
-			let sessionUpdateText = "Session updated";
-
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === sessionUpdateText) {
-					sessionUpdateText = arrData[i][selectedLanguage + '_text'];
-				}
-			}
-
+			let sessionUpdateText = translator.translate("Session updated");
+			
 			if (isNaN(parseInt($('#roomID').val()))) {
 				toastr.error('Room ID should be a number');
 				return false;
 			}
-
+	
 			Swal.fire({
 				title: dialogTitle,
 				text: dialogText,
@@ -992,7 +929,7 @@
 							$('#currentMobileSessionBackgroundDiv').show();
 						}else
 							$('#currentMobileSessionBackgroundDiv').hide();
-
+	
 						listSessions();
 						toastr.success(sessionUpdateText);
 					}else if(data.status == 'warning'){
@@ -1002,7 +939,8 @@
 					}
 				}
 			});
-		});
+
+		})();
 	}
 
 </script>

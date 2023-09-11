@@ -24,7 +24,7 @@ const userLanguage = initializeLanguage();
 
             (async () => {
                 const translator = await createLanguageTranslator();
-                let sampleTitle = translator.translate('Please Wait');
+                let sampleTitle = translator.translate("");
             })();
 
 /**************** End : Run Logic here ****************/

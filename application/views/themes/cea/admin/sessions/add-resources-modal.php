@@ -102,27 +102,13 @@
 			let resource_id = $(this).attr('resource-id');
 			let session_id = $(this).attr('session-id');
 
-			const translationData = fetchAllText(); // Fetch the translation data
+			(async () => {
+                const translator = await createLanguageTranslator();
 
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-                // Find the translations for the dialog text
-                let dialogTitle = 'Are you sure?';
-                let confirmButtonText = 'Yes, remove it!';
-                let cancelButtonText = 'Cancel';
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === confirmButtonText) {
-                        confirmButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === cancelButtonText) {
-                        cancelButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
+				// Find the translations for the dialog text
+                let dialogTitle = translator.translate("Are you sure?");
+                let confirmButtonText = translator.translate("Yes, remove it!");
+                let cancelButtonText = translator.translate("Cancel");
 
 				Swal.fire({
 					title: dialogTitle,
@@ -146,7 +132,8 @@
 						}
 					}
 				});
-            });
+
+            })();
 		})
 	})
 

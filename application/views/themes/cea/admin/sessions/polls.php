@@ -174,29 +174,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#sessionsTable').on('click', '.manageSession', function () {
 
 			let session_id = $(this).attr('session-id');
-
-			const translationData = fetchAllText(); // Fetch the translation data
-
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-                // Find the translations for the dialog text
-                let dialogTitle = 'Please Wait';
-                let dialogText = 'Loading session data...';
-				let imageAltText = 'Loading...';
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === dialogText) {
-                        dialogText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === imageAltText) {
-                        imageAltText = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
-
+			
+			(async () => {
+				const translator = await createLanguageTranslator();
+                let sampleTitle = translator.translate("Loading...");
+				
+                // Translations for the dialog text
+                let dialogTitle = translator.translate("Please Wait");
+                let dialogText = translator.translate("Loading session data...");
+				let imageAltText = translator.translate("Loading...");
+				
 				Swal.fire({
 					title: dialogTitle,
 					text: dialogText,
@@ -207,7 +194,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					showConfirmButton: false,
 					allowOutsideClick: false
 				});
-                
+				
 				$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
 					session = JSON.parse(session);
 	
@@ -285,7 +272,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						keyboard: false
 					});
 				});
-            });
+
+            })();
 
 
 		});
