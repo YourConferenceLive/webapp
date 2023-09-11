@@ -278,81 +278,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		function loadNotes(entity_type, entity_type_id, note_page) {
 			console.log('Note Page : ' + note_page);
 
-			const translationData = fetchAllText(); // Fetch the translation data
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Loading notes...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
 
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+			$.ajax({type: "GET",
+				url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
+				data: '',
+				success: function(response){
+					Swal.close();
+					jsonObj = JSON.parse(response);
+					// Add response in Modal body
 
-                // Find the translations for the dialog text
-                let dialogTitle = 'Please Wait';
-                let dialogText = 'Loading notes...';
-				let imageAltText = 'Loading...';
+					$('.modal-title').html( ((entity_type == 'eposter') ? jsonObj.eposter.title : jsonObj.session.name ) + ' Notes');
 
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === dialogText) {
-                        dialogText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === imageAltText) {
-                        imageAltText = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
+					if (jsonObj.total) {
+						$('.count_note strong').text(jsonObj.total);
+						var previousHTML = $('#notes_list_container').html();
+						var iHTML = '';
+						if (previousHTML == '')
+							iHTML += '<ul id="list_note" class="col-md-12">';
 
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-					imageAlt: imageAltText,
-					showCancelButton: false,
-					showConfirmButton: false,
-					allowOutsideClick: false
-				});
-	
-				$.ajax({type: "GET",
-					url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
-					data: '',
-					success: function(response){
-						Swal.close();
-						jsonObj = JSON.parse(response);
-						// Add response in Modal body
-	
-						$('.modal-title').html( ((entity_type == 'eposter') ? jsonObj.eposter.title : jsonObj.session.name ) + ' Notes');
-	
-						if (jsonObj.total) {
-							$('.count_note strong').text(jsonObj.total);
-							var previousHTML = $('#notes_list_container').html();
-							var iHTML = '';
-							if (previousHTML == '')
-								iHTML += '<ul id="list_note" class="col-md-12">';
-	
-							for (let x in jsonObj.data) {
-								let note_id 	= jsonObj.data[x].id;
-								let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-								let datetime 	= jsonObj.data[x].time;
-	
-								iHTML += '<!-- Start List Note ' + (x) +' --><li class="box_result row"><div class="result_note col-md-12"><p>'+note+'</p><div class="tools_note"><span>'+datetime+'</span></div></div></li>';
-							}
-	
-							if (previousHTML == '')
-								iHTML += '</ul>';
-	
-							$('#notesModal .modal-footer').html('<button' + (((parseInt(note_page)+parseInt(1)) <= Math.ceil(parseInt(jsonObj.total)/parseInt(notes_per_page))) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes(\''+entity_type+'\', '+entity_type_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
-	
-							if (previousHTML == '') {
-								$('#notes_list_container').html(iHTML);
-							} else {
-								$('#list_note').append(iHTML);
-							}
-						} else {
-							$('.count_note strong').text('No ');
+						for (let x in jsonObj.data) {
+							let note_id 	= jsonObj.data[x].id;
+							let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+							let datetime 	= jsonObj.data[x].time;
+
+							iHTML += '<!-- Start List Note ' + (x) +' --><li class="box_result row"><div class="result_note col-md-12"><p>'+note+'</p><div class="tools_note"><span>'+datetime+'</span></div></div></li>';
 						}
+
+						if (previousHTML == '')
+							iHTML += '</ul>';
+
+						$('#notesModal .modal-footer').html('<button' + (((parseInt(note_page)+parseInt(1)) <= Math.ceil(parseInt(jsonObj.total)/parseInt(notes_per_page))) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes(\''+entity_type+'\', '+entity_type_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
+
+						if (previousHTML == '') {
+							$('#notes_list_container').html(iHTML);
+						} else {
+							$('#list_note').append(iHTML);
+						}
+					} else {
+						$('.count_note strong').text('No ');
 					}
-				});
-                
-            });
+				}
+			});
 
 		}
 
@@ -497,62 +473,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('.remove-briefcase-btn').on('click', function() {
 
-				const translationData = fetchAllText(); // Fetch the translation data
+				Swal.fire({
+					title: 'Please Wait',
+					text: 'Removing from your briefcase...',
+					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+					imageAlt: 'Loading...',
+					showCancelButton: false,
+					showConfirmButton: false,
+					allowOutsideClick: false
+				});
 
-				translationData.then((arrData) => {
-					const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+				var buttonElement = $(this);
 
-					// Find the translations for the dialog text
-					let dialogTitle = 'Please Wait';
-					let dialogText = 'Removing from your briefcase...';
-					let imageAltText = 'Loading...';
-
-					// Toast
-					let removeText = "Removed successfully.";
-
-					for (let i = 0; i < arrData.length; i++) {
-						if (arrData[i].english_text === dialogTitle) {
-							dialogTitle = arrData[i][selectedLanguage + '_text'];
+				$.ajax({type: "POST",
+						url: project_url+"/briefcase/delete",
+						data: {'session_id' : $(this).data('session-id')},
+						error: function(jqXHR, textStatus, errorMessage)
+						{
+							Swal.close();
+							toastr.error(errorMessage);
+						},
+						success: function(response){
+							$(buttonElement).parent().parent().parent().parent().parent().hide('slow').remove();
+							Swal.close();
+							toastr.success("Removed successfully.");
 						}
-						if (arrData[i].english_text === dialogText) {
-							dialogText = arrData[i][selectedLanguage + '_text'];
-						}
-						if (arrData[i].english_text === imageAltText) {
-							imageAltText = arrData[i][selectedLanguage + '_text'];
-						}
-
-						if (arrData[i].english_text === removeText) {
-							removeText = arrData[i][selectedLanguage + '_text'];
-						}
-					}
-
-					Swal.fire({
-						title: dialogTitle,
-						text: dialogText,
-						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-						imageAlt: imageAltText,
-						showCancelButton: false,
-						showConfirmButton: false,
-						allowOutsideClick: false
-					});
-
-					var buttonElement = $(this);
-	
-					$.ajax({type: "POST",
-							url: project_url+"/briefcase/delete",
-							data: {'session_id' : $(this).data('session-id')},
-							error: function(jqXHR, textStatus, errorMessage)
-							{
-								Swal.close();
-								toastr.error(errorMessage);
-							},
-							success: function(response){
-								$(buttonElement).parent().parent().parent().parent().parent().hide('slow').remove();
-								Swal.close();
-								toastr.success(removeText);
-							}
-					});
 				});
 
 			});
