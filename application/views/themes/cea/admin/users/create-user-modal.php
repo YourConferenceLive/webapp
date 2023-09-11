@@ -238,7 +238,7 @@
 		let password = $('#password').val();
 
 		if (email.trim() === '') {
-			toastr.error("Email is required.";);
+			toastr.error("Email is required.");
 			return;
 		}
 		else if(password.trim() === '') {
