@@ -424,7 +424,7 @@
                 catch(error)
                 {
                     $('#liveSupportChatToggle').prop("checked", !$('#liveSupportChatToggle').prop("checked"));
-                    toastr.error("You are not logged-in";);
+                    toastr.error("You are not logged-in");
                     return false;
                 }
 
