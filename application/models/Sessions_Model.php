@@ -1909,13 +1909,13 @@ class Sessions_Model extends CI_Model
 
 	function createPollChart($session_id){
 		ob_start();
-		$sesstion_title = $this->getSessionName($session_id);
+		$session_title = $this->getSessionName($session_id);
 		$poll_data = $this->getPollData($session_id);
 
 		$this->load->library('Pdf');
 		$pdf = new Pdf('L', 'mm', 'A4', true, 'UTF-8', false);
 
-		$pdf->SetTitle($sesstion_title);
+		$pdf->SetTitle($session_title);
 		$pdf->SetHeaderMargin(30);
 		$pdf->SetTopMargin(20);
 		$pdf->setFooterMargin(20);
@@ -1960,7 +1960,7 @@ class Sessions_Model extends CI_Model
 
 			$pdf->SetFont('helvetica', '', 8);
 			$pdf->SetXY(5, 5);
-			$pdf->WriteHTML($sesstion_title, '', 0, 'C', true, 0, false, false, 0);
+			$pdf->WriteHTML($session_title, '', 0, 'C', true, 0, false, false, 0);
 
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('helvetica', 'B', 20);
@@ -2071,7 +2071,7 @@ class Sessions_Model extends CI_Model
 			$pdf->writeHTML($result_table, true, false, false, false, 'center');
 		}
 		ob_end_clean();
-		$pdf->Output(FCPATH.'/cms_uploads/projects/'.$this->project->id.'/exports/pollExport/Poll Overview - '.$sesstion_title.'.pdf', 'FD');
+		$pdf->Output(FCPATH.'cms_uploads/projects/'.$this->project->id.'/exports/'.str_replace(' ', '_', $session_title) . '.pdf', 'FD');
 
 		return;
 	}
