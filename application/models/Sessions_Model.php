@@ -2111,7 +2111,7 @@ class Sessions_Model extends CI_Model
 
 		if($result->num_rows()>0) {
 			$questionData = $result;
-			$file_name = 'Attendee Questions/' . date('Y-m-d') . '.csv';
+			$file_name = 'Session_'.$session_id.'_Attendee_Questions_' . date('Y-m-d') . '.csv';
 			header("Content-Description: File Transfer");
 			header("Content-Disposition: attachment; filename=$file_name");
 			header("Content-Type: application/csv;");
