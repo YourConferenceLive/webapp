@@ -1927,7 +1927,7 @@ class Sessions_Model extends CI_Model
 		$pdf->AddFont('dejavusans', 'BI', 'DejaVuSans-BoldOblique.ttf', true);
 		$pdf->AddPage('L', 'A4');
 
-		$chart_title = $sesstion_title;
+		$chart_title = $session_title;
 //        $pdf->SetFont('helvetica', '', 45);
 		$pdf->SetFont('helvetica', '', 45);
 		$pdf->SetXY(10, 40);
@@ -2071,7 +2071,8 @@ class Sessions_Model extends CI_Model
 			$pdf->writeHTML($result_table, true, false, false, false, 'center');
 		}
 		ob_end_clean();
-		$pdf->Output(FCPATH.'cms_uploads/projects/'.$this->project->id.'/exports/'.str_replace(' ', '_', $session_title) . '.pdf', 'FD');
+		$session_title = preg_replace('/[^a-zA-Z0-9_]/', '_', $session_title);
+		$pdf->Output(FCPATH.'cms_uploads/projects/'.$this->project->id.'/exports/'.$session_title. '.pdf', 'FD');
 
 		return;
 	}
