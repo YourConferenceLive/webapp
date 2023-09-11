@@ -235,9 +235,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	function addEposter()
 	{
 
-
-		const translationData = fetchAllText(); // Fetch the translation data
-
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Adding the eposter...',
