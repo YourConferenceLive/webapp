@@ -726,17 +726,13 @@
 	$('#save-session').on('click', function () {
 		if($('input[name="startDateTime"]').val() == '')
 		{
-			getTranslatedSelectAccess('Please select start date and time!').then((msg) => {
-				toastr.warning(msg);
-			});
+			toastr.warning('Please select start date and time!');
 			return false;
 		}
 
 		if($('input[name="endDateTime"]').val() == '')
 		{
-			getTranslatedSelectAccess('Please select end date and time!').then((msg) => {
-				toastr.warning(msg);
-			});
+			toastr.warning('Please select end date and time!');
 			return false;
 		}
 
@@ -746,37 +742,26 @@
 		// 	return false;
 		// }
 
-		(async () => {
-			const translator = await createLanguageTranslator();
-
-			// Translations for the dialog text
-			let dialogTitle = translator.translate("Are you sure?");
-			let confirmButtonText = translator.translate("Yes, save it!");
-			let cancelButtonText = translator.translate("No");
-			let html1 = translator.translate("starts on");
-			let html2 = translator.translate("and ends on");
-
-			let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
-			Swal.fire({
-				title: dialogTitle,
-				html: '<span style="color: white;">'+sessionName+
-						'<br><br> <small>'+html1+'</small> '+$('#startDateTimeInput').val()+
-						'<br> <small>'+html2+'</small> '+$('#endDateTimeInput').val()+' ? </span>',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: confirmButtonText,
-				cancelButtonText: cancelButtonText
-			}).then((result) => {
-				if (result.isConfirmed) {
-					if ($('#sessionId').val() == 0)
-						addSession();
-					else
-						updateSession();
-				}
-			})
-		})();
+		let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
+		Swal.fire({
+			title: "Are you sure?",
+			html: '<span style="color: white;">'+sessionName+
+					'<br><br> <small>starts on</small> '+$('#startDateTimeInput').val()+
+					'<br> <small>and ends on</small> '+$('#endDateTimeInput').val()+' ? </span>',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: "Yes, save it!",
+			cancelButtonText: "No"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				if ($('#sessionId').val() == 0)
+					addSession();
+				else
+					updateSession();
+			}
+		})
 
 	});
 
@@ -797,150 +782,126 @@
 
 	function addSession()
 	{
-		(async () => {
-			const translator = await createLanguageTranslator();
-			
-			// Translations for the dialog text
-			let dialogTitle = translator.translate("Please Wait");
-			let dialogText = translator.translate("Adding the session...");
-			let imageAltText = translator.translate("Loading...");
-			
-			// Toast
-			let sessionText = translator.translate("Session added");
-			let errorText = translator.translate("Error");
+		if (isNaN(parseInt($('#roomID').val()))) {
+			toastr.error('Room ID should be a number');
+			return false;
+		}
 
-			if (isNaN(parseInt($('#roomID').val()))) {
-				toastr.error('Room ID should be a number');
-				return false;
-			}
-	
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-	
-			let formData = new FormData(document.getElementById('addSessionForm'));
-	
-			$.ajax({
-				type: "POST",
-				url: project_admin_url+"/sessions/add",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
+		Swal.fire({
+			title: "Please Wait",
+			text: "Adding the session...",
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: "Loading...",
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+
+		let formData = new FormData(document.getElementById('addSessionForm'));
+
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/sessions/add",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				Swal.close();
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				Swal.close();
+
+				data = JSON.parse(data);
+
+				if (data.status == 'success')
 				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-					Swal.close();
-	
-					data = JSON.parse(data);
-	
-					if (data.status == 'success')
-					{
-						listSessions();
-						toastr.success(sessionText);
-						$('#addSessionModal').modal('hide');
-	
-					}else{
-						toastr.error(errorText);
-					}
+					listSessions();
+					toastr.success("Session added");
+					$('#addSessionModal').modal('hide');
+
+				}else{
+					toastr.error("Error");
 				}
-			});
-		})();
+			}
+		});
 	}
 
 	function updateSession()
 	{
-		(async () => {
-			const translator = await createLanguageTranslator();
 			
-			// Find the translations for the dialog text
-			let dialogTitle = translator.translate("Please Wait");
-			let dialogText = translator.translate("Updating the session...");
-			let imageAltText = translator.translate("Loading...");
-			
-			// Toast
-			let sessionUpdateText = translator.translate("Session updated");
-			
-			if (isNaN(parseInt($('#roomID').val()))) {
-				toastr.error('Room ID should be a number');
-				return false;
-			}
-	
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-			
-			let formData = new FormData(document.getElementById('addSessionForm'));
-	
-			$.ajax({
-				type: "POST",
-				url: project_admin_url+"/sessions/update",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
-				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-					Swal.close();
-	
-					data = JSON.parse(data);
-					if (data.status == 'success')
-					{
-						$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+data.session.thumbnail);
-						$('#currentPhotoDiv').show();
-	
-						if(data.session.sponsor_logo  !== '') {
-							$('#currentSponsorLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/' + data.session.sponsor_logo);
-							$('#currentSponsorLogoDiv').show();
-						}else
-							$('#currentSponsorLogoDiv').hide();
-	
-						if(data.session.session_logo  !== '') {
-							$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/' + data.session.session_logo);
-							$('#currentSessionLogoDiv').show();
-						}else
-							$('#currentSessionLogoDiv').hide();
-	
-						if(data.session.session_logo  !== '') {
-							$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + data.session.mobile_session_background);
-							$('#currentMobileSessionBackgroundDiv').show();
-						}else
-							$('#currentMobileSessionBackgroundDiv').hide();
-	
-						listSessions();
-						toastr.success(sessionUpdateText);
-					}else if(data.status == 'warning'){
-						toastr.warning(data.msg);
-					}else{
-						toastr.error(data.technical_data);
-					}
-				}
-			});
+		if (isNaN(parseInt($('#roomID').val()))) {
+			toastr.error('Room ID should be a number');
+			return false;
+		}
 
-		})();
+		Swal.fire({
+			title: "Please Wait",
+			text: "Updating the session...",
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: "Loading...",
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+		
+		let formData = new FormData(document.getElementById('addSessionForm'));
+
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/sessions/update",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				Swal.close();
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				Swal.close();
+
+				data = JSON.parse(data);
+				if (data.status == 'success')
+				{
+					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+data.session.thumbnail);
+					$('#currentPhotoDiv').show();
+
+					if(data.session.sponsor_logo  !== '') {
+						$('#currentSponsorLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/' + data.session.sponsor_logo);
+						$('#currentSponsorLogoDiv').show();
+					}else
+						$('#currentSponsorLogoDiv').hide();
+
+					if(data.session.session_logo  !== '') {
+						$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/' + data.session.session_logo);
+						$('#currentSessionLogoDiv').show();
+					}else
+						$('#currentSessionLogoDiv').hide();
+
+					if(data.session.session_logo  !== '') {
+						$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + data.session.mobile_session_background);
+						$('#currentMobileSessionBackgroundDiv').show();
+					}else
+						$('#currentMobileSessionBackgroundDiv').hide();
+
+					listSessions();
+					toastr.success("Session updated");
+				}else if(data.status == 'warning'){
+					toastr.warning(data.msg);
+				}else{
+					toastr.error(data.technical_data);
+				}
+			}
+		});
+
 	}
 
 </script>

@@ -477,69 +477,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('#starred-questions-tab-content').on('click', '.hide-saved-question', function(){
 		let question_id = $(this).attr('question-id');
 
-		const translationData = fetchAllText(); // Fetch the translation data
-
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-			// Find the translations for the dialog text
-			let dialogTitle = 'Remove From Starred Question';
-			let dialogText = 'This starred question will be removed on admin and presenter';
-			let confirmButtonText = 'Yes, Remove it!';
-			let cancelButtonText = 'Cancel';
-
-			// Toast
-			let removeText = "Starred question removed successfully";
-			let errorMsg = "Something went wrong";
-
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === confirmButtonText) {
-					confirmButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === cancelButtonText) {
-					cancelButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-
-				if (arrData[i].english_text === removeText) {
-					removeText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === errorMsg) {
-					errorMsg = arrData[i][selectedLanguage + '_text'];
-				}
+		Swal.fire({
+			title: 'Remove From Starred Question',
+			text: 'This starred question will be removed on admin and presenter',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			confirmButtonText: 'Yes, Remove it!',
+			cancelButtonText: 'Cancel'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$.post(project_admin_url+'/sessions/hideSavedQuestionAjax/',
+					{
+						'question_id':question_id
+					},function(response){
+						if(response){
+							fillSavedQuestions();
+							$('#save-question-'+question_id).children().removeClass('fas fa-star').addClass('far fa-star')
+							toastr.success("Starred question removed successfully");
+						}else{
+							toastr.error("Something went wrong");
+						}
+					})
 			}
-
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				confirmButtonText: confirmButtonText,
-				cancelButtonText: cancelButtonText
-			}).then((result) => {
-				if (result.isConfirmed) {
-					$.post(project_admin_url+'/sessions/hideSavedQuestionAjax/',
-						{
-							'question_id':question_id
-						},function(response){
-							if(response){
-								fillSavedQuestions();
-								$('#save-question-'+question_id).children().removeClass('fas fa-star').addClass('far fa-star')
-								toastr.success(removeText);
-							}else{
-								toastr.error(errorMsg);
-							}
-						})
-				}
-			})
-		});
+		})
 	})
 
 //	############################
@@ -604,9 +565,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		let question_id = $(this).attr('question_id')
 
 		if(chat == ''){
-			getTranslatedSelectAccess('Cannot send empty message').then((msg) => {
-				toastr.info(msg);
-			});
+			toastr.info('Cannot send empty message');
 			return false;
 		}
 		let url = project_presenter_url+"/sessions/save_presenter_attendee_chat";
@@ -633,9 +592,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
 				}else{
-					getTranslatedSelectAccess(response.status).then((msg) => {
-						toastr.error(msg);
-					});
+					toastr.error(response.status);
 				}
 			}, 'json')
 	})
@@ -722,9 +679,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 			}
 		).fail((error)=>{
-			getTranslatedSelectAccess('Unable to load the chat.').then((msg) => {
-				toastr.error(msg);
-			});
+			toastr.error('Unable to load the chat.');
 		});
 
 		$('#attendeeChatModal').modal('show');
@@ -780,48 +735,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		let userId = $(this).attr('userId');
 
-		const translationData = fetchAllText(); // Fetch the translation data
+		Swal.fire({
+			title: 'Are you sure?',
+			text: 'Ending chat will disable attendee from sending you texts until you texts attendee.',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, end it!',
+			cancelButtonText: 'Cancel'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				socket.emit('end-attendee-to-admin-chat', {"session_id":session_id, "from_id":"admin", "to_id":userId});
 
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-			// Find the translations for the dialog text
-			let dialogTitle = 'Are you sure?';
-			let dialogText = 'Ending chat will disable attendee from sending you texts until you texts attendee.';
-			let confirmButtonText = 'Yes, end it!';
-			let cancelButtonText = 'Cancel';
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === confirmButtonText) {
-					confirmButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === cancelButtonText) {
-					cancelButtonText = arrData[i][selectedLanguage + '_text'];
-				}
+				$('#attendeeChatModal').modal('hide');
 			}
-
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, end it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					socket.emit('end-attendee-to-admin-chat', {"session_id":session_id, "from_id":"admin", "to_id":userId});
-
-					$('#attendeeChatModal').modal('hide');
-				}
-			})
-		});
+		})
 	});
 
 </script>

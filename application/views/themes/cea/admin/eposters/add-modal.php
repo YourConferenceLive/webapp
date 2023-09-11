@@ -192,71 +192,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('#save-eposter').on('click', function () {
 		if(!$('input[name="eposterName"]').val())
 		{
-			getTranslatedSelectAccess('ePoster name cannot be empty!').then((msg) => {
-				toastr.warning(msg);
-			});
+			toastr.warning('ePoster name cannot be empty!');
 			return false;
 		}
 
 		if(!$.isNumeric($('input[name="eposterCredits"]').val()))
 		{
-			getTranslatedSelectAccess('Credit must be a positive number!').then((msg) => {
-				toastr.warning(msg);
-			});
+			toastr.warning('Credit must be a positive number!');
 			return false;
 		}
 
 		if($('select[name="eposterType"]').find(":selected").val() != 'eposter' && !$('input[name="videoLink"]').val())
 		{
-			getTranslatedSelectAccess('Surgical Video cannot be empty!').then((msg) => {
-				toastr.warning(msg);
-			});
+			toastr.warning('Surgical Video cannot be empty!');
 			return false;
 		}
 
-		const translationData = fetchAllText(); // Fetch the translation data
 
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+		let eposterName = ($('#eposterName').val() =='')?'[Empty ePoster Name]':$('#eposterName').val();
 
-			// Find the translations for the dialog text
-			let dialogTitle = 'Are you sure?';
-			let confirmButtonText = 'Yes, save it!';
-			let cancelButtonText = 'No';
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === confirmButtonText) {
-					confirmButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === cancelButtonText) {
-					cancelButtonText = arrData[i][selectedLanguage + '_text'];
-				}
+		Swal.fire({
+			title: 'Are you sure?',
+			html: '<span style="color: white;">'+eposterName+'</span>',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, save it!',
+			cancelButtonText: 'No'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				if ($('#eposterId').val() == 0)
+					addEposter();
+				else
+					updateEposter();
 			}
-
-			let eposterName = ($('#eposterName').val() =='')?'[Empty ePoster Name]':$('#eposterName').val();
-	
-			Swal.fire({
-				title: dialogTitle,
-				html: '<span style="color: white;">'+eposterName+'</span>',
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: confirmButtonText,
-				cancelButtonText: cancelButtonText
-			}).then((result) => {
-				if (result.isConfirmed) {
-					if ($('#eposterId').val() == 0)
-						addEposter();
-					else
-						updateEposter();
-				}
-			})
+		})
 			
-		});
 
 	});
 
@@ -266,171 +238,98 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		const translationData = fetchAllText(); // Fetch the translation data
 
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Adding the eposter...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+		
+		let formData = new FormData(document.getElementById('addePosterForm'));
 
-			// Find the translations for the dialog text
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Adding the eposter...';
-			let imageAltText = 'Loading...';
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/eposters/add",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				Swal.close();
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				Swal.close();
 
-			// Toast
-			let errorText = "Error";
-			let executedText = "eposter list executed";
-			let eposterAddedText = "ePoster added";
+				data = JSON.parse(data);
 
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
+				if (data.status == 'success')
+				{
+					listePosters();
+					console.log("eposter list executed");
+					toastr.success("ePoster added");
+					$('#addePosterModal').modal('hide');
 
-				if (arrData[i].english_text === errorText) {
-					errorText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === executedText) {
-					executedText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === eposterAddedText) {
-					eposterAddedText = arrData[i][selectedLanguage + '_text'];
+				}else{
+					toastr.error("Error");
 				}
 			}
-			
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-			
-			let formData = new FormData(document.getElementById('addePosterForm'));
-	
-			$.ajax({
-				type: "POST",
-				url: project_admin_url+"/eposters/add",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
-				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-					Swal.close();
-	
-					data = JSON.parse(data);
-	
-					if (data.status == 'success')
-					{
-						listePosters();
-						console.log(executedText);
-						toastr.success(eposterAddedText);
-						$('#addePosterModal').modal('hide');
-	
-					}else{
-						toastr.error(errorText);
-					}
-				}
-			});
 		});
-
 
 	}
 
 	function updateEposter()
 	{
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Updating the eposter...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+		
+		let formData = new FormData(document.getElementById('addePosterForm'));
 
-		const translationData = fetchAllText(); // Fetch the translation data
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/eposters/update",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				Swal.close();
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				Swal.close();
 
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+				data = JSON.parse(data);
 
-			// Find the translations for the dialog text
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Updating the eposter...';
-			let imageAltText = 'Loading...';
-			
-			// Toast
-			let eposterUpdatedText = "ePoster updated";
-			let errorText = "Error";
+				if (data.status == 'success')
+				{
+					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/'+data.eposter.eposter);
+					$('#currentPhotoDiv').show();
 
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
-
-				if (arrData[i].english_text === eposterUpdatedText) {
-					eposterUpdatedText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === errorText) {
-					errorText = arrData[i][selectedLanguage + '_text'];
+					listePosters();
+					toastr.success("ePoster updated");
+				}else if(data.status == 'warning') {
+					toastr.warning(data.msg);
+				}else{
+					toastr.error("Error");
 				}
 			}
-
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-			
-			let formData = new FormData(document.getElementById('addePosterForm'));
-	
-			$.ajax({
-				type: "POST",
-				url: project_admin_url+"/eposters/update",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
-				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-					Swal.close();
-	
-					data = JSON.parse(data);
-	
-					if (data.status == 'success')
-					{
-						$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/eposters/thumbnails/'+data.eposter.eposter);
-						$('#currentPhotoDiv').show();
-	
-						listePosters();
-						toastr.success(eposterUpdatedText);
-					}else if(data.status == 'warning') {
-						toastr.warning(data.msg);
-					}else{
-						toastr.error(errorText);
-					}
-				}
-			});
 		});
-
 	}
 </script>

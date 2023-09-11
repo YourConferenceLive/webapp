@@ -102,38 +102,29 @@
 			let resource_id = $(this).attr('resource-id');
 			let session_id = $(this).attr('session-id');
 
-			(async () => {
-                const translator = await createLanguageTranslator();
-
-				// Find the translations for the dialog text
-                let dialogTitle = translator.translate("Are you sure?");
-                let confirmButtonText = translator.translate("Yes, remove it!");
-                let cancelButtonText = translator.translate("Cancel");
-
-				Swal.fire({
-					title: dialogTitle,
-					text: "",
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText
-				}).then((result) => {
-					if (result.isConfirmed) {
-						if(resource_id !== ''){
-							$.post(project_admin_url+'/sessions/updateSessionResource/',
-								{
-									'resource_id':resource_id,
-									'is_active':0
-								}, function(response){
-									getSessionResources(session_id);
-								})
-						}
+			Swal.fire({
+				title: "Are you sure?",
+				text: "",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: "Yes, remove it!",
+				cancelButtonText: "Cancel"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					if(resource_id !== ''){
+						$.post(project_admin_url+'/sessions/updateSessionResource/',
+							{
+								'resource_id':resource_id,
+								'is_active':0
+							}, function(response){
+								getSessionResources(session_id);
+							})
 					}
-				});
+				}
+			});
 
-            })();
 		})
 	})
 
