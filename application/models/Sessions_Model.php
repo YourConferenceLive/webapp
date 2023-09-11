@@ -2071,7 +2071,7 @@ class Sessions_Model extends CI_Model
 			$pdf->writeHTML($result_table, true, false, false, false, 'center');
 		}
 		ob_end_clean();
-		$pdf->Output(__DIR__.'/Poll Overview - '.$sesstion_title.'.pdf', 'FD');
+		$pdf->Output(FCPATH.'/cms_uploads/projects/'.$this->project->id.'/exports/pollExport/Poll Overview - '.$sesstion_title.'.pdf', 'FD');
 
 		return;
 	}
