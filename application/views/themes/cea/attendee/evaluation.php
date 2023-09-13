@@ -114,78 +114,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		function validate(){
-			const translationData = fetchAllText(); // Fetch the translation data
 
-			translationData.then((arrData) => {
-				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-				// Toast
-				let requiredText = 'Required field #';
-
-				// Swal
-				let confirmButtonText = 'Continue!';
-				let cancelButtonText = 'Cancel';
-
-				// Swal 2
-				let confirmButtonText2 = 'ok';
-
-				for (let i = 0; i < arrData.length; i++) {
-					if (arrData[i].english_text === requiredText) {
-						requiredText = arrData[i][selectedLanguage + '_text'];
+			$('.required').each(function(){
+				var question_id = $(this).attr('data-question_id');
+				var question_title = $(this).attr('data-question_title');
+				var input_name = "answer["+question_id+"]";
+				if($(this).attr('data-input_type')==='radio_opt') {
+					if(!$("input[name='" +input_name+ "']").is(":checked")) {
+						toastr['warning']('Required field #' + question_title)
+						$(this).addClass('border-danger');
+						return false;
 					}
-
-					if (arrData[i].english_text === confirmButtonText) {
-						confirmButtonText = arrData[i][selectedLanguage + '_text'];
+				} else if ($(this).attr('data-input_type')=='text_input') {
+					if (($("textarea[name='" + input_name + "']").val() == '')) {
+						toastr['warning'](requiredText + question_title)
+						$(this).addClass('border-danger');
+						return false;
 					}
-					if (arrData[i].english_text === cancelButtonText) {
-						cancelButtonText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === confirmButtonText2) {
-						confirmButtonText2 = arrData[i][selectedLanguage + '_text'];
-					}
-					
+				} else {
+					Swal.fire({
+						title: $('confirm_title').html(),
+						html: $('confirm_message').html(),
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Continue!',
+						cancelButtonText: 'Cancel'
+					}).then((result) => {
+						if (result.isConfirmed) {
+							$.post('<?=$this->project_url . '/evaluation/save_evaluation'?>', $('#form1').serialize(), function (response) {
+								if (response) {
+									Swal.fire({
+										icon: 'success',
+										title: "<span class='text-success'>"+$('success_title').html()+"</span>",
+										html: $('success_message').html(),
+										confirmButtonText: 'ok',
+									});
+								}
+							});
+						}
+					});
 				}
-				$('.required').each(function(){
-					var question_id = $(this).attr('data-question_id');
-					var question_title = $(this).attr('data-question_title');
-					var input_name = "answer["+question_id+"]";
-					if($(this).attr('data-input_type')==='radio_opt') {
-						if(!$("input[name='" +input_name+ "']").is(":checked")) {
-							toastr['warning'](requiredText + question_title)
-							$(this).addClass('border-danger');
-							return false;
-						}
-					} else if ($(this).attr('data-input_type')=='text_input') {
-						if (($("textarea[name='" + input_name + "']").val() == '')) {
-							toastr['warning'](requiredText + question_title)
-							$(this).addClass('border-danger');
-							return false;
-						}
-					} else {
-						Swal.fire({
-							title: $('confirm_title').html(),
-							html: $('confirm_message').html(),
-							showCancelButton: true,
-							confirmButtonColor: '#3085d6',
-							cancelButtonColor: '#d33',
-							confirmButtonText: confirmButtonText,
-							cancelButtonText: cancelButtonText
-						}).then((result) => {
-							if (result.isConfirmed) {
-								$.post('<?=$this->project_url . '/evaluation/save_evaluation'?>', $('#form1').serialize(), function (response) {
-									if (response) {
-										Swal.fire({
-											icon: 'success',
-											title: "<span class='text-success'>"+$('success_title').html()+"</span>",
-											html: $('success_message').html(),
-											confirmButtonText: confirmButtonText2,
-										});
-									}
-								});
-							}
-						});
-					}
-				});
 			});
 		}
 	});

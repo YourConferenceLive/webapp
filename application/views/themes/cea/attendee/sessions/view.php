@@ -413,9 +413,7 @@ body{overflow: hidden;background-color: #151515;}
 				let sessionId = "<?=$session_id?>";
 
 				if(question == '') {
-					getTranslatedSelectAccess('Please enter your question').then((msg) => {
-						toastr.warning(msg);
-					});
+					toastr.warning('Please enter your question');
 					return false;
 				}
 
@@ -439,21 +437,15 @@ body{overflow: hidden;background-color: #151515;}
 
 								$('#questionText').val('');
 								$('#questionElement').prepend('<p>'+question+'</p>');
-								getTranslatedSelectAccess('Question sent').then((msg) => {
-									toastr.success(msg);
-								});
+								toastr.success('Question sent');
 							} else {
-								getTranslatedSelectAccess('Unable to send the question').then((msg) => {
-									toastr.success(msg);
-								});
+								toastr.success('Unable to send the question');
 							}
 
 							$('#questionText').prop('disabled', false);
 
 						}).fail((error)=>{
-							getTranslatedSelectAccess("Unable to send the question").then((msg) => {
-								toastr.error(msg);
-							});
+							toastr.error("Unable to send the question");
 							$('#questionText').prop('disabled', false);
 						});
 			}

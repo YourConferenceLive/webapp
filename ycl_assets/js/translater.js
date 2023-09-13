@@ -1,39 +1,8 @@
-/**
- * need to update depends on user type at header **
- */
-const baseUrl = project_url + "/";
-
-// Global_Constants
-const languageArrData = fetchAllText();
-const userLanguage = initializeLanguage();
-
-
-// Global Variables
-// var translator;
-
-
-/**************** Start : Run Logic here ****************/
-
-            // (async () => {
-            //     const arrData = await fetchAllText();
-            //     const userLang = await initializeLanguage();
-            //     const translator = new TranslationManager(arrData, userLang);
-
-            //     let dialogTitle = translator.translate('Please Wait');
-            // })();
-
-            (async () => {
-                const translator = await createLanguageTranslator();
-                let sampleTitle = translator.translate("");
-            })();
-
-/**************** End : Run Logic here ****************/
-
 // Global Functions
 function fetchAllText() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: baseUrl + "translator/getTextData",
+            url: project_url + "/translator/getTextData",
             dataType: "JSON",
             method: "POST",
             success: function(response) {
@@ -50,36 +19,11 @@ function fetchAllText() {
     });
 }
 
-function initializeLanguage() {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: baseUrl + "translator/initializeUserLanguageSetting",
-            dataType: "JSON",
-            method: "POST",
-            success: function(response) {
-                if(response) {
-                    let language = response[0].language;
-                    if($('#languageSelect')) {
-                        $('#languageSelect').val(language);
-                    }
-                    resolve(language);
-                }
-                
-            },
-            error: function() {
-                const errorMessage = 'Failed to fetch language';
-                reject(errorMessage);
-            }
-        });
-    });
-}
-
-
 // Page translators
 async function updateUserLanguage(language) {
     try {
         const response = await $.ajax({
-            url: baseUrl + "translator/updateUserLanguage",
+            url: project_url + "/translator/updateUserLanguage",
             data: { selectedLanguage: language },
             dataType: 'JSON',
             method: 'POST'
@@ -107,28 +51,39 @@ async function updatePageLanguage(language) { // comeback
     }
 }
 
-async function translateData() {
-    try {
-        const arrData = await fetchAllText();
-        const userLanguage = await initializeLanguage();
-
-        const translationDataObject = {
-            arrData: arrData,
-            userLanguage: userLanguage
-        };
-
-        return translationDataObject;
-
-    } catch (error) {
-        console.error(error);
-    }
+function initializeLanguage() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: project_url + "/translator/initializeUserLanguageSetting",
+            dataType: "JSON",
+            method: "POST",
+            success: function(response) {
+                if(response) {
+                    let language = response[0].language;
+                    if($('#languageSelect')) {
+                        $('#languageSelect').val(language);
+                    }
+                    resolve(language);
+                }
+                
+            },
+            error: function() {
+                const errorMessage = 'Failed to fetch language';
+                reject(errorMessage);
+            }
+        });
+    });
 }
 
 function initializeLanguageSettings() {
+    if($('#languageSelect').length === 0) {
+        return false;
+    }
+
     disableUserInput();
 
     $.ajax({
-        url: baseUrl + "translator/initializeUserLanguageSetting",
+        url: project_url + "/translator/initializeUserLanguageSetting",
         dataType: 'JSON',
         method: 'POST',
         success: async function(response) {
@@ -136,7 +91,7 @@ function initializeLanguageSettings() {
                 if (response) {
                     const language = response[0].language;
                     if (language) {
-                        console.log("Initializing : " + language);
+                        // console.log('Initializing :' + language);
                         if ($('#languageSelect')) {
                             $('#languageSelect').val(language);
                         }
@@ -163,7 +118,6 @@ function initializeLanguageSettings() {
 
 function translateText(selectedLanguage, arrData) {
     return new Promise((resolve, reject) => {
-        let finishText = new Array();
         
         for(let i = 0; i < arrData.length; i++){
             english_text = arrData[i].english_text;
@@ -212,26 +166,8 @@ function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-// Single translation
-function getTranslatedSelectAccess(textData) {
-    return new Promise((resolve, reject) => {
-        // const selectedLanguage = "spanish";
-        const selectedLanguage = $('#languageSelect').val();
-        const translationData = fetchAllText();
-        
-        translationData.then((arrData) => {
-            for (let i = 0; i < arrData.length; i++) {
-                if (arrData[i].english_text === textData) {
-                    textData = arrData[i][selectedLanguage + '_text'];
-                }
-            }
-            resolve(textData); // Resolve the promise with the final value of selectAccess
-        }).catch(reject); // Reject the promise if there's an error fetching translationData
-    });
-}
-
 /**
- * Utilities
+ * Translator Other function
  */
 function disableUserInput() {
     $('body').css('pointer-events', 'none');
@@ -253,36 +189,4 @@ function closeSwal() {
     }
     $('body').css('pointer-events', 'auto');
     Swal.close();
-}
-
-/**
- * New Translation function, using Translation Manager
- */
-
-async function getUserLanguageAndArrayData () {
-    try {
-        let lang = await userLanguage;
-        let arr = await languageArrData;
-
-        const resultObj = {
-            userLanguage : lang,
-            arrayLanguage: arr
-        }
-        return resultObj;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-
-async function createLanguageTranslator () {
-    try {
-        const resultData = await getUserLanguageAndArrayData();
-        const userLang = resultData.userLanguage;
-        const arrData = resultData.arrayLanguage;
-
-        return new TranslationManager(arrData, userLang);
-    } catch (error) {
-        console.log(error);
-    }
 }
