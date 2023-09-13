@@ -621,7 +621,7 @@ $(function(){
 		const sessionEndTime = sessionEnd.getTime();
 		const dateNow = new Date() ;
 		const dateNowTime = dateNow.getTime();
-		
+		saveTimeSpentOnSession();
 		if(sessionEndTime < dateNowTime){
 			window.location = (project_url+"/mobile/sessions/room/<?=$session->room_id?>")
 		}else{
