@@ -904,7 +904,7 @@ body{overflow: hidden;background-color: #151515;}
 		socket.on('reload-attendee-signal', function (data) {
 			console.log(data);
 			if(sessionId == data.session_id){
-				if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
+				if(session_redirect !== 'Null' && session_redirect !== 'null' && session_redirect !== '0'){
 					sessionEndAutoRedirect();
 				}else{
 					update_viewsessions_history_open();
@@ -1205,6 +1205,7 @@ body{overflow: hidden;background-color: #151515;}
 	})
 
 function sessionEndAutoRedirect(){
+	saveTimeSpentOnSession();
 	const countdownInterval = setInterval(function () {
  
 	let sessionEndDate = new Date(session_end_datetime)
@@ -1215,7 +1216,7 @@ function sessionEndAutoRedirect(){
 	
 	const timeDifference = sessionEndDateTimeStamp - currentDateTimeStamp;
 
-	if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
+	if(session_redirect !== 'Null' && session_redirect !== 'null' && session_redirect !== '0'){
 		if (timeDifference <= 0) {
 		clearInterval(countdownInterval);
 			window.location.href= project_url+"/sessions/join/"+session_redirect
