@@ -412,9 +412,6 @@ body{overflow: hidden;background-color: #151515;}
 
 	$(function (){
 		
-		if(sessionAutoRedirectStatus == 1){
-			sessionEndAutoRedirect();
-		}
 		
 		ask_a_rep();
 		iframeResize();
