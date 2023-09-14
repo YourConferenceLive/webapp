@@ -612,14 +612,16 @@ $(function(){
 
 	socket.on('reload-attendee-signal', async function () {
 		try {
-			await update_viewsessions_history_open();
 			sessionEndedRedirect();
 		} catch (error) {
 			console.error(error);
 		}
 	});
 
-	function sessionEndedRedirect(){
+	async function sessionEndedRedirect(){
+		await update_viewsessions_history_open();
+        await saveTimeSpentOnSession();
+
 		const sessionEnd = new Date(session_end_datetime);
 		const sessionEndTime = sessionEnd.getTime();
 		const dateNow = new Date() ;
