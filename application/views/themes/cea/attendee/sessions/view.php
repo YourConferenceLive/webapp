@@ -412,9 +412,6 @@ body{overflow: hidden;background-color: #151515;}
 
 	$(function (){
 		
-		if(sessionAutoRedirectStatus == 1){
-			sessionEndAutoRedirect();
-		}
 		
 		ask_a_rep();
 		iframeResize();
@@ -904,7 +901,7 @@ body{overflow: hidden;background-color: #151515;}
 		socket.on('reload-attendee-signal', function (data) {
 			console.log(data);
 			if(sessionId == data.session_id){
-				if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
+				if(session_redirect !== 'Null' && session_redirect !== 'null' && session_redirect !== '0'){
 					sessionEndAutoRedirect();
 				}else{
 					update_viewsessions_history_open();
@@ -969,8 +966,9 @@ body{overflow: hidden;background-color: #151515;}
 		timeSpentUntilNow = timeSpentOnSessionFromDb;
 		onSessiontimer = setInterval(function(){
 			var datetime_now_newyork = calcTime('-5');
-			if(datetime_now_newyork >= session_start_datetime && datetime_now_newyork <= session_end_datetime)
+			if((new Date(datetime_now_newyork)).getTime() >= (new Date(session_start_datetime)).getTime() && (new Date(datetime_now_newyork)).getTime() <= (new Date(session_end_datetime)).getTime()){
 				timeSpentUntilNow = timeSpentUntilNow+1;
+			}
 			if (datetime_now_newyork > session_end_datetime){
 				saveTimeSpentOnSession();
 			}
@@ -1205,6 +1203,7 @@ body{overflow: hidden;background-color: #151515;}
 	})
 
 function sessionEndAutoRedirect(){
+	saveTimeSpentOnSession();
 	const countdownInterval = setInterval(function () {
  
 	let sessionEndDate = new Date(session_end_datetime)
@@ -1215,7 +1214,7 @@ function sessionEndAutoRedirect(){
 	
 	const timeDifference = sessionEndDateTimeStamp - currentDateTimeStamp;
 
-	if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
+	if(session_redirect !== 'Null' && session_redirect !== 'null' && session_redirect !== '0'){
 		if (timeDifference <= 0) {
 		clearInterval(countdownInterval);
 			window.location.href= project_url+"/sessions/join/"+session_redirect

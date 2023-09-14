@@ -139,7 +139,7 @@
         </section>
         <!-- END: SECTION -->
 
-
+<input type="hidden" id="logs_id" value="">
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/sessions.js"></script>
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/attendee_to_admin_chat.js"></script>
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/front_assets/view_session.js"></script>
@@ -610,10 +610,13 @@ $(function(){
 		}
 	});
 
-	socket.on('reload-attendee-signal', function () {
-			// location.reload();session_end_datetime
-		sessionEndedRedirect();
-			
+	socket.on('reload-attendee-signal', async function () {
+		try {
+			await update_viewsessions_history_open();
+			sessionEndedRedirect();
+		} catch (error) {
+			console.error(error);
+		}
 	});
 
 	function sessionEndedRedirect(){
@@ -621,7 +624,7 @@ $(function(){
 		const sessionEndTime = sessionEnd.getTime();
 		const dateNow = new Date() ;
 		const dateNowTime = dateNow.getTime();
-		
+
 		if(sessionEndTime < dateNowTime){
 			window.location = (project_url+"/mobile/sessions/room/<?=$session->room_id?>")
 		}else{
@@ -688,12 +691,12 @@ $(function(){
 		timeSpentUntilNow = timeSpentOnSessionFromDb;
 		onSessiontimer = setInterval(function(){
 			var datetime_now_newyork = calcTime('-5');
-			if(datetime_now_newyork >= session_start_datetime && datetime_now_newyork <= session_end_datetime)
+			if((new Date(datetime_now_newyork)).getTime() >= (new Date(session_start_datetime)).getTime() && (new Date(datetime_now_newyork)).getTime() <= (new Date(session_end_datetime)).getTime()){
 				timeSpentUntilNow = timeSpentUntilNow+1;
+			}
 			if (datetime_now_newyork > session_end_datetime){
 				saveTimeSpentOnSession();
 			}
-
 
 		},1000);
 		// Swal.fire(

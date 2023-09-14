@@ -125,21 +125,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 					<h5 class="mb-3">Poll Options
-						<button type="button" class="add-new-option-btn btn btn-sm btn-outline-success ml-1" data-toggle="tooltip" data-placement="right" title="Click to add one more option"><i class="fas fa-plus"></i></button></h5>
+						<!-- <button type="button" class="add-new-option-btn btn btn-sm btn-outline-success ml-1" data-toggle="tooltip" data-placement="right" title="Click to add one more option"><i class="fas fa-plus"></i></button></h5> -->
 					<div id="pollOptionsInputDiv">
 
 						<div class="input-group input-group-sm mb-2">
 							<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()">
-							<span class="input-group-append">
+							<!-- <span class="input-group-append">
 								<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>
-							</span>
+							</span> -->
 						</div>
 
 						<div class="input-group input-group-sm mb-2">
 							<input type="text" name="pollOptionsInput[]" class="form-control pollOptions" onkeyup="appendCorrectAnswer1()">
-							<span class="input-group-append">
+							<!-- <span class="input-group-append">
 								<button type="button" class="delete-option-button btn btn-danger btn-flat"><i class="fas fa-trash"></i></button>
-							</span>
+							</span> -->
 						</div>
 
 
@@ -169,7 +169,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</select>
 					</div>
 
-					<div class="form-group mt-5">
+					<!-- <div class="form-group mt-5">
 						<label>Poll Comparison with Us: </label>
 						<select class="form-control" name="poll_comparison" id="poll_comparison_select">
 							<option value="">None</option>
@@ -177,14 +177,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<option value="presurvey">Presurvey</option>
 							<option value="assessment">Assessment</option>
 						</select>
-					</div>
+					</div> -->
 
-					<div class="form-group">
+					<!-- <div class="form-group">
 						<div class="custom-control custom-switch">
 							<input type="checkbox" class="custom-control-input" name="autoPollResult" id="autoPollResult">
 							<label class="custom-control-label" for="autoPollResult">Automatically show result (for 5 seconds)</label>
 						</div>
-					</div>
+					</div> -->
 
 
 					<input type="hidden" id="pollId" name="pollId" value="0">
@@ -217,9 +217,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 	$(function () {
-
 		listPolls();
 		let pollOptionsDeleted;
+		
 		$('#pollsTable').on('click', '.viewOptions', function(){
 			pollOptionsDeleted = [];
 			// toastr.warning('Under development'); return false;
@@ -247,11 +247,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							'<span class="float-left"> ' +
 							'Option' +
 							'</span>' +
-							'<span class="float-right"> ' +
-							'<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat" option_id="'+obj.id+'"><i class="fas fa-times"></i></button> ' +
-							'</span>' +
+							// '<span class="float-right"> ' +
+							// '<button type="button" class="delete-option-button btn btn-sm btn-danger btn-flat" option_id="'+obj.id+'"><i class="fas fa-times"></i></button> ' +
+							// '</span>' +
 							'<div class="input-group input-group-sm">' +
-							'<textarea type="text" name="pollOptionsInput[]" option_id="'+obj.id+'" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()">'+obj.option_text+'</textarea>' +
+							'<textarea readonly type="text" name="pollOptionsInput[]" option_id="'+obj.id+'" class="form-control pollOptions" onkeyup="appendCorrectAnswer1(); appendCorrectAnswer2()">'+obj.option_text+'</textarea>' +
 							'</div>'+
 							'<div class="mb-3">'+
 							'<input type="text" name="optionExternalReference[]" class="form-control border-bottom text-white optionExternalReference" id="" style="border:0; background-color: lightslategray" placeholder="External Reference" value="'+obj.external_reference+'"> '+
@@ -426,21 +426,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	function summerNoteOption(object){
+	
 		$(object).summernote({
 			dialogsInBody: true,
 			inheritPlaceholder: true,
 			height: 100,
+			width: 9999,
 			toolbar:
 				[
-					["history", ["undo", "redo"]],
-					["style", ["style"]],
-					["font", ["bold", "italic", "underline", "fontname", "strikethrough", "superscript", "subscript", "clear"]],
-					['fontsize', ['fontsize']],
-					["color", ["color"]],
-					["paragraph", ["ul", "ol", "paragraph", "height"]],
-					["table", ["table"]],
-					["insert", ["link", "resizedDataImage", "picture", "video"]],
-					["view", ["codeview"] ]
+					
 				],
 			fontSizes: ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '36', '48' , '64', '82', '150'],
 			callbacks: {
@@ -464,6 +458,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				// 	$noteEditable.html($noteEditable.html().replace(/^<br>/i, ''));
 				// }
 			}
-		});
+		});	
 	}
 </script>
