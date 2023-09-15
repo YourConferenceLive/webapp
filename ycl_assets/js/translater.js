@@ -1,5 +1,23 @@
+// Global_Constants
+const userLanguage = initializeLanguage();
+const languageArrData = fetchAllText();
+
+
+// Global Variables
+// var translator;
+
+/**************** Start : Run Logic here ****************/
+/*
+    Sample code to translate swal
+    (async () => {
+        const translator = await createLanguageTranslator();
+        let sampleTitle = translator.translate("Yes!");
+    })();
+*/
+/**************** End : Run Logic here ****************/
 // Global Functions
-function fetchAllText() {
+
+function fetchAllText() { 
     return new Promise((resolve, reject) => {
         $.ajax({
             url: project_url + "/translator/getTextData",
@@ -18,6 +36,31 @@ function fetchAllText() {
         });
     });
 }
+
+function initializeLanguage() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: project_url + "/translator/initializeUserLanguageSetting",
+            dataType: "JSON",
+            method: "POST",
+            success: function(response) {
+                if(response) {
+                    let language = response[0].language;
+                    if($('#languageSelect')) {
+                        $('#languageSelect').val(language);
+                    }
+                    resolve(language);
+                }
+                
+            },
+            error: function() {
+                const errorMessage = 'Failed to fetch language';
+                reject(errorMessage);
+            }
+        });
+    });
+}
+
 
 // Page translators
 async function updateUserLanguage(language) {
@@ -51,34 +94,34 @@ async function updatePageLanguage(language) { // comeback
     }
 }
 
-function initializeLanguage() {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: project_url + "/translator/initializeUserLanguageSetting",
-            dataType: "JSON",
-            method: "POST",
-            success: function(response) {
-                if(response) {
-                    let language = response[0].language;
-                    if($('#languageSelect')) {
-                        $('#languageSelect').val(language);
-                    }
-                    resolve(language);
-                }
-                
-            },
-            error: function() {
-                const errorMessage = 'Failed to fetch language';
-                reject(errorMessage);
-            }
-        });
-    });
+async function translateData() {
+    try {
+        const arrData = await fetchAllText();
+        const userLanguage = await initializeLanguage();
+
+        const translationDataObject = {
+            arrData: arrData,
+            userLanguage: userLanguage
+        };
+
+        return translationDataObject;
+
+    } catch (error) {
+        console.error(error);
+    }
 }
 
+// get data from controller
 function initializeLanguageSettings() {
     if($('#languageSelect').length === 0) {
         return false;
     }
+
+    translateSwals();
+
+    document.addEventListener('click', () => {
+        translateSwals();
+    });
 
     disableUserInput();
 
@@ -118,6 +161,7 @@ function initializeLanguageSettings() {
 
 function translateText(selectedLanguage, arrData) {
     return new Promise((resolve, reject) => {
+        let finishText = new Array();
         
         for(let i = 0; i < arrData.length; i++){
             english_text = arrData[i].english_text;
@@ -189,4 +233,83 @@ function closeSwal() {
     }
     $('body').css('pointer-events', 'auto');
     Swal.close();
+}
+
+/**
+ * New Translation function, using Translation Manager
+ */
+
+async function getUserLanguageAndArrayData () {
+    try {
+        let lang = await userLanguage;
+        let arr = await languageArrData;
+
+        const resultObj = {
+            userLanguage : lang,
+            arrayLanguage: arr
+        }
+        return resultObj;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+async function createLanguageTranslator () {
+    try {
+        const resultData = await getUserLanguageAndArrayData();
+        const userLang = resultData.userLanguage;
+        const arrData = resultData.arrayLanguage;
+
+        return new TranslationManager(arrData, userLang);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+/**
+ * Testing Swal translation
+ */
+
+		
+async function translateSwals() {
+
+    const translator = await createLanguageTranslator();
+
+    const selectors = [
+        '.swal2-title',
+        '.swal2-text',
+        '.swal2-confirm',
+        '.swal2-cancel',
+        '.swal2-html-container',
+        '.swal2-modal-content',
+        '.swal2-header',
+        '.swal2-subheader',
+        '.swal2-image',
+        '.swal2-close-button-label',
+        '.swal2-button-label',
+        '.swal2-loading-text',
+        '.swal2-backdrop-background-color',
+        '.swal2-modal-content-description',
+        '.toast.toast-message',
+    ];
+
+    const toastSelector = [
+        '.toast-message'
+    ]
+
+    selectors.forEach((selector) => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((element) => {
+            element.innerHTML = translator.translate(element.innerHTML);
+        });
+    });
+
+    toastSelector.forEach((toast) => {
+        const elements = document.querySelectorAll(toast);
+        elements.forEach((element) => {
+            element.innerHTML = translator.translate(element.innerHTML);
+        });
+    });
 }
