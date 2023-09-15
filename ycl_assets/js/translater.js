@@ -84,8 +84,8 @@ async function updateUserLanguage(language) {
 
 async function updatePageLanguage(language) { // comeback
     try {
-        const arrEnglishToSpanishData = await fetchAllText();
         (async () => {
+            const arrEnglishToSpanishData = await fetchAllText();
             await translateText(language, arrEnglishToSpanishData);
         })();
         
@@ -112,15 +112,16 @@ async function translateData() {
 }
 
 // get data from controller
-function initializeLanguageSettings() {
+async function initializeLanguageSettings() {
     if($('#languageSelect').length === 0) {
         return false;
     }
+    await translateSwals();
 
-    translateSwals();
-
-    document.addEventListener('click', () => {
-        translateSwals();
+    // The swal translation are need to be invoked everytime it will  be displayed
+    document.addEventListener('click', async () => {
+        await translateSwals();
+        observeDOMChanges();
     });
 
     disableUserInput();
@@ -138,7 +139,7 @@ function initializeLanguageSettings() {
                         if ($('#languageSelect')) {
                             $('#languageSelect').val(language);
                         }
-
+                        console.log("language has been initialized.");
                         await updatePageLanguage(language);
                     } else {
                         console.log("There's no language.");
@@ -161,7 +162,6 @@ function initializeLanguageSettings() {
 
 function translateText(selectedLanguage, arrData) {
     return new Promise((resolve, reject) => {
-        let finishText = new Array();
         
         for(let i = 0; i < arrData.length; i++){
             english_text = arrData[i].english_text;
@@ -185,6 +185,7 @@ function translateText(selectedLanguage, arrData) {
     });
 }
 
+// page translator
 function replaceSpecificWords(searchWord, replacementWord) {
     const textNodes = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
 
@@ -235,6 +236,32 @@ function closeSwal() {
     Swal.close();
 }
 
+// toast translator
+function observeDOMChanges(callback) {
+    createLanguageTranslator().then((translator)=>{
+        const observer = new MutationObserver((mutationsList, observer) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    const addedElements = Array.from(mutation.addedNodes);
+                    
+                    for (const element of addedElements) {
+                        if (element.classList?.contains('toast')) {
+                            const toastContent = element.querySelector('.toast-message');
+                            if (toastContent) {
+                                // translating the toast
+                                toastContent.innerHTML = translator.translate(toastContent.innerHTML);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+}
+
+
 /**
  * New Translation function, using Translation Manager
  */
@@ -274,42 +301,55 @@ async function createLanguageTranslator () {
 
 		
 async function translateSwals() {
-
-    const translator = await createLanguageTranslator();
-
-    const selectors = [
-        '.swal2-title',
-        '.swal2-text',
-        '.swal2-confirm',
-        '.swal2-cancel',
-        '.swal2-html-container',
-        '.swal2-modal-content',
-        '.swal2-header',
-        '.swal2-subheader',
-        '.swal2-image',
-        '.swal2-close-button-label',
-        '.swal2-button-label',
-        '.swal2-loading-text',
-        '.swal2-backdrop-background-color',
-        '.swal2-modal-content-description',
-        '.toast.toast-message',
-    ];
-
-    const toastSelector = [
-        '.toast-message'
-    ]
-
-    selectors.forEach((selector) => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach((element) => {
-            element.innerHTML = translator.translate(element.innerHTML);
+    try {
+        
+        const translator = await createLanguageTranslator();
+    
+        const selectors = [
+            '.swal2-title',
+            '.swal2-text',
+            '.swal2-confirm',
+            '.swal2-cancel',
+            '.swal2-html-container',
+            '.swal2-modal-content',
+            '.swal2-header',
+            '.swal2-subheader',
+            '.swal2-image',
+            '.swal2-close-button-label',
+            '.swal2-button-label',
+            '.swal2-loading-text',
+            '.swal2-backdrop-background-color',
+            '.swal2-modal-content-description',
+            '.toast-message',
+        ];
+    
+        const toastSelector = [
+            '.toast-message'
+        ]
+    
+        selectors.forEach((selector) => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach((element) => {
+                element.innerHTML = translator.translate(element.innerHTML);
+            });
         });
-    });
-
-    toastSelector.forEach((toast) => {
-        const elements = document.querySelectorAll(toast);
-        elements.forEach((element) => {
-            element.innerHTML = translator.translate(element.innerHTML);
+    
+        toastSelector.forEach((toast) => {
+            const elements = document.querySelectorAll(toast);
+            elements.forEach((element) => {
+                element.innerHTML = translator.translate(element.innerHTML);
+            });
         });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+// Test
+async function tester() {
+    return new Promise((resolve, reject) => {
+        consolelog("run a promise");
     });
 }
