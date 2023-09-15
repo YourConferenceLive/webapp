@@ -3,10 +3,9 @@ const userLanguage = initializeLanguage();
 const languageArrData = fetchAllText();
 
 
+/**************** Start : Run Logic here ****************/
 // Global Variables
 // var translator;
-
-/**************** Start : Run Logic here ****************/
 /*
     Sample code to translate swal
     (async () => {
@@ -121,7 +120,7 @@ async function initializeLanguageSettings() {
     // The swal translation are need to be invoked everytime it will  be displayed
     document.addEventListener('click', async () => {
         await translateSwals();
-        observeDOMChanges();
+        translateToast();
     });
 
     disableUserInput();
@@ -237,7 +236,7 @@ function closeSwal() {
 }
 
 // toast translator
-function observeDOMChanges(callback) {
+function translateToast(callback) {
     createLanguageTranslator().then((translator)=>{
         const observer = new MutationObserver((mutationsList, observer) => {
             for (const mutation of mutationsList) {
