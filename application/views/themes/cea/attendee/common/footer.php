@@ -89,30 +89,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   });
   
 </script>
-
-<script>
-	
-    $(document).ready(function() {
-
-        $('table.dataTable thead th').on('click', function() {
-            initializeLanguageSettings();
-        });
-
-        $('#languageSelect').on("change", function() {
-			// Swal Loading
-            disableUserInput();
-			
-			const languageSelect = document.getElementById("languageSelect");
-            let language = languageSelect.value;
-
-            (async () => {
-                console.log("Initializing : " + language);
-                await updateUserLanguage(language);
-                await updatePageLanguage(language);
-                await closeSwal();
-            })();
-        });
-    });
-
-</script>
-

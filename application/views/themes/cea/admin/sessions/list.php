@@ -117,7 +117,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		$('.add-session-btn').on('click', function () {
 
 			getColorPreset();
-			$('#addSessionModalLabelspan').text(`Add New Session`)
+			const newSessionText = TranslationManager.staticTranslate('Add New Session')
+			$('#addSessionModalLabelspan').text(newSessionText)
 			$('#addSessionForm')[0].reset();
 			$('#currentPhotoDiv').hide();
 			$('#currentSponsorLogoDiv').hide();
@@ -163,7 +164,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				console.log(session);
 
 				// set the session title here
-				$('#addSessionModalLabelspan').text(`Session ID: ${session.id}`)
+				const newSessionText = TranslationManager.staticTranslate('Session ID')
+				$('#addSessionModalLabelspan').text(`${newSessionText}: ${session.id}`)
 
 				$('#sessionId').val(session.id);
 				$('#sessionName').val(session.name);
