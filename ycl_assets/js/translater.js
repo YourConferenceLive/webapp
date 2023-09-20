@@ -1,22 +1,24 @@
 /**
  * Initialize page
  */
-$(document).ready(function() {
+$(document).ready(async function() {
 
-    initializeLanguageSettings();
+    const translatorArr = await initializeTranslatorArr();
+
+    initializeLanguageSettings(false, translatorArr);
 
     $('#languageSelect').css('cursor', 'pointer');
 
     $('table thead th').on('click', function() {
-        initializeLanguageSettings();
+        initializeLanguageSettings(false, translatorArr);
     });
 
     $('#languageSelect').on("change", function() {
-        initializeLanguageSettings(true);
+        initializeLanguageSettings(true, translatorArr);
     });
 });
 
-async function initializeLanguageSettings (isChange = false) {
+async function initializeLanguageSettings (isChange = false,  translatorArr = []) {
     
     try {
         if ($('#languageSelect').length === 0) {
@@ -24,48 +26,37 @@ async function initializeLanguageSettings (isChange = false) {
         }
 
         disableUserInput();
-
-      
-
+        const userLanguage = isChange ? $("#languageSelect").val() : translatorArr.lang;
+        console.log("userLanguage: " , userLanguage);
+        
         /**
          * Page Translate
          */
         if(isChange) {
-            // code when selected language has been set
-            const languageSelect = document.getElementById("languageSelect");
-            let selectedLanguage = languageSelect.value;
 
-            const updateUserLang =  updateUserLanguage(selectedLanguage);
-            const updatePageLang =  updatePageLanguage(selectedLanguage);
+            await Promise.all([
+                updateUserLanguage(userLanguage),
+                updatePageLanguage(userLanguage),
+                awaitPopupTranslator(translatorArr)
+            ]);
 
-            await Promise.all([updateUserLang, updatePageLang]);
         } else {
-            const response = await getUserLanguageSetting();
-            const userLanguage = response[0].language;
 
-            if (response[0].language !== "") {
-                $('#languageSelect').val(userLanguage);
+            if (translatorArr.lang !== "") {
+                await Promise.all([
+                    updatePageLanguage(userLanguage),
+                    awaitPopupTranslator(translatorArr)
+                ]);
 
-                await updatePageLanguage(userLanguage);
             } else { console.log("There's no language.") }
            
         }
 
-        /**
-         * Toast and Swal translate
-         */
-        const translationData = await createLanguageTranslator();
-        
-        await Promise.all([translateSwals(translationData), translateToast(translationData)]);
-
-        $(document).on('click', async function() {
-            await Promise.all([translateSwals(translationData), translateToast(translationData)]);
-        });
-
-        console.log("Initialization success.");
-        closeSwal();
     } catch (error) {
         console.error("An error occurred:", error);
+    } finally {
+        console.log("Initialization success.");
+        closeSwal();
     }
 }
 
@@ -131,10 +122,10 @@ async function getUserLanguageSetting() {
     });
 }
 
-async function createLanguageTranslator() {
+async function createLanguageTranslator(translatorArr = []) {
     try {
-        let lang = await initializeLanguage();
-        let arrData = await fetchAllText();
+        const lang = translatorArr.lang ? translatorArr.lang : await initializeLanguage();
+        const arrData = translatorArr.arrData ? translatorArr.arrData : await fetchAllText();
         
         TranslationManager.setUserLanguage(lang);
         TranslationManager.setArrData(arrData);
@@ -169,6 +160,22 @@ function closeSwal() {
     Swal.close();
 }
 
+async function initializeTranslatorArr(callback = "") {
+    try {
+        const [lang, arrData] = await Promise.all([
+            initializeLanguage(),
+            fetchAllText()
+        ]);
+       
+        return {
+            lang: lang,
+            arrData: arrData
+        };
+    } catch (error) {
+        // Handle errors here
+        console.error(error);
+    }
+}
 
 /**
  * page translator
@@ -195,7 +202,7 @@ async function updateUserLanguage(language) {
 async function updatePageLanguage(language) {
     try {
         const arrEnglishToSpanishData = await fetchAllText();
-        const result = await translateText(language, arrEnglishToSpanishData);
+        await translateText(language, arrEnglishToSpanishData);
     } catch (error) {
         console.log(error);
     }
@@ -250,9 +257,6 @@ function replaceSpecificWords(searchWord, replacementWord) {
 
             const replacedText = text.replace(new RegExp(escapedSearchWord, 'g'), replacementWord);
             textNode.textContent = replacedText;
-            if(textNode.textContent == "Add New Session") {
-                console.log("got it");
-            }
         }
     }
 }
@@ -323,6 +327,15 @@ async function translateSwals(translationObj) {
     } catch (error) {
         console.log(error);
     }
+}
+
+async function awaitPopupTranslator(translatorArr) {
+    let translationData = await createLanguageTranslator(translatorArr);
+    await Promise.all([translateSwals(translationData), translateToast(translationData)]);
+
+    $(document).on('click', async function() {
+        await Promise.all([translateSwals(translationData), translateToast(translationData)]);
+    });
 }
 
 
