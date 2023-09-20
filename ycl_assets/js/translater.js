@@ -34,6 +34,7 @@ async function initializeLanguageSettings (isChange = false,  translatorArr = []
          */
         if(isChange) {
 
+            translatorArr.lang = userLanguage;
             await Promise.all([
                 updateUserLanguage(userLanguage),
                 updatePageLanguage(userLanguage),
