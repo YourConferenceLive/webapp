@@ -1,7 +1,7 @@
 class TranslationManager {
-    constructor() {
-        // this.arrData = arrData;
-    //     this.userLanguage = userLanguage;
+    constructor(arrData, userLanguage) {
+        this.arrData = arrData;
+        this.userLanguage = userLanguage;
     }
 
     static setUserLanguage(userLanguage) {

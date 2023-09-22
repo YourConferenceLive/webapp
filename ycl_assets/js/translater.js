@@ -131,7 +131,7 @@ async function createLanguageTranslator(translatorArr = []) {
         TranslationManager.setUserLanguage(lang);
         TranslationManager.setArrData(arrData);
 
-        return new TranslationManager();
+        return new TranslationManager(arrData, lang);
     } catch (error) {
         console.log(error);
     }
@@ -140,6 +140,20 @@ async function createLanguageTranslator(translatorArr = []) {
 function disableUserInput() {
     $('body').css('pointer-events', 'none');
     $('body').attr('style', 'cursor: not-allowed !important');
+
+    const overlay = document.createElement('div');
+    overlay.id = 'custom-overlay';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    overlay.style.zIndex = '9999';
+
+    // Append the overlay to the body
+    document.body.appendChild(overlay);
+
     Swal.fire({
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -158,6 +172,12 @@ function closeSwal() {
     }
     $('body').css('pointer-events', 'auto');
     $('body').attr('style', 'cursor: auto !important');
+
+    const customOverlay = document.getElementById('custom-overlay');
+    if (customOverlay) {
+        document.body.removeChild(customOverlay);
+    }
+
     Swal.close();
 }
 
@@ -270,64 +290,94 @@ function escapeRegExp(string) {
 /**
  * popup translator
  */
-async function translateToast(translationObj) {
-    try {
-        const translator = await translationObj;
-        const observer = new MutationObserver((mutationsList, observer) => {
-            for (const mutation of mutationsList) {
-                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                    const addedElements = Array.from(mutation.addedNodes);
-                    
-                    for (const element of addedElements) {
-                        if (element.classList?.contains('toast')) {
-                            const toastContent = element.querySelector('.toast-message');
-                            if (toastContent) {
-                                toastContent.innerHTML = translator.translate(toastContent.innerHTML);
+function translateToast(translationObj) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const translator = await translationObj;
+            const observer = new MutationObserver((mutationsList, observer) => {
+                for (const mutation of mutationsList) {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        const addedElements = Array.from(mutation.addedNodes);
+                        
+                        for (const element of addedElements) {
+                            if (element.classList?.contains('toast')) {
+                                const toastContent = element.querySelector('.toast-message');
+                                if (toastContent) {
+                                    toastContent.innerHTML = translator.translate(toastContent.innerHTML);
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
-    
-        observer.observe(document.body, { childList: true, subtree: true });
-    } catch (error) {
-        console.log(error);
-    }
+            });
+        
+            observer.observe(document.body, { childList: true, subtree: true });
+            resolve();
+        } catch (error) {
+            reject(error);
+        }
+    });
 }
 		
-async function translateSwals(translationObj) {
-    try {
+function translateSwals(translationObj) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            
+            const translator = translationObj;
         
-        const translator = translationObj;
-    
-        const selectors = [
-            '.swal2-title',
-            '.swal2-text',
-            '.swal2-confirm',
-            '.swal2-cancel',
-            '.swal2-html-container',
-            '.swal2-modal-content',
-            '.swal2-header',
-            '.swal2-subheader',
-            '.swal2-image',
-            '.swal2-close-button-label',
-            '.swal2-button-label',
-            '.swal2-loading-text',
-            '.swal2-backdrop-background-color',
-            '.swal2-modal-content-description',
-        ];
-    
-        selectors.forEach((selector) => {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach((element) => {
-                element.innerHTML = translator.translate(element.innerHTML);
+            const selectors = [
+                '.swal2-title',
+                '.swal2-text',
+                '.swal2-confirm',
+                '.swal2-cancel',
+                '.swal2-html-container',
+                '.swal2-modal-content',
+                '.swal2-header',
+                '.swal2-subheader',
+                '.swal2-image',
+                '.swal2-close-button-label',
+                '.swal2-button-label',
+                '.swal2-loading-text',
+                '.swal2-backdrop-background-color',
+                '.swal2-modal-content-description',
+            ];
+        
+            selectors.forEach((selector) => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach((element) => {
+                    element.innerHTML = translator.translate(element.innerHTML);
+                });
             });
-        });
-        // console.log("Swal translation has been initiated.");
-    } catch (error) {
-        console.log(error);
-    }
+
+            const htmlContainer = document.querySelector('.swal2-html-container');
+
+            if (htmlContainer) {
+                
+                let swalHTML = htmlContainer.textContent;
+
+                const arrData = translator.arrData;
+                
+                arrData.forEach((text) => {
+                    let toTranslate = (translator.language == "english") ?  text.spanish_text : text.english_text;
+                    
+                    let translatedText = translator.translate(toTranslate);
+                    const escapedText = toTranslate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+                    // Use the escaped pattern in the regular expression with global flag
+                    const regex = new RegExp(escapedText, 'g');
+                    swalHTML = swalHTML.replace(regex, translatedText);
+                });
+            
+                htmlContainer.textContent = swalHTML;
+
+            }
+
+            resolve();
+
+        } catch (error) {
+            reject(error);
+        }
+    });
 }
 
 async function awaitPopupTranslator(translatorArr) {
