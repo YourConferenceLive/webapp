@@ -3,23 +3,19 @@
  */
 $(document).ready(async function() {
 
-    try {
-        const translatorArr = await initializeTranslatorArr();
-    
-        initializeLanguageSettings(false, translatorArr);
+    const translatorArr = await initializeTranslatorArr();
 
-        $('#languageSelect').css('cursor', 'pointer');
-    
-        $('table thead th').on('click', function() {
-            initializeLanguageSettings(false, translatorArr);
-        });
-    
-        $('#languageSelect').on("change", function() {
-            initializeLanguageSettings(true, translatorArr);
-        });
-    } catch (error) {
-        console.log(error);
-    }
+    initializeLanguageSettings(false, translatorArr);
+
+    $('#languageSelect').css('cursor', 'pointer');
+
+    $('table thead th').on('click', function() {
+        initializeLanguageSettings(false, translatorArr);
+    });
+
+    $('#languageSelect').on("change", function() {
+        initializeLanguageSettings(true, translatorArr);
+    });
 });
 
 async function initializeLanguageSettings (isChange = false,  translatorArr = []) {
@@ -31,12 +27,13 @@ async function initializeLanguageSettings (isChange = false,  translatorArr = []
 
         disableUserInput();
         const userLanguage = isChange ? $("#languageSelect").val() : translatorArr.lang;
+        console.log("userLanguage: " , userLanguage);
+        
         /**
          * Page Translate
          */
         if(isChange) {
 
-            translatorArr.lang = userLanguage;
             await Promise.all([
                 updateUserLanguage(userLanguage),
                 updatePageLanguage(userLanguage),
@@ -92,29 +89,34 @@ function initializeLanguage() {
             url: project_url + "/translator/initializeUserLanguageSetting",
             dataType: "JSON",
             method: "POST",
-            success: async function(response) {
+            success: function(response) {
                 if(response) {
                     let language = response[0].language;
                     if($('#languageSelect')) {
                         $('#languageSelect').val(language);
                     }
                     resolve(language);
-                } else {
-                    try {
-                        disableUserInput();
-                        const language = await updateUserLanguage();
-                        resolve(language);
-                    } catch (error) {
-                        console.log(error);
-                        reject(error);
-                    } finally {
-                        closeSwal();
-                    }
                 }
+                
             },
             error: function() {
                 const errorMessage = 'Failed to fetch language';
                 reject(errorMessage);
+            }
+        });
+    });
+}
+
+async function getUserLanguageSetting() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: project_url + "/translator/initializeUserLanguageSetting",
+            dataType: 'JSON',
+            method: 'POST',
+            success: resolve,
+            error: (xhr, status, error) => {
+                console.error("No response from server.");
+                reject(false);
             }
         });
     });
@@ -128,7 +130,7 @@ async function createLanguageTranslator(translatorArr = []) {
         TranslationManager.setUserLanguage(lang);
         TranslationManager.setArrData(arrData);
 
-        return new TranslationManager(arrData, lang);
+        return new TranslationManager();
     } catch (error) {
         console.log(error);
     }
@@ -137,20 +139,6 @@ async function createLanguageTranslator(translatorArr = []) {
 function disableUserInput() {
     $('body').css('pointer-events', 'none');
     $('body').attr('style', 'cursor: not-allowed !important');
-
-    const overlay = document.createElement('div');
-    overlay.id = 'custom-overlay';
-    overlay.style.position = 'fixed';
-    overlay.style.top = '0';
-    overlay.style.left = '0';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
-    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    overlay.style.zIndex = '9999';
-
-    // Append the overlay to the body
-    document.body.appendChild(overlay);
-
     Swal.fire({
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -169,16 +157,10 @@ function closeSwal() {
     }
     $('body').css('pointer-events', 'auto');
     $('body').attr('style', 'cursor: auto !important');
-
-    const customOverlay = document.getElementById('custom-overlay');
-    if (customOverlay) {
-        document.body.removeChild(customOverlay);
-    }
-
     Swal.close();
 }
 
-async function initializeTranslatorArr() {
+async function initializeTranslatorArr(callback = "") {
     try {
         const [lang, arrData] = await Promise.all([
             initializeLanguage(),
@@ -198,7 +180,7 @@ async function initializeTranslatorArr() {
 /**
  * page translator
  */
-async function updateUserLanguage(language = "english") {
+async function updateUserLanguage(language) {
     try {
         const response = await $.ajax({
             url: project_url + "/translator/updateUserLanguage",
@@ -208,17 +190,13 @@ async function updateUserLanguage(language = "english") {
         });
 
         if (response.bool) {
-            console.log(response.msg);
-            $('#languageSelect').val(language);
-
+            console.log("Language: " + response.msg);
         } else {
             console.log("Error: " + response.msg);
         }
-
-        return language;
     } catch (error) {
         console.error(error);
-    } 
+    }
 }
 
 async function updatePageLanguage(language) {
@@ -291,93 +269,64 @@ function escapeRegExp(string) {
 /**
  * popup translator
  */
-function translateToast(translationObj) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const translator = await translationObj;
-            const observer = new MutationObserver((mutationsList, observer) => {
-                for (const mutation of mutationsList) {
-                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                        const addedElements = Array.from(mutation.addedNodes);
-                        
-                        for (const element of addedElements) {
-                            if (element.classList?.contains('toast')) {
-                                const toastContent = element.querySelector('.toast-message');
-                                if (toastContent) {
-                                    toastContent.innerHTML = translator.translate(toastContent.innerHTML);
-                                }
+async function translateToast(translationObj) {
+    try {
+        const translator = await translationObj;
+        const observer = new MutationObserver((mutationsList, observer) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    const addedElements = Array.from(mutation.addedNodes);
+                    
+                    for (const element of addedElements) {
+                        if (element.classList?.contains('toast')) {
+                            const toastContent = element.querySelector('.toast-message');
+                            if (toastContent) {
+                                toastContent.innerHTML = translator.translate(toastContent.innerHTML);
                             }
                         }
                     }
                 }
-            });
-        
-            observer.observe(document.body, { childList: true, subtree: true });
-            resolve();
-        } catch (error) {
-            reject(error);
-        }
-    });
+            }
+        });
+    
+        observer.observe(document.body, { childList: true, subtree: true });
+    } catch (error) {
+        console.log(error);
+    }
 }
 		
-function translateSwals(translationObj) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            
-            // Translator for swals elements
-            const translator = translationObj;
-            const selectors = [
-                '.swal2-title',
-                '.swal2-text',
-                '.swal2-confirm',
-                '.swal2-cancel',
-                '.swal2-modal-content',
-                '.swal2-header',
-                '.swal2-subheader',
-                '.swal2-image',
-                '.swal2-close-button-label',
-                '.swal2-button-label',
-                '.swal2-loading-text',
-                '.swal2-backdrop-background-color',
-                '.swal2-modal-content-description',
-            ];
+async function translateSwals(translationObj) {
+    try {
         
-            selectors.forEach((selector) => {
-                const elements = document.querySelectorAll(selector);
-                elements.forEach((element) => {
-                    element.innerHTML = translator.translate(element.innerHTML);
-                });
+        const translator = translationObj;
+    
+        const selectors = [
+            '.swal2-title',
+            '.swal2-text',
+            '.swal2-confirm',
+            '.swal2-cancel',
+            '.swal2-html-container',
+            '.swal2-modal-content',
+            '.swal2-header',
+            '.swal2-subheader',
+            '.swal2-image',
+            '.swal2-close-button-label',
+            '.swal2-button-label',
+            '.swal2-loading-text',
+            '.swal2-backdrop-background-color',
+            '.swal2-modal-content-description',
+        ];
+    
+        selectors.forEach((selector) => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach((element) => {
+                element.innerHTML = translator.translate(element.innerHTML);
             });
-
-            // Translator for custom swal html e.g => html: `sample html <p>bold text<p>`
-            const swalHtmlElement = document.querySelector('.swal2-html-container');
-            if (swalHtmlElement) {
-                
-                let swalHTML = swalHtmlElement.textContent;
-
-                const arrData = translator.arrData;
-                
-                arrData.forEach((text) => {
-                    let toTranslate = (translator.userLanguage == "english") ?  text.spanish_text : text.english_text;
-                    
-                    let translatedText = translator.translate(toTranslate);
-                    const escapedText = toTranslate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-                    // Use the escaped pattern in the regular expression with global flag
-                    const regex = new RegExp(escapedText, 'g');
-                    swalHTML = swalHTML.replace(regex, translatedText);
-                });
-            
-                swalHtmlElement.textContent = swalHTML;
-
-            }
-
-            resolve();
-
-        } catch (error) {
-            reject(error);
-        }
-    });
+        });
+        // console.log("Swal translation has been initiated.");
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 async function awaitPopupTranslator(translatorArr) {
