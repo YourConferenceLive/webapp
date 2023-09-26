@@ -4,16 +4,27 @@
 $(document).ready(async function() {
 
     try {
+        // stop initializing for login pages
+        if ($('#languageSelect').length === 0) {
+            return false;
+        }
+
+        $('#languageSelect').css('cursor', 'pointer');
+        
         const translatorArr = await initializeTranslatorArr();
     
         initializeLanguageSettings(false, translatorArr);
-
-        $('#languageSelect').css('cursor', 'pointer');
     
-        $('table thead th').on('click', function() {
-            initializeLanguageSettings(false, translatorArr);
+        $('table thead th').on('click', function(event) {
+            
+            let eventType = event.target.type;
+            if(eventType == "text") {
+                translateTable();
+            } else {
+                initializeLanguageSettings(false, translatorArr);
+            }
         });
-    
+
         $('#languageSelect').on("change", function() {
             initializeLanguageSettings(true, translatorArr);
         });
@@ -25,18 +36,16 @@ $(document).ready(async function() {
 async function initializeLanguageSettings (isChange = false,  translatorArr = []) {
     
     try {
-        if ($('#languageSelect').length === 0) {
-            return false;
-        }
 
         disableUserInput();
         const userLanguage = isChange ? $("#languageSelect").val() : translatorArr.lang;
+        
         /**
          * Page Translate
          */
         if(isChange) {
 
-            translatorArr.lang = userLanguage;
+            translatorArr.lang = $("#languageSelect").val();
             await Promise.all([
                 updateUserLanguage(userLanguage),
                 updatePageLanguage(userLanguage),
@@ -185,6 +194,9 @@ async function initializeTranslatorArr() {
             fetchAllText()
         ]);
        
+        TranslationManager.setUserLanguage(lang);
+        TranslationManager.setArrData(arrData);
+
         return {
             lang: lang,
             arrData: arrData
@@ -257,6 +269,7 @@ function translateText(selectedLanguage, arrData) {
             resolve ("Finish translating word by word.");
             
         } catch (error) {
+            console.log(error);
             reject(`translateText: ${error}`);
         }
     });
@@ -380,13 +393,58 @@ function translateSwals(translationObj) {
     });
 }
 
+function translateTable() {
+    try {
+        
+        // Translator for swals elements
+        const selectors = [
+            '.dataTables_info',
+            '.paginate_button a',
+            '.dataTables_empty'
+        ];
+
+        selectors.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            elements.forEach((element) => {
+                
+                let swalHTML = element.textContent;
+
+                const arrData = TranslationManager.arrData;
+                
+                arrData.forEach((text) => {
+                    let toTranslate = (TranslationManager.userLanguage == "english") ?  text.spanish_text : text.english_text;
+                    
+                    let translatedText = TranslationManager.staticTranslate(toTranslate);
+                    const escapedText = toTranslate.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+                    // Use the escaped pattern in the regular expression with global flag
+                    const regex = new RegExp(escapedText, 'g');
+                    swalHTML = swalHTML.replace(regex, translatedText);
+                });
+            
+                element.innerHTML = swalHTML;
+    
+            });
+        });
+
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 async function awaitPopupTranslator(translatorArr) {
     let translationData = await createLanguageTranslator(translatorArr);
     
+    $('input[type="search"]').on('input', translateTable);
+    $('input[type="text"]').on('click', translateTable);
     await Promise.all([translateSwals(translationData), translateToast(translationData)]);
 
     $(document).on('click', async function() {
+        $('input[type="search"]').on('input', translateTable);
+        $('input[type="text"]').on('click', translateTable);
         await Promise.all([translateSwals(translationData), translateToast(translationData)]);
+
     });
 }
 
