@@ -383,7 +383,7 @@ if (isset($settings) && !empty($settings->poll_music)) {
 			if(data.session_id == session_id) {
 				$('#pollModal').modal('hide');
 				$('#pollResultModalLabel').html(data.poll_question);
-				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
+				$.get(project_presenter_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
 					$('#pollResults').html('');
 					// console.log(results);
@@ -461,6 +461,13 @@ if (isset($settings) && !empty($settings->poll_music)) {
 			if(data.session_id == session_id)
 			{
 				$('#pollResultModal').modal('hide');
+			}
+		});
+
+		socket.on('poll_close_notification', (data)=>{
+			console.log('poll close')
+			if(data.session_id == session_id) {
+				$('#pollModal').modal('hide');
 			}
 		});
 

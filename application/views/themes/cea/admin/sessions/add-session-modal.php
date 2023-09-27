@@ -451,7 +451,7 @@
 										</div>
 									</div>
 									<div class="form-group" id="currentMobileSessionBackgroundDiv" style="display: none;">
-										<label for="currentMobileSessionBackgroundDiv"><small>Current Session Logo</small></label>
+										<label for="currentMobileSessionBackgroundDiv"><small>Current Mobile Background</small></label>
 										<br>
 										<img id="currentMobileSessionBackground" src="" width="200px">
 									</div>

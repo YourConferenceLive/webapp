@@ -25,11 +25,12 @@
 <!--													--><?php //echo "<pre>"; print_r($session);  exit?>
                                                <p class="mx-3" id="sessionTitle" style="font-size: 19px; line-height: 1.2; font-weight: 900"><?=$session->name?>
                                                 <?php if(isset ($session->presenters) && !empty($session->presenters)): ?>
-                                                    <?php foreach ($session->presenters as $presenter):?>
+                                                    <?php foreach ($session->presenters as $presenter):
+														 if(!in_array($presenter->email, array('q@a.com', 'q@a2.com'))): ?>
                                                         <div id="moderators" style="font-size: 18px;">
                                                             <?=$presenter->name.' '.$presenter->surname.(($presenter->credentials)?', '.$presenter->credentials:'')?>
                                                         </div>
-                                                    <?php endforeach;?>
+                                                    <?php endif; endforeach;?>
                                                 <?php endif ?>
                                             <?php endif; ?>
 
@@ -138,7 +139,7 @@
         </section>
         <!-- END: SECTION -->
 
-
+<input type="hidden" id="logs_id" value="">
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/sessions.js"></script>
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/attendee_to_admin_chat.js"></script>
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/front_assets/view_session.js"></script>
@@ -609,21 +610,29 @@ $(function(){
 		}
 	});
 
-	socket.on('reload-attendee-signal', function () {
-			// location.reload();session_end_datetime
+	socket.on('reload-attendee-signal', async function () {
+		try {
+			sessionEndedRedirect();
+		} catch (error) {
+			console.error(error);
+		}
+	});
+
+	async function sessionEndedRedirect(){
+		await update_viewsessions_history_open();
+        await saveTimeSpentOnSession();
+
 		const sessionEnd = new Date(session_end_datetime);
 		const sessionEndTime = sessionEnd.getTime();
 		const dateNow = new Date() ;
 		const dateNowTime = dateNow.getTime();
-		
+
 		if(sessionEndTime < dateNowTime){
 			window.location = (project_url+"/mobile/sessions/room/<?=$session->room_id?>")
 		}else{
 			location.reload();
 		}
-			
-	});
-
+	}
 	function markLaunchedPoll(poll_id){
 		$.post(project_url+"/mobile/sessions/markLaunchedPoll/"+poll_id, function (results) {
 			console.log(results)
@@ -684,12 +693,12 @@ $(function(){
 		timeSpentUntilNow = timeSpentOnSessionFromDb;
 		onSessiontimer = setInterval(function(){
 			var datetime_now_newyork = calcTime('-5');
-			if(datetime_now_newyork >= session_start_datetime && datetime_now_newyork <= session_end_datetime)
+			if((new Date(datetime_now_newyork)).getTime() >= (new Date(session_start_datetime)).getTime() && (new Date(datetime_now_newyork)).getTime() <= (new Date(session_end_datetime)).getTime()){
 				timeSpentUntilNow = timeSpentUntilNow+1;
+			}
 			if (datetime_now_newyork > session_end_datetime){
 				saveTimeSpentOnSession();
 			}
-
 
 		},1000);
 		// Swal.fire(

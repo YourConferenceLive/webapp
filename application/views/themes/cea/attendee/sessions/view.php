@@ -389,9 +389,6 @@ body{overflow: hidden;background-color: #151515;}
 
 	$(function (){
 		
-		if(sessionAutoRedirectStatus == 1){
-			sessionEndAutoRedirect();
-		}
 		
 		ask_a_rep();
 		iframeResize();
@@ -814,7 +811,7 @@ body{overflow: hidden;background-color: #151515;}
 		socket.on('reload-attendee-signal', function (data) {
 			console.log(data);
 			if(sessionId == data.session_id){
-				if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
+				if(session_redirect !== 'Null' && session_redirect !== 'null' && session_redirect !== '0'){
 					sessionEndAutoRedirect();
 				}else{
 					update_viewsessions_history_open();
@@ -879,8 +876,9 @@ body{overflow: hidden;background-color: #151515;}
 		timeSpentUntilNow = timeSpentOnSessionFromDb;
 		onSessiontimer = setInterval(function(){
 			var datetime_now_newyork = calcTime('-5');
-			if(datetime_now_newyork >= session_start_datetime && datetime_now_newyork <= session_end_datetime)
+			if((new Date(datetime_now_newyork)).getTime() >= (new Date(session_start_datetime)).getTime() && (new Date(datetime_now_newyork)).getTime() <= (new Date(session_end_datetime)).getTime()){
 				timeSpentUntilNow = timeSpentUntilNow+1;
+			}
 			if (datetime_now_newyork > session_end_datetime){
 				saveTimeSpentOnSession();
 			}
@@ -1114,32 +1112,41 @@ body{overflow: hidden;background-color: #151515;}
 		});
 	})
 
-function sessionEndAutoRedirect(){
-	const countdownInterval = setInterval(function () {
- 
-	let sessionEndDate = new Date(session_end_datetime)
-	const sessionEndDateTimeStamp = sessionEndDate.getTime();
+ async function sessionEndAutoRedirect() {
+    try {
+        await update_viewsessions_history_open();
+        await saveTimeSpentOnSession();
 
-	const currentDate = new Date();
-	const currentDateTimeStamp = currentDate.getTime();
-	
-	const timeDifference = sessionEndDateTimeStamp - currentDateTimeStamp;
+        const countdownInterval = setInterval(function () {
+            const sessionEndDate = new Date(session_end_datetime);
+            const sessionEndDateTimeStamp = sessionEndDate.getTime();
 
-	if(session_redirect !== 'Null' || session_redirect !== 'null' || session_redirect !== '0'){
-		if (timeDifference <= 0) {
-		clearInterval(countdownInterval);
-			window.location.href= project_url+"/sessions/join/"+session_redirect
-		} else {
-		const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-		const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-		const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+            const currentDate = new Date();
+            const currentDateTimeStamp = currentDate.getTime();
 
-			if(timeDifference < 5000){
-				toastr.info("Redirecting in "+`${seconds}s`);
-			}
-		}
-	}
-  }, 1000); // Update every 1 second
+            const timeDifference = sessionEndDateTimeStamp - currentDateTimeStamp;
+
+            if (session_redirect !== 'Null' && session_redirect !== 'null' && session_redirect !== '0') {
+                if (timeDifference <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = project_url + "/sessions/join/" + session_redirect;
+                } else {
+                    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+                    if (timeDifference < 5000) {
+                        toastr.info("Redirecting in " + `${seconds}s`);
+                    }
+                }
+            } else {
+				window.location.reload();
+                clearInterval(countdownInterval);
+            }
+        }, 1000); // Update every 1 second
+    } catch (error) {
+        console.error(error);
+    }
 }
 </script>

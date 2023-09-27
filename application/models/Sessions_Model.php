@@ -1909,13 +1909,13 @@ class Sessions_Model extends CI_Model
 
 	function createPollChart($session_id){
 		ob_start();
-		$sesstion_title = $this->getSessionName($session_id);
+		$session_title = $this->getSessionName($session_id);
 		$poll_data = $this->getPollData($session_id);
 
 		$this->load->library('Pdf');
 		$pdf = new Pdf('L', 'mm', 'A4', true, 'UTF-8', false);
 
-		$pdf->SetTitle($sesstion_title);
+		$pdf->SetTitle($session_title);
 		$pdf->SetHeaderMargin(30);
 		$pdf->SetTopMargin(20);
 		$pdf->setFooterMargin(20);
@@ -1927,7 +1927,7 @@ class Sessions_Model extends CI_Model
 		$pdf->AddFont('dejavusans', 'BI', 'DejaVuSans-BoldOblique.ttf', true);
 		$pdf->AddPage('L', 'A4');
 
-		$chart_title = $sesstion_title;
+		$chart_title = $session_title;
 //        $pdf->SetFont('helvetica', '', 45);
 		$pdf->SetFont('helvetica', '', 45);
 		$pdf->SetXY(10, 40);
@@ -1960,7 +1960,7 @@ class Sessions_Model extends CI_Model
 
 			$pdf->SetFont('helvetica', '', 8);
 			$pdf->SetXY(5, 5);
-			$pdf->WriteHTML($sesstion_title, '', 0, 'C', true, 0, false, false, 0);
+			$pdf->WriteHTML($session_title, '', 0, 'C', true, 0, false, false, 0);
 
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetFont('helvetica', 'B', 20);
@@ -2071,7 +2071,8 @@ class Sessions_Model extends CI_Model
 			$pdf->writeHTML($result_table, true, false, false, false, 'center');
 		}
 		ob_end_clean();
-		$pdf->Output(__DIR__.'/Poll Overview - '.$sesstion_title.'.pdf', 'FD');
+		$session_title = preg_replace('/[^a-zA-Z0-9_]/', '_', $session_title);
+		$pdf->Output(FCPATH.'cms_uploads/projects/'.$this->project->id.'/exports/'.$session_title. '.pdf', 'FD');
 
 		return;
 	}
@@ -2111,7 +2112,7 @@ class Sessions_Model extends CI_Model
 
 		if($result->num_rows()>0) {
 			$questionData = $result;
-			$file_name = 'Attendee Questions/' . date('Y-m-d') . '.csv';
+			$file_name = 'Session_'.$session_id.'_Attendee_Questions_' . date('Y-m-d') . '.csv';
 			header("Content-Description: File Transfer");
 			header("Content-Disposition: attachment; filename=$file_name");
 			header("Content-Type: application/csv;");
@@ -2296,8 +2297,6 @@ class Sessions_Model extends CI_Model
 					}
 				}
 			}
-
-			print_R($polls);exit;
 
 			$this->db->select('*');
 			$this->db->from('session_questions');

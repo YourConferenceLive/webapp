@@ -46,6 +46,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 									<th>email</th>
 									<th>identifier</th>
 									<th>created_time</th>
+									<th> View time</th>
+									<th>End View time</th>
 									<th>total_time</th>
 									<th>access</th>
 <!--									<th>total_chat</th>-->
@@ -68,6 +70,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 									<td> <?=$list->email?></td>
 									<td> </td>
 									<td> <?=$list->date_time?></td>
+									<td> <?=strtotime($list->view_start_time)?></td>
+									<td> <?=strtotime($list->view_end_time)?></td>
 									<td> <?=$total_time?></td>
 									<td> Attendee </td>
 									<td> <?=$list->total_questions?> </td>
