@@ -434,18 +434,30 @@ function translateTable() {
 }
 
 async function awaitPopupTranslator(translatorArr) {
-    let translationData = await createLanguageTranslator(translatorArr);
-    
-    $('input[type="search"]').on('input', translateTable);
-    $('input[type="text"]').on('click', translateTable);
-    await Promise.all([translateSwals(translationData), translateToast(translationData)]);
-
-    $(document).on('click', async function() {
-        $('input[type="search"]').on('input', translateTable);
-        $('input[type="text"]').on('click', translateTable);
+    try {
+        let translationData = await createLanguageTranslator(translatorArr);
+        
+        addEvents();
         await Promise.all([translateSwals(translationData), translateToast(translationData)]);
-
-    });
+    
+        $(document).on('click', async function() {
+            addEvents();
+            await Promise.all([translateSwals(translationData), translateToast(translationData)]);
+    
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-
+function addEvents() {
+    $('input[type="search"]').on('input', function() {
+        $('.dataTable').on('draw.dt', translateTable);
+    });
+    $('input[type="text"]').on('click', translateTable);
+    $('input[type="text"]').on('keyup', function(event) {
+        if(event.key == "Enter") {
+            $('.dataTable').on('draw.dt', translateTable);
+        }
+    });
+}
