@@ -78,49 +78,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		evaluation_list();
 
 		$('.evaluation-table-body').on('click', '#btn-view', function(){
-			getTranslatedSelectAccess('Under Development').then((msg) => {
-				toastr['warning'](msg);
-			});
+			toastr['warning']('Under Development');
 		});
 	});
 
 	function evaluation_list()
 	{
-		const translationData = fetchAllText(); // Fetch the translation data
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Loading users data...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
 
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-			// Find the translations for the dialog text
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Loading users data...';
-			let imageAltText = 'Loading...';
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
-				
-			}
-
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-
-			$.post("<?=$this->project_url?>/admin/evaluation/get_evaluation_data",
+		$.post("<?=$this->project_url?>/admin/evaluation/get_evaluation_data",
 					function(response) {
 						response = JSON.parse(response);
 						$('.evaluation-table-body').html('');
@@ -156,6 +131,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 						Swal.close();
 					});
-		});
 	}
 </script>

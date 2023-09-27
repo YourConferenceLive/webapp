@@ -466,7 +466,7 @@ class Sessions_Model extends CI_Model
 			$data['sponsor_logo'] = $sessionSponsorLogo;
 		}
 		if($session_data['isSessionLogoRemoved'] == 0){
-			$data['sponsor_logo'] = $sessionLogo;
+			$data['session_logo'] = $sessionLogo;
 		}
 
 		if($session_end_image != '' && $session_end_image != null){

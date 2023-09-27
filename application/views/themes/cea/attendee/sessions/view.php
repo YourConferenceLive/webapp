@@ -344,64 +344,41 @@ body{overflow: hidden;background-color: #151515;}
 
 	function loadNotes(entity_type, entity_type_id, note_page) {
 
-		const translationData = fetchAllText(); // Fetch the translation data
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Loading notes...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+		$.ajax({type: "GET",
+			url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
+			data: '',
+			success: function(response){
+				Swal.close();
+				jsonObj = JSON.parse(response);
+				// Add response in Modal body
+				if (jsonObj.total) {
+					var iHTML = '<ul class="list-group">';
 
-        translationData.then((arrData) => {
-            const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+					for (let x in jsonObj.data) {
+						let note_id 	= jsonObj.data[x].id;
+						let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+						let datetime 	= jsonObj.data[x].time;
 
-            // Find the translations for the dialog text
-            let dialogTitle = 'Please Wait';
-            let dialogText = 'Loading notes...';
-			let imageAltText = 'Loading...';
-
-            for (let i = 0; i < arrData.length; i++) {
-                if (arrData[i].english_text === dialogTitle) {
-                    dialogTitle = arrData[i][selectedLanguage + '_text'];
-                }
-                if (arrData[i].english_text === dialogText) {
-                    dialogText = arrData[i][selectedLanguage + '_text'];
-                }
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
-                
-            }
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-			$.ajax({type: "GET",
-				url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
-				data: '',
-				success: function(response){
-					Swal.close();
-					jsonObj = JSON.parse(response);
-					// Add response in Modal body
-					if (jsonObj.total) {
-						var iHTML = '<ul class="list-group">';
-	
-						for (let x in jsonObj.data) {
-							let note_id 	= jsonObj.data[x].id;
-							let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-							let datetime 	= jsonObj.data[x].time;
-	
-							iHTML += '<!-- Start List Note ' + (x) +' --><li class="list-group-item p-1">'+((note.length > 20) ? note.substr(0, 20) + '&hellip; <a href="javascript:void(0);" class="note_detail" data-note-text="' + note + '">more&raquo;</a>' : note )+'</li>';
-						}
-	
-						iHTML += '</ul>';
-	
-						$('#notes_list_container').html(iHTML);
-					} else {
+						iHTML += '<!-- Start List Note ' + (x) +' --><li class="list-group-item p-1">'+((note.length > 20) ? note.substr(0, 20) + '&hellip; <a href="javascript:void(0);" class="note_detail" data-note-text="' + note + '">more&raquo;</a>' : note )+'</li>';
 					}
+
+					iHTML += '</ul>';
+
+					$('#notes_list_container').html(iHTML);
+				} else {
 				}
-			});
-        });
+			}
+		});
 
 	}
 
@@ -433,9 +410,7 @@ body{overflow: hidden;background-color: #151515;}
 				let sessionId = "<?=$session_id?>";
 
 				if(question == '') {
-					getTranslatedSelectAccess('Please enter your question').then((msg) => {
-						toastr.warning(msg);
-					});
+					toastr.warning('Please enter your question');
 					return false;
 				}
 
@@ -459,21 +434,15 @@ body{overflow: hidden;background-color: #151515;}
 
 								$('#questionText').val('');
 								$('#questionElement').prepend('<p>'+question+'</p>');
-								getTranslatedSelectAccess('Question sent').then((msg) => {
-									toastr.success(msg);
-								});
+								toastr.success('Question sent');
 							} else {
-								getTranslatedSelectAccess('Unable to send the question').then((msg) => {
-									toastr.success(msg);
-								});
+								toastr.success('Unable to send the question');
 							}
 
 							$('#questionText').prop('disabled', false);
 
 						}).fail((error)=>{
-							getTranslatedSelectAccess("Unable to send the question").then((msg) => {
-								toastr.error(msg);
-							});
+							toastr.error("Unable to send the question");
 							$('#questionText').prop('disabled', false);
 						});
 			}
@@ -506,90 +475,49 @@ body{overflow: hidden;background-color: #151515;}
 			let entity_type_id 	= $('#session_id').val();
 			let note_text   	= $('#briefcase').val();
 
-			const translationData = fetchAllText(); // Fetch the translation data
+			if (entity_type_id == ''  || note_text == '') {
+				toastr.error('Invalid request.');
+				return;
+			}
 
-			translationData.then((arrData) => {
-				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-				
-				// Toast
-				let invalidText = 'Invalid request.';
-				
-				// Swal 1
-				let dialogTitle = 'Please Wait';
-				let dialogText = 'Posting your notes...';
-				let imageAltText = 'Loading...';
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Posting your notes...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
 
-				// Toas
-				let noteText = "Note added.";
-				let errorText = "Error";
+			let formData = new FormData();
+			formData.append("entity_type_id", entity_type_id);
+			formData.append("origin_type", entity_type);
+			formData.append("notes", $('#briefcase').val());
 
-				for (let i = 0; i < arrData.length; i++) {
-					if (arrData[i].english_text === invalidText) {
-						invalidText = arrData[i][selectedLanguage + '_text'];
-					}
+			$.ajax({type: "POST",
+					url: project_url+"/eposters/add_notes/session",
+					data: formData,
+					processData: false,
+					contentType: false,
+					error: function(jqXHR, textStatus, errorMessage) {
+						Swal.close();
+						toastr.error(errorMessage);
+					},
+					success: function(data) {
+						data = JSON.parse(data);
 
-					if (arrData[i].english_text === dialogTitle) {
-						dialogTitle = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === dialogText) {
-						dialogText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === imageAltText) {
-						imageAltText = arrData[i][selectedLanguage + '_text'];
-					}
-
-					if (arrData[i].english_text === noteText) {
-						noteText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === errorText) {
-						errorText = arrData[i][selectedLanguage + '_text'];
-					}
-				}
-
-				if (entity_type_id == ''  || note_text == '') {
-					toastr.error('Invalid request.');
-					return;
-				}
-
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-					imageAlt: imageAltText,
-					showCancelButton: false,
-					showConfirmButton: false,
-					allowOutsideClick: false
-				});
-
-				let formData = new FormData();
-				formData.append("entity_type_id", entity_type_id);
-				formData.append("origin_type", entity_type);
-				formData.append("notes", $('#briefcase').val());
-
-				$.ajax({type: "POST",
-						url: project_url+"/eposters/add_notes/session",
-						data: formData,
-						processData: false,
-						contentType: false,
-						error: function(jqXHR, textStatus, errorMessage) {
-							Swal.close();
-							toastr.error(errorMessage);
-						},
-						success: function(data) {
-							data = JSON.parse(data);
-	
-							if (data.status == 'success') {
-								$('#notes_list_container').html('');
-								$('#briefcase').val('');
-								loadNotes(entity_type, entity_type_id, note_page);
-								toastr.success(noteText);
-								$('#notes').val('');
-							} else {
-								toastr.error(errorText);
-							}
+						if (data.status == 'success') {
+							$('#notes_list_container').html('');
+							$('#briefcase').val('');
+							loadNotes(entity_type, entity_type_id, note_page);
+							toastr.success("Note added.");
+							$('#notes').val('');
+						} else {
+							toastr.error("Error");
 						}
-				});
+					}
 			});
 
 		});
@@ -787,30 +715,12 @@ body{overflow: hidden;background-color: #151515;}
 	}
 
 	$(function(){
-		const translationData = fetchAllText(); // Fetch the translation data
-
-        translationData.then((arrData) => {
-            const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-            // Find the translations for the dialog text
-            let dialogTitle = 'INFO';
-            let dialogText = 'Be sure to unmute the player located on the bottom right side of the page.';
-
-            for (let i = 0; i < arrData.length; i++) {
-                if (arrData[i].english_text === dialogTitle) {
-                    dialogTitle = arrData[i][selectedLanguage + '_text'];
-                }
-                if (arrData[i].english_text === dialogText) {
-                    dialogText = arrData[i][selectedLanguage + '_text'];
-                }
-                
-            }
-			Swal.fire(
-				dialogTitle,
-				dialogText,
-				'warning'
-			);
-        });
+		
+		Swal.fire(
+			'INFO',
+			'Be sure to unmute the player located on the bottom right side of the page.',
+			'warning'
+		);
 
 		let header_toolbox_status = "<?=(isset($session->header_toolbox_status)? $session->header_toolbox_status:'')?>";
 		let header_question = "<?=(isset($session->header_question)? $session->header_question:'') ?>"

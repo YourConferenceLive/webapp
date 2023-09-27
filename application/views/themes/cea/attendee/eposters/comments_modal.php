@@ -57,72 +57,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<script type="text/javascript">
 		$('#post-comment').on('click', function () {
 
-			const translationData = fetchAllText(); // Fetch the translation data
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Posting your comments...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+			
+			let formData = new FormData(document.getElementById('addUserComments'));
 
-			translationData.then((arrData) => {
-				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+			$.ajax({
+				type: "POST",
+				url: project_url+"/eposters/post_comments",
+				data: formData,
+				processData: false,
+				contentType: false,
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(data)
+				{
+					Swal.close();
 
-				// Find the translations for the dialog text
-				let dialogTitle = 'Please Wait';
-				let dialogText = 'Posting your comments...';
-				let imageAltText = 'Loading...';
+					data = JSON.parse(data);
 
-				for (let i = 0; i < arrData.length; i++) {
-					if (arrData[i].english_text === dialogTitle) {
-						dialogTitle = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === dialogText) {
-						dialogText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === imageAltText) {
-						imageAltText = arrData[i][selectedLanguage + '_text'];
+					if (data.status == 'success') {
+						$('#comments_list_container').html('');
+						loadComments(formData.get('eposterId'), comment_page);
+						toastr.success('Comment has been added.');
+						$('#comments').val('');
+					}else{
+						toastr.error('Error');
 					}
 				}
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-					imageAlt: imageAltText,
-					showCancelButton: false,
-					showConfirmButton: false,
-					allowOutsideClick: false
-				});
-				
-				let formData = new FormData(document.getElementById('addUserComments'));
-	
-				$.ajax({
-					type: "POST",
-					url: project_url+"/eposters/post_comments",
-					data: formData,
-					processData: false,
-					contentType: false,
-					error: function(jqXHR, textStatus, errorMessage)
-					{
-						Swal.close();
-						toastr.error(errorMessage);
-						//console.log(errorMessage); // Optional
-					},
-					success: function(data)
-					{
-						Swal.close();
-	
-						data = JSON.parse(data);
-	
-						if (data.status == 'success') {
-							$('#comments_list_container').html('');
-							loadComments(formData.get('eposterId'), comment_page);
-							getTranslatedSelectAccess('Comment has been added.').then((msg) => {
-								toastr.success(msg);
-							});
-							$('#comments').val('');
-						}else{
-							getTranslatedSelectAccess('Error').then((msg) => {
-								toastr.error(msg);
-							});
-						}
-					}
-				});
 			});
 		});
 		</script>

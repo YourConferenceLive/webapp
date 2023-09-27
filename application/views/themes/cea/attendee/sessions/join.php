@@ -58,6 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 							<?php
 							foreach ($session->presenters as $index=>$presenter):
+
 								if(!in_array($presenter->email, array('q@a.com', 'q@a2.com'))){
 									echo " ".trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?', '.trim($presenter->credentials):''); // comeback
 									echo "<br>";

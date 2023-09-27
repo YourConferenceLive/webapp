@@ -166,45 +166,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 	    function applySearch() {
-			const translationData = fetchAllText(); // Fetch the translation data
 
-			translationData.then((arrData) => {
-				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-				// Find the translations for the dialog text
-				let dialogTitle = 'Please Wait';
-				let dialogText = 'Loading ePosters...';
-				let imageAltText = 'Loading...';
-
-				for (let i = 0; i < arrData.length; i++) {
-					if (arrData[i].english_text === dialogTitle) {
-						dialogTitle = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === dialogText) {
-						dialogText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
-					
-				}
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-					imageAlt: imageAltText,
-					showCancelButton: false,
-					showConfirmButton: false,
-					allowOutsideClick: false
-				});
-				var track 	= (($('#frm-search select[name="track"]').children("option:selected").val()) ? $('#frm-search select[name="track"]').children("option:selected").val() : 'NaN');
-				var author 	= (($('#frm-search select[name="author"]').children("option:selected").val()) ? $('#frm-search select[name="author"]').children("option:selected").val() : 'NaN' );
-				var type 	= (($('#frm-search input[type="radio"][name="type"]').filter(':checked').val()) ? $('#frm-search input[type="radio"][name="type"]').filter(':checked').val() : 'NaN' );
-				var keyword = (($('#frm-search input[type="text"]').val()) ? $('#frm-search input[type="text"]').val() : 'NaN' );
-	
-				$(location).attr('href', project_url + '/eposters/index/' + track + '/' + author + '/' + type + '/' + keyword + '/');
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Loading ePosters...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
 			});
+			var track 	= (($('#frm-search select[name="track"]').children("option:selected").val()) ? $('#frm-search select[name="track"]').children("option:selected").val() : 'NaN');
+			var author 	= (($('#frm-search select[name="author"]').children("option:selected").val()) ? $('#frm-search select[name="author"]').children("option:selected").val() : 'NaN' );
+			var type 	= (($('#frm-search input[type="radio"][name="type"]').filter(':checked').val()) ? $('#frm-search input[type="radio"][name="type"]').filter(':checked').val() : 'NaN' );
+			var keyword = (($('#frm-search input[type="text"]').val()) ? $('#frm-search input[type="text"]').val() : 'NaN' );
+
+			$(location).attr('href', project_url + '/eposters/index/' + track + '/' + author + '/' + type + '/' + keyword + '/');
 
 	    }
 	});
