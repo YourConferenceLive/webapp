@@ -32,6 +32,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="col-8">
 							<h6 class="font-weight-normal"><?=date("F j, Y g:i A", strtotime($session->start_date_time))?> - <?=date("g:i A", strtotime($session->end_date_time))?>  <?=$session->time_zone?></h6>
 							<h4><?=$session->name?></h4>
+							<h6 class="text-muted"><?=$session->other_language_name?></h6>
 						</div>
 					</div>
 				</div>
@@ -60,10 +61,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							foreach ($session->presenters as $index=>$presenter):
 
 								if(!in_array($presenter->email, array('q@a.com', 'q@a2.com'))){
-									echo " ".trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?', '.trim($presenter->credentials):''); // comeback
+									$xcredentials = trim($presenter->credentials);
+									echo " ".trim($presenter->name)." ".trim($presenter->surname).( !empty($xcredentials) ? ', '.trim($presenter->credentials) : ''); // comeback
 									echo "<br>";
 								}
-								endforeach;?>
+							endforeach;?>
 						<?php endif; ?>
 					</p>
 

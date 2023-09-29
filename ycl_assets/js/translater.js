@@ -456,8 +456,6 @@ function addEvents() {
     });
     $('input[type="text"]').on('click', translateTable);
     $('input[type="text"]').on('keyup', function(event) {
-        if(event.key == "Enter") {
-            $('.dataTable').on('draw.dt', translateTable);
-        }
+        $('.dataTable').on('draw.dt', translateTable);
     });
 }
