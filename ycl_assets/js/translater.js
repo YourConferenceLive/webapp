@@ -290,11 +290,34 @@ function replaceSpecificWords(searchWord, replacementWord) {
                 continue;
             }
 
+            if (textNode.parentNode && textNode.parentNode.tagName.toLowerCase() === 'script') {
+                continue;
+            }
+
             const replacedText = text.replace(new RegExp(escapedSearchWord, 'g'), replacementWord);
             textNode.textContent = replacedText;
+
+            // replaceBugWord("Account Informaciónrmation", "Información de la cuenta");
+            if(TranslationManager.userLanguage == "english") {
+                replaceBugWord("Perareal Information", "Personal Information");
+                replaceBugWord("Info de la cuenta", "Account Information");
+                replaceBugWord("Select a perare to chat", "Select person to chat");
+            }
+            if(TranslationManager.userLanguage == "spanish") {
+                replaceBugWord("Personal Informaciónrmation", "Informacion personal");
+                replaceBugWord("Account Informaciónrmation", "Información de la cuenta");
+            }
+
+            function replaceBugWord(bugWord, newWord) {
+                if(replacedText.includes(bugWord)) {
+                    const customText = text.replace(new RegExp(bugWord, 'g'), newWord);
+                    textNode.textContent = customText;
+                }
+            }
         }
     }
 }
+
 
 function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
