@@ -290,7 +290,7 @@ function replaceSpecificWords(searchWord, replacementWord) {
                 continue;
             }
 
-            if (textNode.parentNode && textNode.parentNode.tagName.toLowerCase() === 'script') {
+            if (textNode.parentNode && textNode.parentNode.nodeType === Node.ELEMENT_NODE && textNode.parentNode.tagName.toLowerCase() === 'script') {
                 continue;
             }
 
@@ -310,7 +310,8 @@ function replaceSpecificWords(searchWord, replacementWord) {
 
             function replaceBugWord(bugWord, newWord) {
                 if(replacedText.includes(bugWord)) {
-                    const customText = text.replace(new RegExp(bugWord, 'g'), newWord);
+                    const escapeBugword = escapeRegExp(bugWord);
+                    const customText = text.replace(new RegExp(escapeBugword, 'g'), newWord);
                     textNode.textContent = customText;
                 }
             }
