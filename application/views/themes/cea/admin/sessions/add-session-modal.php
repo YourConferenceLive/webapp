@@ -467,11 +467,13 @@
 											</li>
 											<li>
 												<div class="form-group">
-													<label for="sessionEndImage">Image</label>
-													<input type="file" accept="image/*" class="form-control" id="sessionEndImage" name="sessionEndImage" placeholder="Session Ended">
+													<div class="custom-file">
+														<label class="custom-file-label" for="sessionEndImage">Image</label>
+														<input type="file" accept="image/*" class="custom-file-input" id="sessionEndImage" name="sessionEndImage" placeholder="Session Ended" previewImage="currentSessionEndImg">
+													</div>
 												</div>
 												<div class="form-group" id="currentSessionEndImage" style="display: none;">
-													<label for=""><small>Current Session End Image</small></label>
+													<label for="currentSessionEndImage"><small>Current Session End Image</small></label>
 													<br>
 													<img id="currentSessionEndImg" src="" width="200px">
 												</div>
@@ -701,6 +703,11 @@
 			$('#isSessionLogoRemoved').val('0');
 			previewUpload(this);
 			$('#currentSessionLogoDiv').show();
+		})
+
+		$('#sessionEndImage').on('change', function(){
+			previewUpload(this);			
+			$('#currentSessionEndImg').show();
 		})
 
 		$('#mobileSessionBackground').on('change', function(){
