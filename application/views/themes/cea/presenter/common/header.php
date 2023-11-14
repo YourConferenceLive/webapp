@@ -54,11 +54,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		let socketServer = "<?=ycl_socket_server?>";
 		let socket = io(socketServer);
 	</script>
-
-	<!-- Custom Translater  -->
-	<script src="<?= ycl_base_url ?>/ycl_assets/js/translation_manager.js"></script>
-	<script src="<?= ycl_base_url ?>/ycl_assets/js/translater.js"></script>
-	
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
 <div class="wrapper">

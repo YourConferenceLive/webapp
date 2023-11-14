@@ -102,29 +102,51 @@
 			let resource_id = $(this).attr('resource-id');
 			let session_id = $(this).attr('session-id');
 
-			Swal.fire({
-				title: "Are you sure?",
-				text: "",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: "Yes, remove it!",
-				cancelButtonText: "Cancel"
-			}).then((result) => {
-				if (result.isConfirmed) {
-					if(resource_id !== ''){
-						$.post(project_admin_url+'/sessions/updateSessionResource/',
-							{
-								'resource_id':resource_id,
-								'is_active':0
-							}, function(response){
-								getSessionResources(session_id);
-							})
-					}
-				}
-			});
+			const translationData = fetchAllText(); // Fetch the translation data
 
+            translationData.then((arrData) => {
+                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+                // Find the translations for the dialog text
+                let dialogTitle = 'Are you sure?';
+                let confirmButtonText = 'Yes, remove it!';
+                let cancelButtonText = 'Cancel';
+
+                for (let i = 0; i < arrData.length; i++) {
+                    if (arrData[i].english_text === dialogTitle) {
+                        dialogTitle = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === confirmButtonText) {
+                        confirmButtonText = arrData[i][selectedLanguage + '_text'];
+                    }
+                    if (arrData[i].english_text === cancelButtonText) {
+                        cancelButtonText = arrData[i][selectedLanguage + '_text'];
+                    }
+                }
+
+				Swal.fire({
+					title: dialogTitle,
+					text: "",
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: confirmButtonText,
+                    cancelButtonText: cancelButtonText
+				}).then((result) => {
+					if (result.isConfirmed) {
+						if(resource_id !== ''){
+							$.post(project_admin_url+'/sessions/updateSessionResource/',
+								{
+									'resource_id':resource_id,
+									'is_active':0
+								}, function(response){
+									getSessionResources(session_id);
+								})
+						}
+					}
+				});
+            });
 		})
 	})
 

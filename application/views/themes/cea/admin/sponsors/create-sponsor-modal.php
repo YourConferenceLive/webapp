@@ -124,93 +124,160 @@
 
 	function createSponsor()
 	{
+		const translationData = fetchAllText(); // Fetch the translation data
 
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Creating the sponsor...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
+		translationData.then((arrData) => {
+			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
 
-		let formData = new FormData(document.getElementById('createSponsorForm'));
+			// Find the translations for the dialog text
+			let dialogTitle = 'Please Wait';
+			let dialogText = 'Creating the sponsor...';
+			let imageAltText = 'Loading...';
 
-		$.ajax({
-			type: "POST",
-			url: project_admin_url+"/sponsors/create",
-			data: formData,
-			processData: false,
-			contentType: false,
-			error: function(jqXHR, textStatus, errorMessage)
-			{
-				Swal.close();
-				toastr.error(errorMessage);
-				//console.log(errorMessage); // Optional
-			},
-			success: function(data)
-			{
-				Swal.close();
+			// Toast
+			let sponsorText = "Sponsor created";
+			let errorText = "Error";
 
-				data = JSON.parse(data);
+			for (let i = 0; i < arrData.length; i++) {
+				if (arrData[i].english_text === dialogTitle) {
+					dialogTitle = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === dialogText) {
+					dialogText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === imageAltText) {
+					imageAltText = arrData[i][selectedLanguage + '_text'];
+				}
 
-				if (data.status == 'success')
-				{
-					listSponsors();
-					toastr.success("Sponsor created");
-					$('#createSponsorModal').modal('hide');
-
-				}else{
-					toastr.error("Error");
+				if (arrData[i].english_text === sponsorText) {
+					sponsorText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === errorText) {
+					errorText = arrData[i][selectedLanguage + '_text'];
 				}
 			}
+
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			let formData = new FormData(document.getElementById('createSponsorForm'));
+	
+			$.ajax({
+				type: "POST",
+				url: project_admin_url+"/sponsors/create",
+				data: formData,
+				processData: false,
+				contentType: false,
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(data)
+				{
+					Swal.close();
+	
+					data = JSON.parse(data);
+	
+					if (data.status == 'success')
+					{
+						listSponsors();
+						toastr.success(sponsorText);
+						$('#createSponsorModal').modal('hide');
+	
+					}else{
+						toastr.error(errorText);
+					}
+				}
+			});
 		});
 	}
 
 	function updateSponsor()
 	{
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Updating the sponsor...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
+		const translationData = fetchAllText(); // Fetch the translation data
 
-		let formData = new FormData(document.getElementById('createSponsorForm'));
+		translationData.then((arrData) => {
+			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
 
-		$.ajax({
-			type: "POST",
-			url: project_admin_url+"/sponsors/update",
-			data: formData,
-			processData: false,
-			contentType: false,
-			error: function(jqXHR, textStatus, errorMessage)
-			{
-				Swal.close();
-				toastr.error(errorMessage);
-				//console.log(errorMessage); // Optional
-			},
-			success: function(data)
-			{
-				Swal.close();
+			// Find the translations for the dialog text
+			let dialogTitle = 'Please Wait';
+			let dialogText = 'Updating the sponsor...';
+			let imageAltText = 'Loading...';
 
-				data = JSON.parse(data);
+			// Toast
+			let sponsorText = "Sponsor updated";
+			let errorText = "No changes made";
 
-				if (data.status == 'success')
-				{
-					listSponsors();
-					toastr.success("Sponsor updated");
+			for (let i = 0; i < arrData.length; i++) {
+				if (arrData[i].english_text === dialogTitle) {
+					dialogTitle = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === dialogText) {
+					dialogText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === imageAltText) {
+					imageAltText = arrData[i][selectedLanguage + '_text'];
+				}
 
-				}else{
-					toastr.warning("No changes made");
+				if (arrData[i].english_text === sponsorText) {
+					sponsorText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === errorText) {
+					errorText = arrData[i][selectedLanguage + '_text'];
 				}
 			}
+
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			let formData = new FormData(document.getElementById('createSponsorForm'));
+
+			$.ajax({
+				type: "POST",
+				url: project_admin_url+"/sponsors/update",
+				data: formData,
+				processData: false,
+				contentType: false,
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(data)
+				{
+					Swal.close();
+
+					data = JSON.parse(data);
+
+					if (data.status == 'success')
+					{
+						listSponsors();
+						toastr.success(sponsorText);
+
+					}else{
+						toastr.warning(errorText);
+					}
+				}
+			});
 		});
 	}
 

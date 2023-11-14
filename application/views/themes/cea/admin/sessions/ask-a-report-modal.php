@@ -96,12 +96,16 @@
 
 						$('#askAReportModal').modal('show');
 					}else{
-						toastr.error('No data on this session');
+						getTranslatedSelectAccess('No data on this session').then((msg) => {
+							toastr.error(msg);
+						});
 					}
 
 				})
 				.fail(function() {
-					toastr.error('Unable to load the report.');
+					getTranslatedSelectAccess('Unable to load the report.').then((msg) => {
+							toastr.error(msg);
+						});
 				});
 		})
 	})

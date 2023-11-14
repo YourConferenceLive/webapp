@@ -118,7 +118,7 @@ class Translator_Model extends CI_Model
             else
             {
                 $xretobj['bool'] = false;
-                $xretobj['msg'] = "Fail to create language setting.";
+                $xretobj['msg'] = "Faile to create language setting.";
             }
         }
 

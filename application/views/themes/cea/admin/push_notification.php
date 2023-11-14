@@ -97,7 +97,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$('.savePushNotificationBtn').on('click', function(){
 			if($('.notification_message').val() == ''){
-				toastr.warning('Message can not be empty');
+				getTranslatedSelectAccess('Message can not be empty').then((msg) => {
+					toastr.warning(msg);
+				});
 				return false
 			}
 
@@ -116,8 +118,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						$('.notify_attendee').prop('checked', false);
 						$('.notification_message').val('');
 
+						let successText = "Success!";
+						getTranslatedSelectAccess(successText).then((msg) => {
+							successText = msg;
+						});
+
 						swal.fire(
-							"Success!",
+							successText,
 							response.msg,
 							'success'
 						)
@@ -142,28 +149,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					let timerInterval
 
-					Swal.fire({
-						title: 'Are you sure you want to logout?',
-						html: 'Sending Notification <br>Please Wait...<b>',
-						timer: 3000,
-						timerProgressBar: true,
-						didOpen: () => {
-							Swal.showLoading()
-							const b = Swal.getHtmlContainer().querySelector('b')
-							timerInterval = setInterval(() => {
-								b.textContent = Swal.getTimerLeft()
-							}, 100)
-						},
-						willClose: () => {
-							clearInterval(timerInterval)
+					const translationData = fetchAllText(); // Fetch the translation data
+
+					translationData.then((arrData) => {
+						const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+						// Find the translations for the dialog text
+						let dialogTitle = 'Are you sure you want to logout?';
+						let html1 = "Sending Notification";
+						let html2 = "Please Wait...";
+
+						for (let i = 0; i < arrData.length; i++) {
+							if (arrData[i].english_text === dialogTitle) {
+								dialogTitle = arrData[i][selectedLanguage + '_text'];
+							}
+							if (arrData[i].english_text === html1) {
+								html1 = arrData[i][selectedLanguage + '_text'];
+							}
+							if (arrData[i].english_text === html2) {
+								html2 = arrData[i][selectedLanguage + '_text'];
+							}
+							
 						}
-					}).then((result) => {
-						/* Read more about handling dismissals below */
-						if (result.dismiss === Swal.DismissReason.timer) {
-							console.log('Notification updated')
-						}
-					})
+
+						Swal.fire({
+							title: dialogTitle,
+							html: html1+' <br>'+html2+'<b>',
+							timer: 3000,
+							timerProgressBar: true,
+							didOpen: () => {
+								Swal.showLoading()
+								const b = Swal.getHtmlContainer().querySelector('b')
+								timerInterval = setInterval(() => {
+									b.textContent = Swal.getTimerLeft()
+								}, 100)
+							},
+							willClose: () => {
+								clearInterval(timerInterval)
+							}
+						}).then((result) => {
+							/* Read more about handling dismissals below */
+							if (result.dismiss === Swal.DismissReason.timer) {
+								console.log('Notification updated')
+							}
+						})
 						
+					});
 					socket.emit('send_push_notification', {
 						'project_id': project_id
 					})
@@ -197,59 +228,94 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$(this).hide();
 			$this = $(this);
 
-			Swal.fire({
-				title: 'Are you sure?',
-				text: "You won't undo this!",
-				icon: 'warning',
-				allowOutsideClick: false,
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!',
-				cancelButtonText: 'Cancel'
-			}).then((result) => {
-				console.log("<?=$this->project_url?>/push_notification/deleteNofification/");
-				base_url = "<?=$this->project_url?>/push_notification/deleteNofification/";
-				if(result.value)
-				{
-					$('.sendNotificationBtn').prop('disabled', true);
-					$('.deleteNotificationBtn').prop('disabled', true);
-					$.ajax({
-						url: base_url,
-						method: "post",
-						data: id,
-						dataType: "json",
-						success: function (response) {
-							let cr_data = response;
-							if (cr_data.status == "success")
-							{
-								Swal.fire({
-									icon: 'success',
-									title: 'Your work has been saved',
-									text: cr_data.msg,
-									allowOutsideClick: false
-								}).then((result) => {
-									if(result.value)
-									{
-										window.location.href ="<?=$this->project_url?>/admin/push_notification";
-									}
-								});
-							}
-							else
-							{
-								Swal.fire({
-									icon: 'error',
-									title: cr_data.msg,
-									allowOutsideClick: false
-								});
-							}
-						}
-					});
+			const translationData = fetchAllText(); // Fetch the translation data
+
+			translationData.then((arrData) => {
+				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+				// Find the translations for the dialog text
+				let dialogTitle = 'Are you sure?';
+				let dialogText = "You won't undo this!";
+				let confirmButtonText = 'Yes, delete it!';
+				let cancelButtonText = 'Cancel';
+
+				// Swal 2
+				let dialogTitle2 = 'Your work has been saved';
+
+				for (let i = 0; i < arrData.length; i++) {
+					if (arrData[i].english_text === dialogTitle) {
+						dialogTitle = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === dialogText) {
+						dialogText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === confirmButtonText) {
+						confirmButtonText = arrData[i][selectedLanguage + '_text'];
+					}
+					if (arrData[i].english_text === cancelButtonText) {
+						cancelButtonText = arrData[i][selectedLanguage + '_text'];
+					}
+
+					if (arrData[i].english_text === dialogTitle2) {
+						dialogTitle2 = arrData[i][selectedLanguage + '_text'];
+					}
 				}
-				else
-				{
-					console.log("Cancelled");
-				}
+
+				Swal.fire({
+					title: dialogTitle,
+					text: dialogText,
+					icon: 'warning',
+					allowOutsideClick: false,
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: confirmButtonText,
+					cancelButtonText: cancelButtonText
+				}).then((result) => {
+					console.log("<?=$this->project_url?>/push_notification/deleteNofification/");
+					base_url = "<?=$this->project_url?>/push_notification/deleteNofification/";
+					if(result.value)
+					{
+						$('.sendNotificationBtn').prop('disabled', true);
+						$('.deleteNotificationBtn').prop('disabled', true);
+						$.ajax({
+							url: base_url,
+							method: "post",
+							data: id,
+							dataType: "json",
+							success: function (response) {
+								let cr_data = response;
+								if (cr_data.status == "success")
+								{
+									Swal.fire({
+										icon: 'success',
+										title: dialogTitle2,
+										text: cr_data.msg,
+										allowOutsideClick: false
+									}).then((result) => {
+										if(result.value)
+										{
+											window.location.href ="<?=$this->project_url?>/admin/push_notification";
+										}
+									});
+								}
+								else
+								{
+									Swal.fire({
+										icon: 'error',
+										title: cr_data.msg,
+										allowOutsideClick: false
+									});
+								}
+							}
+						});
+					}
+					else
+					{
+						console.log("Cancelled");
+					}
+				});
+				
 			});
 
 		})

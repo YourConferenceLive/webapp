@@ -222,7 +222,9 @@
 				! $('#guest_access').is(":checked")
 		)
 		{
-			toastr.warning('You must select at least one access');
+			getTranslatedSelectAccess('You must select at least one access').then((msg) => {
+				toastr.warning(msg);
+			});
 			return false;
 		}
 
@@ -234,117 +236,215 @@
 
 	function addUser()
 	{
-		let email = $('#email').val();
-		let password = $('#password').val();
+		const translationData = fetchAllText(); // Fetch the translation data
 
-		if (email.trim() === '') {
-			toastr.error("Email is required.");
-			return;
-		}
-		else if(password.trim() === '') {
-			toastr.error("Password is required.");
-			return; 
-		}
+		translationData.then((arrData) => {
+			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
 
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Adding the user...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
+			// Find the translations for the dialog text
+			let dialogTitle = 'Please Wait';
+			let dialogText = 'Adding the user...';
+			let imageAltText = 'Loading...';
 
-		let formData = new FormData(document.getElementById('addUserForm'));
+			// Toast
+			let userAddedText = "User added";
+			let duplicateText = "This user is already in the database";
 
-		$.ajax({
-			type: "POST",
-			url: project_admin_url+"/users/create",
-			data: formData,
-			processData: false,
-			contentType: false,
-			error: function(jqXHR, textStatus, errorMessage)
-			{
-				Swal.close();
-				toastr.error(errorMessage);
-				//console.log(errorMessage); // Optional
-			},
-			success: function(data)
-			{
-				Swal.close();
+			let errorText = "Error";
+			let emailText = "Email is required.";
+			let passwordText = "Password is required.";
 
-				data = JSON.parse(data);
-				console.log(data);
-				if (data.status == 'success')
-				{
-					listUsers();
-					toastr.success("User added");
-					$('#addUserModal').modal('hide');
 
-				}else if(data.status == 'duplicate'){
-					toastr.error("This user is already in the database");
-				}else{
-					toastr.error("Error");
+			for (let i = 0; i < arrData.length; i++) {
+				if (arrData[i].english_text === dialogTitle) {
+					dialogTitle = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === dialogText) {
+					dialogText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === imageAltText) {
+					imageAltText = arrData[i][selectedLanguage + '_text'];
+				}
+
+				if (arrData[i].english_text === userAddedText) {
+					userAddedText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === duplicateText) {
+					duplicateText = arrData[i][selectedLanguage + '_text'];
+				}
+
+				if (arrData[i].english_text === errorText) {
+					errorText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === emailText) {
+					emailText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === passwordText) {
+					passwordText = arrData[i][selectedLanguage + '_text'];
 				}
 			}
+
+			let email = $('#email').val();
+			let password = $('#password').val();
+
+			if (email.trim() === '') {
+				toastr.error(emailText);
+				return;
+			}
+			else if(password.trim() === '') {
+				toastr.error(passwordText);
+				return; 
+			}
+
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			let formData = new FormData(document.getElementById('addUserForm'));
+	
+			$.ajax({
+				type: "POST",
+				url: project_admin_url+"/users/create",
+				data: formData,
+				processData: false,
+				contentType: false,
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(data)
+				{
+					Swal.close();
+	
+					data = JSON.parse(data);
+					console.log(data);
+					if (data.status == 'success')
+					{
+						listUsers();
+						toastr.success(userAddedText);
+						$('#addUserModal').modal('hide');
+	
+					}else if(data.status == 'duplicate'){
+						toastr.error(duplicateText);
+					}else{
+						toastr.error(errorText);
+					}
+				}
+			});
 		});
 	}
 
 	function updateUser()
 	{
-		let email = $('#email').val();
+		const translationData = fetchAllText(); // Fetch the translation data
 
-		if (email.trim() === '') {
-			toastr.error('Email is required.');
-			return;
-		}
+		translationData.then((arrData) => {
+			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
 
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Updating the sponsor...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
+			// Find the translations for the dialog text
+			let dialogTitle = 'Please Wait';
+			let dialogText = 'Updating the sponsor...';
+			let imageAltText = 'Loading...';
 
-		let formData = new FormData(document.getElementById('addUserForm'));
+			// Toast
+			let emailText = 'Email is required.';
+			let userUpdatedText = 'User updated';
+			let duplicateText = "This user is already in the database";
+			let noChangeText = 'No changes made';
+			let errorText = 'Error';
 
-		$.ajax({
-			type: "POST",
-			url: project_admin_url+"/users/update",
-			data: formData,
-			processData: false,
-			contentType: false,
-			error: function(jqXHR, textStatus, errorMessage)
-			{
-				Swal.close();
-				toastr.error(errorMessage);
-				//console.log(errorMessage); // Optional
-			},
-			success: function(data)
-			{
-				Swal.close();
-
-				data = JSON.parse(data);
-
-				if (data.status == 'success')
-				{
-					listUsers();
-					toastr.success('User updated');
-
-				}else if(data.status == 'duplicate'){
-					toastr.error("This user is already in the database");
-				}else if(data.status == 'failed'){
-					toastr.success('No changes made');
-				}else{
-					toastr.error('Error');
+			for (let i = 0; i < arrData.length; i++) {
+				if (arrData[i].english_text === dialogTitle) {
+					dialogTitle = arrData[i][selectedLanguage + '_text'];
 				}
+				if (arrData[i].english_text === dialogText) {
+					dialogText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === imageAltText) {
+					imageAltText = arrData[i][selectedLanguage + '_text'];
+				}
+
+				if (arrData[i].english_text === emailText) {
+					emailText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === userUpdatedText) {
+					userUpdatedText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === duplicateText) {
+					duplicateText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === noChangeText) {
+					noChangeText = arrData[i][selectedLanguage + '_text'];
+				}
+				if (arrData[i].english_text === errorText) {
+					errorText = arrData[i][selectedLanguage + '_text'];
+				}
+
+
+
 			}
+
+			let email = $('#email').val();
+
+			if (email.trim() === '') {
+				toastr.error(emailText);
+				return;
+			}
+
+			Swal.fire({
+				title: dialogTitle,
+				text: dialogText,
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: imageAltText,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+
+			let formData = new FormData(document.getElementById('addUserForm'));
+	
+			$.ajax({
+				type: "POST",
+				url: project_admin_url+"/users/update",
+				data: formData,
+				processData: false,
+				contentType: false,
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(data)
+				{
+					Swal.close();
+	
+					data = JSON.parse(data);
+	
+					if (data.status == 'success')
+					{
+						listUsers();
+						toastr.success(userUpdatedText);
+
+					}else if(data.status == 'duplicate'){
+						toastr.error(duplicateText);
+					}else if(data.status == 'failed'){
+						toastr.success(noChangeText);
+					}else{
+						toastr.error(errorText);
+					}
+				}
+			});
 		});
 	}
 

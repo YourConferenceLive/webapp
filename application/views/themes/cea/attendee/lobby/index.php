@@ -83,19 +83,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
 	if ($default_password === true):?>
 	
+	const translationData = fetchAllText(); // Fetch the translation data
+
+	translationData.then((arrData) => {
+		const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+
+		// Find the translations for the dialog text
+		let dialogTitle = 'Welcome!';
+		let dialogText = 'Please proceed to your Profile Page to change your default password and enter your Royal College Medical Number.';
+		let confirmButtonText = 'Profile Page';
+		let cancelButtonText = 'Cancel';
+
+		for (let i = 0; i < arrData.length; i++) {
+			if (arrData[i].english_text === dialogTitle) {
+				dialogTitle = arrData[i][selectedLanguage + '_text'];
+			}
+			if (arrData[i].english_text === dialogText) {
+				dialogText = arrData[i][selectedLanguage + '_text'];
+			}
+			if (arrData[i].english_text === confirmButtonText) {
+				confirmButtonText = arrData[i][selectedLanguage + '_text'];
+			}
+			if (arrData[i].english_text === cancelButtonText) {
+				cancelButtonText = arrData[i][selectedLanguage + '_text'];
+			}
+		}
 		Swal.fire({
-			title: 'Welcome!',
-			text: 'Please proceed to your Profile Page to change your default password and enter your Royal College Medical Number.',
+			title: dialogTitle,
+			text: dialogText,
 			showCancelButton: true,
 			showConfirmButton: true,
 			allowOutsideClick: false,
-			confirmButtonText: 'Profile Page',
-			cancelButtonText: 'Cancel'
+			confirmButtonText: confirmButtonText,
+			cancelButtonText: cancelButtonText
 		}).then((result) => {
 			if (result.isConfirmed) {
 				window.location.href = project_url+"/profile";
 			}
 		});
+	});
 <?php
 	endif;?>
 </script>

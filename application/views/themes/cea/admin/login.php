@@ -41,12 +41,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(function () {
 		$('#login-btn').on('click', function () {
 
+			let dialogTitle = 'Please Wait';
+			let dialogText = 'We are validating your credentials';
+			let imageAltText = 'Loading...';
+
+			let dialogTitle2 = 'Done!';
+			let dialogText2 = 'We are redirecting you';
+
+			let unableText3 = "Unable To Login";
+			
+			let unableText4 = "Unable To Register";
+			let unableMsg4 = "Network error";
+
 			Swal.fire({
-				title: 'Please Wait',
-				text: 'We are validating your credentials',
+				title: dialogTitle,
+				text: dialogText,
 				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
+				imageAlt: imageAltText,
 				showCancelButton: false,
 				showConfirmButton: false,
 				allowOutsideClick: false
@@ -65,8 +77,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				if (data.status == 'success')
 				{
 					Swal.fire({
-						title: 'Done!',
-						text: 'We are redirecting you',
+						title: dialogTitle2,
+						text: dialogText2,
 						icon: 'success',
 						showCancelButton: false,
 						showConfirmButton: false,
@@ -80,7 +92,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				}else{
 					Swal.fire(
-						"Unable To Login",
+						unableText3,
 						data.msg,
 						'error'
 					);
@@ -90,8 +102,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			})
 			.fail(function () {
 				Swal.fire(
-					"Unable To Register",
-					"Network error",
+					unableText4,
+					unableMsg4,
 					'error'
 				);
 			});
