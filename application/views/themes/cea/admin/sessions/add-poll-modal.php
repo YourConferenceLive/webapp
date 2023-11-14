@@ -229,12 +229,10 @@
 					})
 				}
 			}, 'json').fail((error)=>{
-				getTranslatedSelectAccess('Error!').then((msg) => {
-					Swal.fire(
-						msg,
-						error,
-						'error');
-				});
+				Swal.fire(
+					'Error!',
+					error,
+					'error');
 			}).then(function(poll){
 				console.log(poll.correct_answer1)
 				appendCorrectAnswer1(poll.correct_answer1)
@@ -293,235 +291,134 @@
 	}
 	function addPoll()
 	{
-		const translationData = fetchAllText(); // Fetch the translation data
+		if($('#pollNameInput').val() == ''){
+			swal.fire("Missing Field Poll Name", "Please make sure Poll Name is not empty", 'error')
+			return false;
+		}
 
-        translationData.then((arrData) => {
-            const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+		if($('#pollQuestionInput').val() == ''){
+			swal.fire("Missing Field Poll Question", "Please make sure  Poll Question is not empty", 'error')
+			return false;
+		}
 
-            // Swal1
-            let dialogTitle = 'Missing Field Poll Name';
-            let dialogText = 'Please make sure Poll Name is not empty';
+		if(!checkAllFilledPollOption() <= 0) {
+			swal.fire("Missing Field", "Please make sure all options are filled", 'error')
+			return false;
+		}
 
-			// Swal2
-			let dialogTitle2 = 'Missing Field Poll Question';
-            let dialogText2 = 'Please make sure  Poll Question is not empty';
+		Swal.fire({
+			title: "Please Wait",
+			text: "Adding the poll...",
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: "Loading...",
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+		
+		let formData = new FormData(document.getElementById('addPollForm'));
 
-			// Swal3
-			let dialogTitle3 = 'Missing Field';
-            let dialogText3 = 'Please make sure all options are filled';
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/sessions/addPollJson/<?=$session->id?>",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				Swal.close();
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				Swal.close();
 
-			// Swal4
-			let dialogTitle4 = 'Please Wait';
-            let dialogText4 = 'Adding the poll...';
-			let imageAltText4 = 'Loading...';
+				data = JSON.parse(data);
 
-            for (let i = 0; i < arrData.length; i++) {
-                if (arrData[i].english_text === dialogTitle) {
-                    dialogTitle = arrData[i][selectedLanguage + '_text'];
-                }
-                if (arrData[i].english_text === dialogText) {
-                    dialogText = arrData[i][selectedLanguage + '_text'];
-                }
-
-				if (arrData[i].english_text === dialogTitle2) {
-                    dialogTitle2 = arrData[i][selectedLanguage + '_text'];
-                }
-                if (arrData[i].english_text === dialogText2) {
-                    dialogText2 = arrData[i][selectedLanguage + '_text'];
-                }
-
-				if (arrData[i].english_text === dialogTitle3) {
-                    dialogTitle3 = arrData[i][selectedLanguage + '_text'];
-                }
-
-				if (arrData[i].english_text === dialogTitle4) {
-                    dialogTitle4 = arrData[i][selectedLanguage + '_text'];
-                }
-				if (arrData[i].english_text === imageAltText4) {
-                    imageAltText4 = arrData[i][selectedLanguage + '_text'];
-                }
-                
-            }
-			if($('#pollNameInput').val() == ''){
-				swal.fire(dialogTitle, dialogText, 'error')
-				return false;
-			}
-	
-			if($('#pollQuestionInput').val() == ''){
-				swal.fire(dialogTitle2, dialogText2, 'error')
-				return false;
-			}
-	
-			if(!checkAllFilledPollOption() <= 0) {
-				swal.fire(dialogTitle3, dialogText3, 'error')
-				return false;
-			}
-
-			Swal.fire({
-				title: dialogTitle4,
-				text: dialogText4,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText4,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-			
-			let formData = new FormData(document.getElementById('addPollForm'));
-	
-			$.ajax({
-				type: "POST",
-				url: project_admin_url+"/sessions/addPollJson/<?=$session->id?>",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
+				if (data.status == 'success')
 				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-					Swal.close();
-	
-					data = JSON.parse(data);
-	
-					if (data.status == 'success')
-					{
-						listPolls();
-						toastr.success(data.msg);
-						$('#addPollModal').modal('hide');
-	
-					}else{
-						toastr.error(data.msg);
-					}
+					listPolls();
+					toastr.success(data.msg);
+					$('#addPollModal').modal('hide');
+
+				}else{
+					toastr.error(data.msg);
 				}
-			});
-        });
+			}
+		});
 	}
 
 	function updatePoll(pollOptionsDeleted){
+		// console.log(pollOptionsDeleted);
+		if($('#pollNameInput').val() == ''){
+			swal.fire("Missing Field Poll Name", "Please make sure Poll Name is not empty", 'error')
+			return false;
+		}
 
-		const translationData = fetchAllText(); // Fetch the translation data
+		if($('#pollQuestionInput').val() == ''){
+			swal.fire("Missing Field Poll Question", "Please make sure  Poll Question is not empty", 'error')
+			return false;
+		}
 
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-			// Find the translations for the dialog text
-			let empPollNameTitle = "Missing Field Poll Name";
-			let empPollNameText = "Please make sure Poll Name is not empty";
-			let empPollQuestionTitle = "Missing Field Poll Question";
-			let empPollQuestionText = "Please make sure  Poll Question is not empty";
-			let empAllFieldTitle = "Missing Field";
-			let empAllFieldText = "Please make sure all options are filled";
-
-			// Swal
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Updating the poll...';
-			let imageAltText = 'Loading...';
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === empPollNameTitle) {
-					empPollNameTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === empPollNameText) {
-					empPollNameText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === empPollQuestionTitle) {
-					empPollQuestionTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === empPollQuestionText) {
-					empPollQuestionText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === empAllFieldTitle) {
-					empAllFieldTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === empAllFieldText) {
-					empAllFieldText = arrData[i][selectedLanguage + '_text'];
-				}
-
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
-				
-			}
-
-			// console.log(pollOptionsDeleted);
-			if($('#pollNameInput').val() == ''){
-				swal.fire(empPollNameTitle, empPollNameText, 'error')
-				return false;
-			}
-	
-			if($('#pollQuestionInput').val() == ''){
-				swal.fire(empPollQuestionTitle, empPollQuestionText, 'error')
-				return false;
-			}
-	
-			if(!checkAllFilledPollOption() <= 0) {
-				swal.fire(empAllFieldTitle, empAllFieldText, 'error')
-				return false;
-			}
-			
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-
-			let formData = new FormData(document.getElementById('addPollForm'));
-	
-			$('.pollOptions').each(function(i){
-				formData.append('option_'+i, $(this).attr('option_id'))
-			})
-			if(pollOptionsDeleted.length > 0) {
-				$.each(pollOptionsDeleted, function (i, val) {
-					formData.append('option_deleted[]', val);
-				})
-			}
-	
-			$.ajax({
-				type: "POST",
-				url: project_admin_url+"/sessions/updatePollJson/<?=$session->id?>",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
-				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-					Swal.close();
-	
-					data = JSON.parse(data);
-	
-					if (data.status == 'success')
-					{
-						listPolls();
-						toastr.success(data.msg);
-						$('#addPollModal').modal('hide');
-	
-					}else{
-						toastr.error(data.msg);
-					}
-				}
-			});
+		if(!checkAllFilledPollOption() <= 0) {
+			swal.fire("Missing Field", "Please make sure all options are filled", 'error')
+			return false;
+		}
+		
+		Swal.fire({
+			title: "Please Wait",
+			text: "Updating the poll...",
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: "Loading...",
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
 		});
+
+		let formData = new FormData(document.getElementById('addPollForm'));
+
+		$('.pollOptions').each(function(i){
+			formData.append('option_'+i, $(this).attr('option_id'))
+		})
+		if(pollOptionsDeleted.length > 0) {
+			$.each(pollOptionsDeleted, function (i, val) {
+				formData.append('option_deleted[]', val);
+			})
+		}
+
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/sessions/updatePollJson/<?=$session->id?>",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				Swal.close();
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				Swal.close();
+
+				data = JSON.parse(data);
+
+				if (data.status == 'success')
+				{
+					listPolls();
+					toastr.success(data.msg);
+					$('#addPollModal').modal('hide');
+
+				}else{
+					toastr.error(data.msg);
+				}
+			}
+		});
+
 	}
 
 </script>

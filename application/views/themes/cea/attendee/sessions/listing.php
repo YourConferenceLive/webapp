@@ -266,63 +266,34 @@ $(function(){
 
 	$('.briefcase-btn').on('click', function() {
 
-		const translationData = fetchAllText(); // Fetch the translation data
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Adding to your briefcase...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
 
-        translationData.then((arrData) => {
-            const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+		var buttonElement = $(this);
 
-            // Find the translations for the dialog text
-            let dialogTitle = 'Please Wait';
-            let dialogText = 'Adding to your briefcase...';
-			let imageAltText = 'Loading...';
-
-			// Toast
-			let addedText = "Added successfully.";
-
-            for (let i = 0; i < arrData.length; i++) {
-                if (arrData[i].english_text === dialogTitle) {
-                    dialogTitle = arrData[i][selectedLanguage + '_text'];
-                }
-                if (arrData[i].english_text === dialogText) {
-                    dialogText = arrData[i][selectedLanguage + '_text'];
-                }
-				if (arrData[i].english_text === imageAltText) {
-                    imageAltText = arrData[i][selectedLanguage + '_text'];
-                }
-
-				if (arrData[i].english_text === addedText) {
-                    addedText = arrData[i][selectedLanguage + '_text'];
-                }
-            }
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-	
-			var buttonElement = $(this);
-	
-			$.ajax({type: "POST",
-					url: project_url+"/briefcase/add",
-					data: {'session_id' : $(this).data('session-id')},
-					error: function(jqXHR, textStatus, errorMessage)
-					{
-						Swal.close();
-						toastr.error(errorMessage);
-						//console.log(errorMessage); // Optional
-					},
-					success: function(response){
-						$(buttonElement).addClass('disabled not-allowed').removeClass('briefcase-btn').html('<i class="fas fa-calendar-check"></i> Added in Briefcase');
-						Swal.close();
-						toastr.success(addedText);
-					}
-			});
-        });
+		$.ajax({type: "POST",
+				url: project_url+"/briefcase/add",
+				data: {'session_id' : $(this).data('session-id')},
+				error: function(jqXHR, textStatus, errorMessage)
+				{
+					Swal.close();
+					toastr.error(errorMessage);
+					//console.log(errorMessage); // Optional
+				},
+				success: function(response){
+					$(buttonElement).addClass('disabled not-allowed').removeClass('briefcase-btn').html('<i class="fas fa-calendar-check"></i> Added in Briefcase');
+					Swal.close();
+					toastr.success("Added successfully.");
+				}
+		});
 
 	});
 
@@ -345,39 +316,16 @@ $(function(){
 
     function applySearch() {
 
-		const translationData = fetchAllText(); // Fetch the translation data
-
-        translationData.then((arrData) => {
-            const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-            // Find the translations for the dialog text
-            let dialogTitle = 'Please Wait';
-            let dialogText = 'Loading Sessions...';
-			let imageAltText = 'Loading...';
-
-            for (let i = 0; i < arrData.length; i++) {
-                if (arrData[i].english_text === dialogTitle) {
-                    dialogTitle = arrData[i][selectedLanguage + '_text'];
-                }
-                if (arrData[i].english_text === dialogText) {
-                    dialogText = arrData[i][selectedLanguage + '_text'];
-                }
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
-                
-            }
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-        });
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Loading Sessions...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
 
 		var date 	= (($('#frm-search select[name="date"]').children("option:selected").val()) ? $('#frm-search select[name="date"]').children("option:selected").val() : 'NaN');
 		var track 	= (($('#frm-search select[name="track"]').children("option:selected").val()) ? $('#frm-search select[name="track"]').children("option:selected").val() : 'NaN');

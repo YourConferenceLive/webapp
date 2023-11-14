@@ -200,26 +200,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				let fileExtension = fileName.substr(fileName.lastIndexOf('.')+1);
 
 				if (!valid_ext.includes(fileExtension)) {
-					const translationData = fetchAllText(); // Fetch the translation data
-
-					translationData.then((arrData) => {
-						const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-						// Find the translations for the dialog text
-						let html1 = 'File type';
-						let html2 = 'is not supported';
-
-						for (let i = 0; i < arrData.length; i++) {
-							if (arrData[i].english_text === html1) {
-								html1 = arrData[i][selectedLanguage + '_text'];
-							}
-							if (arrData[i].english_text === html2) {
-								html2 = arrData[i][selectedLanguage + '_text'];
-							}
-							
-						}
-						toastr.error(html1+" "+fileExtension+" "+html2);
-					});
+					toastr.error('File type '+fileExtension+' is not supported');
 					return false;
 				}
 
@@ -242,95 +223,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				// 	toastr['warning']('Royal College of Physicians Number Required!')
 				// 	return false;
 				// }
-				const translationData = fetchAllText(); // Fetch the translation data
 
-				translationData.then((arrData) => {
-					const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-					// Find the translations for the dialog text
-					let dialogTitle = 'Are you sure?';
-					let html1 = 'You are about to update your profile data';
-					let html2 = "(Some data are automatically synced from COS everytime you login)";
-					let confirmButtonText = 'Yes, save!';
-					let cancelButtonText = 'Cancel';
-
-					// Swal
-					let successText = 'Success';
-					let successMsg = 'Profile Information Updated';
-
-					// Toast
-					let errorText = "Something went wrong";
-
-					for (let i = 0; i < arrData.length; i++) {
-						if (arrData[i].english_text === dialogTitle) {
-							dialogTitle = arrData[i][selectedLanguage + '_text'];
-						}
-						if (arrData[i].english_text === html1) {
-							html1 = arrData[i][selectedLanguage + '_text'];
-						}
-						if (arrData[i].english_text === html2) {
-							html2 = arrData[i][selectedLanguage + '_text'];
-						}
-						if (arrData[i].english_text === confirmButtonText) {
-							confirmButtonText = arrData[i][selectedLanguage + '_text'];
-						}
-						if (arrData[i].english_text === cancelButtonText) {
-							cancelButtonText = arrData[i][selectedLanguage + '_text'];
-						}
-
-						if (arrData[i].english_text === successText) {
-							successText = arrData[i][selectedLanguage + '_text'];
-						}
-						if (arrData[i].english_text === successMsg) {
-							successMsg = arrData[i][selectedLanguage + '_text'];
-						}
-
-						if (arrData[i].english_text === errorText) {
-							errorText = arrData[i][selectedLanguage + '_text'];
-						}
-						
-					}
-					Swal.fire({
-						title: 'Are you sure?',
-						html: html1+" <br><br>" +
-								"<small>"+html2+"</small>",
-						icon: 'question',
-						showCancelButton: true,
-						confirmButtonColor: '#3085d6',
-						cancelButtonColor: '#d33',
-						confirmButtonText: confirmButtonText,
-                    	cancelButtonText: cancelButtonText
-					}).then((result) => {
-						if (result.isConfirmed) {
-							$.ajax({
-								type: "POST",
-								url: project_url + "/profile/update_profile_data",
-								data: formData,
-								processData: false,
-								contentType: false,
-								error: function (jqXHR, textStatus, errorMessage) {
-									// Swal.close();
-									toastr.error(errorMessage);
-									//console.log(errorMessage); // Optional
-								},
-								success: function (data) {
-									data = JSON.parse(data);
-									// console.log(data);
-									if (data.status == 'success')
-									{
-										Swal.fire(
-											successText,
-											successMsg,
-											'success'
-										)
-									}else{
-										toastr['error'](errorText)
-									}
+				Swal.fire({
+					title: 'Are you sure?',
+					html: 'You are about to update your profile data <br><br>'+
+							"<small>(Some data are automatically synced from COS everytime you login)</small>",
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, save!',
+					cancelButtonText: 'Cancel'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							type: "POST",
+							url: project_url + "/profile/update_profile_data",
+							data: formData,
+							processData: false,
+							contentType: false,
+							error: function (jqXHR, textStatus, errorMessage) {
+								// Swal.close();
+								toastr.error(errorMessage);
+								//console.log(errorMessage); // Optional
+							},
+							success: function (data) {
+								data = JSON.parse(data);
+								// console.log(data);
+								if (data.status == 'success')
+								{
+									Swal.fire(
+										'Success',
+										'Profile Information Updated',
+										'success'
+									)
+								}else{
+									toastr['error']("Something went wrong")
 								}
-							})
-						}
-					})
-				});
+							}
+						})
+					}
+				})
 
 			})
 

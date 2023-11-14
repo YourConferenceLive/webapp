@@ -119,42 +119,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 			let eposter_id = $(this).attr('eposter-id');
 
-
-			const translationData = fetchAllText(); // Fetch the translation data
-
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-                // Find the translations for the dialog text
-                let dialogTitle = 'Please Wait';
-                let dialogText = 'Loading ePoster data...';
-				let imageAltText = 'Loading...';
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === dialogText) {
-                        dialogText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === imageAltText) {
-                        imageAltText = arrData[i][selectedLanguage + '_text'];
-                    }
-                  
-                }
-
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-					imageAlt: imageAltText,
-					showCancelButton: false,
-					showConfirmButton: false,
-					allowOutsideClick: false
-				});
-                
-            });
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Loading ePoster data...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
 
 			$.get(project_admin_url+"/eposters/getByIdJson/"+eposter_id, function (eposter) {
 				eposter = JSON.parse(eposter);
@@ -211,107 +185,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			let eposter_name = $(this).attr('eposter-name');
 			let eposter_poster = $(this).attr('eposter-eposter');
 
+			Swal.fire({
+				title: 'Are you sure?',
+				html: '<span class="text-white">You are about to remove<br>['+eposter_id+'] '+eposter_name+'<br></span>',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, remove it!',
+				cancelButtonText: 'Cancel'
+			}).then((result) => {
+				if (result.isConfirmed) {
 
+					Swal.fire({
+						title: 'Please Wait',
+						text: "Removing the ePoster...",
+						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+						imageAlt: 'Loading...',
+						showCancelButton: false,
+						showConfirmButton: false,
+						allowOutsideClick: false
+					});
 
-			const translationData = fetchAllText(); // Fetch the translation data
+					$.get(project_admin_url+"/eposters/remove/"+eposter_id, function (response) {
+						response = JSON.parse(response);
 
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-                // Find the translations for the dialog text
-                let dialogTitle = 'Are you sure?';
-				let html1 = "You are about to remove";
-                let confirmButtonText = 'Yes, remove it!';
-                let cancelButtonText = 'Cancel';
-
-				// Swal 2
-				let dialogTitle2 = 'Please Wait';
-				let dialogText2 = "Removing the ePoster...";
-				let imageAltText = 'Loading...';
-				
-				// Toast
-				let removedText = "has been removed!";
-				let errorText ="Error!";
-				let errorMsg = "Unable to remove";
-
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-					if (arrData[i].english_text === html1) {
-                        html1 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === confirmButtonText) {
-                        confirmButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === cancelButtonText) {
-                        cancelButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-
-					if (arrData[i].english_text === dialogTitle2) {
-                        dialogTitle2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === dialogText2) {
-                        dialogText2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === imageAltText) {
-                        imageAltText = arrData[i][selectedLanguage + '_text'];
-                    }
-
-					if (arrData[i].english_text === removedText) {
-                        removedText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === errorText) {
-                        errorText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === errorMsg) {
-                        errorMsg = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
-
-				Swal.fire({
-					title: dialogTitle,
-					html: '<span class="text-white">'+html1+'<br>['+eposter_id+'] '+eposter_name+'<br></span>',
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText
-				}).then((result) => {
-					if (result.isConfirmed) {
-	
-						Swal.fire({
-							title: dialogTitle2,
-							text: dialogText2,
-							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-							imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-							imageAlt: imageAltText,
-							showCancelButton: false,
-							showConfirmButton: false,
-							allowOutsideClick: false
-						});
-	
-						$.get(project_admin_url+"/eposters/remove/"+eposter_id, function (response) {
-							response = JSON.parse(response);
-	
-							if (response.status == 'success')
-							{
-								listePosters();
-								toastr.success(eposter_name+" "+removedText);
-							}else{
-								Swal.fire(
-									errorText,
-										errorMsg+' '+eposter_name,
-										'error'
-								);
-							}
-						}); 
-					}
-				});
+						if (response.status == 'success')
+						{
+							listePosters();
+							toastr.success(eposter_name+" has been removed!");
+						}else{
+							Swal.fire(
+								"Error!",
+								"Unable to remove "+eposter_name,
+									'error'
+							);
+						}
+					}); 
+				}
+			});
                 
-            });
 		});
 
 		$('#eposterTable').on('click', '.openPoll', function () {
@@ -334,131 +248,107 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	function listePosters()
 	{
 
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Loading ePosters data...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+		
+		$.get(project_admin_url+"/eposters/getAllJson", function (eposters) {
+			eposters = JSON.parse(eposters);
 
-		const translationData = fetchAllText(); // Fetch the translation data
-
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-			// Find the translations for the dialog text
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Loading ePosters data...';
-			let imageAltText = 'Loading...';
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
+			$('#eposterTableBody').html('');
+			if ($.fn.DataTable.isDataTable('#eposterTable'))
+			{
+				$('#eposterTable').dataTable().fnClearTable();
+				$('#eposterTable').dataTable().fnDestroy();
 			}
 
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-			
-			$.get(project_admin_url+"/eposters/getAllJson", function (eposters) {
-				eposters = JSON.parse(eposters);
-	
-				$('#eposterTableBody').html('');
-				if ($.fn.DataTable.isDataTable('#eposterTable'))
+			$.each(eposters, function(key, eposter)
+			{
+				// Authors badge
+				let authorsList = '';
+				let authorsNumber = Object.keys(eposter.authors).length;
+				let authorBadgeType = 'badge-danger';
+				if (authorsNumber > 0)
+					authorsList += '<strong>Authors List</strong><br><br>';
+				$.each(eposter.authors, function(key, author)
 				{
-					$('#eposterTable').dataTable().fnClearTable();
-					$('#eposterTable').dataTable().fnDestroy();
-				}
-	
-				$.each(eposters, function(key, eposter)
-				{
-					// Authors badge
-					let authorsList = '';
-					let authorsNumber = Object.keys(eposter.authors).length;
-					let authorBadgeType = 'badge-danger';
-					if (authorsNumber > 0)
-						authorsList += '<strong>Authors List</strong><br><br>';
-					$.each(eposter.authors, function(key, author)
-					{
-						authorsList += author.name+' '+author.surname+' <br>('+author.email+')<br><br>';
+					authorsList += author.name+' '+author.surname+' <br>('+author.email+')<br><br>';
+				});
+
+				if (authorsNumber > 0)
+					authorBadgeType = 'badge-success';
+				let authorsBadge = '<badge class="badge badge-pill '+authorBadgeType+'" data-html="true" data-toggle="tooltip" title="'+authorsList+'">A ('+authorsNumber+')</badge>';
+
+				let iPrize = 'N/A';
+
+				if (typeof(eposter.prize) == 'string') {
+					iPrize = eposter.prize;
+					iPrize = iPrize.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+						return letter.toUpperCase();
 					});
-	
-					if (authorsNumber > 0)
-						authorBadgeType = 'badge-success';
-					let authorsBadge = '<badge class="badge badge-pill '+authorBadgeType+'" data-html="true" data-toggle="tooltip" title="'+authorsList+'">A ('+authorsNumber+')</badge>';
-	
-					let iPrize = 'N/A';
-	
-					if (typeof(eposter.prize) == 'string') {
-						iPrize = eposter.prize;
-						iPrize = iPrize.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-							return letter.toUpperCase();
-						});
-					}
-	
-					$('#eposterTableBody').append(
-						'<tr>' +
-						'	<td>' +
-						'		'+eposter.id+
-						'	</td>' +
-						'	<td>' +
-						'		'+eposter.track+
-						'	</td>' +
-						'	<td>' +
-						'		'+((eposter.type == 'eposter') ? 'ePoster' : 'Surgical Video' )+
-						'	</td>' +
-						'	<td>' +
-						'		'+eposter.title+
-						'	</td>' +
-						'	<td>' +
-						'		'+eposter.credits+
-						'	</td>' +
-						'	<td>' +
-						'		'+authorsBadge+
-						'	</td>' +
-						'	<td>' +
-						'		'+iPrize+
-						'	</td>' +
-						'	<td>' +
-						'		'+((eposter.status == 1) ? 'Active' : 'Inactive' )+
-						'	</td>' +
-						'	<td>' +
-						'		<a href="'+project_url+'/admin/eposters/view/'+eposter.id+'">' +
-						'			<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>' +
-						'		</a>' +
-						'	</td>' +
-						'	<td>' +
-						'		<button class="manageEposter btn btn-sm btn-primary m-1" eposter-id="'+eposter.id+'"><i class="fas fa-edit"></i> Edit</button>' +
-						'		<button class="removeEposter btn btn-sm btn-danger m-1" eposter-id="'+eposter.id+'" eposter-name="'+eposter.title+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
-						'	</td>' +
-						'</tr>'
-					);
-				});
-	
-				$('[data-toggle="tooltip"]').tooltip();
-	
-				$('#eposterTable').DataTable({
-					"paging": true,
-					"lengthChange": true,
-					"searching": true,
-					"ordering": true,
-					"info": true,
-					"autoWidth": true,
-					"responsive": false,
-					"order": [[ 0, "desc" ]],
-					"destroy": true
-				});
-	
-				Swal.close();
+				}
+
+				$('#eposterTableBody').append(
+					'<tr>' +
+					'	<td>' +
+					'		'+eposter.id+
+					'	</td>' +
+					'	<td>' +
+					'		'+eposter.track+
+					'	</td>' +
+					'	<td>' +
+					'		'+((eposter.type == 'eposter') ? 'ePoster' : 'Surgical Video' )+
+					'	</td>' +
+					'	<td>' +
+					'		'+eposter.title+
+					'	</td>' +
+					'	<td>' +
+					'		'+eposter.credits+
+					'	</td>' +
+					'	<td>' +
+					'		'+authorsBadge+
+					'	</td>' +
+					'	<td>' +
+					'		'+iPrize+
+					'	</td>' +
+					'	<td>' +
+					'		'+((eposter.status == 1) ? 'Active' : 'Inactive' )+
+					'	</td>' +
+					'	<td>' +
+					'		<a href="'+project_url+'/admin/eposters/view/'+eposter.id+'">' +
+					'			<button class="btn btn-sm btn-info"><i class="fas fa-tv"></i> View</button>' +
+					'		</a>' +
+					'	</td>' +
+					'	<td>' +
+					'		<button class="manageEposter btn btn-sm btn-primary m-1" eposter-id="'+eposter.id+'"><i class="fas fa-edit"></i> Edit</button>' +
+					'		<button class="removeEposter btn btn-sm btn-danger m-1" eposter-id="'+eposter.id+'" eposter-name="'+eposter.title+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'	</td>' +
+					'</tr>'
+				);
 			});
+
+			$('[data-toggle="tooltip"]').tooltip();
+
+			$('#eposterTable').DataTable({
+				"paging": true,
+				"lengthChange": true,
+				"searching": true,
+				"ordering": true,
+				"info": true,
+				"autoWidth": true,
+				"responsive": false,
+				"order": [[ 0, "desc" ]],
+				"destroy": true
+			});
+
+			Swal.close();
 		});
 
 	}
