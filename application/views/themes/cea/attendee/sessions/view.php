@@ -16,10 +16,12 @@ body{overflow: hidden;background-color: #151515;}
 					$video_url = preg_replace('/[^0-9]/', '', $session->video_url);?>
 			<iframe id="sessionIframe" src="https://player.vimeo.com/video/<?=$video_url;?>?color=f7dfe9&title=0&byline=0&portrait=0" width="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen height="100%"></iframe>
 			<script src="https://player.vimeo.com/api/player.js"></script>
-<?php
-			elseif (isset($session->millicast_stream) && $session->millicast_stream != ''):?>
-			<iframe id="sessionIframe" class="" src="https://viewer.millicast.com/v2?streamId=pYVHx2/<?=str_replace(' ', '', $session->millicast_stream)?>&autoPlay=true&muted=true&disableFull=true" width="100%" height="100%"></iframe>
-<?php
+
+			<?php elseif (isset($session->millicast_stream) && $session->millicast_stream != ''):?>
+				<iframe id="sessionIframe" class="" src="https://viewer.millicast.com/v2?streamId=pYVHx2/<?=str_replace(' ', '', $session->millicast_stream)?>&autoPlay=true&muted=true&disableFull=true" width="100%" height="100%"></iframe>
+			<?php elseif (isset($session->vimeo_stream) && $session->vimeo_stream != ''):?>
+				<iframe id="sessionIframe" class="" src="<?=str_replace(' ', '', $session->vimeo_stream)?>" width="100%" height="100%"></iframe>
+			<?php
 			else:?>
 			<div style="height: 100%; width: 100%; background-image: url('<?=ycl_root?>/ycl_assets/animations/particle_animation.gif');background-repeat: no-repeat;background-size: cover;">
 				<div class="middleText">

@@ -252,8 +252,13 @@
 								<div class="tab-pane fade" id="streamTabContents" role="tabpanel" aria-labelledby="streamTab">
 
 									<div class="form-group">
-										<label for="millicastStream">Millicast stream name</label>
+										<label for="millicastStream">Millicast stream name <i class="fas fa-info-circle text-danger" title="Please use only one stream link. If Millicast Link is not empty Vimeo Stream won't work. System always check millicast first"></i></label>
 										<input type="text" class="form-control" id="millicastStream" name="millicastStream" placeholder="Eg; kpih785i">
+									</div>
+
+									<div class="form-group">
+										<label for="vimeoStream">Vimeo stream link <i class="fas fa-info-circle text-danger" title="Please use only one stream link. If Millicast Link is not empty Vimeo Stream won't work. System always check millicast first"></i></label>
+										<input type="text" class="form-control" id="vimeoStream" name="vimeoStream" placeholder="Eg; https://vimeo.com/event/3123122/embed">
 									</div>
 
 									<div class="form-group">
