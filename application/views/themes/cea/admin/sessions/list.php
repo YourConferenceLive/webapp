@@ -227,6 +227,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 				$("#sessionAgenda").summernote("code", session.agenda);
 				$('#millicastStream').val(session.millicast_stream);
+				$('#vimeoStream').val(session.vimeo_stream);
 				$('#zoomLink').val(session.zoom_link);
 				$('#sessionVideo').val(session.video_url);
 				$('#slidesHtml').html(session.presenter_embed_code);
