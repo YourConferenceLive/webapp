@@ -231,9 +231,10 @@
 				}
 			}, 'json').fail((error)=>{
 				Swal.fire(
-						'Error!',
-						error,
-						'error');
+					"Error!",
+					error,
+					'error'
+				);
 			}).then(function(poll){
 				console.log(poll.correct_answer1)
 				appendCorrectAnswer1(poll.correct_answer1)
@@ -293,21 +294,23 @@
 
 	function updatePoll(pollOptionsDeleted){
 		if($('#pollNameInput').val() == ''){
-			swal.fire('Missing Field Poll Name','Please make sure Poll Name is not empty', 'error')
+			
+			swal.fire('Missing Field Poll Name', 'Please make sure Poll Name is not empty', 'error')
 			return false;
 		}
 
 		if($('#pollQuestionInput').val() == ''){
-			swal.fire('Missing Field Poll Question','Please make sure  Poll Question is not empty', 'error')
+			
+			swal.fire( 'Missing Field Poll Question', 'Please make sure  Poll Question is not empty', 'error')
 			return false;
 		}
 
 		if(!checkAllFilledPollOption() <= 0) {
-			swal.fire('Missing Field','Please make sure all options are filled', 'error')
+			
+			swal.fire('Missing Field', 'Please make sure all options are filled', 'error')
 			return false;
 		}
 
-		// console.log(pollOptionsDeleted);
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Updating the poll...',
@@ -359,6 +362,7 @@
 				}
 			}
 		});
+
 	}
 
 </script>

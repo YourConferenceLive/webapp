@@ -4,6 +4,7 @@ $ci_controller = $this->router->fetch_class();
 $ci_method = $this->router->fetch_method();
 ?>
 <!-- Navbar -->
+
 <nav
 		id="mainTopMenu"
 		class="main-header navbar navbar-expand navbar-dark"
@@ -35,16 +36,32 @@ $ci_method = $this->router->fetch_method();
 				</a>
 			</li>
 		<?php endif; ?>
+
+		
 	</ul>
 
 	<!-- Right navbar links -->
 	<ul class="navbar-nav ml-auto">
+
+		<?php if(isset($activepage) && $activepage == "sessionview"): ?>
+				<li class="nav-item d-none d-sm-inline-block">
+					<a href="" id="viewPollList" class="nav-link">Polls</a>
+				</li>
+		<?php endif;?>
 
 		<li class="nav-item">
 			<a id="presenter_timer" class="nav-link disabled" style="display: none;color: rgb(255, 255, 255);">
 				Starts In: __ __
 			</a>
 		</li>
+		<li class="nav-item">
+			<select class="custom-select border-0" id="languageSelect">
+				<option value="" disabled selected>Lang</option>
+				<option value="english">English</option>
+				<option value="spanish">Spanish</option>
+			</select>
+		</li>
+
 
 
 		<!-- Navbar Search -->
@@ -82,6 +99,12 @@ $ci_method = $this->router->fetch_method();
 				<i class="fas fa-expand-arrows-alt"></i>
 			</a>
 		</li>
+
+		<?php if(isset($activepage) && $activepage == "sessionview"): ?>
+			<li class="nav-item d-none d-sm-inline-block">
+				<a href="<?=$this->project_url.'/authentication/logout/'.base64_encode('presenter')?>" class="nav-link">Logout</a>
+			</li>
+		<?php endif;?>
 <!--		<li class="nav-item">-->
 <!--			<a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">-->
 <!--				<i class="fas fa-th-large"></i>-->

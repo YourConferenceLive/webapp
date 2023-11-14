@@ -105,9 +105,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					var credits 	= $(this).data('credits');
 
 					if (eposter_id != '' && credits != '') {
+
 						Swal.fire({
 							title: 'Please Wait',
-							text: 'Checking credits...',
+							text: 'Checking credits...';,
 							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 							imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 							imageAlt: 'Loading...',
@@ -122,29 +123,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						formData.append("credits", credits);
 
 						$.ajax({type: "POST",
-								url: project_url+"/eposters/add_credits",
-								data: formData,
-								processData: false,
-								contentType: false,
-								error: function(jqXHR, textStatus, errorMessage)
-								{
-									Swal.close();
-									toastr.error(errorMessage);
-								},
+							url: project_url+"/eposters/add_credits",
+							data: formData,
+							processData: false,
+							contentType: false,
+							error: function(jqXHR, textStatus, errorMessage)
+							{
+								Swal.close();
+								toastr.error(errorMessage);
+							},
 
-								success: function(data)
-								{
-									Swal.close();
+							success: function(data)
+							{
+								Swal.close();
 
-									data = JSON.parse(data);
+								data = JSON.parse(data);
 
-									if (data.status == 'success') {
-										toastr.success('Credits claimed successfully.');
-									} else {
-										toastr.error("Error");
-									}
+								if (data.status == 'success') {
+									toastr.success("Credits claimed successfully.");
+								} else {
+									toastr.error("Error");
 								}
-							});
+							}
+						});
 					}
 				});
 
@@ -169,6 +170,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			});
 
 			function loadNotes(entity_type, entity_type_id, note_page) {
+
 				Swal.fire({
 					title: 'Please Wait',
 					text: 'Loading notes...',
@@ -181,50 +183,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				});
 
 				$.ajax({
-						type: "GET",
-						url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
-						data: '',
-						success: function(response){
-							Swal.close();
-							jsonObj = JSON.parse(response);
-							// Add response in Modal body
+					type: "GET",
+					url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
+					data: '',
+					success: function(response){
+						Swal.close();
+						jsonObj = JSON.parse(response);
+						// Add response in Modal body
 
-							$('#notesModalLabel').html( jsonObj.eposter.title + ' Notes');
+						$('#notesModalLabel').html( jsonObj.eposter.title + ' Notes');
 
-							if (jsonObj.total) {
-								$('.count_note strong').text(jsonObj.total);
-								var previousHTML = $('#notes_list_container').html();
-								var iHTML = '';
-								if (previousHTML == '')
-									iHTML += '<ul id="list_note" class="col-md-12">';
+						if (jsonObj.total) {
+							$('.count_note strong').text(jsonObj.total);
+							var previousHTML = $('#notes_list_container').html();
+							var iHTML = '';
+							if (previousHTML == '')
+								iHTML += '<ul id="list_note" class="col-md-12">';
 
-								for (let x in jsonObj.data) {
-									let note_id 	= jsonObj.data[x].id;
-									let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-									let datetime 	= jsonObj.data[x].time;
+							for (let x in jsonObj.data) {
+								let note_id 	= jsonObj.data[x].id;
+								let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+								let datetime 	= jsonObj.data[x].time;
 
-									iHTML += '<!-- Start List Note ' + (x) +' --><li class="box_result row"><div class="result_note col-md-12"><p>'+note+'</p><div class="tools_note"><span>'+datetime+'</span></div></div></li>';
-								}
-
-								if (previousHTML == '')
-									iHTML += '</ul>';
-
-								$('#notesModal .modal-footer').html('<button' + (((note_page+1) <= Math.ceil(jsonObj.total/notes_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes(\''+entity_type+'\', '+entity_type_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
-
-								if (previousHTML == '') {
-									$('#notes_list_container').html(iHTML);
-								} else {
-									$('#list_note').append(iHTML);
-								}
-
-							} else {
-								$('.count_note strong').text('No ');
+								iHTML += '<!-- Start List Note ' + (x) +' --><li class="box_result row"><div class="result_note col-md-12"><p>'+note+'</p><div class="tools_note"><span>'+datetime+'</span></div></div></li>';
 							}
+
+							if (previousHTML == '')
+								iHTML += '</ul>';
+
+							$('#notesModal .modal-footer').html('<button' + (((note_page+1) <= Math.ceil(jsonObj.total/notes_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes(\''+entity_type+'\', '+entity_type_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
+
+							if (previousHTML == '') {
+								$('#notes_list_container').html(iHTML);
+							} else {
+								$('#list_note').append(iHTML);
+							}
+
+						} else {
+							$('.count_note strong').text('No ');
 						}
-					});
+					}
+				});
+
 			}
 
 			function loadComments(eposter_id, comment_page) {
+
 				Swal.fire({
 					title: 'Please Wait',
 					text: 'Loading comments...',
@@ -235,49 +239,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					showConfirmButton: false,
 					allowOutsideClick: false
 				});
-
 				$.ajax({
-						type: "GET",
-						url: project_url+"/eposters/comments/"+eposter_id+'/'+comment_page,
-						data: '',
-						success: function(response){
-							Swal.close();
-							jsonObj = JSON.parse(response);
-							// Add response in Modal body
-							if (jsonObj.total) {
-								$('.count_comment strong').text(jsonObj.total);
-								var previousHTML = $('#comments_list_container').html();
-								var iHTML = '';
-								if (previousHTML == '')
-									iHTML += '<ul id="list_comment" class="col-md-12">';
+					type: "GET",
+					url: project_url+"/eposters/comments/"+eposter_id+'/'+comment_page,
+					data: '',
+					success: function(response){
+						Swal.close();
+						jsonObj = JSON.parse(response);
+						// Add response in Modal body
+						if (jsonObj.total) {
+							$('.count_comment strong').text(jsonObj.total);
+							var previousHTML = $('#comments_list_container').html();
+							var iHTML = '';
+							if (previousHTML == '')
+								iHTML += '<ul id="list_comment" class="col-md-12">';
 
-								for (let x in jsonObj.data) {
-									let comment_id 	= jsonObj.data[x].id;
-									let avatar 		= ((jsonObj.data[x].avatar === null) ? '' : jsonObj.data[x].avatar );
-									let comment 	= jsonObj.data[x].comment.replace(/(?:\r\n|\r|\n)/g, '<br>');
-									let commenter 	= jsonObj.data[x].commenter;
-									let datetime 	= jsonObj.data[x].time;
-									let user_id 	= jsonObj.data[x].user_id;
+							for (let x in jsonObj.data) {
+								let comment_id 	= jsonObj.data[x].id;
+								let avatar 		= ((jsonObj.data[x].avatar === null) ? '' : jsonObj.data[x].avatar );
+								let comment 	= jsonObj.data[x].comment.replace(/(?:\r\n|\r|\n)/g, '<br>');
+								let commenter 	= jsonObj.data[x].commenter;
+								let datetime 	= jsonObj.data[x].time;
+								let user_id 	= jsonObj.data[x].user_id;
 
-									iHTML += '<!-- Start List Comment ' + (x) +' --><li class="box_result row"><div class="avatar_comment col-md-1"><img class="direct-chat-img" src="'+ycl_root+'/cms_uploads/projects/'+project_id+'/user_assets/user_photos/'+avatar+'" onerror="this.onerror=null;this.src=\''+ycl_root+'/ycl_assets/images/person_dp_placeholder.png\'" alt="DP Image"></div><div class="result_comment col-md-11"><h4>'+commenter+'</h4><p>'+comment+'</p><div class="tools_comment"><span>'+datetime+'</span></div></div></li>';
-								}
-
-								if (previousHTML == '')
-									iHTML += '</ul>';
-
-								$('#commentsModal .modal-footer').html('<button' + (((comment_page+1) <= Math.ceil(jsonObj.total/comments_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreComments('+eposter_id+', '+comment_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more comments</button>');
-
-								if (previousHTML == '') {
-									$('#comments_list_container').html(iHTML);
-								} else {
-									$('#list_comment').append(iHTML);
-								}
-
-							} else {
-								$('.count_comment strong').text('No ');
+								iHTML += '<!-- Start List Comment ' + (x) +' --><li class="box_result row"><div class="avatar_comment col-md-1"><img class="direct-chat-img" src="'+ycl_root+'/cms_uploads/projects/'+project_id+'/user_assets/user_photos/'+avatar+'" onerror="this.onerror=null;this.src=\''+ycl_root+'/ycl_assets/images/person_dp_placeholder.png\'" alt="DP Image"></div><div class="result_comment col-md-11"><h4>'+commenter+'</h4><p>'+comment+'</p><div class="tools_comment"><span>'+datetime+'</span></div></div></li>';
 							}
+
+							if (previousHTML == '')
+								iHTML += '</ul>';
+
+							$('#commentsModal .modal-footer').html('<button' + (((comment_page+1) <= Math.ceil(jsonObj.total/comments_per_page)) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreComments('+eposter_id+', '+comment_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more comments</button>');
+
+							if (previousHTML == '') {
+								$('#comments_list_container').html(iHTML);
+							} else {
+								$('#list_comment').append(iHTML);
+							}
+
+						} else {
+							$('.count_comment strong').text('No ');
 						}
-					});
+					}
+				});
 			}
 
 			function showMoreNotes(entity_type, entity_type_id, note_page) {

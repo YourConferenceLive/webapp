@@ -114,7 +114,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#sessionsTable').on('click', '.manageSession', function () {
 
 			let session_id = $(this).attr('session-id');
-
+				
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading session data...',
@@ -125,7 +125,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
+			
 			$.get(project_presenter_url+"/sessions/getByIdJson/"+session_id, function (session) {
 				session = JSON.parse(session);
 
@@ -216,7 +216,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, remove it!'
+				confirmButtonText: 'Yes, remove it!',
+				cancelButtonText: 'Cancel'
 			}).then((result) => {
 				if (result.isConfirmed) {
 
@@ -240,14 +241,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							toastr.success(session_name+" has been removed!");
 						}else{
 							Swal.fire(
-								'Error!',
-								'Unable to remove '+session_name,
+								"Error!",
+								"Unable to remove " + session_name,
 								'error'
 							);
 						}
 					});
 				}
 			});
+
 		});
 
 		// $('#pollsTable').on('click', '.openPoll', function () {
@@ -270,6 +272,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			let pollId = $(this).attr('poll-id');
 			let that = this;
+				
 			Swal.fire({
 				title: 'Please Wait',
 				html: '<span class="text-white">Launching the poll ['+pollId+']...</span>',
@@ -280,7 +283,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
+			
 			$.get(project_presenter_url+"/sessions/getPollByIdJson/"+pollId, function (poll) {
 
 				socket.emit('ycl_launch_poll', JSON.parse(poll));
@@ -293,11 +296,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$(that).html('<i class="fas fa-sync-alt"></i> Launch Again').removeClass('btn-info').addClass('btn-warning');
 
 			}).fail((error)=>{
+				
 				Swal.fire(
-					'Error!',
+					"Error!",
 					error,
 					'error');
 			});
+
 		});
 
 		$('#pollsTable').on('click', '.launch-result-btn', function () {
@@ -310,7 +315,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					$('#close-result_'+pollId).css('display', 'block')
 				})
 			}
-			toastr.success("Result popup triggered");
+			toastr.success('Result popup triggered');
 		});
 
 
@@ -329,14 +334,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
 			socket.emit('ycl_close_poll_result', {session_id:sessionId,poll_id:pollId});
-			toastr.success("Close result popup triggered");
+			toastr.success('Close result popup triggered');
 		});
 
 		$('#pollsTable').on('click', '.closePoll', function () {
 			let sessionId = $(this).attr('session-id');
 			let pollId = $(this).attr('poll-id');
 			socket.emit('poll_closed', {session_id:sessionId, poll_id:pollId});
-			toastr.success("Close result popup triggered");
+			toastr.success('Close result popup triggered');
 		});
 
 		$('#pollsTable').on('click', '.remove-poll-btn', function(){
@@ -348,13 +353,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!'
+				confirmButtonText: 'Yes, delete it!',
+				cancelButtonText: 'Cancel'
 			}).then((result) => {
 				if (result.isConfirmed) {
 					removePoll($(this).attr('poll-id'))
 				}
 			})
-
 		})
 
 		/*############### End function ############*/
@@ -376,7 +381,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			showConfirmButton: false,
 			allowOutsideClick: false
 		});
-
+		
 		$.get(project_presenter_url + "/sessions/getPollByIdJson/" + pollId, function (poll) {
 			poll = JSON.parse(poll)
 			poll.timer = $(that).attr('timer');
@@ -386,10 +391,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					$(that).html('<i class="fas fa-sync-alt"></i> Start Timer Again').removeClass('btn-info').addClass('btn-warning');
 				}
 			} else {
-				toastr.error('Socket is not configured correctly')
+				toastr.error("Socket is not configured correctly")
 			}
 			Swal.fire(
-				'Done!',
+				"Done!",
 				'Poll [' + pollId + '] timer started',
 				'success'
 			)
@@ -397,7 +402,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		}).fail((error) => {
 			Swal.fire(
-				'Error!',
+				"Error!",
 				error,
 				'error');
 		});
@@ -405,7 +410,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function listPolls()
 	{
-
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading poll data...',

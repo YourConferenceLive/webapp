@@ -1,9 +1,10 @@
-<!--<link href="--><?//= base_url() ?><!--assets/css/attendee-session-view.css?v=201" rel="stylesheet">-->
-<!---->
-<!--<!-- Please add styles only in this CSS file, NOT directly on this HTML file -->-->
-<!--<link href="--><?//= base_url() ?><!--front_assets/css/view_sessions.css?v=19" rel="stylesheet">-->
-<?php // print_R($session);exit;?>
-<section class="parallax" style="background-color: #FFFFFF; overflow: scroll" >
+<style>
+	.buttonsCard button{
+		position:absolute;
+		bottom:60px;
+	}
+	</style>
+<section class="parallax" style="background-color: #FFFFFF;" >
     <!--<section class="parallax" style="background-image: url(<?= base_url() ?>front_assets/images/Sessions_BG_screened.jpg); top: 0; padding-top: 0px;">-->
     <div class="container-fluid">
         <!-- CONTENT -->
@@ -11,24 +12,25 @@
             <div>
                 <div class="videContent">
 
-                        <div class="row justify-content-center">
+                        <div class="row row1 justify-content-center">
                             <div class="col-12" style="margin-top: 30px; margin-left: 20px; margin-right: 20px;">
                                 <div class="card m-auto text-center">
                                     <div class="row">
                                         <div class="col-sm-12 " style="margin: 30px 0px" >
-                                            <h6 style="color:#EF5D21; font-size: 18px">Welcome to the</h6>
-                                            <h4  style="color:#EF5D21"><b><?=$this->project->name?> Learner Resource App</b></h4>
+                                            <h6 style="color:blue; text-wrap:nowrap; font-size:4vw "> <b> Welcome to the <?=$this->project->name?> Learner Resource App </b></h6>
+                                            
                                             <div style="height: 1px;background-color: #EF5D21;" class="my-3"></div>
 
                                             <?php if(isset($session) && !empty($session)): ?>
 <!--													--><?php //echo "<pre>"; print_r($session);  exit?>
-                                                <b><p class="mx-3" id="sessionTitle" style="font-size: 25px; line-height: 1.2"><?=$session->name?></b>
+                                               <p class="mx-3" id="sessionTitle" style="font-size: 19px; line-height: 1.2; font-weight: 900"><?=$session->name?>
                                                 <?php if(isset ($session->presenters) && !empty($session->presenters)): ?>
-                                                    <?php foreach ($session->presenters as $presenter):?>
+                                                    <?php foreach ($session->presenters as $presenter):
+														 if(!in_array($presenter->email, array('q@a.com', 'q@a2.com'))): ?>
                                                         <div id="moderators" style="font-size: 18px;">
-                                                            <?=$presenter->name.' '.$presenter->surname.', '.$presenter->credentials?>
+                                                            <?=$presenter->name.' '.$presenter->surname.(($presenter->credentials)?', '.$presenter->credentials:'')?>
                                                         </div>
-                                                    <?php endforeach;?>
+                                                    <?php endif; endforeach;?>
                                                 <?php endif ?>
                                             <?php endif; ?>
 
@@ -38,27 +40,33 @@
                             </div>
                         </div>
 
-                        <div class="row justify-content-center mb-3">
+                        <div class="row row2 d-flex justify-content-center mb-3">
                             <div class="col-12" style=" margin-left: 20px; margin-right: 20px;">
-                                <div class="card text-center align-items-center justify-content-center align-content-center mx-auto mt-2" style="background-image: url(https://yourconference.live/CCO/front_assets/images/bg_login.png); top: 0; padding-top: 0px; height: 100%; background-size: cover">
-                                    <?php if($session->header_question == 1):?>
-                                    <button id="resource-btn" type="button"  class="btn btn-sm text-white" style="width: 95%; height: 70px; margin-top: 30px; background-color: #EF5D21; font-size: 20px; font-weight: 700">Resources <i class="fas fa-paperclip"></i></button>
+                                <div class="card buttonsCard text-center align-items-center justify-content-center align-content-center mx-auto mt-2" style="background-image:url(<?=((!empty($session->mobile_session_background) || $session->mobile_session_background !== null)? ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/images/background/'.$session->mobile_session_background : "https://yourconference.live/CCO/front_assets/images/bg_login.png" )?>); top: 0; padding-top: 0px; height: 100%; background-size: cover">
+                                    <?php if (1==2):?> <!-- Manually hiding resource button -->
+									<?php if($session->header_question == 1):?>
+                                    <button id="resource-btn" type="button"  class="btn btn-sm text-white" style="width: 95%; height: 70px; margin-top: 30px; <?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'#EF5D21':'#EF5D21'?>; font-size: 20px; font-weight: 700">Resources <i class="fas fa-paperclip"></i></button>
                                     <?php endif; ?>
+									<?php endif ?>  <!-- End hiding resource button -->
+
 <!--                                    <button id="notes-btn" class="btn btn-sm mt-2 text-white" style="width: 80%; height: 30px; background-color: #EF5D21;">Take Notes <i class="far fa-edit"></i></button>-->
                                     <?php if($session->right_sticky_question == 1):?>
-                                        <button id="question-btn" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px; background-color: #EF5D21;font-size: 20px; font-weight: 700">Ask a Question <i class="fas fa-question"></i></button>
+                                        <button id="question-btn" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px;  <?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'#EF5D21':'#EF5D21'?>; font-size: 20px; font-weight: 700">Ask a Question <i class="fas fa-question"></i></button>
                                     <?php endif; ?>
+
+									<?php if (1==2):?> <!-- Claim credit hiding button -->
                                     <?php if ($session->claim_credit_link && $session->claim_credit_link!=='') {
                                     if ($session->claim_credit_url !== '') {
                                     ?>
-                                    <button onclick="window.open('<?=isset($session->claim_credit_url)?$session->claim_credit_url:''?>', '_blank')" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px; background-color: #EF5D21;font-size: 20px; font-weight: 700" ><?=($session->claim_credit_link !== '')?$session->claim_credit_link:''?></button>
+                                    <button onclick="window.open('<?=isset($session->claim_credit_url)?$session->claim_credit_url:''?>', '_blank')" class="btn btn-sm mt-3 text-white" style="width: 95%; height: 70px; <?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'#EF5D21':'#EF5D21'?>; font-size: 20px; font-weight: 700" ><?=($session->claim_credit_link !== '')?$session->claim_credit_link:''?></button>
                                     <?php }} ?>
+									<?php endif ?>  <!-- End Claim credit hiding button -->
 
                                     <?php if(isset($isSessionWithPoll) && !empty($isSessionWithPoll)) : ?>
-                                        <button id="polling-guide-btn" style="width: 95%; height: 70px; background-color: #EF5D21;font-size: 20px; font-weight: 700" class="btn btn-sm mt-3 text-white" >Polling Guide <i class="fa fa-book"></i></button>
+                                        <button id="polling-guide-btn" style="width: 95%; height: 70px;  <?= ($view_settings)?($view_settings[0]->stickyIcon_color!='')? 'background-color:'.$view_settings[0]->stickyIcon_color:'#EF5D21':'#EF5D21'?>;font-size: 20px; font-weight: 700" class="btn btn-sm mt-3 text-white" >Polling Guide <i class="fa fa-book"></i></button>
                                     <?php endif ?>
 
-                                    <button id="live_support-btn" onclick="openLiveSupportChat()" style="display:block;width: 95%; height: 70px; margin-bottom: 30px; background-color: #EF5D21;font-size: 20px; font-weight: 700" class="btn btn-sm mt-3 text-white" >Live Technical Support <i class="far fa-life-ring"></i></button>
+                                    <!-- <button id="live_support-btn" onclick="openLiveSupportChat()" style="display:block;width: 95%; height: 70px; margin-bottom: 30px; background-color: #EF5D21;font-size: 20px; font-weight: 700" class="btn btn-sm mt-3 text-white" >Live Technical Support <i class="far fa-life-ring"></i></button> -->
                                     <div class="mb-3"></div>
                                 </div>
                             </div>
@@ -131,9 +139,10 @@
         </section>
         <!-- END: SECTION -->
 
-
+<input type="hidden" id="logs_id" value="">
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/sessions.js"></script>
 <script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/attendee_to_admin_chat.js"></script>
+<script src="<?=base_url()?>theme_assets/cea/assets/js/mobile/front_assets/view_session.js"></script>
 <script>
     let projectId = "<?=$this->project->id?>";
     let sessionId = "<?=$session->id?>"
@@ -143,7 +152,7 @@
 	let attendee_Lname = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let attendee_FullName = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['name'].' '.$_SESSION['project_sessions']["project_{$this->project->id}"]['surname'] ?>";
 	let uid = "<?= $_SESSION['project_sessions']["project_{$this->project->id}"]['user_id'] ?>";
-
+	let room_id = "<?=($session->room_id && $session->room_id !== null) ? $session->room_id : ''?>"
 
 	var timeSpentOnSessionFromDb;
 	var timeSpentUntilNow;
@@ -204,7 +213,7 @@ $(function(){
 				return false;
 			}
 
-			$.post(project_url+"/sessions/askQuestionAjax",{
+			$.post(project_url+"/mobile/sessions/askQuestionAjax",{
 					session_id:sessionId,
 					question:question,
 				},
@@ -224,19 +233,23 @@ $(function(){
 
 						$('#questionText').val('');
 						$('#questionElement').prepend('<p>'+question+'</p>');
-						toastr.success("Question sent");
+                            toastr.success("Question sent");
 					} else {
-						toastr.error("Unable to send the question");
+							toastr.error(msg);
 					}
 
 					$('#questionText').prop('disabled', false);
 
 				}).fail((error)=>{
-				toastr.error("Unable to send the question");
+                    toastr.error(msg);
 				$('#questionText').prop('disabled', false);
 			});
 		}
 	});
+
+	$("#returnBtn").on('click', function(){
+		window.location.href = project_url+"/mobile/sessions/room/"+room_id;
+	})
 
 })
 
@@ -474,25 +487,8 @@ $(function(){
 						$('#voteBtn').attr('disabled', 'disabled');
 						$('#pollModal').modal('hide');
 						if (data.show_result == 1) {// Show result automatically
-							$.get(project_url + "/sessions/getPollResultAjax/" + data.id, function (results) {
-								results = JSON.parse(results);
-
-								$('#pollResults').html('');
-								$('#pollResultModalLabel').text(data.poll_question);
-								$.each(results, function (poll_id, option_details) {
-									$('#pollResults').append('' +
-										'<div class="form-group">' +
-										'  <label class="form-check-label">' + option_details.option_name + '</label>' +
-										'  <div class="progress" style="height: 25px;">' +
-										'    <div class="progress-bar" role="progressbar" style="width: ' + option_details.vote_percentage + '%;" aria-valuenow="' + option_details.vote_percentage + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage + '%</div>' +
-										'  </div>' +
-										'</div>');
-								});
-
-								$('#pollResultModal').modal({
-									backdrop: 'static',
-									keyboard: false
-								});
+							$.get(project_url + "/mobile/sessions/getPollResultAjax/" + data.id, function (results) {
+								show_poll_result(results)
 
 								var resultTimeleft = 5;
 								var resultTimer = setInterval(function () {
@@ -522,8 +518,40 @@ $(function(){
 			if(data.session_id == sessionId) {
 				$('#pollModal').modal('hide');
 				$('#pollResultModalLabel').html(data.poll_question);
-				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
-					results = JSON.parse(results);
+				$.get(project_url+"/mobile/sessions/getPollResultAjax/"+data.poll_id, function (results) {
+					show_poll_result(results)
+				}).then(function(obj,results){
+					obj = JSON.parse(obj);
+					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
+						$('.progress-label').attr('style', 'margin-left:30px')
+					}else{
+						$('.progress-label').attr('style', '')
+					}
+					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
+						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
+							// console.log('tdsadsa');
+							//
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+
+							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
+							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
+						}
+					}
+				});
+			}
+		});
+
+		socket.on('ycl_close_poll_result', (data)=>{
+			if(data.session_id == sessionId) {
+				$('#pollResultModal').modal('hide');
+			}
+		});
+	});
+
+	function show_poll_result(results){
+		$('#howMuchSecondsLeftResult').text("");
+			results = JSON.parse(results);
 					$('#pollResults').html('');
 					// console.log(results);
 
@@ -574,34 +602,7 @@ $(function(){
 						backdrop: 'static',
 						keyboard: false
 					});
-				}).then(function(obj,results){
-					obj = JSON.parse(obj);
-					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
-						$('.progress-label').attr('style', 'margin-left:30px')
-					}else{
-						$('.progress-label').attr('style', '')
-					}
-					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
-						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
-							// console.log('tdsadsa');
-							//
-							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
-							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
-
-							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
-							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
-						}
-					}
-				});
-			}
-		});
-
-		socket.on('ycl_close_poll_result', (data)=>{
-			if(data.session_id == sessionId) {
-				$('#pollResultModal').modal('hide');
-			}
-		});
-	});
+	}
 
 	socket.on('poll_close_notification', (data)=>{
 		if(data.session_id == sessionId) {
@@ -609,8 +610,31 @@ $(function(){
 		}
 	});
 
+	socket.on('reload-attendee-signal', async function () {
+		try {
+			sessionEndedRedirect();
+		} catch (error) {
+			console.error(error);
+		}
+	});
+
+	async function sessionEndedRedirect(){
+		await update_viewsessions_history_open();
+        await saveTimeSpentOnSession();
+
+		const sessionEnd = new Date(session_end_datetime);
+		const sessionEndTime = sessionEnd.getTime();
+		const dateNow = new Date() ;
+		const dateNowTime = dateNow.getTime();
+
+		if(sessionEndTime < dateNowTime){
+			window.location = (project_url+"/mobile/sessions/room/<?=$session->room_id?>")
+		}else{
+			location.reload();
+		}
+	}
 	function markLaunchedPoll(poll_id){
-		$.post(project_url+"/sessions/markLaunchedPoll/"+poll_id, function (results) {
+		$.post(project_url+"/mobile/sessions/markLaunchedPoll/"+poll_id, function (results) {
 			console.log(results)
 		});
 	}
@@ -620,7 +644,7 @@ $(function(){
 
 	function saveTimeSpentOnSessionAfterSessionFinished(){
 		$.ajax({
-			url: project_url+"/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
+			url: project_url+"/mobile/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
 			type: "post",
 			data: {'time': timeSpentUntilNow},
 			dataType: "json",
@@ -639,7 +663,7 @@ $(function(){
 	function saveTimeSpentOnSession(){
 		// console.log(timeSpentUntilNow)
 		$.ajax({
-			url: project_url+"/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
+			url: project_url+"/mobile/sessions/saveTimeSpentOnSession/"+sessionId+'/'+uid,
 			type: "post",
 			data: {'time': timeSpentUntilNow},
 			dataType: "json",
@@ -652,7 +676,7 @@ $(function(){
 
 	function getTimeSpentOnSession(){
 		$.ajax({
-			url: project_url+"/sessions/getTimeSpentOnSession/"+sessionId+'/'+uid,
+			url: project_url+"/mobile/sessions/getTimeSpentOnSession/"+sessionId+'/'+uid,
 			type: "post",
 			dataType: "json",
 			success: function (data) {
@@ -669,12 +693,12 @@ $(function(){
 		timeSpentUntilNow = timeSpentOnSessionFromDb;
 		onSessiontimer = setInterval(function(){
 			var datetime_now_newyork = calcTime('-5');
-			if(datetime_now_newyork >= session_start_datetime && datetime_now_newyork <= session_end_datetime)
+			if((new Date(datetime_now_newyork)).getTime() >= (new Date(session_start_datetime)).getTime() && (new Date(datetime_now_newyork)).getTime() <= (new Date(session_end_datetime)).getTime()){
 				timeSpentUntilNow = timeSpentUntilNow+1;
+			}
 			if (datetime_now_newyork > session_end_datetime){
 				saveTimeSpentOnSession();
 			}
-
 
 		},1000);
 		// Swal.fire(
@@ -699,7 +723,7 @@ $(function(){
 	function update_viewsessions_history_open()
 	{
 		$.ajax({
-			url: base_url+"/sessions/update_viewsessions_history_open/"+sessionId,
+			url: project_url+"/mobile/sessions/update_viewsessions_history_open/"+sessionId,
 			type: "post",
 			data: {'logs_id': $("#logs_id").val()},
 			dataType: "json",
@@ -729,7 +753,7 @@ $(function(){
 	function get_sessions_history_open(sessionId){
 		var resolution = screen.width + "x " + screen.height + "y";
 		$.ajax({
-			url: project_url+"/sessions/add_viewsessions_history_open",
+			url: project_url+"/mobile/sessions/add_viewsessions_history_open",
 			type: "post",
 			data: {'sessions_id': sessionId, 'resolution': resolution},
 			dataType: "json",

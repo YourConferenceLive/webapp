@@ -88,7 +88,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button id="save-sponsor" type="button" class="btn btn-success"><i class="fas fa-plus"></i> Create</button>
+				<button id="save-sponsor" type="button" class="btn btn-success">Create</button>
 			</div>
 		</div>
 	</div>
@@ -124,6 +124,7 @@
 
 	function createSponsor()
 	{
+
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Creating the sponsor...',
@@ -158,7 +159,7 @@
 				if (data.status == 'success')
 				{
 					listSponsors();
-					toastr.success('Sponsor created');
+					toastr.success("Sponsor created");
 					$('#createSponsorModal').modal('hide');
 
 				}else{
@@ -204,7 +205,7 @@
 				if (data.status == 'success')
 				{
 					listSponsors();
-					toastr.success('Sponsor updated');
+					toastr.success("Sponsor updated");
 
 				}else{
 					toastr.warning("No changes made");

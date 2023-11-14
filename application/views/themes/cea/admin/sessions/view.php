@@ -202,7 +202,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 
 <script>
-
+	let projectId = "<?=$this->project->id?>";
 	let controllerPath = project_admin_url;
 
 	let session_id = "<?=$session->id?>";
@@ -479,12 +479,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		Swal.fire({
 			title: 'Remove From Starred Question',
-			text: "This starred question will be removed on admin and presenter",
+			text: 'This starred question will be removed on admin and presenter',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, Remove it!'
+			confirmButtonText: 'Yes, Remove it!',
+			cancelButtonText: 'Cancel'
 		}).then((result) => {
 			if (result.isConfirmed) {
 				$.post(project_admin_url+'/sessions/hideSavedQuestionAjax/',
@@ -494,9 +494,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						if(response){
 							fillSavedQuestions();
 							$('#save-question-'+question_id).children().removeClass('fas fa-star').addClass('far fa-star')
-							toastr.success('Starred question removed successfully');
+							toastr.success("Starred question removed successfully");
 						}else{
-							toastr.error('Something went wrong');
+							toastr.error("Something went wrong");
 						}
 					})
 			}
@@ -592,7 +592,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					$(".attendeeChatmodal-body").scrollTop($(".attendeeChatmodal-body")[0].scrollHeight);
 				}else{
-					toastr.error(response.status)
+					toastr.error(response.status);
 				}
 			}, 'json')
 	})
@@ -737,12 +737,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		Swal.fire({
 			title: 'Are you sure?',
-			text: "Ending chat will disable attendee from sending you texts until you texts attendee.",
+			text: 'Ending chat will disable attendee from sending you texts until you texts attendee.',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, end it!'
+			confirmButtonText: 'Yes, end it!',
+			cancelButtonText: 'Cancel'
 		}).then((result) => {
 			if (result.isConfirmed) {
 				socket.emit('end-attendee-to-admin-chat', {"session_id":session_id, "from_id":"admin", "to_id":userId});
@@ -752,6 +753,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		})
 	});
 
+	/** Live users per session **/
+	socket.emit(`ycl_session_active_users`, `${projectId}_${session_id}`);
+	socket.on(`ycl_session_active_users_count`, function (total_users) {
+		$('#attendeesOnline').html(`<span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Number of attendees on this session page"><i class="fas fa-eye"></i> ${total_users}</span>`);
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	
 </script>
 
 <script src="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/js/common/sessions/host_chat.js"></script>

@@ -36,8 +36,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 								<select class="form-control" id="session_list_type">
 									<option value="all_sessions" url="getAllJson">Sessions</option>
 									<option value="today_sessions" url="getAllToday">Today Sessions</option>
-										<option value="tomorrow_sessions" url="getAllTomorrow">Tomorrow Sessions</option>
+									<option value="tomorrow_sessions" url="getAllTomorrow">Tomorrow Sessions</option>
 									<option value="archived_sessions" url="getAllArchived">Archived Sessions</option>
+									<option value="continuing_sessions" url="getAllContinuing">Continuing Sessions</option>
 								</select>
 							</h3>
 							<button class="add-session-btn btn btn-success float-right"><i class="fas fa-plus"></i> Add</button>
@@ -58,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<th>Actions</th>
 										<th>Manage</th>
 										<th>Export</th>
-										<th>JSON(s)</th>
+										<th>Json(s)</th>
 									</tr>
 								</thead>
 								<tbody id="sessionsTableBody">
@@ -94,19 +95,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 <script>
 	$(function () {
-
-			// getAllJson
-		let session_list_type = $('#session_list_type').find(':selected').val();
-		let getFrom = $('#session_list_type').attr('url');
-		// console.log(session_list_type);return false;
-	
-		(getFrom == undefined)?getFrom="getAllJson":'';
-		listSessions(getFrom);
+		$('#session_list_type').val(getFilterCookie())
+		listSessions();
 		
 		$('#session_list_type').on('change', function(){
-			getFrom =  $('#session_list_type').find(':selected').attr('url')
-			console.log(getFrom)
-			listSessions(getFrom);
+			saveFilterCookie($(this).val());
+			listSessions();
 		})
 
 		$('#sessionsTable').DataTable({
@@ -117,11 +111,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			"info": true,
 			"autoWidth": false,
 			"responsive": true,
+			"order": [[ 1, 'asc'], [ 2, 'asc'], [ 3,  'asc']],
 		});
 
 		$('.add-session-btn').on('click', function () {
 
 			getColorPreset();
+			const newSessionText = TranslationManager.staticTranslate('Add New Session')
+			$('#addSessionModalLabelspan').text(newSessionText)
 			$('#addSessionForm')[0].reset();
 			$('#currentPhotoDiv').hide();
 			$('#currentSponsorLogoDiv').hide();
@@ -140,14 +137,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				backdrop: 'static',
 				keyboard: false
 			});
-
-
+			
+			// Fix adding error 
+			$('#sessionId').val(0);
+			console.log($('#sessionId').val());
 		});
 
 		$('#sessionsTable').on('click', '.manageSession', function () {
 
 			let session_id = $(this).attr('session-id');
 			getColorPreset();
+
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading session data...',
@@ -158,13 +158,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
+			
 			$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
 				session = JSON.parse(session);
 				console.log(session);
+
+				// set the session title here
+				const newSessionText = TranslationManager.staticTranslate('Session ID')
+				$('#addSessionModalLabelspan').text(`${newSessionText}: ${session.id}`)
+
 				$('#sessionId').val(session.id);
 				$('#sessionName').val(session.name);
 				$('#sessionNameOther').val(session.other_language_name);
+
+				$(`#roomID`).val(session.room_id);
+
 				$('#eventID').val(session.event_id);
 				$(`#sessionTrack option[value="${session.track}"]`).prop('selected', true);
 
@@ -205,6 +213,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				}else{
 					$('#currentSessionLogoDiv').hide();
 				}
+				
+				if(session.session_logo  !== '') {
+						$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + session.mobile_session_background);
+						$('#currentMobileSessionBackgroundDiv').show();
+				}else
+					$('#currentMobileSessionBackgroundDiv').hide();
 
 				$('#sponsorLogoWidth').val(session.sponsor_logo_width);
 				$('#sponsorLogoHeight').val(session.sponsor_logo_height);
@@ -235,6 +249,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				$('#button3_link').val(session.button3_link);
 
 				$('#sessionColorPreset').val(session.attendee_settings_id);
+				$('#sessionEndRedirect').val(session.session_end_redirect);
+
+				if(session.auto_redirect_status == 1){
+					$('#autoRedirectSwitch').attr('checked','checked')
+				}else{
+					$('#autoRedirectSwitch').removeAttr('checked')
+				}
 				// Moderators
 				$('select[name="sessionModerators[]"] option').prop('selected', false);
 				$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
@@ -323,29 +344,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					keyboard: false
 				});
 			});
+
 		});
 
 		$('#sessionsTable').on('click', '.removeSession', function () {
 			let session_id = $(this).attr('session-id');
 			let session_name = $(this).attr('session-name');
-
+			
 			Swal.fire({
 				title: 'Are you sure?',
-				html: '<span class="text-white">You are about to remove<br>['+session_id+'] '+session_name+'<br><br><small>(We will still keep it in our records for auditing)</small></span>',
+				html: '<span class="text-white">Are you sure?<br>['+session_id+'] '+session_name+'<br><br><small>(We will still keep it in our records for auditing)</small></span>',
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, remove it!'
+				confirmButtonText: "Yes, remove it!",
+				cancelButtonText: "Cancel"
 			}).then((result) => {
 				if (result.isConfirmed) {
 
 					Swal.fire({
-						title: 'Please Wait',
-						text: 'Removing the session...',
+						title: "Please Wait",
+						text: "Removing the session...",
 						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-						imageAlt: 'Loading...',
+						imageAlt: "Loading...",
 						showCancelButton: false,
 						showConfirmButton: false,
 						allowOutsideClick: false
@@ -355,18 +378,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						response = JSON.parse(response);
 
 						if (response.status == 'success') {
-							listSessions(getFrom);
+							listSessions();
 							toastr.success(session_name+" has been removed!");
 						}else{
 							Swal.fire(
-									'Error!',
-									'Unable to remove '+session_name,
-									'error'
+								"Error!",
+								"Unable to remove "+session_name,
+								'error'
 							);
 						}
 					});
 				}
 			});
+
+
+
 		});
 
 		// $('#sessionsTable').on('click', '.openPoll', function () {
@@ -386,10 +412,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		// });
 	});
 
-	function listSessions(getFrom = null)
+	function listSessions()
 	{
-		if(getFrom == null)
-		getFrom = "getAllJson";
+		let getFrom = $('#session_list_type').find(':selected').attr('url');
+		console.log(getFrom);
 
 		Swal.fire({
 			title: 'Please Wait',
@@ -401,7 +427,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			showConfirmButton: false,
 			allowOutsideClick: false
 		});
-
+		
 		$.get(project_admin_url+"/sessions/"+ getFrom, function (sessions) {
 			sessions = JSON.parse(sessions);
 
@@ -491,13 +517,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'	<td>' +
 					'		'+session.id+
 					'	</td>' +
-					'	<td>' +
+					'	<td data-sort="'+session.start_date_time+'">' +
 					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("MMMM Do (dddd)")+
 					'	</td>' +
-					'	<td>' +
+					'	<td data-sort="'+session.start_date_time+'">' +
 					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
-					'	<td>' +
+					'	<td data-sort="'+session.start_date_time+'">' +
 					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
 					'	</td>' +
 					'	<td>' +
@@ -519,8 +545,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		<a target="_blank" href="'+project_admin_url+'/sessions/polls/'+session.id+'">' +
 					'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
 					'		</a>' +
-					'		<button class="reload_attendee btn btn-sm btn-danger m-1"><i class="fas fa-sync"></i> Reload Atendee</button>' +
-					'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
+					'		<button class="reload_attendee btn btn-sm btn-danger m-1" session-id="'+session.id+'"><i class="fas fa-sync"></i> Reload Atendee</button>' +
+					'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'" room_id="'+session.room_id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
 					'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
 					'	</td>' +
 					'	<td>' +
@@ -538,9 +564,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		<a href="'+project_admin_url+'/sessions/attendee_question_report/'+session.id+'" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Question Report</a><br>' +
 					'</td>'+
 					'<td>'+
-					'		<a  style="width:80px; height:50px" class="sendJsonBtn btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Send Json </a><br>' +
-					'		<a href="'+project_admin_url+'/sessions/view_json/'+session.id+'" target="_blank" style="width:80px; height:50px" class="Question btn btn-sm btn-secondary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> View Json </a><br>' +
-					'		<a href="" style="width:80px; height:50px" class="clearJsonBtn btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Clear Json </a><br>' +
+					'		<a  style="width:80px; height:50px" class="sendJsonBtn btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Send JSON </a><br>' +
+					'		<a href="'+project_admin_url+'/sessions/view_json/'+session.id+'" target="_blank" style="width:80px; height:50px" class="Question btn btn-sm btn-secondary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> View JSON </a><br>' +
+					'		<a href="" style="width:80px; height:50px" class="clearJsonBtn btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Clear JSON </a><br>' +
 					'		<a href="" style="width:80px; height:50px" class="Question btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Delete Session </a><br>' +
 
 					'</td>'+
@@ -558,12 +584,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				"info": true,
 				"autoWidth": true,
 				"responsive": false,
-				"order": [[ 0, "desc" ]],
+				"order": [[ 1, 'asc'], [ 2, 'asc'], [ 3,  'asc']],
 				"destroy": true
 			});
 
 			Swal.close();
 		});
+
+		
 	}
 
 	$(function(){
@@ -571,6 +599,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		$('#sessionsTableBody').on('click', '.clearJsonBtn', function(e){
 			e.preventDefault();
 			let session_id = $(this).attr('session-id')
+
 			Swal.fire({
 				title: 'Are you sure?',
 				text: "You won't be able to revert this!",
@@ -578,7 +607,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, clear it!'
+				confirmButtonText: "Yes, clear it!",
+				cancelButtonText: "Cancel"
 			}).then((result) => {
 				if (result.isConfirmed) {
 					$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
@@ -586,24 +616,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							console.log(response);
 							if(response.status == 'success'){
 								Swal.fire(
-									'Success',
-									'Json Cleared',
+									"Success",
+									"Json Cleared",
 									'success'
 								)
 							}
 						},'json')
 				}
 			})
+
 		});
+
 		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
+
 			Swal.fire({
 				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
+				text: "",
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!'
+				confirmButtonText: 'Yes, reload it!',
+				cancelButtonText: 'Cancel'
 			}).then((result) => {
 				if (result.isConfirmed) {
 					Swal.fire(
@@ -611,9 +645,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						'Attendee Reloaded',
 						'success'
 					)
-					socket.emit('reload-attendee');
+					socket.emit('reload-attendee',{'session_id':$(this).attr('session-id')});
 				}
 			})
+
 		})
 
 		$('#sessionsTableBody').on('click', '.session_resources', function(){
@@ -627,30 +662,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		$('#sessionsTableBody').on('click', '.mobileSessionQR', function(e){
 			e.preventDefault();
 			let session_id = $(this).attr('session-id');
-			// var session_id = $(this).attr('data-session_id');
-			$.post('<?= $this->project_url?>/admin/sessions/generateQRCode/'+session_id,
+			let room_id = $(this).attr('room_id');
+			
+			console.log(room_id);
+			$.post('<?= $this->project_url?>/admin/sessions/generateQRCode/'+session_id+'/'+room_id,
 				{}, function(success){
 					if(success=="success"){
 						Swal.fire({
-							text:'<?=$this->project_url?>/mobile/sessions/id/'+session_id,
+							text:'<?=$this->project_url?>/mobile/sessions/room/'+room_id,
 							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/qrcode/qr_'+session_id+'.png',
 							imageHeight: 300,
 							imageAlt: 'QRCODE'
 						})
+
 					}
+					
+					else console.log("Failed");
 				})
 		})
-
+	})
+	
 	$('#sessionsTableBody').on('click', '.sendJsonBtn', function() {
-
+		
 		Swal.fire({
-			title: 'Are you sure?',
+			title: "Are you sure?",
 			text: "",
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, send it!'
+			confirmButtonText: "Yes, send it!",
+			cancelButtonText: "Cancel"
 		}).then((result) => {
 			if (result.isConfirmed) {
 				let session_id = $(this).attr('session-id');
@@ -659,9 +701,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					data: '',
 					beforeSend: function() {
 						Swal.fire({
-							title: 'Sending Json...',
+							title: "Sending Json...",
 								showCancelButton: false,
-  								showConfirmButton: false,
+								showConfirmButton: false,
 							onBeforeOpen: () => {
 								Swal.showLoading()
 							}
@@ -675,19 +717,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 						Swal.fire({
 							text: result.status,
 							icon: 'success',
-							title: 'Success'
+							title: "Success"
 						})
 					} else {
 						Swal.fire({
 							text: result.message,
 							icon: 'info',
-							title: 'Info'
+							title: "Info"
 						})
 					}
 				});
 			}
 		})
-	})
+			
 	})
 
 	function getColorPreset(){
@@ -706,4 +748,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				})
 			})
 	}
+
+	// Saving Filter Cookies
+	// $(function(){
+		
+	// 	let sortOrder = 'asc';
+	// 	$('#sessionsTable').on('click', 'thead th', function(){
+
+	// 		let savedSortOrder = (getSortOrderCookie()[0]);
+	// 		if(savedSortOrder){
+	// 			setOrderCookie($(this).index(), savedSortOrder);
+	// 		}else{
+	// 			setOrderCookie($(this).index(), sortOrder);
+	// 		}
+	// 		return false;
+	// 	})
+	// })
+
+	// function getSortOrderCookie(){
+	// 	let savedSortOrder = Cookies.get('datatable_sort_order');
+	// 	let savedSortColumn = Cookies.get('datatable_column');
+	// 	if (savedSortOrder) {
+	// 		sortOrder = savedSortOrder;
+	// 	}else{
+	// 		sortOrder = 'asc';
+	// 	}
+
+	// 	(savedSortColumn)?savedSortColumn:0
+
+	// 	return [savedSortOrder, savedSortColumn];
+	// }
+	// function setOrderCookie(columnIndex, savedSortOrder){ 
+	// 	let newSort = (savedSortOrder === "desc") ? "asc" : "desc"
+	// 	Cookies.set('datatable_sort_order', newSort, { expires: 7 }); // Expires in 7 days
+	// 	Cookies.set('datatable_column', columnIndex, { expires: 7 }); // Expires in 7 days
+	// }
+
+	function saveFilterCookie(filter){
+		Cookies.set('session_filter', filter, { expires: 7 }); // Expires in 7 days
+	}
+	function getFilterCookie(){
+		return (Cookies.get('session_filter'))?Cookies.get('session_filter'):'all_sessions'
+	}
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>

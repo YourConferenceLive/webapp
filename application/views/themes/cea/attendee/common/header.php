@@ -81,5 +81,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		})
 	</script>
+
+	<!-- Custom Translater  -->
+	<script src="<?= ycl_base_url ?>/ycl_assets/js/translation_manager.js"></script>
+	<script src="<?= ycl_base_url ?>/ycl_assets/js/translater.js"></script>
+
 </head>
 <body>

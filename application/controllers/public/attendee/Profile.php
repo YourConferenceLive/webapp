@@ -16,6 +16,10 @@ class Profile extends CI_Controller
 		$this->user = $_SESSION['project_sessions']["project_{$this->project->id}"];
 	}
 
+	public function test() {
+			echo json_encode(123);
+	}
+
 	public function index($id=1)
 	{
 

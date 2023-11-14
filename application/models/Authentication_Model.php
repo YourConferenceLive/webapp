@@ -15,6 +15,7 @@ class Authentication_Model extends CI_Model
 		$this->db->from('user');
 		$this->db->where('user.email', $username);
 		$result = $this->db->get();
+		
 		if ($result->num_rows() > 0)
 		{
 			if (password_verify($password, $result->row()->password))
@@ -98,5 +99,28 @@ class Authentication_Model extends CI_Model
 		}
 		$this->db->insert('user_project_access', array('user_id'=>$user_id, 'project_id'=>$this->project->id, 'level'=>'attendee'));
 		return $this->db->insert_id();
+	}
+	
+
+	public function verifyMobileLogin($project_id, $email, $name){
+		$this->db->select('user.*');
+		$this->db->from('user');
+		$this->db->where('user.email', $email);
+		$result = $this->db->get();
+		
+		if($result->num_rows()>0){
+			$user = $result->row();
+				$user->access_levels = array();
+				$this->db->select('level');
+				$this->db->from('user_project_access');
+				$this->db->where('user_id', $user->id);
+				$this->db->where('project_id', $project_id);
+				$result = $this->db->get();
+
+				return array('status'=>true, 'msg'=>"Login successful", 'user'=>$user);
+		}else{
+			return '';
+		}
+
 	}
 }

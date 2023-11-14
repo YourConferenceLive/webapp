@@ -2,6 +2,74 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <link href="<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/css/sessions.css?v=<?=rand()?>" rel="stylesheet">
+<style>
+	.card{
+		width: 70vw ;
+		padding:0;
+	}
+
+	.card-bg{
+		background-size: cover !important; /* Add !important to override any conflicting styles */
+		background-position: center !important;
+		background-repeat: no-repeat !important;
+		height: 80vh !important;
+	}
+
+	.card-header{
+		padding:0;
+		background-color:#58595B;
+		color:white;
+	}
+	.card-body{
+		padding:0;
+		min-height: 70vh; 
+	}
+
+
+	@media screen and (max-width: 1300px){
+		.card-body{
+			max-height: 500px; 
+		}
+
+		.card{
+			width: 100vw !important;
+			
+		}	
+		.row{
+			margin:0
+		}
+	}
+
+
+	@media screen and (max-width: 750px){
+		.card-body{
+			max-height: 400px; 
+		}
+
+		.card{
+			width: 100vw !important;
+			
+		}	
+		.row{
+			margin:0
+		}
+	}
+
+	@media screen and (max-width: 420px){
+		.card-body{
+			max-height: 200px; 
+		}
+
+		.card{
+			width: 100vw;
+			
+		}
+		.row{
+			margin:0
+		}
+	}
+
+</style>
 
 <?php if(isset($view_settings) && !empty($view_settings)):?>
 	<?php if($view_settings[0]->session_background_image == 1):?>
@@ -19,18 +87,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
 <div class="sessions-container container-fluid pl-md-6 pr-md-6">
 	<div class="col-12">
-		<div class="row">
-			<div class="col-md-12 card " style="max-width:800px; padding:20px; margin:auto">
-				<div class="text-center btn ">
-					<?php if(isset($session->session_end_image) && !empty($session->session_end_image)):?>
-					<img class=""  src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/<?=$session->session_end_image?>" style="max-width:300px; max-height: 300px" >
-					<?php endif ?>
-					<?php if(isset($session->session_end_text) && !empty($session->session_end_text)):?>
-						<h1><?= $session->session_end_text?></h1>
-					<?php else: ?>
-					<h1>Session Ended</h1>
-					<?php endif ?>
+		<div class="row d-flex justify-content-center">
+			<div class="card" style="">
+				<?php if(isset($session->session_end_text) && !empty($session->session_end_text)):?>
+					<div class="card-header d-flex justify-content-center"><h1 class="my-2 mx-4"><?= $session->session_end_text?></h1></div>
+				<?php endif ?>
+				<?php if(isset($session->session_end_image) && !empty($session->session_end_image)):?>
+				<div class="card-body card-bg" style="background-image: url(<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/<?=$session->session_end_image?>)">
+					<div class="text-center btn ">
+					</div>
 				</div>
+				<?php endif ?>
 			</div>
 		</div>
 	</div>

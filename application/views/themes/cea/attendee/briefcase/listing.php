@@ -277,6 +277,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		function loadNotes(entity_type, entity_type_id, note_page) {
 			console.log('Note Page : ' + note_page);
+
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading notes...',
@@ -289,45 +290,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 
 			$.ajax({type: "GET",
-					url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
-					data: '',
-					success: function(response){
-						Swal.close();
-						jsonObj = JSON.parse(response);
-						// Add response in Modal body
+				url: project_url+"/eposters/notes/"+entity_type+'/'+entity_type_id+'/'+note_page,
+				data: '',
+				success: function(response){
+					Swal.close();
+					jsonObj = JSON.parse(response);
+					// Add response in Modal body
 
-						$('.modal-title').html( ((entity_type == 'eposter') ? jsonObj.eposter.title : jsonObj.session.name ) + ' Notes');
+					$('.modal-title').html( ((entity_type == 'eposter') ? jsonObj.eposter.title : jsonObj.session.name ) + ' Notes');
 
-						if (jsonObj.total) {
-							$('.count_note strong').text(jsonObj.total);
-							var previousHTML = $('#notes_list_container').html();
-							var iHTML = '';
-							if (previousHTML == '')
-								iHTML += '<ul id="list_note" class="col-md-12">';
+					if (jsonObj.total) {
+						$('.count_note strong').text(jsonObj.total);
+						var previousHTML = $('#notes_list_container').html();
+						var iHTML = '';
+						if (previousHTML == '')
+							iHTML += '<ul id="list_note" class="col-md-12">';
 
-							for (let x in jsonObj.data) {
-								let note_id 	= jsonObj.data[x].id;
-								let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-								let datetime 	= jsonObj.data[x].time;
+						for (let x in jsonObj.data) {
+							let note_id 	= jsonObj.data[x].id;
+							let note 		= jsonObj.data[x].note_text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+							let datetime 	= jsonObj.data[x].time;
 
-								iHTML += '<!-- Start List Note ' + (x) +' --><li class="box_result row"><div class="result_note col-md-12"><p>'+note+'</p><div class="tools_note"><span>'+datetime+'</span></div></div></li>';
-							}
-
-							if (previousHTML == '')
-								iHTML += '</ul>';
-
-							$('#notesModal .modal-footer').html('<button' + (((parseInt(note_page)+parseInt(1)) <= Math.ceil(parseInt(jsonObj.total)/parseInt(notes_per_page))) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes(\''+entity_type+'\', '+entity_type_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
-
-							if (previousHTML == '') {
-								$('#notes_list_container').html(iHTML);
-							} else {
-								$('#list_note').append(iHTML);
-							}
-						} else {
-							$('.count_note strong').text('No ');
+							iHTML += '<!-- Start List Note ' + (x) +' --><li class="box_result row"><div class="result_note col-md-12"><p>'+note+'</p><div class="tools_note"><span>'+datetime+'</span></div></div></li>';
 						}
+
+						if (previousHTML == '')
+							iHTML += '</ul>';
+
+						$('#notesModal .modal-footer').html('<button' + (((parseInt(note_page)+parseInt(1)) <= Math.ceil(parseInt(jsonObj.total)/parseInt(notes_per_page))) ? ' class="btn btn-info btn-sm btn-block" onclick="showMoreNotes(\''+entity_type+'\', '+entity_type_id+', '+note_page+');"' : ' class="btn btn-info btn-block btn-sm disabled not-allowed" disabled' ) + ' type="button">Load more notes</button>');
+
+						if (previousHTML == '') {
+							$('#notes_list_container').html(iHTML);
+						} else {
+							$('#list_note').append(iHTML);
+						}
+					} else {
+						$('.count_note strong').text('No ');
 					}
-				});
+				}
+			});
+
 		}
 
 		$(document).ready(function() {
@@ -470,6 +472,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		    });
 
 			$('.remove-briefcase-btn').on('click', function() {
+
 				Swal.fire({
 					title: 'Please Wait',
 					text: 'Removing from your briefcase...',
@@ -494,9 +497,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						success: function(response){
 							$(buttonElement).parent().parent().parent().parent().parent().hide('slow').remove();
 							Swal.close();
-							toastr.success('Removed successfully.');
+							toastr.success("Removed successfully.");
 						}
 				});
+
 			});
 		});
 	</script>

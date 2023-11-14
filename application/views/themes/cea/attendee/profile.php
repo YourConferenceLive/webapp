@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <body>
 <img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
@@ -63,8 +64,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="card"  style="min-height: 400px">
 								<div class="card-header">
 									<h6>Personal Information <i class="fas fa-id-card"></i>
-<!--										<span class="float-right btn btn-success btn-sm ml-2 save-btn"><i class="far fa-check-circle"></i> Save</span>-->
-<!--										<span class="float-right btn btn-info btn-sm edit-btn"><i class="far fa-edit"></i> Edit</span></h6>-->
+										<!-- <span class="float-right btn btn-success btn-sm ml-2 save-btn"><i class="far fa-check-circle"></i> Save</span> -->
+										<!-- <span class="float-right btn btn-info btn-sm edit-btn"><i class="far fa-edit"></i> Edit</span> -->
+									</h6>
 								</div>
 								<div class="card-body">
 									<div class="row">
@@ -198,7 +200,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				let fileExtension = fileName.substr(fileName.lastIndexOf('.')+1);
 
 				if (!valid_ext.includes(fileExtension)) {
-					toastr.error("File type "+fileExtension+" is not supported");
+					toastr.error('File type '+fileExtension+' is not supported');
 					return false;
 				}
 
@@ -222,46 +224,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				// 	return false;
 				// }
 
-					Swal.fire({
-						title: 'Are you sure?',
-						html: "You are about to update your profile data <br><br>" +
-								"<small>(Some data are automatically synced from COS everytime you login)</small>",
-						icon: 'question',
-						showCancelButton: true,
-						confirmButtonColor: '#3085d6',
-						cancelButtonColor: '#d33',
-						confirmButtonText: 'Yes, save!'
-					}).then((result) => {
-						if (result.isConfirmed) {
-							$.ajax({
-								type: "POST",
-								url: project_url + "/profile/update_profile_data",
-								data: formData,
-								processData: false,
-								contentType: false,
-								error: function (jqXHR, textStatus, errorMessage) {
-									// Swal.close();
-									toastr.error(errorMessage);
-									//console.log(errorMessage); // Optional
-								},
-								success: function (data) {
-									data = JSON.parse(data);
-									// console.log(data);
-									if (data.status == 'success')
-									{
-										Swal.fire(
-											'Success',
-											'Profile Information Updated',
-											'success'
-										)
-									}else{
-										toastr['error']('Something went wrong')
-									}
+				Swal.fire({
+					title: 'Are you sure?',
+					html: 'You are about to update your profile data <br><br>'+
+							"<small>(Some data are automatically synced from COS everytime you login)</small>",
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, save!',
+					cancelButtonText: 'Cancel'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$.ajax({
+							type: "POST",
+							url: project_url + "/profile/update_profile_data",
+							data: formData,
+							processData: false,
+							contentType: false,
+							error: function (jqXHR, textStatus, errorMessage) {
+								// Swal.close();
+								toastr.error(errorMessage);
+								//console.log(errorMessage); // Optional
+							},
+							success: function (data) {
+								data = JSON.parse(data);
+								// console.log(data);
+								if (data.status == 'success')
+								{
+									Swal.fire(
+										'Success',
+										'Profile Information Updated',
+										'success'
+									)
+								}else{
+									toastr['error']("Something went wrong")
 								}
-							})
-						}
-					})
+							}
+						})
+					}
 				})
+
+			})
 
 			$('.edit-btn').click();
 		})

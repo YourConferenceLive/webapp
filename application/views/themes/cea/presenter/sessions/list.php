@@ -85,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<button class="btn btn-sm btn-primary"><i class="fas fa-tools"></i> Toolbox Only</button>
 											</a>-->
 										</td>
-										<td><a href="<?=$this->project_url.'/presenter/sessions/view_poll/'.$session->id?>" class="btn btn-info btn-sm"> View Poll</a></td>
+										<td><a href="" onclick="viewPollList(<?=$session->id?>)" class="btn btn-info btn-sm"> View Poll</a></td>
 									</tr>
 								<?php endforeach; ?>
 								</tbody>
@@ -132,4 +132,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			"order": [[ 1, "asc" ]]
 		});
 	});
+
+	function viewPollList(session_id){
+		window.open(project_presenter_url+'/sessions/polls/'+session_id,'_blank')
+	}
 </script>

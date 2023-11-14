@@ -1,7 +1,7 @@
 <?php
-//echo "<pre>";
-//print_r($sessions);
-//exit("</pre>");
+// echo "<pre>";
+// print_r($session_list);
+// exit("</pre>");
 ?>
 <!--Add Session Modal-->
 <style>
@@ -14,7 +14,7 @@
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="addSessionModalLabel"><i class="fas fa-calendar-plus"></i> Add New Session</h5>
+				<h5 class="modal-title" id="addSessionModalLabel"><i class="fas fa-calendar-plus"></i> <span id="addSessionModalLabelspan">Add New Session</span></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -81,6 +81,12 @@
 										<label for="sessionNameOther">Other name (alternative language)</label>
 										<input type="text" class="form-control" id="sessionNameOther" name="sessionNameOther" placeholder="Enter alternative session title/name eg; French">
 									</div>
+
+									<div class="form-group">
+										<label for="sessionNameOther">Room ID (For mobile sessions)</label>
+										<input type="number" class="form-control" id="roomID" name="roomID" placeholder="" value="0">
+									</div>
+
 									<div class="form-group">
 										<label for="sessionNameOther">Session Notes</label>
 										<input type="text" class="form-control" id="sessionNotes" name="sessionNotes" placeholder="Enter your notes here...">
@@ -105,6 +111,25 @@
 										<input type="text" class="form-control" id="sessionExternalUrl" name="sessionExternalUrl" placeholder="This link will open in a new tab (unless user blocked pop opening windows) once the meeting starts (always prefix the URL with protocol ie; http/https)">
 									</div>
 
+									<div class="form-group" id="sessionEndRedirectDiv" style="display: block;">
+										<label for="sessionEndRedirect">Session End Redirect</label>
+										<select name="sessionEndRedirect" id="sessionEndRedirect" class="form-control">
+											<option value="">-- Select Session Redirect --</option>
+											<?php if(!empty($session_list)): 
+												foreach($session_list as $key => $session): ?>
+												<option  value="<?=$session->id?>"> Session (<?=$session->id?>) <?=$session->name?></option>
+											<?php endforeach?>
+											<?php endif ?>
+										</select>
+									</div>
+									
+									<div class="custom-control custom-switch mb-2">
+										<input type="checkbox" class="custom-control-input" id="autoRedirectSwitch" name="autoRedirectSwitch">
+										<label class="custom-control-label" for="autoRedirectSwitch">Auto Redirect
+										<i class="fas fa-info-circle" title="This is to switch the redirect from manual to automatic. Auto (ON) will be redirect automatically when session ends.(OFF) Will need the admin to trigger reload button. Make sure that redirect is set before the attendee enters the session."></i>
+										</label>
+									</div>
+					
 									<div class="form-group" id="sessionClaimCreditDiv">
 										<label for="sessionExternalUrl">Claim Credit</label>
 										<div class="input-group mb-3">
@@ -423,6 +448,18 @@
 											</div>
 										</div>
 									</div>
+									<div class="form-group">
+										<label>Mobile Session Background</label>
+										<div class="custom-file">
+											<input type="file" accept="image/png, image/jpeg" class="custom-file-input" id="mobileSessionBackground" name="mobileSessionBackground" previewImage="currentMobileSessionBackground">
+											<label class="custom-file-label" for="sessionLogo">Choose file</label>
+										</div>
+									</div>
+									<div class="form-group" id="currentMobileSessionBackgroundDiv" style="display: none;">
+										<label for="currentMobileSessionBackgroundDiv"><small>Current Mobile Background</small></label>
+										<br>
+										<img id="currentMobileSessionBackground" src="" width="200px">
+									</div>
 
 									<div class="form-group">
 										<label>Session End</label><br>
@@ -435,11 +472,13 @@
 											</li>
 											<li>
 												<div class="form-group">
-													<label for="sessionEndImage">Image</label>
-													<input type="file" accept="image/*" class="form-control" id="sessionEndImage" name="sessionEndImage" placeholder="Session Ended">
+													<div class="custom-file">
+														<label class="custom-file-label" for="sessionEndImage">Image</label>
+														<input type="file" accept="image/*" class="custom-file-input" id="sessionEndImage" name="sessionEndImage" placeholder="Session Ended" previewImage="currentSessionEndImg">
+													</div>
 												</div>
 												<div class="form-group" id="currentSessionEndImage" style="display: none;">
-													<label for=""><small>Current Session End Image</small></label>
+													<label for="currentSessionEndImage"><small>Current Session End Image</small></label>
 													<br>
 													<img id="currentSessionEndImg" src="" width="200px">
 												</div>
@@ -671,6 +710,17 @@
 			$('#currentSessionLogoDiv').show();
 		})
 
+		$('#sessionEndImage').on('change', function(){
+			previewUpload(this);			
+			$('#currentSessionEndImg').show();
+		})
+
+		$('#mobileSessionBackground').on('change', function(){
+			$('#isSponsorLogoRemoved').val('0');
+			previewUpload(this);
+			$('#currentMobileSessionBackgroundDiv').show();
+		})
+
 	});
 
 	$('#logo, #banner').on('change',function(){
@@ -686,16 +736,15 @@
 	});
 
 	$('#save-session').on('click', function () {
-
 		if($('input[name="startDateTime"]').val() == '')
 		{
-			toastr.warning('Please select start date and time!')
+			toastr.warning('Please select start date and time!');
 			return false;
 		}
 
 		if($('input[name="endDateTime"]').val() == '')
 		{
-			toastr.warning('Please select end date and time!')
+			toastr.warning('Please select end date and time!');
 			return false;
 		}
 
@@ -707,7 +756,7 @@
 
 		let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
 		Swal.fire({
-			title: 'Are you sure?',
+			title: "Are you sure?",
 			html: '<span style="color: white;">'+sessionName+
 					'<br><br> <small>starts on</small> '+$('#startDateTimeInput').val()+
 					'<br> <small>and ends on</small> '+$('#endDateTimeInput').val()+' ? </span>',
@@ -715,8 +764,8 @@
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, save it!',
-			cancelButtonText: 'No'
+			confirmButtonText: "Yes, save it!",
+			cancelButtonText: "No"
 		}).then((result) => {
 			if (result.isConfirmed) {
 				if ($('#sessionId').val() == 0)
@@ -725,6 +774,7 @@
 					updateSession();
 			}
 		})
+
 	});
 
 
@@ -744,12 +794,17 @@
 
 	function addSession()
 	{
+		if (isNaN(parseInt($('#roomID').val()))) {
+			toastr.error('Room ID should be a number');
+			return false;
+		}
+
 		Swal.fire({
-			title: 'Please Wait',
-			text: 'Adding the session...',
+			title: "Please Wait",
+			text: "Adding the session...",
 			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
+			imageAlt: "Loading...",
 			showCancelButton: false,
 			showConfirmButton: false,
 			allowOutsideClick: false
@@ -778,7 +833,7 @@
 				if (data.status == 'success')
 				{
 					listSessions();
-					toastr.success('Session added');
+					toastr.success("Session added");
 					$('#addSessionModal').modal('hide');
 
 				}else{
@@ -790,17 +845,23 @@
 
 	function updateSession()
 	{
+			
+		if (isNaN(parseInt($('#roomID').val()))) {
+			toastr.error('Room ID should be a number');
+			return false;
+		}
+
 		Swal.fire({
-			title: 'Please Wait',
-			text: 'Updating the session...',
+			title: "Please Wait",
+			text: "Updating the session...",
 			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
+			imageAlt: "Loading...",
 			showCancelButton: false,
 			showConfirmButton: false,
 			allowOutsideClick: false
 		});
-
+		
 		let formData = new FormData(document.getElementById('addSessionForm'));
 
 		$.ajax({
@@ -837,8 +898,14 @@
 					}else
 						$('#currentSessionLogoDiv').hide();
 
+					if(data.session.session_logo  !== '') {
+						$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + data.session.mobile_session_background);
+						$('#currentMobileSessionBackgroundDiv').show();
+					}else
+						$('#currentMobileSessionBackgroundDiv').hide();
+
 					listSessions();
-					toastr.success('Session updated');
+					toastr.success("Session updated");
 				}else if(data.status == 'warning'){
 					toastr.warning(data.msg);
 				}else{
@@ -846,6 +913,7 @@
 				}
 			}
 		});
+
 	}
 
 </script>

@@ -77,7 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						setTimeout(function() {
 							$('#pollModal').modal('hide');
 						}, 1000);
-						toastr.error('something went wrong')
+						toastr.error('something went wrong');
 					}
 				}
 			});

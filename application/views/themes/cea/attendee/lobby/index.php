@@ -82,18 +82,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('map').imageMapResize();
 <?php
 	if ($default_password === true):?>
-	Swal.fire({
-		title: 'Welcome!',
-		text: 'Please proceed to your Profile Page to change your default password and enter your Royal College Medical Number.',
-		showCancelButton: true,
-		showConfirmButton: true,
-		allowOutsideClick: false,
-		confirmButtonText: 'Profile Page'
-	}).then((result) => {
-		if (result.isConfirmed) {
-			window.location.href = project_url+"/profile";
-		}
-	});
+	
+		Swal.fire({
+			title: 'Welcome!',
+			text: 'Please proceed to your Profile Page to change your default password and enter your Royal College Medical Number.',
+			showCancelButton: true,
+			showConfirmButton: true,
+			allowOutsideClick: false,
+			confirmButtonText: 'Profile Page',
+			cancelButtonText: 'Cancel'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = project_url+"/profile";
+			}
+		});
 <?php
 	endif;?>
 </script>

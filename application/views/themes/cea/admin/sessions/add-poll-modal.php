@@ -230,9 +230,9 @@
 				}
 			}, 'json').fail((error)=>{
 				Swal.fire(
-						'Error!',
-						error,
-						'error');
+					'Error!',
+					error,
+					'error');
 			}).then(function(poll){
 				console.log(poll.correct_answer1)
 				appendCorrectAnswer1(poll.correct_answer1)
@@ -292,31 +292,31 @@
 	function addPoll()
 	{
 		if($('#pollNameInput').val() == ''){
-			swal.fire('Missing Field Poll Name','Please make sure Poll Name is not empty', 'error')
+			swal.fire("Missing Field Poll Name", "Please make sure Poll Name is not empty", 'error')
 			return false;
 		}
 
 		if($('#pollQuestionInput').val() == ''){
-			swal.fire('Missing Field Poll Question','Please make sure  Poll Question is not empty', 'error')
+			swal.fire("Missing Field Poll Question", "Please make sure  Poll Question is not empty", 'error')
 			return false;
 		}
 
 		if(!checkAllFilledPollOption() <= 0) {
-			swal.fire('Missing Field','Please make sure all options are filled', 'error')
+			swal.fire("Missing Field", "Please make sure all options are filled", 'error')
 			return false;
 		}
 
 		Swal.fire({
-			title: 'Please Wait',
-			text: 'Adding the poll...',
+			title: "Please Wait",
+			text: "Adding the poll...",
 			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
+			imageAlt: "Loading...",
 			showCancelButton: false,
 			showConfirmButton: false,
 			allowOutsideClick: false
 		});
-
+		
 		let formData = new FormData(document.getElementById('addPollForm'));
 
 		$.ajax({
@@ -353,26 +353,26 @@
 	function updatePoll(pollOptionsDeleted){
 		// console.log(pollOptionsDeleted);
 		if($('#pollNameInput').val() == ''){
-			swal.fire('Missing Field Poll Name','Please make sure Poll Name is not empty', 'error')
+			swal.fire("Missing Field Poll Name", "Please make sure Poll Name is not empty", 'error')
 			return false;
 		}
 
 		if($('#pollQuestionInput').val() == ''){
-			swal.fire('Missing Field Poll Question','Please make sure  Poll Question is not empty', 'error')
+			swal.fire("Missing Field Poll Question", "Please make sure  Poll Question is not empty", 'error')
 			return false;
 		}
 
 		if(!checkAllFilledPollOption() <= 0) {
-			swal.fire('Missing Field','Please make sure all options are filled', 'error')
+			swal.fire("Missing Field", "Please make sure all options are filled", 'error')
 			return false;
 		}
-
+		
 		Swal.fire({
-			title: 'Please Wait',
-			text: 'Updating the poll...',
+			title: "Please Wait",
+			text: "Updating the poll...",
 			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
+			imageAlt: "Loading...",
 			showCancelButton: false,
 			showConfirmButton: false,
 			allowOutsideClick: false
@@ -418,6 +418,7 @@
 				}
 			}
 		});
+
 	}
 
 </script>

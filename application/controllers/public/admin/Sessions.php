@@ -23,6 +23,7 @@ class Sessions extends CI_Controller
 		$create_modal['types'] = $this->sessions->getAllTypes();
 		$create_modal['presenters'] = $this->sessions->getAllPresenters();
 		$create_modal['moderators'] = $this->sessions->getAllModerators();
+		$create_modal['session_list'] = $this->sessions->getAllSessions()->result();
 
 		$this->load
 			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
@@ -83,6 +84,13 @@ class Sessions extends CI_Controller
 		$date = date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day'));
 		echo json_encode($this->sessions->getFromDay($date));
 	}
+
+	public function getAllContinuing()
+	{
+		$date = date('Y-m-d');
+		echo json_encode($this->sessions->getAllContinuing($date));
+	}
+
 
 	public function getByIdJson($session_id)
 	{
@@ -152,22 +160,31 @@ class Sessions extends CI_Controller
 		echo json_encode($this->sessions->updatePoll($session_id));
 	}
 	
-	public function generateQRCode($session_id){
+	public function generateQRCode($session_id, $room_id){
 
 		$this->load->library('ciqrcode');
 
-		$params['data'] = $this->project_url.'/mobile/sessions/id/'.$session_id;
+		$params['data'] = $this->project_url.'/mobile/sessions/room/'.$room_id;
 		$params['level'] = 'H';
 		$params['size'] = 10;
 		$params['savename'] = FCPATH.'/cms_uploads/projects/'.$this->project->id.'/qrcode/qr_'.$session_id.'.png';
+		$path = FCPATH.'/cms_uploads/projects/'.$this->project->id.'/qrcode';
+		
+		if (!file_exists($path)) {
+			if (mkdir($path, 0777, true)) {
+				// Code here if necessary...
+			} 
+		}
 
 		if($this->ciqrcode->generate($params)){
 			echo 'success';
 		}else{
 			echo 'error';
 		}
-
-//        echo '<img src="'.base_url().'assets/qrcode/qrcode.png" />';
+		
+		// echo '<img src="'.base_url().'assets/qrcode/qrcode.png" />';
+		// die();
+	   
 	}
 
 	public function getQuestionsAjax($session_id)

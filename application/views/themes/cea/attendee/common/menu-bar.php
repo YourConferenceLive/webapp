@@ -118,6 +118,14 @@ $ci_method = $this->router->fetch_method();?>
 					<?php if ($this->router->fetch_class()!='sponsor' && $this->router->fetch_method()!='booth'): // Don't need support button in booths ?>
 						<button class="live-support-open-button nav-item" onclick="openLiveSupportChat()"  style="background-color:  <?= (isset($view_settings) && !empty($view_settings[0]->live_support_color)? $view_settings[0]->live_support_color:'') ?>; display: <?=(liveSupportChatStatus())?'block':'none'?>;"><i class="far fa-life-ring"></i> Live Technical Support</button>
 					<?php endif; ?>
+
+					<li class="nav-item">
+						<select class="custom-select border-0" id="languageSelect">
+							<option value="" disabled selected>Lang</option>
+							<option value="english">English</option>
+							<option value="spanish">Spanish</option>
+						</select>
+					</li>
 					<?php if(empty($view_settings) || $view_settings[0]->mail_menu == 1):?>
 					<li class="nav-item dropdown">
 						<a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

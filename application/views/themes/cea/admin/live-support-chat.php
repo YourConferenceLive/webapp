@@ -301,7 +301,10 @@
             ).done(function(response)
                 {
                     try { $.parseJSON(response);}
-                    catch(error) { toastr.error("You are not logged-in"); return false; }
+                    catch(error) { 
+                        toastr.error('You are not logged-in');
+                        return false; 
+                    }
 
                     response = JSON.parse(response);
                     if (response.status == 'success')
@@ -316,7 +319,7 @@
                         $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
 
                     }else{
-                        toastr.error('Unable to send the text.');
+                        toastr.error('User updated');
                     }
                 }
             ).error((error)=>{
@@ -429,21 +432,21 @@
                 if (response.status == 'failed')
                 {
                     Swal.fire(
-                        'Error',
-                        'Unable to change the status',
+                        "Error",
+                        "Unable to change the status",
                         'error'
                     );
                     $('#liveSupportChatToggle').prop("checked", !$('#liveSupportChatToggle').prop("checked"));
                 }else{
                     socket.emit("supportChatStatusChange", {'room':live_support_chat_room, 'status':status});
                     Swal.close();
-                    toastr.info('Live support status changed');
+                    toastr.info("Live support status changed");
                 }
 
             }).fail(()=>{
                 Swal.fire(
-                    'Error',
-                    'Unable to change the status',
+                    "Error",
+                    "Unable to change the status",
                     'error'
                 );
                 $('#liveSupportChatToggle').prop("checked", !$('#liveSupportChatToggle').prop("checked"));
@@ -468,11 +471,13 @@
             });
 
         }).fail(()=>{
+
             Swal.fire(
                 'Error',
                 'Unable to load users list',
                 'error'
             );
+                
         });
     }
 

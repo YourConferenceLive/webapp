@@ -75,7 +75,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(function()
 	{
-
 		evaluation_list();
 
 		$('.evaluation-table-body').on('click', '#btn-view', function(){
@@ -97,40 +96,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		$.post("<?=$this->project_url?>/admin/evaluation/get_evaluation_data",
-				function(response) {
-					response = JSON.parse(response);
-					$('.evaluation-table-body').html('');
-					if ($.fn.DataTable.isDataTable('#evaluation_table')) {
-						$('#evaluation_table').dataTable().fnClearTable();
-						$('#evaluation_table').dataTable().fnDestroy();
-					}
-					$.each(response, function (index, data) {
-
-						let export_btn = '<a href="'+project_url+'/admin/evaluation/evaluationToCSV/'+data.id+'" class="btn btn-success float-right" id="export-csv"><i class="fas fa-file-csv"></i> Export CSV</a>';
-
-						$('.evaluation-table-body').append(
-								'<tr>' +
-								'	<td>' + (index + 1) + '</td>' +
-								'	<td>' + data.name + '</td>' +
-								'	<td>' + data.title + '</td>' +
-								'	<td>' + export_btn + '</td>' +
-								'</tr>'
-						)
+					function(response) {
+						response = JSON.parse(response);
+						$('.evaluation-table-body').html('');
+						if ($.fn.DataTable.isDataTable('#evaluation_table')) {
+							$('#evaluation_table').dataTable().fnClearTable();
+							$('#evaluation_table').dataTable().fnDestroy();
+						}
+						$.each(response, function (index, data) {
+	
+							let export_btn = '<a href="'+project_url+'/admin/evaluation/evaluationToCSV/'+data.id+'" class="btn btn-success float-right" id="export-csv"><i class="fas fa-file-csv"></i> Export CSV</a>';
+	
+							$('.evaluation-table-body').append(
+									'<tr>' +
+									'	<td>' + (index + 1) + '</td>' +
+									'	<td>' + data.name + '</td>' +
+									'	<td>' + data.title + '</td>' +
+									'	<td>' + export_btn + '</td>' +
+									'</tr>'
+							)
+						});
+	
+						$('#evaluation_table').DataTable({
+							"paging": true,
+							"lengthChange": true,
+							"searching": true,
+							"ordering": true,
+							"info": true,
+							"autoWidth": true,
+							"responsive": false,
+							"order": [[0, "desc"]],
+							"destroy": true
+						});
+	
+						Swal.close();
 					});
-
-					$('#evaluation_table').DataTable({
-						"paging": true,
-						"lengthChange": true,
-						"searching": true,
-						"ordering": true,
-						"info": true,
-						"autoWidth": true,
-						"responsive": false,
-						"order": [[0, "desc"]],
-						"destroy": true
-					});
-
-					Swal.close();
-				});
 	}
 </script>

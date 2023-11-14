@@ -50,6 +50,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<thead>
 								<tr>
 									<th>User ID</th>
+									<!-- <th>Project ID</th>
+									<th>Project Name</th> -->
 									<th>First Name</th>
 									<th>Surname</th>
 									<th>Email</th>
@@ -94,6 +96,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(function ()
 	{
+		
 		listUsers();
 
 		$('.add-user-btn').on('click', function () {
@@ -129,7 +132,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
+			
 			let userId = $(this).attr('user-id');
 
 			$.get(project_admin_url+"/users/getByIdJson/"+userId, function (user)
@@ -167,8 +170,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					$('#user-photo_label').text('');
 					$('#user-photo-preview').attr('src', '').hide();
 				}
-
-				$('#attendee_access, #presenter_access, #moderator_access, #admin_access, #exhibitor_access').prop('checked', false);
+				$('#attendee_access, #presenter_access, #moderator_access, #admin_access, #exhibitor_access, #mobile_attendee_access, #guest_access').prop('checked', false);
 				$.each(user.accesses, function(key, access){
 					$('#'+access.level+'_access').prop('checked', true);
 				});
@@ -182,6 +184,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				Swal.close();
 			});
+
 		});
 
 		$('#sponsorsTable').on('click', '.delete-sponsor', function () {
@@ -192,13 +195,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				title: 'Are you sure?',
 				html:
 						`This will delete all the assets, admins attached, chats etc of this sponsor (`+sponsorName+`)
-						 <br><small>(This won't delete the accounts of admins attached to this booth though)</small>
-						 <br><br> You won't be able to revert this!`,
+							<br><small>(This won't delete the accounts of admins attached to this booth though)</small>
+							<br><br> You won't be able to revert this!`,
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!'
+				confirmButtonText: 'Yes, delete it!',
+				cancelButtonText: 'Cancel'
 			}).then((result) => {
 				if (result.isConfirmed) {
 
@@ -228,6 +232,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					});
 				}
 			})
+                
 		});
 
 		$('#usersTable').on('click', '.reset-user-pass-btn', function () {
@@ -238,7 +243,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function listUsers()
 	{
-
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading users data...',
@@ -252,7 +256,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$.get(project_admin_url+"/users/getAllJson", function (users) {
 			users = JSON.parse(users);
-
 			$('#usersTableBody').html('');
 			if ($.fn.DataTable.isDataTable('#usersTable'))
 			{
@@ -276,6 +279,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'	<td>' +
 						'		'+user.id+
 						'	</td>' +
+						// '	<td>' +
+						// '		'+user.project_id+
+						// '	</td>' +
+						// '	<td>' +
+						// '		'+user.project_name+
+						// '	</td>' +
 						'	<td>' +
 						'		'+user.name+
 						'	</td>' +
@@ -296,7 +305,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'	</td>' +
 						'	<td>' +
 						'		<button class="manage-user btn btn-sm btn-info m-2" user-id="'+user.id+'"><i class="fas fa-edit"></i> Manage</button>' +
-						'		<button class="reset-user-pass-btn btn btn-sm btn-success m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-lock-open"></i> Reset Password</button>'+
+						'		<button class="reset-user-pass-btn btn btn-sm btn-success m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-lock-open"></i>  Reset Password</button>'+
 						'		<button onclick="suspendUser()" class="suspend-user btn btn-sm btn-warning m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-user-slash"></i> Suspend</button>'+
 						'	</td>' +
 						'</tr>'
@@ -328,7 +337,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, reset it!'
+			confirmButtonText: 'Yes, reset it!',
+			cancelButtonText: 'Cancel'
 		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire({
@@ -347,14 +357,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					if (response.status == 'success')
 						Swal.fire(
-								'Done!',
+							"Done!",
 								userName+"'s password is now reset to 12345",
 								'success'
 						);
 					else
 						Swal.fire(
-								'Error!',
-								"Unable to reset the password",
+							"Error!",
+							"Unable to reset the password",
 								'error'
 						);
 				});
@@ -364,7 +374,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	function suspendUser(){
-		toastr.warning('Unavailable')
+		toastr.warning('Unavailable');
 	}
 
 </script>

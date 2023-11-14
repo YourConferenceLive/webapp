@@ -12,8 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
-						<li class="breadcrumb-item"><a href="<?=$this->project_url.'/admin/dashboard'?>">Home</a></li>
-						<li class="breadcrumb-item active">Dashboard</li>
+						<li class="breadcrumb-item"><a class="" href="<?=$this->project_url.'/admin/dashboard'?>">Home</a></li>
+						<li class="breadcrumb-item active ">Dashboard</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -875,3 +875,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="<?=ycl_root?>/vendor_frontend/adminlte/dist/js/pages/dashboard2.js"></script>
+
+<script>
+    
+
+</script>

@@ -114,19 +114,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 		function validate(){
+
 			$('.required').each(function(){
 				var question_id = $(this).attr('data-question_id');
 				var question_title = $(this).attr('data-question_title');
 				var input_name = "answer["+question_id+"]";
 				if($(this).attr('data-input_type')==='radio_opt') {
 					if(!$("input[name='" +input_name+ "']").is(":checked")) {
-						toastr['warning']('Required field #'+question_title)
+						toastr['warning']('Required field #' + question_title)
 						$(this).addClass('border-danger');
 						return false;
 					}
 				} else if ($(this).attr('data-input_type')=='text_input') {
 					if (($("textarea[name='" + input_name + "']").val() == '')) {
-						toastr['warning']('Required field #' + question_title)
+						toastr['warning'](requiredText + question_title)
 						$(this).addClass('border-danger');
 						return false;
 					}
@@ -137,7 +138,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						showCancelButton: true,
 						confirmButtonColor: '#3085d6',
 						cancelButtonColor: '#d33',
-						confirmButtonText: 'Continue!'
+						confirmButtonText: 'Continue!',
+						cancelButtonText: 'Cancel'
 					}).then((result) => {
 						if (result.isConfirmed) {
 							$.post('<?=$this->project_url . '/evaluation/save_evaluation'?>', $('#form1').serialize(), function (response) {
@@ -146,7 +148,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										icon: 'success',
 										title: "<span class='text-success'>"+$('success_title').html()+"</span>",
 										html: $('success_message').html(),
-										confirmButtonText: "ok",
+										confirmButtonText: 'ok',
 									});
 								}
 							});

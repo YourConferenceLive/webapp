@@ -169,12 +169,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				text: 'Loading session attendees data...',
 				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: 'Loading...',
+				imageAlt: 'Loading...'
 				showCancelButton: false,
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
+			
 			let attendeesDT = $('#attendeesTable').DataTable({
 				"dom": "<'row'<'col-sm-12 col-md-8'l><'#attendeesTableBtns.col-sm-12 col-md-4 text-right'B>>" +
 						"<'row'<'col-sm-12'tr>>" +
@@ -243,6 +243,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				backdrop: 'static',
 				keyboard: false
 			});
+
 		});
 
 		$("#sessionAttendeesModal").on('hide.bs.modal', function(){

@@ -16,7 +16,9 @@ $ci_method = $this->router->fetch_method();
 		<?=($ci_controller == 'sessions' && $ci_method == 'view')?'style="margin-left: unset !important;"':''?>
 >
 	<strong>Copyright &copy; 2021 <a href="https://yourconference.live">Your Conference Live</a>. </strong>
-	All rights reserved.
+	<div id="attendeesOnline" class="float-right d-none d-sm-inline-block"> <!-- Filled by JS only in sessions/view pages -->
+
+	</div>
 <!--	<div class="float-right d-none d-sm-inline-block">-->
 <!--		<b>Version</b> 3.1.0-->
 <!--	</div>-->
@@ -26,3 +28,5 @@ $ci_method = $this->router->fetch_method();
 
 </body>
 </html>
+
+

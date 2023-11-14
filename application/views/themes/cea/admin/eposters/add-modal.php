@@ -192,21 +192,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('#save-eposter').on('click', function () {
 		if(!$('input[name="eposterName"]').val())
 		{
-			toastr.warning('ePoster name cannot be empty!')
+			toastr.warning('ePoster name cannot be empty!');
 			return false;
 		}
 
 		if(!$.isNumeric($('input[name="eposterCredits"]').val()))
 		{
-			toastr.warning('Credit must be a positive number!')
+			toastr.warning('Credit must be a positive number!');
 			return false;
 		}
 
 		if($('select[name="eposterType"]').find(":selected").val() != 'eposter' && !$('input[name="videoLink"]').val())
 		{
-			toastr.warning('Surgical Video cannot be empty!')
+			toastr.warning('Surgical Video cannot be empty!');
 			return false;
 		}
+
 
 		let eposterName = ($('#eposterName').val() =='')?'[Empty ePoster Name]':$('#eposterName').val();
 
@@ -227,10 +228,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					updateEposter();
 			}
 		})
+			
+
 	});
 
 	function addEposter()
 	{
+
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Adding the eposter...',
@@ -241,7 +245,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			showConfirmButton: false,
 			allowOutsideClick: false
 		});
-
+		
 		let formData = new FormData(document.getElementById('addePosterForm'));
 
 		$.ajax({
@@ -265,8 +269,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				if (data.status == 'success')
 				{
 					listePosters();
-					console.log('eposter list executed');
-					toastr.success('ePoster added');
+					console.log("eposter list executed");
+					toastr.success("ePoster added");
 					$('#addePosterModal').modal('hide');
 
 				}else{
@@ -274,6 +278,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 			}
 		});
+
 	}
 
 	function updateEposter()
@@ -288,7 +293,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			showConfirmButton: false,
 			allowOutsideClick: false
 		});
-
+		
 		let formData = new FormData(document.getElementById('addePosterForm'));
 
 		$.ajax({
@@ -315,7 +320,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					$('#currentPhotoDiv').show();
 
 					listePosters();
-					toastr.success('ePoster updated');
+					toastr.success("ePoster updated");
 				}else if(data.status == 'warning') {
 					toastr.warning(data.msg);
 				}else{

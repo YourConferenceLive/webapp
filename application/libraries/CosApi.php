@@ -31,7 +31,7 @@ class CosApi
 		$this->api_password = $api_config['api_password'];
 		$this->api_loc = "api/";
 
-		$this->token = $this->getToken();
+		$this->token = $this->getToken(); // this always return null
 	}
 
 
@@ -135,8 +135,9 @@ class CosApi
 	private function secureGet($url)
 	{
 		$authorization = "Authorization: Bearer ".$this->token->access_token;
+		
 		$headers = array('Accept: application/json' , $authorization );
-
+		
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);

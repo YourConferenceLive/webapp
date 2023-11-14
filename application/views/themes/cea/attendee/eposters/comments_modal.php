@@ -56,6 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<script type="text/javascript">
 		$('#post-comment').on('click', function () {
+
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Posting your comments...',
@@ -66,7 +67,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
+			
 			let formData = new FormData(document.getElementById('addUserComments'));
 
 			$.ajax({
@@ -93,7 +94,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						toastr.success('Comment has been added.');
 						$('#comments').val('');
 					}else{
-						toastr.error("Error");
+						toastr.error('Error');
 					}
 				}
 			});

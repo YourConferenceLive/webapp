@@ -11,6 +11,7 @@ class Users extends CI_Controller
 			redirect(base_url() . $this->project->main_route . "/admin/login"); // Not logged-in
 
 		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
+		// $this->user = 7;
 
 		$this->load->model('Users_Model', 'users');
 		$this->load->model('Account_Model', 'account');
@@ -34,23 +35,40 @@ class Users extends CI_Controller
 		echo json_encode($this->users->getAll());
 	}
 
+	public function getAllNoProjectidJson()
+	{
+		echo json_encode($this->users->getAllNoProjectid());
+	}
+
 	public function getByIdJson($id)
 	{
 		echo json_encode($this->users->getById($id));
 	}
 
+	public function getByIdNoProjectidJson($id)
+	{
+		echo json_encode($this->users->getByIdNoProjectid($id));
+	}
+
 	public function create()
 	{
-		if ($this->users->create())
+		$verification = $this->users->create();
+
+		if ($verification && is_array($verification) != true)
 			echo json_encode(array('status' => 'success'));
+		else if($verification['status'] == 'duplicate')
+			echo json_encode($verification);
 		else
 			echo json_encode(array('status' => 'failed'));
 	}
 
 	public function update()
 	{
-		if ($this->users->update())
+		$verification = $this->users->update();
+		if ($verification && is_array($verification) != true)
 			echo json_encode(array('status' => 'success'));
+		else if($verification['status'] == 'duplicate')
+			echo json_encode($verification);
 		else
 			echo json_encode(array('status' => 'failed'));
 	}

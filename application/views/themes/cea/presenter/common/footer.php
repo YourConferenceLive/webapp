@@ -86,4 +86,8 @@ $ci_method = $this->router->fetch_method();
 
 			}, 'json')
 	}
+
+
+	
+
 </script>

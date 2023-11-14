@@ -56,8 +56,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 	.tool-box-section{
 		background-color: black;
-		padding-left:30px !important;
-		padding-right:15px !important;
 	}
 </style>
 
@@ -243,6 +241,11 @@ if (isset($settings) && !empty($settings->poll_music)) {
 	//var socket_session_name = "<?//=getAppName('_admin-to-attendee-chat')?>//";
 
 	$(function () {
+
+		$('#viewPollList').on('click', function(e){
+			e.preventDefault();
+			viewPollList(session_id);
+		});
 		$('#mainTopMenu').css('margin-left', 'unset !important');
 		$('#pushMenuItem').hide();
 
@@ -380,7 +383,7 @@ if (isset($settings) && !empty($settings->poll_music)) {
 			if(data.session_id == session_id) {
 				$('#pollModal').modal('hide');
 				$('#pollResultModalLabel').html(data.poll_question);
-				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
+				$.get(project_presenter_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
 					results = JSON.parse(results);
 					$('#pollResults').html('');
 					// console.log(results);
@@ -443,8 +446,8 @@ if (isset($settings) && !empty($settings->poll_music)) {
 						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
 							// console.log('tdsadsa');
 							//
-							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
-							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css({'color':'#34d334', 'font-weight':'800'});
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css({'color':'#34d334', 'font-weight':'800'});
 
 							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
 							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
@@ -458,6 +461,13 @@ if (isset($settings) && !empty($settings->poll_music)) {
 			if(data.session_id == session_id)
 			{
 				$('#pollResultModal').modal('hide');
+			}
+		});
+
+		socket.on('poll_close_notification', (data)=>{
+			console.log('poll close')
+			if(data.session_id == session_id) {
+				$('#pollModal').modal('hide');
 			}
 		});
 
@@ -851,12 +861,13 @@ if (isset($settings) && !empty($settings->poll_music)) {
 
 			Swal.fire({
 				title: 'Remove From Starred Question',
-				text: "This starred question will be removed on admin and presenter",
+				text: 'This starred question will be removed on admin and presenter',
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, Remove it!'
+				confirmButtonText: 'Yes, Remove it!',
+				cancelButtonText: 'Cancel'
 			}).then((result) => {
 				if (result.isConfirmed) {
 					$.post(project_presenter_url+'/sessions/hideSavedQuestionAjax/',
@@ -873,6 +884,7 @@ if (isset($settings) && !empty($settings->poll_music)) {
 						})
 				}
 			})
+				
 		})
 
 
@@ -970,12 +982,13 @@ if (isset($settings) && !empty($settings->poll_music)) {
 
 		Swal.fire({
 			title: 'Are you sure?',
-			text: "Ending chat will disable attendee from sending you texts until you texts attendee.",
+			text: 'Ending chat will disable attendee from sending you texts until you texts attendee.',
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, end it!'
+			confirmButtonText: 'Yes, end it!',
+			cancelButtonText: 'Cancel'
 		}).then((result) => {
 			if (result.isConfirmed) {
 				socket.emit('end-attendee-to-admin-chat', {"session_id":session_id, "from_id":"admin", "to_id":userId});
@@ -983,9 +996,14 @@ if (isset($settings) && !empty($settings->poll_music)) {
 				$('#attendeeChatModal').modal('hide');
 			}
 		})
+
 	});
 
+	socket.on('end-attendee-to-admin-chat-notification', function(){
+		$('#attendeeChatModal').modal('hide')
+	})
 
+	//todo: check if affected from other applications using socket.
 
 	/** Live users per session **/
 	socket.emit(`ycl_session_active_users`, `${projectId}_${session_id}`);
@@ -1118,6 +1136,10 @@ if (isset($settings) && !empty($settings->poll_music)) {
 		});
 	})
 
+
+	function viewPollList(session_id){
+		window.open(project_presenter_url+'/sessions/polls/'+session_id,'_blank')
+	}
 //	End Emojis functions
 
 </script>

@@ -15,4 +15,12 @@ class Push_notification extends CI_Controller
 	public function getPushNotification(){
 		echo json_encode($this->m_push_notification->getPushNotification());
 	}
+
+
+	public function deleteNofification()
+	{
+		$xpostdata = $this->input->post();
+		$id = $xpostdata['idno'];
+		echo json_encode($this->m_push_notification->deleteNotification($id));
+	}
 }

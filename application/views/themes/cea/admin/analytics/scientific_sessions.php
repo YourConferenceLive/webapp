@@ -157,7 +157,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let start_time 		= $(this).data('start-time');
 			let end_time 		= $(this).data('end-time');
 			let session_name 		= $(this).data('session-name');
-console.log('[' + session_id + '-' + start_time + '-' + end_time + ']');
+
+			console.log('[' + session_id + '-' + start_time + '-' + end_time + ']');
+
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading session attendees data...',
@@ -168,7 +170,6 @@ console.log('[' + session_id + '-' + start_time + '-' + end_time + ']');
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
 			let attendeesDT = $('#attendeesTable').DataTable({
 				"dom": "<'row'<'col-sm-12 col-md-8'l><'#attendeesTableBtns.col-sm-12 col-md-4 text-right'B>>" +
 						"<'row'<'col-sm-12'tr>>" +
@@ -240,6 +241,7 @@ console.log('[' + session_id + '-' + start_time + '-' + end_time + ']');
 				backdrop: 'static',
 				keyboard: false         
 			});
+
 		});
 
 		$("#sessionAttendeesModal").on('hide.bs.modal', function(){

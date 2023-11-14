@@ -192,13 +192,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, remove it!'
+				confirmButtonText: 'Yes, remove it!',
+				cancelButtonText: 'Cancel'
 			}).then((result) => {
 				if (result.isConfirmed) {
 
 					Swal.fire({
 						title: 'Please Wait',
-						text: 'Removing the ePoster...',
+						text: "Removing the ePoster...",
 						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
 						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
 						imageAlt: 'Loading...',
@@ -216,14 +217,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 							toastr.success(eposter_name+" has been removed!");
 						}else{
 							Swal.fire(
-									'Error!',
-									'Unable to remove '+eposter_name,
+								"Error!",
+								"Unable to remove "+eposter_name,
 									'error'
 							);
 						}
 					}); 
 				}
 			});
+                
 		});
 
 		$('#eposterTable').on('click', '.openPoll', function () {
@@ -245,6 +247,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 	function listePosters()
 	{
+
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading ePosters data...',
@@ -255,7 +258,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			showConfirmButton: false,
 			allowOutsideClick: false
 		});
-
+		
 		$.get(project_admin_url+"/eposters/getAllJson", function (eposters) {
 			eposters = JSON.parse(eposters);
 
@@ -288,7 +291,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 				if (typeof(eposter.prize) == 'string') {
 					iPrize = eposter.prize;
 					iPrize = iPrize.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-	    				return letter.toUpperCase();
+						return letter.toUpperCase();
 					});
 				}
 
@@ -347,5 +350,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
 			Swal.close();
 		});
+
 	}
 </script>

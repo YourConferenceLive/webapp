@@ -101,7 +101,7 @@
 
 				})
 				.fail(function() {
-					toastr.error("Unable to load the report.");
+					toastr.error('Unable to load the report.');
 				});
 		})
 	})

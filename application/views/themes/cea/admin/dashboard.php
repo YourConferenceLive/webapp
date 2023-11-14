@@ -120,11 +120,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 				<!-- /.col -->
 			</div>
+
 			<!-- /.row -->
-
-
-
-
 
 			<?php if (1==2): ?>
 			<div class="row">

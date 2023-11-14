@@ -20,13 +20,13 @@
 
 							<div class="form-group">
 								<label>Email</label>
-								<input name="email" id="email" class="form-control" type="text" placeholder="User's email">
+								<input name="email" id="email" class="form-control" type="text" placeholder="User's email" required>
 								<small id="emailExistsError" class="form-text text-muted text-red" style="display: none;">Email already exists.</small>
 							</div>
 
 							<div class="form-group">
 								<label>Password</label>
-								<input name="password" id="password" class="form-control mb-2" type="text" placeholder="User's password">
+								<input name="password" id="password" class="form-control mb-2" type="text" placeholder="User's password" required>
 								<small class="mt-2">
 									Passwords are encrypted and cannot be displayed or updated in cleartext, you can only
 									<button type="button" id="reset-pass-update-modal" class="reset-user-pass-btn btn btn-xs btn-success text-white ml-2 mr-2" user-id="" user-name=""><i class="fas fa-lock-open"></i> Reset</button>
@@ -36,22 +36,22 @@
 						</div>
 					</div>
 
-					<div class="card">
+					<div class="card d-none">
 						<div class="card-header">
 							<i class="far fa-address-card"></i> <?=$this->project->name?> Membership
 						</div>
 						<div class="card-body">
 							<div class="form-group">
 								<label><?=$this->project->name?> Party ID</label>
-								<input name="idFromApi" id="idFromApi" class="form-control" type="text" placeholder="User's ID in <?=$this->project->name?> database">
+								<input name="idFromApi" id="idFromApi" class="form-control" type="text" placeholder="User's ID in <?=$this->project->name?> database" required>
 							</div>
 							<div class="form-group">
 								<label>Membership Type</label>
-								<input name="membership_type" id="membership_type" class="form-control" type="text" placeholder="User's membership type eg; C for contact">
+								<input name="membership_type" id="membership_type" class="form-control" type="text" placeholder="User's membership type eg; C for contact" required>
 							</div>
 							<div class="form-group">
 								<label>Membership Sub Type</label>
-								<input name="membership_sub_type" id="membership_sub_type" class="form-control" type="text" placeholder="User's membership sub type eg; MS for Medical Student (only some Non-members will have sub type)">
+								<input name="membership_sub_type" id="membership_sub_type" class="form-control" type="text" placeholder="User's membership sub type eg; MS for Medical Student (only some Non-members will have sub type)" required>
 							</div>
 						</div>
 					</div>
@@ -62,7 +62,7 @@
 						</div>
 						<div class="card-body">
 
-							<div class="form-group">
+							<div class="form-group d-none">
 								<label>Display Photo</label>
 								<div class="custom-file">
 									<input name="user-photo" id="user-photo" type="file" class="custom-file-input">
@@ -72,7 +72,7 @@
 							<img class="image-preview" id="user-photo-preview" src="" style="display: none;" width="75px">
 
 
-							<div class="form-group">
+							<div class="form-group d-none">
 								<label>Name Prefix</label>
 								<input name="name_prefix" id="name_prefix" class="form-control" type="text" placeholder="User's name prefix">
 							</div>
@@ -92,12 +92,12 @@
 								<input name="surname" id="surname" class="form-control" type="text" placeholder="User's surname">
 							</div>
 
-							<div class="form-group">
+							<div class="form-group d-none">
 								<label>Biography</label>
 								<input name="bio" id="bio" class="form-control" type="text" placeholder="User's bio">
 							</div>
 
-							<div class="form-group">
+							<div class="form-group d-none">
 								<label>Disclosure</label>
 								<input name="disclosure" id="disclosure" class="form-control" type="text" placeholder="User's disclosure">
 							</div>
@@ -112,7 +112,7 @@
 						<div class="card-body">
 
 							<div class="row">
-								<div class="col-2 offset-1">
+								<div class="col-2 offset-3">
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="attendee_access" id="attendee_access" checked="">
 										<label for="attendee_access" class="custom-control-label">Attendee</label>
@@ -130,7 +130,8 @@
 										<label for="moderator_access" class="custom-control-label">Moderator</label>
 									</div>
 								</div>
-								<div class="col-2">
+
+								<div class="col-2 offset-3">
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="admin_access" id="admin_access">
 										<label for="admin_access" class="custom-control-label">Admin</label>
@@ -140,6 +141,18 @@
 									<div class="custom-control custom-checkbox">
 										<input class="custom-control-input" type="checkbox" name="exhibitor_access" id="exhibitor_access">
 										<label for="exhibitor_access" class="custom-control-label">Exhibitor</label>
+									</div>
+								</div>
+								<div class="col-2">
+									<div class="custom-control custom-checkbox">
+										<input class="custom-control-input" type="checkbox" name="guest_access" id="guest_access">
+										<label for="guest_access" class="custom-control-label">Guest</label>
+									</div>
+								</div>
+								<div class="col-2">
+									<div class="custom-control custom-checkbox">
+										<input class="custom-control-input" type="checkbox" name="mobile_attendee_access" id="mobile_attendee_access">
+										<label for="mobile_attendee_access" class="custom-control-label">Mobile</label>
 									</div>
 								</div>
 							</div>
@@ -160,7 +173,6 @@
 </div>
 
 <script>
-
 	// Live email existence checker
 	$('#email').on("focusout", function () {
 		if ($('#userId').val() != 0 || $('#email').val() == '')
@@ -198,13 +210,16 @@
 	});
 
 	$('#save-user').on('click', function () {
+		
 
 		if
 		(
 				! $('#attendee_access').is(":checked") &&
 				! $('#presenter_access').is(":checked") &&
 				! $('#moderator_access').is(":checked") &&
-				! $('#admin_access').is(":checked")
+				! $('#admin_access').is(":checked") && 
+				! $('#mobile_attendee_access').is(":checked") &&
+				! $('#guest_access').is(":checked")
 		)
 		{
 			toastr.warning('You must select at least one access');
@@ -219,6 +234,18 @@
 
 	function addUser()
 	{
+		let email = $('#email').val();
+		let password = $('#password').val();
+
+		if (email.trim() === '') {
+			toastr.error("Email is required.");
+			return;
+		}
+		else if(password.trim() === '') {
+			toastr.error("Password is required.");
+			return; 
+		}
+
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Adding the user...',
@@ -249,13 +276,15 @@
 				Swal.close();
 
 				data = JSON.parse(data);
-
+				console.log(data);
 				if (data.status == 'success')
 				{
 					listUsers();
-					toastr.success('User added');
+					toastr.success("User added");
 					$('#addUserModal').modal('hide');
 
+				}else if(data.status == 'duplicate'){
+					toastr.error("This user is already in the database");
 				}else{
 					toastr.error("Error");
 				}
@@ -265,6 +294,13 @@
 
 	function updateUser()
 	{
+		let email = $('#email').val();
+
+		if (email.trim() === '') {
+			toastr.error('Email is required.');
+			return;
+		}
+
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Updating the sponsor...',
@@ -301,10 +337,12 @@
 					listUsers();
 					toastr.success('User updated');
 
+				}else if(data.status == 'duplicate'){
+					toastr.error("This user is already in the database");
 				}else if(data.status == 'failed'){
 					toastr.success('No changes made');
 				}else{
-					toastr.error("Error");
+					toastr.error('Error');
 				}
 			}
 		});

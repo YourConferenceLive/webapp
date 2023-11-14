@@ -34,11 +34,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </form>
 </body>
+<script src="<?= ycl_base_url ?>/ycl_assets/js/translater.js"></script>
 
 <script>
 
 	$(function () {
-
 		$('#login-btn').on('click', function () {
 
 			Swal.fire({
@@ -54,49 +54,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			let email = $('#email').val();
 			let password = $('#password').val();
-
 			$.post( "<?=$this->project_url.'/authentication/login'?>",
+			{
+				email: email,
+				password: password,
+				access_level: 'admin'
+			})
+			.done(function( data ) {
+				data = JSON.parse(data);
+				if (data.status == 'success')
 				{
-					email: email,
-					password: password,
-					access_level: 'admin'
-				})
-				.done(function( data ) {
+					Swal.fire({
+						title: 'Done!',
+						text: 'We are redirecting you',
+						icon: 'success',
+						showCancelButton: false,
+						showConfirmButton: false,
+						allowOutsideClick: false
+					});
 
-					data = JSON.parse(data);
-					if (data.status == 'success')
-					{
-						Swal.fire({
-							title: 'Done!',
-							text: 'We are redirecting you',
-							icon: 'success',
-							showCancelButton: false,
-							showConfirmButton: false,
-							allowOutsideClick: false
-						});
+					setTimeout(() => {
+						window.location = '<?=$this->project_url.'/admin/dashboard'?>'
+						// alert("Success");
+					}, 1000);
 
-						setTimeout(() => {
-							window.location = '<?=$this->project_url.'/admin/dashboard'?>'
-						}, 1000);
-
-					}else{
-						Swal.fire(
-							'Unable To Login',
-							data.msg,
-							'error'
-						);
-					}
-
-				})
-				.fail(function () {
+				}else{
 					Swal.fire(
-						'Unable To Register',
-						'Network error',
+						"Unable To Login",
+						data.msg,
 						'error'
 					);
-				});
-		});
 
+				}
+
+			})
+			.fail(function () {
+				Swal.fire(
+					"Unable To Register",
+					"Network error",
+					'error'
+				);
+			});
+			
+		});
 	});
 
 </script>

@@ -97,7 +97,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		$('.savePushNotificationBtn').on('click', function(){
 			if($('.notification_message').val() == ''){
-				toastr.warning('Message can not be empty')
+				toastr.warning('Message can not be empty');
 				return false
 			}
 
@@ -117,7 +117,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						$('.notification_message').val('');
 
 						swal.fire(
-							'Success!',
+							"Success!",
 							response.msg,
 							'success'
 						)
@@ -141,8 +141,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				function(response){
 
 					let timerInterval
+
 					Swal.fire({
-						title: 'Auto close alert!',
+						title: 'Are you sure you want to logout?',
 						html: 'Sending Notification <br>Please Wait...<b>',
 						timer: 3000,
 						timerProgressBar: true,
@@ -162,11 +163,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							console.log('Notification updated')
 						}
 					})
-
+						
 					socket.emit('send_push_notification', {
 						'project_id': project_id
 					})
-
 					var delayInMilliseconds = 3000; //1 second
 					setTimeout(function () {
 						console.log('time');
@@ -188,6 +188,70 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						});
 					}, delayInMilliseconds);
 				},'json')
+		})
+
+		$('.push_notification_table_body').on('click', '.deleteNotificationBtn', function(){
+			let notification_id = $(this).attr('notification_id')
+			let id = "&idno="+notification_id;
+			$('.sendNotificationBtn').prop('disabled', true);
+			$(this).hide();
+			$this = $(this);
+
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "You won't undo this!",
+				icon: 'warning',
+				allowOutsideClick: false,
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!',
+				cancelButtonText: 'Cancel'
+			}).then((result) => {
+				console.log("<?=$this->project_url?>/push_notification/deleteNofification/");
+				base_url = "<?=$this->project_url?>/push_notification/deleteNofification/";
+				if(result.value)
+				{
+					$('.sendNotificationBtn').prop('disabled', true);
+					$('.deleteNotificationBtn').prop('disabled', true);
+					$.ajax({
+						url: base_url,
+						method: "post",
+						data: id,
+						dataType: "json",
+						success: function (response) {
+							let cr_data = response;
+							if (cr_data.status == "success")
+							{
+								Swal.fire({
+									icon: 'success',
+									title: 'Your work has been saved',
+									text: cr_data.msg,
+									allowOutsideClick: false
+								}).then((result) => {
+									if(result.value)
+									{
+										window.location.href ="<?=$this->project_url?>/admin/push_notification";
+									}
+								});
+							}
+							else
+							{
+								Swal.fire({
+									icon: 'error',
+									title: cr_data.msg,
+									allowOutsideClick: false
+								});
+							}
+						}
+					});
+				}
+				else
+				{
+					console.log("Cancelled");
+				}
+			});
+
 		})
 	})
 
@@ -214,7 +278,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					$('.push_notification_table_body').html('');
 					$.each(response.data, function(i, data){
 						console.log(data.session_id);
-						let sendNotificationBtn = '<button class="btn btn-success btn-sm sendNotificationBtn" notification_id="'+data.id+'" session_id="'+data.session_id+'" project_id="'+data.project_id+'" notify_to="'+data.notify_to+'" message="'+data.message+'" ><i class="fas fa-paper-plane" aria-hidden="true"></i> Send Notification</button>'
+						let sendNotificationBtn = '<button class="btn btn-success btn-sm sendNotificationBtn " notification_id="'+data.id+'" session_id="'+data.session_id+'" project_id="'+data.project_id+'" notify_to="'+data.notify_to+'" message="'+data.message+'" ><i class="fas fa-paper-plane" aria-hidden="true"></i> Send Notification</button>'
+						let deleteNotificationBtn = '<button class="btn btn-danger btn-sm mt-1 deleteNotificationBtn " notification_id="'+data.id+'" session_id="'+data.session_id+'" project_id="'+data.project_id+'" message="'+data.message+'" ><i class="fas fa-trash" aria-hidden="true"></i> Delete Notification</button>'
 						$('.push_notification_table_body').append(
 							'<tr>' +
 							'<td>'+(i+1)+'</td>' +
@@ -222,7 +287,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							'<td>'+((data.session_name == null)? "":data.session_name)+'</td>' +
 							'<td>'+data.message+'</td>' +
 							'<td>'+data.notify_to+'</td>' +
-							'<td>'+sendNotificationBtn+'</td>' +
+							'<td class="text-center" >'+sendNotificationBtn+deleteNotificationBtn+'</td>' +
 							'</tr>'
 						)
 					})

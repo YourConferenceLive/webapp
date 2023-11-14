@@ -19,25 +19,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	#pollModal label{
 		margin-left: 10px !important;
 	}
+
+	.pollingBG{
+		background-image: url("<?=ycl_root?>/theme_assets/<?=$this->project->theme?>/assets/images/background-images/Polling_BG.jpg");
+		background-size: 100% 100%;
+	}
 </style>
 
 <link href="<?= ycl_root ?>/theme_assets/<?= $this->project->theme ?>/assets/css/sessions.css?v=<?= rand() ?>" rel="stylesheet">
 
-<div class="sessions-view-container container-fluid p-0">
+<div class="sessions-view-container container-fluid p-0 pollingBG">
 
 </div>
 
-<?php
-if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
-	foreach ($view_settings as $music_setting) {
-		if ($music_setting->poll_music != "") {
-?>
-			<audio allow="autoplay" id="audio_<?= $this->project->id ?>" src="<?= ycl_root . '/cms_uploads/projects/' . $this->project->id . '/sessions/music/' . $music_setting->poll_music ?>"></audio>
-<?php
-		}
-	}
-}
-?>
+<?php if (isset($view_settings) && !empty($view_settings[0]->poll_music)):
+		if ($view_settings[0]->poll_music != "") : ?>
+			<audio allow="autoplay" id="audio_<?=$this->project->id?>" src="<?= ycl_root.'/cms_uploads/projects/'.$this->project->id.'/sessions/music/'.$view_settings[0]->poll_music ?>" ></audio>
+
+<?php endif; endif ?>
 
 <input type="hidden" id="logs_id" value="">
 <style>
@@ -347,76 +346,24 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			}
 		});
 
-		socket.on('ycl_launch_poll_result', (data) => {
-			console.log(data);
-			if (data.session_id == sessionId) {
+		socket.on('ycl_launch_poll_result', (data) => {if(data.session_id == sessionId) {
 				$('#pollModal').modal('hide');
 				$('#pollResultModalLabel').html(data.poll_question);
-				$.get(project_url + "/sessions/getPollResultAjax/" + data.poll_id, function(results) {
-					results = JSON.parse(results);
-					$('#pollResults').html('');
-					// console.log(results);
-
-					if (results.poll_type === 'poll' || results.poll_type === 'presurvey') {
-						$.each(results.poll, function(poll_id, option_details) {
-							$('#pollResults').append('' +
-								'<div class="form-group" id="group-' + option_details.option_order + '">' +
-								'  <label class="form-check-label progress-label">' + option_details.option_name + '</label>' +
-								'  <div class="progress" style="height: 20px;">' +
-								'    <div class="progress-bar" role="progressbar" style="width: ' + ((option_details.vote_percentage !== undefined) ? option_details.vote_percentage : 0) + '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined) ? option_details.vote_percentage : 0) + '" aria-valuemin="0" aria-valuemax="100">' + ((option_details.vote_percentage !== undefined) ? option_details.vote_percentage : 0) + '%</div>' +
-								'    <div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity:0.2; width: ' + ((option_details.vote_percentage !== undefined) ? 100 - option_details.vote_percentage : 100) + '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined) ? 100 - option_details.vote_percentage : 100) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
-								'  </div>' +
-								'</div>');
-						});
-						$('#legend').html('');
-
-					} else {
-						$.each(results.poll, function(poll_id, option_details) {
-							// console.log(option_details);
-							$('#pollResults').append('' +
-								'<div class="form-group " id="group-' + option_details.option_order + '" >' +
-								'  <label class="form-check-label progress-label">' + option_details.option_name + '</label>' +
-								' <div class="progress_section" id="progress-section-' + option_details.option_order + '"> ' +
-								'	<div class="progress  mb-1" style="height: 20px;">' +
-								'    	<div class="progress-bar" role="progressbar" style="width: ' + ((option_details.vote_percentage !== undefined) ? option_details.vote_percentage : 0) + '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined) ? option_details.vote_percentage : 0) + '" aria-valuemin="0" aria-valuemax="100">' + ((option_details.vote_percentage !== undefined) ? option_details.vote_percentage : 0) + '%</div>' +
-								'    	<div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity: 0.2; width: ' + ((option_details.vote_percentage !== undefined) ? 100 - option_details.vote_percentage : 100) + '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined) ? 100 - option_details.vote_percentage : 100) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
-								'	</div> ' +
-								'</div>' +
-								'</div>');
-
-						});
-						$.each(results.compere, function(poll_id, option_details) {
-							$('#progress-section-' + option_details.option_order).prepend(
-								'	<div class="progress mb-1" style="height: 20px;">' +
-								'    	<div class="progress-bar bg-info" role="progressbar" style="width: ' + option_details.vote_percentage_compare + '%;" aria-valuenow="' + option_details.vote_percentage_compare + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage_compare + '%</div>' +
-								'    	<div class="progress-bar" role="progressbar" style="background-color:#17A2B8; opacity: 0.2; width: ' + (100 - option_details.vote_percentage_compare) + '%;" aria-valuenow="' + (100 - option_details.vote_percentage_compare) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
-								'	</div> '
-							);
-						});
-
-						$('#legend').html(
-							'<span class="mr-4"><span style="width:20px; height:20px;" class=" bg-info  d-inline-block "></span> Presurvey</span>' +
-							'<span><span  style="width:20px; height:20px;" class="bg-primary d-inline-block "></span> Assessment</span>'
-						)
-					}
-
-					$('#pollResultModal').modal({
-						backdrop: 'static',
-						keyboard: false
-					});
-				}).then(function(obj, results) {
+				$.get(project_url+"/sessions/getPollResultAjax/"+data.poll_id, function (results) {
+					show_poll_result(results)
+				}).then(function(obj,results){
 					obj = JSON.parse(obj);
-					if (obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0') {
-						$('.progress-label').attr('style', 'margin-left:45px')
-					} else {
+					if(obj.poll_correct_answer1 !== '0' || obj.poll_correct_answer2 !== '0' ) {
+						$('.progress-label').attr('style', 'margin-left:30px')
+					}else{
 						$('.progress-label').attr('style', '')
 					}
-					if (obj.poll_correct_answer1 || obj.poll_correct_answer2) {
-						if (obj.poll_correct_answer1 !== 0 || obj.poll_correct_answer2 !== 0) {
+					if(obj.poll_correct_answer1 || obj.poll_correct_answer2 ) {
+						if(obj.poll_correct_answer1 !== 0  || obj.poll_correct_answer2 !== 0) {
 							// console.log('tdsadsa');
 							//
-							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color', 'green');
-							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color', 'green');
+							$('#group-' + obj.poll_correct_answer1).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
+							$('#group-' + obj.poll_correct_answer2).prepend('<i class="fas fa-check text-success"></i>').css('color','green');
 
 							$('#group-' + obj.poll_correct_answer1).find('label').attr('style', 'margin-left: 8px')
 							$('#group-' + obj.poll_correct_answer2).find('label').attr('style', 'margin-left: 8px')
@@ -432,6 +379,61 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 			}
 		});
 	});
+
+	function show_poll_result(results){
+		$('#howMuchSecondsLeftResult').text("");
+			results = JSON.parse(results);
+					$('#pollResults').html('');
+					// console.log(results);
+
+					if(results.poll_type === 'poll' || results.poll_type === 'presurvey') {
+						$.each(results.poll, function (poll_id, option_details) {
+							$('#pollResults').append('' +
+								'<div class="form-group" id="group-'+option_details.option_order+'">' +
+								'  <label class="form-check-label progress-label">'+option_details.option_name+'</label>' +
+								'  <div class="progress" style="height: 20px;">' +
+								'    <div class="progress-bar" role="progressbar" style="width: '+((option_details.vote_percentage !== undefined)? option_details.vote_percentage  : 0 )+'%;" aria-valuenow="'+((option_details.vote_percentage !== undefined)? option_details.vote_percentage : 0) +'" aria-valuemin="0" aria-valuemax="100">'+((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0)+'%</div>' +
+								'    <div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity:0.2; width: '+((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage  : 100 )+'%;" aria-valuenow="'+((option_details.vote_percentage !== undefined)? 100-option_details.vote_percentage : 100) +'" aria-valuemin="0" aria-valuemax="100"></div>' +
+								'  </div>' +
+								'</div>');
+						});
+						$('#legend').html('');
+
+					}else {
+						$.each(results.poll, function (poll_id, option_details) {
+							// console.log(option_details);
+							$('#pollResults').append('' +
+								'<div class="form-group " id="group-'+option_details.option_order+'" >' +
+								'  <label class="form-check-label progress-label">' + option_details.option_name + '</label>' +
+								' <div class="progress_section" id="progress-section-'+option_details.option_order+'"> ' +
+								'	<div class="progress  mb-1" style="height: 20px;">' +
+								'    	<div class="progress-bar" role="progressbar" style="width: ' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0)+ '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0) + '" aria-valuemin="0" aria-valuemax="100">' + ((option_details.vote_percentage !== undefined)? option_details.vote_percentage: 0) + '%</div>' +
+								'    	<div class="progress-bar" role="progressbar" style="background-color:#007BFF; opacity: 0.2; width: ' + ((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage: 100)+ '%;" aria-valuenow="' + ((option_details.vote_percentage !== undefined)? 100 - option_details.vote_percentage: 100) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+								'	</div> ' +
+								'</div>' +
+								'</div>');
+
+						});
+						$.each(results.compere, function (poll_id, option_details) {
+							$('#progress-section-'+option_details.option_order).prepend(
+								'	<div class="progress mb-1" style="height: 20px;">' +
+								'    	<div class="progress-bar bg-info" role="progressbar" style="width: ' + option_details.vote_percentage_compare + '%;" aria-valuenow="' + option_details.vote_percentage_compare + '" aria-valuemin="0" aria-valuemax="100">' + option_details.vote_percentage_compare + '%</div>' +
+								'    	<div class="progress-bar" role="progressbar" style="background-color:#17A2B8; opacity: 0.2; width: ' + (100-option_details.vote_percentage_compare) + '%;" aria-valuenow="' + (100-option_details.vote_percentage_compare) + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+								'	</div> '
+							);
+						});
+
+						$('#legend').html(
+							'<span class="mr-4"><i style="width:20px; height:20px;" class="fa-solid fa-square bg-info text-info d-inline-block "></i> Presurvey</span>' +
+							'<span><i  style="width:20px; height:20px;" class="fa-solid fa-square bg-primary text-primary d-inline-block "></i> Assessment</span>'
+						)
+					}
+
+					$('#pollResultModal').modal({
+						backdrop: 'static',
+						keyboard: false
+					});
+	}
 
 	socket.on('poll_close_notification', (data) => {
 		if (data.session_id == sessionId) {
@@ -684,12 +686,12 @@ if (isset($view_settings) && !empty($view_settings[0]->poll_music)) {
 	/******* End of saving time spent on session - by Rexter ************/
 
 	function play_music() {
-		var audio = document.getElementById("audio_" + <?= $this->project->id ?>);
+		var audio = document.getElementById("audio_<?=$this->project->id?>");
 		audio.play();
 	}
 
 	function stop_music() {
-		var audio1 = document.getElementById("audio_" + <?= $this->project->id ?>);
+		var audio1 = document.getElementById("audio_<?=$this->project->id?>");
 		audio1.pause();
 		audio1.currentTime = 0;
 	}

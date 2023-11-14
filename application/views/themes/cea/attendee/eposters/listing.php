@@ -166,6 +166,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 
 	    function applySearch() {
+
 			Swal.fire({
 				title: 'Please Wait',
 				text: 'Loading ePosters...',
@@ -176,13 +177,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
 			var track 	= (($('#frm-search select[name="track"]').children("option:selected").val()) ? $('#frm-search select[name="track"]').children("option:selected").val() : 'NaN');
 			var author 	= (($('#frm-search select[name="author"]').children("option:selected").val()) ? $('#frm-search select[name="author"]').children("option:selected").val() : 'NaN' );
 			var type 	= (($('#frm-search input[type="radio"][name="type"]').filter(':checked').val()) ? $('#frm-search input[type="radio"][name="type"]').filter(':checked').val() : 'NaN' );
 			var keyword = (($('#frm-search input[type="text"]').val()) ? $('#frm-search input[type="text"]').val() : 'NaN' );
 
 			$(location).attr('href', project_url + '/eposters/index/' + track + '/' + author + '/' + type + '/' + keyword + '/');
+
 	    }
 	});
 </script>

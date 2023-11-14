@@ -101,14 +101,16 @@
 			e.preventDefault();
 			let resource_id = $(this).attr('resource-id');
 			let session_id = $(this).attr('session-id');
+
 			Swal.fire({
-				title: 'Are you sure?',
+				title: "Are you sure?",
 				text: "",
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, remove it!'
+				confirmButtonText: "Yes, remove it!",
+				cancelButtonText: "Cancel"
 			}).then((result) => {
 				if (result.isConfirmed) {
 					if(resource_id !== ''){
@@ -121,7 +123,7 @@
 							})
 					}
 				}
-			})
+			});
 
 		})
 	})

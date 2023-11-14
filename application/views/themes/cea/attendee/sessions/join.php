@@ -14,13 +14,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<img id="full-screen-background" src="<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/sessions/sessions_listing_background.jpg">
 <?php endif;?>
 
+<style>
+	.timerDiv {
+		max-width: 100%;
+		max-height: 100%;
+		background-image: url('<?= ycl_root?>/ycl_assets/images/timerBG.png');
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+</style>
+
 <div class="clearfix" style="margin-bottom: 7rem;"></div>
 <div class="sessions-join-container container-fluid pl-md-6 pr-md-6">
 	<div class="col-12">
 		<div class="session-join-title p-3">
 			<?=$session->name?>
 		</div>
-		<div class="session-join-info p-1 pb-3">
+		<div class="session-join-info pt-1 pb-0">
 			<div class="row mt-2 ml-1">
 				<div class="col-8 border-right border-dark">
 					<div class="row">
@@ -32,6 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="col-8">
 							<h6 class="font-weight-normal"><?=date("F j, Y g:i A", strtotime($session->start_date_time))?> - <?=date("g:i A", strtotime($session->end_date_time))?>  <?=$session->time_zone?></h6>
 							<h4><?=$session->name?></h4>
+							<h6 class="text-muted"><?=$session->other_language_name?></h6>
 						</div>
 					</div>
 				</div>
@@ -58,21 +70,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 							<?php
 							foreach ($session->presenters as $index=>$presenter):
-								echo " ".trim($presenter->name)." ".trim($presenter->surname).(!empty(trim($presenter->credentials))?', '.trim($presenter->credentials):'');
-								echo "<br>";
+
+								if(!in_array($presenter->email, array('q@a.com', 'q@a2.com'))){
+									$xcredentials = trim($presenter->credentials);
+									echo " ".trim($presenter->name)." ".trim($presenter->surname).( !empty($xcredentials) ? ', '.trim($presenter->credentials) : ''); // comeback
+									echo "<br>";
+								}
 							endforeach;?>
 						<?php endif; ?>
 					</p>
 
 				</div>
 			</div>
-			<div class="row mt-5">
-				<div class="col-12 text-center">
-					<div class="container border border-dark">
+			<div class="row mx-0">
+				<div class="col-12 text-center timerDiv  py-3">
+					<div class="container border border-dark shadow mt-5 mb-4">
 						<div class="row">
-							<div class="col-12 pt-5 pb-5 bg-white">
-								<p>You will automatically enter the session 15 minutes before it is due to begin.</p>
-								<p>Entry will be enabled in <strong><span id="countdown_timer">...</span></strong></p>
+							<div class="col-12 py-2 bg-white">
+								<p class="mb-0">You will automatically enter the session 15 minutes before it is due to begin.</p>
+								<p class="mb-0" >Entry will be enabled in <strong><span id="countdown_timer">...</span></strong></p>
 							</div>
 						</div>
 					</div>

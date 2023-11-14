@@ -48,6 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<script type="text/javascript">
 			$('#add-note').on('click', function () {
+
 				Swal.fire({
 					title: 'Please Wait',
 					text: 'Posting your notes...',
@@ -63,27 +64,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				let entity_type = formData.get('entity_type');
 
 				$.ajax({type: "POST",
-						url: project_url+"/eposters/add_notes/" + entity_type,
-						data: formData,
-						processData: false,
-						contentType: false,
-						error: function(jqXHR, textStatus, errorMessage) {
-							Swal.close();
-							toastr.error(errorMessage);
-						},
-						success: function(data) {
-							data = JSON.parse(data);
+					url: project_url+"/eposters/add_notes/" + entity_type,
+					data: formData,
+					processData: false,
+					contentType: false,
+					error: function(jqXHR, textStatus, errorMessage) {
+						Swal.close();
+						toastr.error(errorMessage);
+					},
+					success: function(data) {
+						data = JSON.parse(data);
 
-							if (data.status == 'success') {
-								$('#notes_list_container').html('');
-								$('textarea[name="notes"]').val('');
-								loadNotes(entity_type, formData.get('entity_type_id'), note_page);
-								toastr.success('Note added.');
-								$('#notes').val('');
-							}else{
-								toastr.error("Error");
-							}
+						if (data.status == 'success') {
+							$('#notes_list_container').html('');
+							$('textarea[name="notes"]').val('');
+							loadNotes(entity_type, formData.get('entity_type_id'), note_page);
+							toastr.success("Note added.");
+							$('#notes').val('');
+						}else{
+							toastr.error("Error");
 						}
+					}
 				});
 			});
 		</script>

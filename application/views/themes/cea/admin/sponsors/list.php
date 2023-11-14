@@ -103,7 +103,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('select[name="boothAdmins[]"] option').prop('selected', false);
 			$('select[name="boothAdmins[]"]').bootstrapDualListbox('refresh', true);
-
+			
 			$('#save-sponsor').html('<i class="fas fa-plus"></i> Create');
 
 			$('#createSponsorModal').modal({
@@ -124,7 +124,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				showConfirmButton: false,
 				allowOutsideClick: false
 			});
-
 			let sponsorId = $(this).attr('sponsor-id');
 
 			$.get(project_admin_url+"/sponsors/getByIdJson/"+sponsorId, function (sponsor)
@@ -158,6 +157,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				Swal.close();
 			});
+
 		});
 
 		$('#sponsorsTable').on('click', '.delete-sponsor', function () {
@@ -167,14 +167,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			Swal.fire({
 				title: 'Are you sure?',
 				html:
-						`This will delete all the assets, admins attached, chats etc of this sponsor (`+sponsorName+`)
-						 <br><small>(This won't delete the accounts of admins attached to this booth though)</small>
-						 <br><br> You won't be able to revert this!`,
+						'This will delete all the assets, admins attached, chats etc of this sponsor'+` (`+sponsorName+`)
+							<br><small>(This won't delete the accounts of admins attached to this booth though)</small>
+							<br><br> You won't be able to revert this!`,
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!'
+				confirmButtonText: 'Yes, delete it!',
+				cancelButtonText: 'Cancel'
 			}).then((result) => {
 				if (result.isConfirmed) {
 
@@ -196,9 +197,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						response = JSON.parse(response);
 
 						if (response.status == 'success')
-							toastr.success('Sponsor ('+sponsorName+') deleted');
+							toastr.success('Are you sure? ('+sponsorName+') deleted');
 						else
-							toastr.error('Error');
+							toastr.error("Error");
 
 						listSponsors();
 					});

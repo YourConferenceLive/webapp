@@ -10,6 +10,11 @@ class Account extends CI_Controller {
 		$this->load->model('Account_Model', 'account');
 	}
 
+	public function test()
+	{
+		echo "test";
+	}
+
 	public function register()
 	{
 		echo json_encode($this->account->register());

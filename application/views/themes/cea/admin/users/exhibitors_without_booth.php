@@ -182,21 +182,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			});
 		});
 
+
 		$('#sponsorsTable').on('click', '.delete-sponsor', function () {
 			let sponsorId = $(this).attr('sponsor-id');
 			let sponsorName = $(this).attr('sponsor-name');
-
+				
 			Swal.fire({
 				title: 'Are you sure?',
 				html:
 						`This will delete all the assets, admins attached, chats etc of this sponsor (`+sponsorName+`)
-						 <br><small>(This won't delete the accounts of admins attached to this booth though)</small>
-						 <br><br> You won't be able to revert this!`,
+							<br><small>(This won't delete the accounts of admins attached to this booth though)</small>
+							<br><br> Yes, I want to logout!`,
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
 				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!'
+				confirmButtonText: 'Yes, delete it!',
+				cancelButtonText: 'Cancel'
 			}).then((result) => {
 				if (result.isConfirmed) {
 
@@ -218,7 +220,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						response = JSON.parse(response);
 
 						if (response.status == 'success')
-							toastr.success('Sponsor ('+sponsorName+') deleted');
+							toastr.success(`Sponsor ${sponsorName} deleted`);
+
 						else
 							toastr.error('Error');
 
@@ -236,7 +239,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function listUsers()
 	{
-
 		Swal.fire({
 			title: 'Please Wait',
 			text: 'Loading users data...',
@@ -315,12 +317,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		Swal.fire({
 			title: 'Are you sure?',
-			html: "You are about to reset <strong>"+userName+"</strong>'s password to 'COS2021' (without quotes)",
+			html: "You are about to reset<strong>"+userName+"</strong>'s password to 'COS2021' (without quotes)",
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, reset it!'
+			confirmButtonText: 'Yes, reset it!',
+			cancelButtonText: 'Cancel'
 		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire({
@@ -339,15 +342,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					if (response.status == 'success')
 						Swal.fire(
-								'Done!',
-								userName+"'s password is now reset to COS2021",
-								'success'
+							'Done!',
+							userName+"'s password is now reset to COS2021",
+							'success'
 						);
 					else
 						Swal.fire(
-								'Error!',
-								"Unable to reset the password",
-								'error'
+							"Error!",
+							"Unable to reset the password",
+							'error'
 						);
 				});
 
