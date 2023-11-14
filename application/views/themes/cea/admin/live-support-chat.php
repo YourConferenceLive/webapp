@@ -266,14 +266,10 @@
 
                 }
             ).error((error)=>{
-                getTranslatedSelectAccess('Unable to load the chat.').then((msg) => {
-                    toastr.error(msg);
-                });
+                toastr.error('Unable to load the chat.');
             }
             ).fail(()=>{
-                getTranslatedSelectAccess('Unable to load the chat.').then((msg) => {
-                    toastr.error(msg);
-                });
+                toastr.error('Unable to load the chat.');
             });
 
         });
@@ -285,17 +281,13 @@
 			console.log(userId);
             if (userId == '')
             {
-                getTranslatedSelectAccess('You should choose an attendee to send the text.').then((msg) => {
-                    toastr.error(msg);
-                });
+                toastr.error('You should choose an attendee to send the text.');
                 return false;
             }
 
             if (message == '')
             {
-                getTranslatedSelectAccess('Please enter some message.').then((msg) => {
-                    toastr.error(msg);
-                });
+                toastr.error('Please enter some message.');
                 return false;
             }
 
@@ -310,9 +302,7 @@
                 {
                     try { $.parseJSON(response);}
                     catch(error) { 
-                        getTranslatedSelectAccess('You are not logged-in').then((msg) => {
-							toastr.error(msg);
-						});
+                        toastr.error('You are not logged-in');
                         return false; 
                     }
 
@@ -329,15 +319,11 @@
                         $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
 
                     }else{
-                        getTranslatedSelectAccess('User updated').then((msg) => {
-							toastr.error(msg);
-						});
+                        toastr.error('User updated');
                     }
                 }
             ).error((error)=>{
-                getTranslatedSelectAccess('Unable to send the text.').then((msg) => {
-                    toastr.error(msg);
-                });
+                toastr.error('Unable to send the text.');
             });
 
 
@@ -417,94 +403,53 @@
 
         /**************** Status change **********************/
         $('#liveSupportChatToggle').on('change', function () {
-            const translationData = fetchAllText(); // Fetch the translation data
 
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+            Swal.fire({
+                title: 'Please Wait',
+                text: 'We are changing the status',
+                imageUrl: project_url+'front_assets/support_chat/ycl_anime_500kb.gif',
+                imageAlt: 'Loading...',
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
 
-                // Find the translations for the dialog text
-                let dialogTitle = 'Please Wait';
-                let dialogText = 'We are changing the status';
-			    let imageAltText = 'Loading...';
+            let status = 0;
+            if ($(this).is(":checked"))
+                status = 1;
 
-                // Toast
-                let loggedText= "You are not logged-in";
-                let liveText = "Live support status changed";
+            $.get(project_url+"/admin/live_support_chat/toggleStatus/"+status, function (response) {
 
-                // Swal 2
-                let errorText2 = "Error";
-                let errorMsg2 = "Unable to change the status";
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === dialogText) {
-                        dialogText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === imageAltText) {
-                        imageAltText = arrData[i][selectedLanguage + '_text'];
-                    }
-
-                    if (arrData[i].english_text === loggedText) {
-                        loggedText = arrData[i][selectedLanguage + '_text'];
-                    }
-
-                    if (arrData[i].english_text === errorText2) {
-                        errorText2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === errorMsg2) {
-                        errorMsg2 = arrData[i][selectedLanguage + '_text'];
-                    }
+                try { $.parseJSON(response);}
+                catch(error)
+                {
+                    $('#liveSupportChatToggle').prop("checked", !$('#liveSupportChatToggle').prop("checked"));
+                    toastr.error("You are not logged-in");
+                    return false;
                 }
 
-                Swal.fire({
-                    title: dialogTitle,
-				    text: dialogText,
-                    imageUrl: project_url+'front_assets/support_chat/ycl_anime_500kb.gif',
-				    imageAlt: imageAltText,
-                    showCancelButton: false,
-                    showConfirmButton: false,
-                    allowOutsideClick: false
-                });
-
-                let status = 0;
-                if ($(this).is(":checked"))
-                    status = 1;
-
-                $.get(project_url+"/admin/live_support_chat/toggleStatus/"+status, function (response) {
-
-                    try { $.parseJSON(response);}
-                    catch(error)
-                    {
-                        $('#liveSupportChatToggle').prop("checked", !$('#liveSupportChatToggle').prop("checked"));
-                        toastr.error(loggedText);
-                        return false;
-                    }
-
-                    response = JSON.parse(response);
-                    if (response.status == 'failed')
-                    {
-                        Swal.fire(
-                            errorText2,
-                            errorMsg2,
-                            'error'
-                        );
-                        $('#liveSupportChatToggle').prop("checked", !$('#liveSupportChatToggle').prop("checked"));
-                    }else{
-                        socket.emit("supportChatStatusChange", {'room':live_support_chat_room, 'status':status});
-                        Swal.close();
-                        toastr.info(liveText);
-                    }
-
-                }).fail(()=>{
+                response = JSON.parse(response);
+                if (response.status == 'failed')
+                {
                     Swal.fire(
-                        errorText2,
-                        errorMsg2,
+                        "Error",
+                        "Unable to change the status",
                         'error'
                     );
                     $('#liveSupportChatToggle').prop("checked", !$('#liveSupportChatToggle').prop("checked"));
-                });
+                }else{
+                    socket.emit("supportChatStatusChange", {'room':live_support_chat_room, 'status':status});
+                    Swal.close();
+                    toastr.info("Live support status changed");
+                }
+
+            }).fail(()=>{
+                Swal.fire(
+                    "Error",
+                    "Unable to change the status",
+                    'error'
+                );
+                $('#liveSupportChatToggle').prop("checked", !$('#liveSupportChatToggle').prop("checked"));
             });
         });
         /****************************** End of status change ******************************/
@@ -527,30 +472,12 @@
 
         }).fail(()=>{
 
-            const translationData = fetchAllText(); // Fetch the translation data
-
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-                // Find the translations for the dialog text
-                let errorText = 'Error';
-                let errorMsg = 'Unable to load users list';
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === errorText) {
-                        errorText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === errorMsg) {
-                        errorMsg = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
-                Swal.fire(
-                    errorText,
-                    errorMsg,
-                    'error'
-                );
+            Swal.fire(
+                'Error',
+                'Unable to load users list',
+                'error'
+            );
                 
-            });
         });
     }
 

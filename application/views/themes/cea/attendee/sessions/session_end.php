@@ -9,7 +9,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	.card-bg{
-		background-size:100% 100%;
+		background-size: cover !important; /* Add !important to override any conflicting styles */
+		background-position: center !important;
+		background-repeat: no-repeat !important;
+		height: 80vh !important;
 	}
 
 	.card-header{
@@ -19,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 	.card-body{
 		padding:0;
-		height: 70vh; 
+		min-height: 70vh; 
 	}
 
 

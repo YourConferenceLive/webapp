@@ -59,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 										<th>Actions</th>
 										<th>Manage</th>
 										<th>Export</th>
-										<th>JSON(s)</th>
+										<th>Json(s)</th>
 									</tr>
 								</thead>
 								<tbody id="sessionsTableBody">
@@ -117,7 +117,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 		$('.add-session-btn').on('click', function () {
 
 			getColorPreset();
-			$('#addSessionModalLabelspan').text(`Add New Session`)
+			const newSessionText = TranslationManager.staticTranslate('Add New Session')
+			$('#addSessionModalLabelspan').text(newSessionText)
 			$('#addSessionForm')[0].reset();
 			$('#currentPhotoDiv').hide();
 			$('#currentSponsorLogoDiv').hide();
@@ -147,334 +148,250 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			let session_id = $(this).attr('session-id');
 			getColorPreset();
 
-			const translationData = fetchAllText(); // Fetch the translation data
+			Swal.fire({
+				title: 'Please Wait',
+				text: 'Loading session data...',
+				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+				imageAlt: 'Loading...',
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+			
+			$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
+				session = JSON.parse(session);
+				console.log(session);
 
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+				// set the session title here
+				const newSessionText = TranslationManager.staticTranslate('Session ID')
+				$('#addSessionModalLabelspan').text(`${newSessionText}: ${session.id}`)
 
-                // Find the translations for the dialog text
-                let dialogTitle = 'Please Wait';
-                let dialogText = 'Loading session data...';
-				let imageAltText = 'Loading...';
+				$('#sessionId').val(session.id);
+				$('#sessionName').val(session.name);
+				$('#sessionNameOther').val(session.other_language_name);
 
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === dialogText) {
-                        dialogText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === imageAltText) {
-                        imageAltText = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
+				$(`#roomID`).val(session.room_id);
+
+				$('#eventID').val(session.event_id);
+				$(`#sessionTrack option[value="${session.track}"]`).prop('selected', true);
+
+				$('#sessionExternalUrl').val('');
+				$('#sessionExternalUrlDiv').hide();
+				$('#sessionExternalUrl').val(session.external_meeting_link);
+
+				if (session.external_meeting_link != null || session.external_meeting_link == '' )
+					$('#sessionExternalUrlDiv').show();
+
+				$(`#sessionType option[value="${session.session_type}"]`).prop('selected', true);
+
+				$('#sessionCredits').val(session.credits);
+				$("#sessionDescription").summernote("code", session.description);
+				$('#startDateTimeInput').datetimepicker('date', moment(session.start_date_time, 'YYYY-MM-DD HH:mm:ss'));
+				$('#endDateTimeInput').datetimepicker('date', moment(session.end_date_time, 'YYYY-MM-DD HH:mm:ss'));
+
+				$('#sessionPhoto').val('');
+				if (session.thumbnail != '') {
+					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.thumbnail);
+					$('#currentPhotoDiv').show();
+				}else{
+					$('#currentPhotoDiv').hide();
+				}
+
+				$('#sessionSponsorLogo').val('');
+				if ((session.sponsor_logo) !== "" ) {
+					$('#currentSponsorLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.sponsor_logo);
+					$('#currentSponsorLogoDiv').show();
+				}else{
+					$('#currentSponsorLogoDiv').hide();
+				}
+
+				$('#sessionSessionLogo').val('');
+				if ((session.session_logo) !== "" ) {
+					$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/'+session.session_logo);
+					$('#currentSessionLogoDiv').show();
+				}else{
+					$('#currentSessionLogoDiv').hide();
+				}
 				
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-					imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-					imageAlt: imageAltText,
-					showCancelButton: false,
-					showConfirmButton: false,
-					allowOutsideClick: false
+				if(session.session_logo  !== '') {
+						$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + session.mobile_session_background);
+						$('#currentMobileSessionBackgroundDiv').show();
+				}else
+					$('#currentMobileSessionBackgroundDiv').hide();
+
+				$('#sponsorLogoWidth').val(session.sponsor_logo_width);
+				$('#sponsorLogoHeight').val(session.sponsor_logo_height);
+				$('#sessionLogoHeight').val(session.session_logo_width);
+				$('#sessionLogoHeight').val(session.session_logo_height);
+
+				$("#sessionAgenda").summernote("code", session.agenda);
+				$('#millicastStream').val(session.millicast_stream);
+				$('#vimeoStream').val(session.vimeo_stream);
+				$('#zoomLink').val(session.zoom_link);
+				$('#sessionVideo').val(session.video_url);
+				$('#slidesHtml').html(session.presenter_embed_code);
+
+				$('#sessionClaimCreditLink').val(session.claim_credit_link);
+				$('#sessionClaimCreditUrl').val(session.claim_credit_url);
+
+				$('#notes_text').val(session.toolbox_note_text);
+				$('#resource_text').val(session.toolbox_resource_text);
+				$('#question_text').val(session.toolbox_question_text);
+				$('#ask_a_rep_text').val(session.toolbox_askrep_text);
+				$('#sessionNotes').val(session.notes);
+
+				$('#button1_text').val(session.button1_text);
+				$('#button1_link').val(session.button1_link);
+				$('#button2_text').val(session.button2_text);
+				$('#button2_link').val(session.button2_link);
+				$('#button3_text').val(session.button3_text);
+				$('#button3_link').val(session.button3_link);
+
+				$('#sessionColorPreset').val(session.attendee_settings_id);
+				$('#sessionEndRedirect').val(session.session_end_redirect);
+
+				if(session.auto_redirect_status == 1){
+					$('#autoRedirectSwitch').attr('checked','checked')
+				}else{
+					$('#autoRedirectSwitch').removeAttr('checked')
+				}
+				// Moderators
+				$('select[name="sessionModerators[]"] option').prop('selected', false);
+				$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
+				$.each(session.moderators, function(key, moderator){
+					$('select[name="sessionModerators[]"] option[value="'+moderator.id+'"]').prop('selected', true);
 				});
-                
-				$.get(project_admin_url+"/sessions/getByIdJson/"+session_id, function (session) {
-					session = JSON.parse(session);
-					console.log(session);
+				$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
 
-					// set the session title here
-					$('#addSessionModalLabelspan').text(`Session ID: ${session.id}`)
-
-					$('#sessionId').val(session.id);
-					$('#sessionName').val(session.name);
-					$('#sessionNameOther').val(session.other_language_name);
-
-					$(`#roomID`).val(session.room_id);
-
-					$('#eventID').val(session.event_id);
-					$(`#sessionTrack option[value="${session.track}"]`).prop('selected', true);
-	
-					$('#sessionExternalUrl').val('');
-					$('#sessionExternalUrlDiv').hide();
-					$('#sessionExternalUrl').val(session.external_meeting_link);
-	
-					if (session.external_meeting_link != null || session.external_meeting_link == '' )
-						$('#sessionExternalUrlDiv').show();
-	
-					$(`#sessionType option[value="${session.session_type}"]`).prop('selected', true);
-	
-					$('#sessionCredits').val(session.credits);
-					$("#sessionDescription").summernote("code", session.description);
-					$('#startDateTimeInput').datetimepicker('date', moment(session.start_date_time, 'YYYY-MM-DD HH:mm:ss'));
-					$('#endDateTimeInput').datetimepicker('date', moment(session.end_date_time, 'YYYY-MM-DD HH:mm:ss'));
-	
-					$('#sessionPhoto').val('');
-					if (session.thumbnail != '') {
-						$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.thumbnail);
-						$('#currentPhotoDiv').show();
-					}else{
-						$('#currentPhotoDiv').hide();
-					}
-	
-					$('#sessionSponsorLogo').val('');
-					if ((session.sponsor_logo) !== "" ) {
-						$('#currentSponsorLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+session.sponsor_logo);
-						$('#currentSponsorLogoDiv').show();
-					}else{
-						$('#currentSponsorLogoDiv').hide();
-					}
-	
-					$('#sessionSessionLogo').val('');
-					if ((session.session_logo) !== "" ) {
-						$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/'+session.session_logo);
-						$('#currentSessionLogoDiv').show();
-					}else{
-						$('#currentSessionLogoDiv').hide();
-					}
-					
-					if(session.session_logo  !== '') {
-							$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + session.mobile_session_background);
-							$('#currentMobileSessionBackgroundDiv').show();
-					}else
-						$('#currentMobileSessionBackgroundDiv').hide();
-	
-					$('#sponsorLogoWidth').val(session.sponsor_logo_width);
-					$('#sponsorLogoHeight').val(session.sponsor_logo_height);
-					$('#sessionLogoHeight').val(session.session_logo_width);
-					$('#sessionLogoHeight').val(session.session_logo_height);
-	
-					$("#sessionAgenda").summernote("code", session.agenda);
-					$('#millicastStream').val(session.millicast_stream);
-					$('#zoomLink').val(session.zoom_link);
-					$('#sessionVideo').val(session.video_url);
-					$('#slidesHtml').html(session.presenter_embed_code);
-	
-					$('#sessionClaimCreditLink').val(session.claim_credit_link);
-					$('#sessionClaimCreditUrl').val(session.claim_credit_url);
-	
-					$('#notes_text').val(session.toolbox_note_text);
-					$('#resource_text').val(session.toolbox_resource_text);
-					$('#question_text').val(session.toolbox_question_text);
-					$('#ask_a_rep_text').val(session.toolbox_askrep_text);
-					$('#sessionNotes').val(session.notes);
-	
-					$('#button1_text').val(session.button1_text);
-					$('#button1_link').val(session.button1_link);
-					$('#button2_text').val(session.button2_text);
-					$('#button2_link').val(session.button2_link);
-					$('#button3_text').val(session.button3_text);
-					$('#button3_link').val(session.button3_link);
-	
-					$('#sessionColorPreset').val(session.attendee_settings_id);
-					$('#sessionEndRedirect').val(session.session_end_redirect);
-
-					if(session.auto_redirect_status == 1){
-						$('#autoRedirectSwitch').attr('checked','checked')
-					}else{
-						$('#autoRedirectSwitch').removeAttr('checked')
-					}
-					// Moderators
-					$('select[name="sessionModerators[]"] option').prop('selected', false);
-					$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
-					$.each(session.moderators, function(key, moderator){
-						$('select[name="sessionModerators[]"] option[value="'+moderator.id+'"]').prop('selected', true);
-					});
-					$('select[name="sessionModerators[]"]').bootstrapDualListbox('refresh', true);
-	
-					// Keynote Speakers
-					$('select[name="sessionKeynoteSpeakers[]"] option').prop('selected', false);
-					$('select[name="sessionKeynoteSpeakers[]"]').bootstrapDualListbox('refresh', true);
-					$.each(session.keynote_speakers, function(key, keynote_speaker){
-						$('select[name="sessionKeynoteSpeakers[]"] option[value="'+keynote_speaker.id+'"]').prop('selected', true);
-					});
-					$('select[name="sessionKeynoteSpeakers[]"]').bootstrapDualListbox('refresh', true);
-	
-					// Presenters
-					$('select[name="sessionPresenters[]"] option').prop('selected', false);
-					$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
-					$.each(session.presenters, function(key, presenter){
-						$('select[name="sessionPresenters[]"] option[value="'+presenter.id+'"]').prop('selected', true);
-					});
-					$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
-	
-					// Invisible Moderators
-					$('select[name="sessionInvisibleModerators[]"] option').prop('selected', false);
-					$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
-					$.each(session.invisible_moderators, function(key, invisible_moderator){
-						$('select[name="sessionInvisibleModerators[]"] option[value="'+invisible_moderator.id+'"]').prop('selected', true);
-					});
-					$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
-	
-	
-					//Settings
-					if(session.header_toolbox_status == 1){
-						$('#headerToolboxSwitch').attr('checked','checked')
-					}
-					if(session.right_sticky_notes == 1){
-						$('#rightNotesSwitch').attr('checked','checked')
-					}
-					if(session.right_sticky_resources == 1){
-						$('#rightResourcesSwitch').attr('checked','checked')
-					}
-					if(session.right_sticky_question == 1){
-						$('#rightQuestionSwitch').attr('checked','checked')
-					}
-					if(session.right_sticky_askrep == 1){
-						$('#rightAskARepSwitch').attr('checked','checked')
-					}
-	
-	
-					if(session.header_question == 1){
-						$('#headerQuestion').attr('checked','checked')
-					}
-					if(session.header_notes == 1){
-						$('#headerNotes').attr('checked','checked')
-					}
-					if(session.header_resources == 1){
-						$('#headerResources').attr('checked','checked')
-					}
-					if(session.header_askrep == 1){
-						$('#headerAskRep').attr('checked','checked')
-					}
-					if(session.time_zone == "EDT"){
-						$('#timeZone').val("EDT")
-					}else{
-						$('#timeZone').val("EST")
-					}
-	
-	
-					$("#sessionEndText").summernote("code", session.session_end_text);
-					if (session.session_end_image != '' && session.session_end_image !== null) {
-						$('#currentSessionEndImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/'+session.session_end_image);
-						$('#currentSessionEndImage').show();
-					}else{
-						$('#currentSessionEndImage').hide();
-					}
-	
-	
-					$('#save-session').html('<i class="fas fa-save"></i> Save');
-	
-					Swal.close();
-	
-					$('#addSessionModal').modal({
-						backdrop: 'static',
-						keyboard: false
-					});
+				// Keynote Speakers
+				$('select[name="sessionKeynoteSpeakers[]"] option').prop('selected', false);
+				$('select[name="sessionKeynoteSpeakers[]"]').bootstrapDualListbox('refresh', true);
+				$.each(session.keynote_speakers, function(key, keynote_speaker){
+					$('select[name="sessionKeynoteSpeakers[]"] option[value="'+keynote_speaker.id+'"]').prop('selected', true);
 				});
-            });
+				$('select[name="sessionKeynoteSpeakers[]"]').bootstrapDualListbox('refresh', true);
+
+				// Presenters
+				$('select[name="sessionPresenters[]"] option').prop('selected', false);
+				$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
+				$.each(session.presenters, function(key, presenter){
+					$('select[name="sessionPresenters[]"] option[value="'+presenter.id+'"]').prop('selected', true);
+				});
+				$('select[name="sessionPresenters[]"]').bootstrapDualListbox('refresh', true);
+
+				// Invisible Moderators
+				$('select[name="sessionInvisibleModerators[]"] option').prop('selected', false);
+				$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
+				$.each(session.invisible_moderators, function(key, invisible_moderator){
+					$('select[name="sessionInvisibleModerators[]"] option[value="'+invisible_moderator.id+'"]').prop('selected', true);
+				});
+				$('select[name="sessionInvisibleModerators[]"]').bootstrapDualListbox('refresh', true);
+
+
+				//Settings
+				if(session.header_toolbox_status == 1){
+					$('#headerToolboxSwitch').attr('checked','checked')
+				}
+				if(session.right_sticky_notes == 1){
+					$('#rightNotesSwitch').attr('checked','checked')
+				}
+				if(session.right_sticky_resources == 1){
+					$('#rightResourcesSwitch').attr('checked','checked')
+				}
+				if(session.right_sticky_question == 1){
+					$('#rightQuestionSwitch').attr('checked','checked')
+				}
+				if(session.right_sticky_askrep == 1){
+					$('#rightAskARepSwitch').attr('checked','checked')
+				}
+
+
+				if(session.header_question == 1){
+					$('#headerQuestion').attr('checked','checked')
+				}
+				if(session.header_notes == 1){
+					$('#headerNotes').attr('checked','checked')
+				}
+				if(session.header_resources == 1){
+					$('#headerResources').attr('checked','checked')
+				}
+				if(session.header_askrep == 1){
+					$('#headerAskRep').attr('checked','checked')
+				}
+				if(session.time_zone == "EDT"){
+					$('#timeZone').val("EDT")
+				}else{
+					$('#timeZone').val("EST")
+				}
+
+
+				$("#sessionEndText").summernote("code", session.session_end_text);
+				if (session.session_end_image != '' && session.session_end_image !== null) {
+					$('#currentSessionEndImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/'+session.session_end_image);
+					$('#currentSessionEndImage').show();
+				}else{
+					$('#currentSessionEndImage').hide();
+				}
+
+
+				$('#save-session').html('<i class="fas fa-save"></i> Save');
+
+				Swal.close();
+
+				$('#addSessionModal').modal({
+					backdrop: 'static',
+					keyboard: false
+				});
+			});
 
 		});
 
 		$('#sessionsTable').on('click', '.removeSession', function () {
 			let session_id = $(this).attr('session-id');
 			let session_name = $(this).attr('session-name');
+			
+			Swal.fire({
+				title: 'Are you sure?',
+				html: '<span class="text-white">Are you sure?<br>['+session_id+'] '+session_name+'<br><br><small>(We will still keep it in our records for auditing)</small></span>',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: "Yes, remove it!",
+				cancelButtonText: "Cancel"
+			}).then((result) => {
+				if (result.isConfirmed) {
 
-			const translationData = fetchAllText(); // Fetch the translation data
+					Swal.fire({
+						title: "Please Wait",
+						text: "Removing the session...",
+						imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+						imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+						imageAlt: "Loading...",
+						showCancelButton: false,
+						showConfirmButton: false,
+						allowOutsideClick: false
+					});
 
-            translationData.then((arrData) => {
-                const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+					$.get(project_admin_url+"/sessions/remove/"+session_id, function (response) {
+						response = JSON.parse(response);
 
-                // Find the translations for the dialog text
-                let dialogTitle = 'Are you sure?';
-				let html1 = "You are about to remove";
-				let html2 = "(We will still keep it in our records for auditing)";
-                let confirmButtonText = 'Yes, remove it!';
-                let cancelButtonText = 'Cancel';
+						if (response.status == 'success') {
+							listSessions();
+							toastr.success(session_name+" has been removed!");
+						}else{
+							Swal.fire(
+								"Error!",
+								"Unable to remove "+session_name,
+								'error'
+							);
+						}
+					});
+				}
+			});
 
-				// Swal 2
-				let dialogTitle2 = 'Please Wait';
-				let dialogText2 = "Removing the session...";
-				let imageAltText2 = 'Loading...';
 
-				// Swal 3
-				let errorText = "Error!";
-				let errorMsg = "Unable to remove";
-
-				// Toastr
-				let removedText = "has been removed!";
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === html1) {
-                        html1 = arrData[i][selectedLanguage + '_text'];
-                    }
-					if (arrData[i].english_text === html2) {
-                        html2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === confirmButtonText) {
-                        confirmButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === cancelButtonText) {
-                        cancelButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-
-					if (arrData[i].english_text === dialogTitle2) {
-                        dialogTitle2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === dialogText2) {
-                        dialogText2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === imageAltText2) {
-                        imageAltText2 = arrData[i][selectedLanguage + '_text'];
-                    }
-
-					if (arrData[i].english_text === errorText) {
-                        errorText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === errorMsg) {
-                        errorMsg = arrData[i][selectedLanguage + '_text'];
-                    }
-
-					if (arrData[i].english_text === removedText) {
-                        removedText = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
-
-				Swal.fire({
-					title: dialogTitle,
-					html: '<span class="text-white">'+html1+'<br>['+session_id+'] '+session_name+'<br><br><small>'+html2+'</small></span>',
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText
-				}).then((result) => {
-					if (result.isConfirmed) {
-	
-						Swal.fire({
-							title: dialogTitle2,
-							text: dialogText2,
-							imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-							imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-							imageAlt: imageAltText2,
-							showCancelButton: false,
-							showConfirmButton: false,
-							allowOutsideClick: false
-						});
-	
-						$.get(project_admin_url+"/sessions/remove/"+session_id, function (response) {
-							response = JSON.parse(response);
-	
-							if (response.status == 'success') {
-								listSessions();
-								toastr.success(session_name+" "+removedText);
-							}else{
-								Swal.fire(
-										errorText,
-										errorMsg+" "+session_name,
-										'error'
-								);
-							}
-						});
-					}
-				});
-                
-            });
 
 		});
 
@@ -498,203 +415,183 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	function listSessions()
 	{
 		let getFrom = $('#session_list_type').find(':selected').attr('url');
-		console.log(getFrom)
-		const translationData = fetchAllText(); // Fetch the translation data
+		console.log(getFrom);
 
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+		Swal.fire({
+			title: 'Please Wait',
+			text: 'Loading sessions data...',
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: 'Loading...',
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
+		
+		$.get(project_admin_url+"/sessions/"+ getFrom, function (sessions) {
+			sessions = JSON.parse(sessions);
 
-			// Find the translations for the dialog text
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Loading sessions data...';
-			let imageAltText = 'Loading...';
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
+			$('#sessionsTableBody').html('');
+			if ($.fn.DataTable.isDataTable('#sessionsTable'))
+			{
+				$('#sessionsTable').dataTable().fnClearTable();
+				$('#sessionsTable').dataTable().fnDestroy();
 			}
 
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-			
-			$.get(project_admin_url+"/sessions/"+ getFrom, function (sessions) {
-				sessions = JSON.parse(sessions);
-	
-				$('#sessionsTableBody').html('');
-				if ($.fn.DataTable.isDataTable('#sessionsTable'))
+			$.each(sessions, function(key, session)
+			{
+				// Moderators badge
+				let moderatorsList = '';
+				let moderatorsNumber = Object.keys(session.moderators).length;
+				let moderatorsBadgeType = 'badge-danger';
+
+				if (moderatorsNumber > 0)
+					moderatorsList += '<strong>Moderators List</strong><br><br>';
+
+				$.each(session.moderators, function(key, moderator)
 				{
-					$('#sessionsTable').dataTable().fnClearTable();
-					$('#sessionsTable').dataTable().fnDestroy();
-				}
-	
-				$.each(sessions, function(key, session)
+					moderatorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
+				});
+
+				if (moderatorsNumber > 0)
+					moderatorsBadgeType = 'badge-success';
+
+				let moderatorsBadge = '<badge class="badge badge-pill '+moderatorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+moderatorsList+'">M ('+moderatorsNumber+')</badge>';
+
+				// Invisible Moderators badge
+				let invisibleModeratorsList = '';
+				let invisibleModeratorsNumber = Object.keys(session.invisible_moderators).length;
+				let invisibleModeratorsBadgeType = 'badge-danger';
+
+				if (invisibleModeratorsNumber > 0)
+					invisibleModeratorsList += '<strong>Invisible Moderators</strong><br><br>';
+
+				$.each(session.invisible_moderators, function(key, moderator)
 				{
-					// Moderators badge
-					let moderatorsList = '';
-					let moderatorsNumber = Object.keys(session.moderators).length;
-					let moderatorsBadgeType = 'badge-danger';
-	
-					if (moderatorsNumber > 0)
-						moderatorsList += '<strong>Moderators List</strong><br><br>';
-	
-					$.each(session.moderators, function(key, moderator)
-					{
-						moderatorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
-					});
-	
-					if (moderatorsNumber > 0)
-						moderatorsBadgeType = 'badge-success';
-	
-					let moderatorsBadge = '<badge class="badge badge-pill '+moderatorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+moderatorsList+'">M ('+moderatorsNumber+')</badge>';
-	
-					// Invisible Moderators badge
-					let invisibleModeratorsList = '';
-					let invisibleModeratorsNumber = Object.keys(session.invisible_moderators).length;
-					let invisibleModeratorsBadgeType = 'badge-danger';
-	
-					if (invisibleModeratorsNumber > 0)
-						invisibleModeratorsList += '<strong>Invisible Moderators</strong><br><br>';
-	
-					$.each(session.invisible_moderators, function(key, moderator)
-					{
-						invisibleModeratorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
-					});
-	
-					if (invisibleModeratorsNumber > 0)
-						invisibleModeratorsBadgeType = 'badge-success';
-	
-					let invisibleModeratorsBadge = '<badge class="badge badge-pill '+invisibleModeratorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+invisibleModeratorsList+'">InM ('+invisibleModeratorsNumber+')</badge>';
-	
-					// Keynote Speakers badge
-					let keynoteSpeakersList = '';
-					let keynoteSpeakersNumber = Object.keys(session.keynote_speakers).length;
-					let keynoteSpeakerBadgeType = 'badge-danger';
-	
-					if (keynoteSpeakersNumber > 0)
-						keynoteSpeakersList += '<strong>Keynote Speakers List</strong><br><br>';
-	
-					$.each(session.keynote_speakers, function(key, keynote_speaker)
-					{
-						keynoteSpeakersList += keynote_speaker.name+' '+keynote_speaker.surname+' <br>('+keynote_speaker.email+')<br><br>';
-					});
-	
-					if (keynoteSpeakersNumber > 0)
-						keynoteSpeakerBadgeType = 'badge-success';
-	
-					let keynoteSpeakersBadge = '<badge class="badge badge-pill '+keynoteSpeakerBadgeType+'" data-html="true" data-toggle="tooltip" title="'+keynoteSpeakersList+'">K ('+keynoteSpeakersNumber+')</badge>';
-	
-					// Presenters badge
-					let presentersList = '';
-					let presentersNumber = Object.keys(session.presenters).length;
-					let presenterBadgeType = 'badge-danger';
-	
-					if (presentersNumber > 0)
-						presentersList += '<strong>Presenters List</strong><br><br>';
-	
-					$.each(session.presenters, function(key, presenter)
-					{
-						presentersList += presenter.name+' '+presenter.surname+' <br>('+presenter.email+')<br><br>';
-					});
-	
-					if (presentersNumber > 0)
-						presenterBadgeType = 'badge-success';
-	
-					let presentersBadge = '<badge class="badge badge-pill '+presenterBadgeType+'" data-html="true" data-toggle="tooltip" title="'+presentersList+'">P ('+presentersNumber+')</badge>';
-	
-					$('#sessionsTableBody').append(
-						'<tr>' +
-						'	<td>' +
-						'		'+session.id+
-						'	</td>' +
-						'	<td data-sort="'+session.start_date_time+'">' +
-						'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("MMMM Do (dddd)")+
-						'	</td>' +
-						'	<td data-sort="'+session.start_date_time+'">' +
-						'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
-						'	</td>' +
-						'	<td data-sort="'+session.start_date_time+'">' +
-						'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
-						'	</td>' +
-						'	<td>' +
-						'		'+session.name+
-						'	</td>' +
-						'	<td>' +
-						'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+' '+invisibleModeratorsBadge+
-						'	</td>' +
-						'	<td>' +
-						'		'+session.credits+
-						'	</td>' +
-						'	<td>' +
-						'		'+session.notes+
-						'	</td>' +
-						'	<td>' +
-						'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +
-						'			<button class="btn btn-sm btn-info m-1"><i class="fas fa-tv"></i> View</button>' +
-						'		</a>' +
-						'		<a target="_blank" href="'+project_admin_url+'/sessions/polls/'+session.id+'">' +
-						'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
-						'		</a>' +
-						'		<button class="reload_attendee btn btn-sm btn-danger m-1" session-id="'+session.id+'"><i class="fas fa-sync"></i> Reload Atendee</button>' +
-						'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'" room_id="'+session.room_id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
-						'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
-						'	</td>' +
-						'	<td>' +
-						'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
-						'		<button class="removeSession btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
-						'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
-						'		<!--<button class="closePoll btn btn-sm btn-primary">Close Poll</button>-->' +
-						'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
-						'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
-						'	</td>' +
-						'<td>' +
-						'		<a href="'+project_admin_url+'/sessions/flash_report/'+session.id+'" style="width:80px; height:50px" class="flashReport btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Flash Report</a><br>' +
-						'		<a href="'+project_admin_url+'/sessions/polling_report/'+session.id+'" style="width:80px; height:50px" class="pollingReport btn btn-sm btn-success m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Polling Report</a><br>' +
-						'		<a  href="" style="width:80px; height:50px" class="askARepBtn btn btn-sm btn-warning m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Ask a Rep - Report</a><br>' +
-						'		<a href="'+project_admin_url+'/sessions/attendee_question_report/'+session.id+'" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Question Report</a><br>' +
-						'</td>'+
-						'<td>'+
-						'		<a  style="width:80px; height:50px" class="sendJsonBtn btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Send JSON </a><br>' +
-						'		<a href="'+project_admin_url+'/sessions/view_json/'+session.id+'" target="_blank" style="width:80px; height:50px" class="Question btn btn-sm btn-secondary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> View JSON </a><br>' +
-						'		<a href="" style="width:80px; height:50px" class="clearJsonBtn btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Clear JSON </a><br>' +
-						'		<a href="" style="width:80px; height:50px" class="Question btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Delete Session </a><br>' +
-	
-						'</td>'+
-						'</tr>'
-					);
+					invisibleModeratorsList += moderator.name+' '+moderator.surname+' <br>('+moderator.email+')<br><br>';
 				});
-	
-				$('[data-toggle="tooltip"]').tooltip();
-	
-				$('#sessionsTable').DataTable({
-					"paging": true,
-					"lengthChange": true,
-					"searching": true,
-					"ordering": true,
-					"info": true,
-					"autoWidth": true,
-					"responsive": false,
-					"order": [[ 1, 'asc'], [ 2, 'asc'], [ 3,  'asc']],
-					"destroy": true
+
+				if (invisibleModeratorsNumber > 0)
+					invisibleModeratorsBadgeType = 'badge-success';
+
+				let invisibleModeratorsBadge = '<badge class="badge badge-pill '+invisibleModeratorsBadgeType+'" data-html="true" data-toggle="tooltip" title="'+invisibleModeratorsList+'">InM ('+invisibleModeratorsNumber+')</badge>';
+
+				// Keynote Speakers badge
+				let keynoteSpeakersList = '';
+				let keynoteSpeakersNumber = Object.keys(session.keynote_speakers).length;
+				let keynoteSpeakerBadgeType = 'badge-danger';
+
+				if (keynoteSpeakersNumber > 0)
+					keynoteSpeakersList += '<strong>Keynote Speakers List</strong><br><br>';
+
+				$.each(session.keynote_speakers, function(key, keynote_speaker)
+				{
+					keynoteSpeakersList += keynote_speaker.name+' '+keynote_speaker.surname+' <br>('+keynote_speaker.email+')<br><br>';
 				});
-	
-				Swal.close();
+
+				if (keynoteSpeakersNumber > 0)
+					keynoteSpeakerBadgeType = 'badge-success';
+
+				let keynoteSpeakersBadge = '<badge class="badge badge-pill '+keynoteSpeakerBadgeType+'" data-html="true" data-toggle="tooltip" title="'+keynoteSpeakersList+'">K ('+keynoteSpeakersNumber+')</badge>';
+
+				// Presenters badge
+				let presentersList = '';
+				let presentersNumber = Object.keys(session.presenters).length;
+				let presenterBadgeType = 'badge-danger';
+
+				if (presentersNumber > 0)
+					presentersList += '<strong>Presenters List</strong><br><br>';
+
+				$.each(session.presenters, function(key, presenter)
+				{
+					presentersList += presenter.name+' '+presenter.surname+' <br>('+presenter.email+')<br><br>';
+				});
+
+				if (presentersNumber > 0)
+					presenterBadgeType = 'badge-success';
+
+				let presentersBadge = '<badge class="badge badge-pill '+presenterBadgeType+'" data-html="true" data-toggle="tooltip" title="'+presentersList+'">P ('+presentersNumber+')</badge>';
+
+				$('#sessionsTableBody').append(
+					'<tr>' +
+					'	<td>' +
+					'		'+session.id+
+					'	</td>' +
+					'	<td data-sort="'+session.start_date_time+'">' +
+					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("MMMM Do (dddd)")+
+					'	</td>' +
+					'	<td data-sort="'+session.start_date_time+'">' +
+					'		'+moment.tz(session.start_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
+					'	</td>' +
+					'	<td data-sort="'+session.start_date_time+'">' +
+					'		'+moment.tz(session.end_date_time, "<?=$this->project->timezone?>").format("h:mmA")+
+					'	</td>' +
+					'	<td>' +
+					'		'+session.name+
+					'	</td>' +
+					'	<td>' +
+					'		'+moderatorsBadge+' '+keynoteSpeakersBadge+' '+presentersBadge+' '+invisibleModeratorsBadge+
+					'	</td>' +
+					'	<td>' +
+					'		'+session.credits+
+					'	</td>' +
+					'	<td>' +
+					'		'+session.notes+
+					'	</td>' +
+					'	<td>' +
+					'		<a href="'+project_admin_url+'/sessions/view/'+session.id+'">' +
+					'			<button class="btn btn-sm btn-info m-1"><i class="fas fa-tv"></i> View</button>' +
+					'		</a>' +
+					'		<a target="_blank" href="'+project_admin_url+'/sessions/polls/'+session.id+'">' +
+					'			<button class="btn btn-sm btn-success m-1">Polls <i class="fas fa-external-link-alt"></i></button>' +
+					'		</a>' +
+					'		<button class="reload_attendee btn btn-sm btn-danger m-1" session-id="'+session.id+'"><i class="fas fa-sync"></i> Reload Atendee</button>' +
+					'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'" room_id="'+session.room_id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
+					'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
+					'	</td>' +
+					'	<td>' +
+					'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
+					'		<button class="removeSession btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"><i class="fas fa-trash-alt"></i> Remove</button>' +
+					'		<!--<button class="openPoll btn btn-sm btn-primary">Open Poll</button>-->' +
+					'		<!--<button class="closePoll btn btn-sm btn-primary">Close Poll</button>-->' +
+					'		<!--<button class="openResult btn btn-sm btn-primary">Open Result</button>-->' +
+					'		<!--<button class="closeResult btn btn-sm btn-primary">Close Result</button>-->' +
+					'	</td>' +
+					'<td>' +
+					'		<a href="'+project_admin_url+'/sessions/flash_report/'+session.id+'" style="width:80px; height:50px" class="flashReport btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Flash Report</a><br>' +
+					'		<a href="'+project_admin_url+'/sessions/polling_report/'+session.id+'" style="width:80px; height:50px" class="pollingReport btn btn-sm btn-success m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Polling Report</a><br>' +
+					'		<a  href="" style="width:80px; height:50px" class="askARepBtn btn btn-sm btn-warning m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Ask a Rep - Report</a><br>' +
+					'		<a href="'+project_admin_url+'/sessions/attendee_question_report/'+session.id+'" style="width:80px; height:50px" class="Question btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Question Report</a><br>' +
+					'</td>'+
+					'<td>'+
+					'		<a  style="width:80px; height:50px" class="sendJsonBtn btn btn-sm btn-primary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Send JSON </a><br>' +
+					'		<a href="'+project_admin_url+'/sessions/view_json/'+session.id+'" target="_blank" style="width:80px; height:50px" class="Question btn btn-sm btn-secondary m-1" session-id="'+session.id+'" session-name="'+session.name+'"> View JSON </a><br>' +
+					'		<a href="" style="width:80px; height:50px" class="clearJsonBtn btn btn-sm btn-info m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Clear JSON </a><br>' +
+					'		<a href="" style="width:80px; height:50px" class="Question btn btn-sm btn-danger m-1" session-id="'+session.id+'" session-name="'+session.name+'"> Delete Session </a><br>' +
+
+					'</td>'+
+					'</tr>'
+				);
 			});
+
+			$('[data-toggle="tooltip"]').tooltip();
+
+			$('#sessionsTable').DataTable({
+				"paging": true,
+				"lengthChange": true,
+				"searching": true,
+				"ordering": true,
+				"info": true,
+				"autoWidth": true,
+				"responsive": false,
+				"order": [[ 1, 'asc'], [ 2, 'asc'], [ 3,  'asc']],
+				"destroy": true
+			});
+
+			Swal.close();
 		});
+
+		
 	}
 
 	$(function(){
@@ -703,131 +600,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			e.preventDefault();
 			let session_id = $(this).attr('session-id')
 
-			const translationData = fetchAllText(); // Fetch the translation data
-
-			translationData.then((arrData) => {
-				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-				// Find the translations for the dialog text
-				let dialogTitle = 'Are you sure?';
-				let dialogText = "You won't be able to revert this!";
-				let confirmButtonText = 'Yes, clear it!';
-				let cancelButtonText = 'Cancel';
-
-				// Toast
-				let successText = "Success";
-				let successMsg = "Json Cleared";
-
-				for (let i = 0; i < arrData.length; i++) {
-					if (arrData[i].english_text === dialogTitle) {
-						dialogTitle = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === dialogText) {
-						dialogText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === confirmButtonText) {
-						confirmButtonText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === cancelButtonText) {
-						cancelButtonText = arrData[i][selectedLanguage + '_text'];
-					}
-
-					if (arrData[i].english_text === successText) {
-						successText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === successMsg) {
-						successMsg = arrData[i][selectedLanguage + '_text'];
-					}
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: "Yes, clear it!",
+				cancelButtonText: "Cancel"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
+						function(response){
+							console.log(response);
+							if(response.status == 'success'){
+								Swal.fire(
+									"Success",
+									"Json Cleared",
+									'success'
+								)
+							}
+						},'json')
 				}
+			})
 
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText
-				}).then((result) => {
-					if (result.isConfirmed) {
-						$.post(project_admin_url+'/sessions/clearJson/'+session_id,{},
-							function(response){
-								console.log(response);
-								if(response.status == 'success'){
-									Swal.fire(
-										successText,
-										successMsg,
-										'success'
-									)
-								}
-							},'json')
-					}
-				})
-				
-			});
 		});
 
 		$('#sessionsTableBody').on('click', '.reload_attendee', function(){
 
-
-			const translationData = fetchAllText(); // Fetch the translation data
-
-			translationData.then((arrData) => {
-				const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-				// Find the translations for the dialog text
-				let dialogTitle = 'Are you sure?';
-				let dialogText = "";
-				let confirmButtonText = 'Yes, reload it!';
-				let cancelButtonText = 'Cancel';
-
-				// Toast
-				let successText = "Success";
-				let successMsg = "Attendee Reloaded";
-
-				for (let i = 0; i < arrData.length; i++) {
-					if (arrData[i].english_text === dialogTitle) {
-						dialogTitle = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === dialogText) {
-						dialogText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === confirmButtonText) {
-						confirmButtonText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === cancelButtonText) {
-						cancelButtonText = arrData[i][selectedLanguage + '_text'];
-					}
-
-					if (arrData[i].english_text === successText) {
-						successText = arrData[i][selectedLanguage + '_text'];
-					}
-					if (arrData[i].english_text === successMsg) {
-						successMsg = arrData[i][selectedLanguage + '_text'];
-					}
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, reload it!',
+				cancelButtonText: 'Cancel'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire(
+						'Success',
+						'Attendee Reloaded',
+						'success'
+					)
+					socket.emit('reload-attendee',{'session_id':$(this).attr('session-id')});
 				}
-
-				Swal.fire({
-					title: dialogTitle,
-					text: dialogText,
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: confirmButtonText,
-                    cancelButtonText: cancelButtonText
-				}).then((result) => {
-					if (result.isConfirmed) {
-						Swal.fire(
-							successText,
-							successMsg,
-							'success'
-						)
-						socket.emit('reload-attendee',{'session_id':$(this).attr('session-id')});
-					}
-				})
-			});
+			})
 
 		})
 
@@ -863,89 +683,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 	})
 	
 	$('#sessionsTableBody').on('click', '.sendJsonBtn', function() {
+		
+		Swal.fire({
+			title: "Are you sure?",
+			text: "",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: "Yes, send it!",
+			cancelButtonText: "Cancel"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				let session_id = $(this).attr('session-id');
+				$.post({
+					url: project_admin_url + '/sessions/send_json/' + session_id,
+					data: '',
+					beforeSend: function() {
+						Swal.fire({
+							title: "Sending Json...",
+								showCancelButton: false,
+								showConfirmButton: false,
+							onBeforeOpen: () => {
+								Swal.showLoading()
+							}
+						})
+					}
+				}).done(function(result) {
 
-		const translationData = fetchAllText(); // Fetch the translation data
-
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-			// Find the translations for the dialog text
-			let dialogTitle = 'Are you sure?';
-			let confirmButtonText = 'Yes, send it!';
-			let cancelButtonText = 'Cancel';
-
-			// Swal 2
-			let successText = "Success";
-			let infoText = "Info";
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === confirmButtonText) {
-					confirmButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === cancelButtonText) {
-					cancelButtonText = arrData[i][selectedLanguage + '_text'];
-				}
-
-				if (arrData[i].english_text === successText) {
-					successText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === infoText) {
-					infoText = arrData[i][selectedLanguage + '_text'];
-				}
+					result = JSON.parse(result)
+					console.log(result)
+					if (result.status == "ok") {
+						Swal.fire({
+							text: result.status,
+							icon: 'success',
+							title: "Success"
+						})
+					} else {
+						Swal.fire({
+							text: result.message,
+							icon: 'info',
+							title: "Info"
+						})
+					}
+				});
 			}
-
-			Swal.fire({
-				title: dialogTitle,
-				text: "",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: confirmButtonText,
-				cancelButtonText: cancelButtonText
-			}).then((result) => {
-				if (result.isConfirmed) {
-					let session_id = $(this).attr('session-id');
-					$.post({
-						url: project_admin_url + '/sessions/send_json/' + session_id,
-						data: '',
-						beforeSend: function() {
-							getTranslatedSelectAccess("Sending Json...").then((msg) => {
-								Swal.fire({
-									title: 'msg',
-										showCancelButton: false,
-										showConfirmButton: false,
-									onBeforeOpen: () => {
-										Swal.showLoading()
-									}
-								})
-							});
-						}
-					}).done(function(result) {
-	
-						result = JSON.parse(result)
-						console.log(result)
-						if (result.status == "ok") {
-							Swal.fire({
-								text: result.status,
-								icon: 'success',
-								title: successText
-							})
-						} else {
-							Swal.fire({
-								text: result.message,
-								icon: 'info',
-								title: infoText
-							})
-						}
-					});
-				}
-			})
+		})
 			
-		});
 	})
 
 	function getColorPreset(){

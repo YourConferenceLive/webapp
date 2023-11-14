@@ -277,8 +277,13 @@
 								<div class="tab-pane fade" id="streamTabContents" role="tabpanel" aria-labelledby="streamTab">
 
 									<div class="form-group">
-										<label for="millicastStream">Millicast stream name</label>
+										<label for="millicastStream">Millicast stream name <i class="fas fa-info-circle text-danger" title="Please use only one stream link. If Millicast Link is not empty Vimeo Stream won't work. System always check millicast first"></i></label>
 										<input type="text" class="form-control" id="millicastStream" name="millicastStream" placeholder="Eg; kpih785i">
+									</div>
+
+									<div class="form-group">
+										<label for="vimeoStream">Vimeo stream link <i class="fas fa-info-circle text-danger" title="Please use only one stream link. If Millicast Link is not empty Vimeo Stream won't work. System always check millicast first"></i></label>
+										<input type="text" class="form-control" id="vimeoStream" name="vimeoStream" placeholder="Eg; https://vimeo.com/event/3123122/embed">
 									</div>
 
 									<div class="form-group">
@@ -467,11 +472,13 @@
 											</li>
 											<li>
 												<div class="form-group">
-													<label for="sessionEndImage">Image</label>
-													<input type="file" accept="image/*" class="form-control" id="sessionEndImage" name="sessionEndImage" placeholder="Session Ended">
+													<div class="custom-file">
+														<label class="custom-file-label" for="sessionEndImage">Image</label>
+														<input type="file" accept="image/*" class="custom-file-input" id="sessionEndImage" name="sessionEndImage" placeholder="Session Ended" previewImage="currentSessionEndImg">
+													</div>
 												</div>
 												<div class="form-group" id="currentSessionEndImage" style="display: none;">
-													<label for=""><small>Current Session End Image</small></label>
+													<label for="currentSessionEndImage"><small>Current Session End Image</small></label>
 													<br>
 													<img id="currentSessionEndImg" src="" width="200px">
 												</div>
@@ -703,6 +710,11 @@
 			$('#currentSessionLogoDiv').show();
 		})
 
+		$('#sessionEndImage').on('change', function(){
+			previewUpload(this);			
+			$('#currentSessionEndImg').show();
+		})
+
 		$('#mobileSessionBackground').on('change', function(){
 			$('#isSponsorLogoRemoved').val('0');
 			previewUpload(this);
@@ -726,17 +738,13 @@
 	$('#save-session').on('click', function () {
 		if($('input[name="startDateTime"]').val() == '')
 		{
-			getTranslatedSelectAccess('Please select start date and time!').then((msg) => {
-				toastr.warning(msg);
-			});
+			toastr.warning('Please select start date and time!');
 			return false;
 		}
 
 		if($('input[name="endDateTime"]').val() == '')
 		{
-			getTranslatedSelectAccess('Please select end date and time!').then((msg) => {
-				toastr.warning(msg);
-			});
+			toastr.warning('Please select end date and time!');
 			return false;
 		}
 
@@ -745,65 +753,27 @@
 		// 	toastr.warning('Credit must be a positive number!')
 		// 	return false;
 		// }
-		let translationData = fetchAllText(); // Fetch the translation data
 
-
-            translationData.then((arrData) => {
-				console.log("Before");
-
-				
-		
-		
-                let selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-				console.log(selectedLanguage);
-                // // Find the translations for the dialog text
-                let dialogTitle = 'Are you sure?';
-                let confirmButtonText = 'Yes, save it!';
-                let cancelButtonText = 'No';
-				let html1 = "starts on";
-				let html2 = "and ends on";
-
-                for (let i = 0; i < arrData.length; i++) {
-                    if (arrData[i].english_text === dialogTitle) {
-                        dialogTitle = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === confirmButtonText) {
-                        confirmButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === cancelButtonText) {
-                        cancelButtonText = arrData[i][selectedLanguage + '_text'];
-                    }
-					if (arrData[i].english_text === html1) {
-                        html1 = arrData[i][selectedLanguage + '_text'];
-                    }
-                    if (arrData[i].english_text === html2) {
-                        html2 = arrData[i][selectedLanguage + '_text'];
-                    }
-                }
-
-				let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
-				Swal.fire({
-					title: dialogTitle,
-					html: '<span style="color: white;">'+sessionName+
-							'<br><br> <small>'+html1+'</small> '+$('#startDateTimeInput').val()+
-							'<br> <small>'+html2+'</small> '+$('#endDateTimeInput').val()+' ? </span>',
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: confirmButtonText,
-					cancelButtonText: cancelButtonText
-				}).then((result) => {
-					if (result.isConfirmed) {
-						if ($('#sessionId').val() == 0)
-							addSession();
-						else
-							updateSession();
-					}
-				})
-                
-            });
+		let sessionName = ($('#sessionName').val() =='')?'[Empty Session Name]':$('#sessionName').val();
+		Swal.fire({
+			title: "Are you sure?",
+			html: '<span style="color: white;">'+sessionName+
+					'<br><br> <small>starts on</small> '+$('#startDateTimeInput').val()+
+					'<br> <small>and ends on</small> '+$('#endDateTimeInput').val()+' ? </span>',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: "Yes, save it!",
+			cancelButtonText: "No"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				if ($('#sessionId').val() == 0)
+					addSession();
+				else
+					updateSession();
+			}
+		})
 
 	});
 
@@ -824,185 +794,126 @@
 
 	function addSession()
 	{
-		let translationData = fetchAllText(); // Fetch the translation data
+		if (isNaN(parseInt($('#roomID').val()))) {
+			toastr.error('Room ID should be a number');
+			return false;
+		}
 
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
+		Swal.fire({
+			title: "Please Wait",
+			text: "Adding the session...",
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: "Loading...",
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
+		});
 
-			// Find the translations for the dialog text
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Adding the session...';
-			let imageAltText = 'Loading...';
+		let formData = new FormData(document.getElementById('addSessionForm'));
 
-			// Toast
-			let sessionText = "Session added";
-			let errorText = "Error";
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/sessions/add",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				Swal.close();
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				Swal.close();
 
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === imageAltText) {
-					imageAltText = arrData[i][selectedLanguage + '_text'];
-				}
+				data = JSON.parse(data);
 
-				if (arrData[i].english_text === sessionText) {
-					sessionText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === errorText) {
-					errorText = arrData[i][selectedLanguage + '_text'];
+				if (data.status == 'success')
+				{
+					listSessions();
+					toastr.success("Session added");
+					$('#addSessionModal').modal('hide');
+
+				}else{
+					toastr.error("Error");
 				}
 			}
-
-			if (isNaN(parseInt($('#roomID').val()))) {
-				toastr.error('Room ID should be a number');
-				return false;
-			}
-
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
-
-			let formData = new FormData(document.getElementById('addSessionForm'));
-	
-			$.ajax({
-				type: "POST",
-				url: project_admin_url+"/sessions/add",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
-				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-					Swal.close();
-	
-					data = JSON.parse(data);
-	
-					if (data.status == 'success')
-					{
-						listSessions();
-						toastr.success(sessionText);
-						$('#addSessionModal').modal('hide');
-	
-					}else{
-						toastr.error(errorText);
-					}
-				}
-			});
 		});
 	}
 
 	function updateSession()
 	{
-		let translationData = fetchAllText(); // Fetch the translation data
-
-		translationData.then((arrData) => {
-			const selectedLanguage = $('#languageSelect').val(); // Get the selected language
-
-			// Find the translations for the dialog text
-			let dialogTitle = 'Please Wait';
-			let dialogText = 'Updating the session...';
-			let imageAltText = 'Loading...';
-
-			// Toast
-			let sessionUpdateText = "Session updated";
-
-
-			for (let i = 0; i < arrData.length; i++) {
-				if (arrData[i].english_text === dialogTitle) {
-					dialogTitle = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === dialogText) {
-					dialogText = arrData[i][selectedLanguage + '_text'];
-				}
-				if (arrData[i].english_text === sessionUpdateText) {
-					sessionUpdateText = arrData[i][selectedLanguage + '_text'];
-				}
-			}
-
-			if (isNaN(parseInt($('#roomID').val()))) {
-				toastr.error('Room ID should be a number');
-				return false;
-			}
-
-			Swal.fire({
-				title: dialogTitle,
-				text: dialogText,
-				imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-				imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-				imageAlt: imageAltText,
-				showCancelButton: false,
-				showConfirmButton: false,
-				allowOutsideClick: false
-			});
 			
-			let formData = new FormData(document.getElementById('addSessionForm'));
-	
-			$.ajax({
-				type: "POST",
-				url: project_admin_url+"/sessions/update",
-				data: formData,
-				processData: false,
-				contentType: false,
-				error: function(jqXHR, textStatus, errorMessage)
-				{
-					Swal.close();
-					toastr.error(errorMessage);
-					//console.log(errorMessage); // Optional
-				},
-				success: function(data)
-				{
-					Swal.close();
-	
-					data = JSON.parse(data);
-					if (data.status == 'success')
-					{
-						$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+data.session.thumbnail);
-						$('#currentPhotoDiv').show();
-	
-						if(data.session.sponsor_logo  !== '') {
-							$('#currentSponsorLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/' + data.session.sponsor_logo);
-							$('#currentSponsorLogoDiv').show();
-						}else
-							$('#currentSponsorLogoDiv').hide();
-	
-						if(data.session.session_logo  !== '') {
-							$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/' + data.session.session_logo);
-							$('#currentSessionLogoDiv').show();
-						}else
-							$('#currentSessionLogoDiv').hide();
-	
-						if(data.session.session_logo  !== '') {
-							$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + data.session.mobile_session_background);
-							$('#currentMobileSessionBackgroundDiv').show();
-						}else
-							$('#currentMobileSessionBackgroundDiv').hide();
+		if (isNaN(parseInt($('#roomID').val()))) {
+			toastr.error('Room ID should be a number');
+			return false;
+		}
 
-						listSessions();
-						toastr.success(sessionUpdateText);
-					}else if(data.status == 'warning'){
-						toastr.warning(data.msg);
-					}else{
-						toastr.error(data.technical_data);
-					}
-				}
-			});
+		Swal.fire({
+			title: "Please Wait",
+			text: "Updating the session...",
+			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
+			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
+			imageAlt: "Loading...",
+			showCancelButton: false,
+			showConfirmButton: false,
+			allowOutsideClick: false
 		});
+		
+		let formData = new FormData(document.getElementById('addSessionForm'));
+
+		$.ajax({
+			type: "POST",
+			url: project_admin_url+"/sessions/update",
+			data: formData,
+			processData: false,
+			contentType: false,
+			error: function(jqXHR, textStatus, errorMessage)
+			{
+				Swal.close();
+				toastr.error(errorMessage);
+				//console.log(errorMessage); // Optional
+			},
+			success: function(data)
+			{
+				Swal.close();
+
+				data = JSON.parse(data);
+				if (data.status == 'success')
+				{
+					$('#currentPhotoImg').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/'+data.session.thumbnail);
+					$('#currentPhotoDiv').show();
+
+					if(data.session.sponsor_logo  !== '') {
+						$('#currentSponsorLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/thumbnails/' + data.session.sponsor_logo);
+						$('#currentSponsorLogoDiv').show();
+					}else
+						$('#currentSponsorLogoDiv').hide();
+
+					if(data.session.session_logo  !== '') {
+						$('#currentSessionLogo').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/logo/' + data.session.session_logo);
+						$('#currentSessionLogoDiv').show();
+					}else
+						$('#currentSessionLogoDiv').hide();
+
+					if(data.session.session_logo  !== '') {
+						$('#currentMobileSessionBackground').attr('src', '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/sessions/images/background/' + data.session.mobile_session_background);
+						$('#currentMobileSessionBackgroundDiv').show();
+					}else
+						$('#currentMobileSessionBackgroundDiv').hide();
+
+					listSessions();
+					toastr.success("Session updated");
+				}else if(data.status == 'warning'){
+					toastr.warning(data.msg);
+				}else{
+					toastr.error(data.technical_data);
+				}
+			}
+		});
+
 	}
 
 </script>
