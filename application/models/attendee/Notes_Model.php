@@ -26,7 +26,7 @@ class Notes_Model extends CI_Model
 		return $this->db->count_all_results('notes');
     }
 
-	public function getAll($entitiy_type, $origin_type_id, $user_id, $limit = '', $start = '')
+	public function getAll($entitiy_type, $origin_type_id, $user_id='', $limit = '', $start = '')
 	{
 		$this->db->select('notes.id, notes.user_id, notes.note_text, notes.created_datetime');
 		$this->db->from('notes');
@@ -34,7 +34,9 @@ class Notes_Model extends CI_Model
 		$this->db->where('notes.origin_type_id', $origin_type_id);
 		$this->db->where('notes.origin_type', $entitiy_type);
 		$this->db->where('user.active', 1);
-		$this->db->where('user.id', $user_id);
+		if($user_id !== '') {
+			$this->db->where('user.id', $user_id);
+		}
 		$this->db->where('notes.is_deleted', 0);
 		$this->db->where('notes.status', 1);
 		$this->db->order_by('notes.created_datetime', 'DESC');
