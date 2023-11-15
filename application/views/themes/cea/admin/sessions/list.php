@@ -548,6 +548,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 					'		<button class="reload_attendee btn btn-sm btn-danger m-1" session-id="'+session.id+'"><i class="fas fa-sync"></i> Reload Atendee</button>' +
 					'		<button class="mobileSessionQR btn btn-sm btn-primary m-1" session-id="'+session.id+'" room_id="'+session.room_id+'"><i class="fas fa-qrcode"></i> Generate QRcode</button>' +
 					'		<button class="session_resources btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i></i> Resources</button>' +
+					'		<button class="session_attendee_notes btn btn-sm btn-info m-1" session-id="'+session.id+'"><i class="fas fa-book-open"></i> Attendee Notes</button>' +
 					'	</td>' +
 					'	<td>' +
 					'		<button class="manageSession btn btn-sm btn-primary m-1" session-id="'+session.id+'"><i class="fas fa-edit"></i> Edit</button>' +
@@ -657,6 +658,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 			$('#save-resource').attr('session-id', session_id);
 
 			getSessionResources(session_id);
+		});
+
+		$('#sessionsTableBody').on('click', '.session_attendee_notes', function(){
+			let session_id = $(this).attr('session-id')
+			window.open(project_admin_url + "/sessions/viewUserNotes/" + session_id, '_blank');
 		});
 
 		$('#sessionsTableBody').on('click', '.mobileSessionQR', function(e){

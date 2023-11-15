@@ -13,6 +13,8 @@ class Sessions extends CI_Controller
 		$this->user = (object) ($_SESSION['project_sessions']["project_{$this->project->id}"]);
 
 		$this->load->model('Sessions_Model', 'sessions');
+		$this->load->model('attendee/Notes_Model', 'attendee_notes_model');
+		$this->load->model('Users_Model', 'user_model');
 	}
 
 	public function index()
@@ -313,5 +315,33 @@ class Sessions extends CI_Controller
 
 	public function clearJson($session_id){
 		echo  $this->sessions->clearJson($session_id);
+	}
+
+	public function viewUserNotes($session_id)
+	{
+		$sidebar_data['user'] = $this->user;
+		$session = $this->sessions->getById($session_id);
+
+		$data['session'] = $session;
+
+		$this->load
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/header")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/menubar")
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/sidebar", $sidebar_data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/sessions/attendee_notes", $data)
+			->view("{$this->themes_dir}/{$this->project->theme}/admin/common/footer")
+		;
+	}
+
+	public function getSessionAttendee($session_id){
+		$notes = ($this->attendee_notes_model->getAll('session', $session_id));
+		$notes_array = array();
+		if(!empty($notes)){
+			foreach ($notes as $note){
+				$note->user = $this->user_model->getById($note->user_id);
+				$notes_array[] = $note;
+			}
+		}
+		echo json_encode($notes_array);
 	}
 }
