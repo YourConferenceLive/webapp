@@ -132,4 +132,9 @@ class Users extends CI_Controller
 	{
 		echo json_encode($this->users->getAll());
 	}
+
+	public function drawUsers(){
+		$users = $this->users->drawUser();
+		echo json_encode($users);
+	}
 }

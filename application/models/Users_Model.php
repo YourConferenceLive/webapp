@@ -38,6 +38,97 @@ class Users_Model extends CI_Model
 		return new stdClass();
 	}
 
+	public function drawUser()
+	{
+		$post = $this->input->post();
+		$draw = $post['draw'];
+		$start = ($post['start'])?:'';
+		$length = ($post['length'])?:'';
+		$searchValue = $post['search']['value'];
+
+		$orderColumn = $post['order'][0]['column'];
+		$orderDirection = $post['order'][0]['dir'];
+//		print_r($post['columns'][$post['order'][0]['column']]['data']);exit;
+
+		$user_ids = $this->db
+			->select('user_id')
+			->where('project_id', $this->project->id)
+			->group_by('user_id')
+			->get_compiled_select('user_project_access', true);
+
+		$this->db->select('id, name, surname, email, active, bio, disclosures, photo , city, country, rcp_number, name_prefix, credentials, idFromApi, membership_type, membership_sub_type');
+		$this->db->from('user');
+		$this->db->where('id IN (' . $user_ids . ')');
+
+		if($post['columns'][$post['order'][0]['column']]['data']){
+			$this->db->order_by($post['columns'][$post['order'][0]['column']]['data'], $orderDirection);
+		}
+		$this->db->order_by('name', 'desc');
+		$tempDbObj = clone $this->db;
+		$getTotalRecords = $tempDbObj->count_all_results();
+
+		$tempDbObj = clone $this->db;
+		$total_filtered_results = $tempDbObj->count_all_results();
+
+		// Filter for pagination and rows per page
+
+		if ($length !== '' || $start !== '') {
+			if ($length !== '') {
+				$this->db->limit($length);
+			}
+			if ($start !== '') {
+				$this->db->offset($start);
+			}
+		}
+
+		//Datatable Search
+		if ($post['search']['value']!=''){
+			$this->db->group_start();
+			$this->db->or_like('id', $searchValue);
+			$this->db->or_like('name', $searchValue);
+			$this->db->or_like('surname', $searchValue);
+			$this->db->or_like('email', $searchValue);
+			$this->db->or_like('active', $searchValue);
+			$this->db->or_like('bio', $searchValue);
+			$this->db->or_like('disclosures', $searchValue);
+			$this->db->or_like('photo', $searchValue);
+			$this->db->or_like('city', $searchValue);
+			$this->db->or_like('country', $searchValue);
+			$this->db->or_like('rcp_number', $searchValue);
+			$this->db->or_like('name_prefix', $searchValue);
+			$this->db->or_like('credentials', $searchValue);
+			$this->db->or_like('membership_type', $searchValue);
+			$this->db->or_like('membership_sub_type', $searchValue);
+			$this->db->group_end();
+		}
+
+		$orderColumnMapping = [
+			0 => 'id',
+			1 => 'name',
+			2 => 'surname',
+			3 => 'email',
+			4 => 'membership_type',
+			5 => 'membership_sub_type',
+		];
+
+		$users = $this->db->get();
+		if ($users->num_rows() > 0) {
+			foreach ($users->result() as $user) {
+				$user->company_name = $this->getCompanyName($user->id);
+				$user->accesses = $this->getProjectAccesses($user->id);
+			}
+			$response = array(
+				"draw" => intval($draw),
+				"recordsTotal" => $getTotalRecords,
+				"recordsFiltered" => $total_filtered_results,
+				"data" => $users->result()
+			);
+			return $response;
+		}
+		return new stdClass();
+	}
+
+
 	public function getAllNoProjectid()
 	{
 		$user_ids = $this->db
