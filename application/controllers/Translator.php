@@ -6,10 +6,7 @@ class Translator extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-
-		if (!isset($_SESSION['project_sessions']["project_{$this->project->id}"]) || $_SESSION['project_sessions']["project_{$this->project->id}"]['is_admin'] != 1)
-			redirect(base_url() . $this->project->main_route . "/admin/login"); // Not logged-in
-
+		
 		$this->user = (object)($_SESSION['project_sessions']["project_{$this->project->id}"]);
 
 		$this->load->model('admin/Sponsors_Model', 'sponsors');
