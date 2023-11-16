@@ -243,7 +243,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	});
 
 	function listUsersServerSide(){
-		$('#usersTable').DataTable({
+		let userDt =  $('#usersTable').DataTable({
 			'dom': '<"dt-buttons"Bfr>t<lip>',
 			'buttons': [
 				'copy', 'excel', 'csv', 'pdf', 'print'
@@ -304,92 +304,92 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
-	function listUsers()
-	{
-		Swal.fire({
-			title: 'Please Wait',
-			text: 'Loading users data...',
-			imageUrl: '<?=ycl_root?>/cms_uploads/projects/<?=$this->project->id?>/theme_assets/loading.gif',
-			imageUrlOnError: '<?=ycl_root?>/ycl_assets/ycl_anime_500kb.gif',
-			imageAlt: 'Loading...',
-			showCancelButton: false,
-			showConfirmButton: false,
-			allowOutsideClick: false
-		});
-
-		$.get(project_admin_url+"/users/getAllJson", function (users) {
-			users = JSON.parse(users);
-			$('#usersTableBody').html('');
-			if ($.fn.DataTable.isDataTable('#usersTable'))
-			{
-				$('#usersTable').dataTable().fnClearTable();
-				$('#usersTable').dataTable().fnDestroy();
-			}
-
-			$.each(users, function(key, user)
-			{
-				let accessList = '';
-				$.each(user.accesses, function(key, access)
-				{
-					let color_code = access_color_codes[access.level];
-					let icon = access_icons[access.level];
-					access.level = access.level[0].toUpperCase()+access.level.substring(1);
-					accessList += '<small class="badge badge-primary mr-1" style="background-color:'+color_code+';"><i class="'+icon+'"></i> '+access.level+'</small>';
-				});
-
-				$('#usersTableBody').append(
-						'<tr>' +
-						'	<td>' +
-						'		'+user.id+
-						'	</td>' +
-						// '	<td>' +
-						// '		'+user.project_id+
-						// '	</td>' +
-						// '	<td>' +
-						// '		'+user.project_name+
-						// '	</td>' +
-						'	<td>' +
-						'		'+user.name+
-						'	</td>' +
-						'	<td>' +
-						'		'+user.surname+
-						'	</td>' +
-						'	<td>' +
-						'		'+user.email+
-						'	</td>' +
-						'	<td>' +
-						'		'+user.membership_type+
-						'	</td>' +
-						'	<td>' +
-						'		'+user.membership_sub_type+
-						'	</td>' +
-						'	<td>' +
-						'		'+accessList+
-						'	</td>' +
-						'	<td>' +
-						'		<button class="manage-user btn btn-sm btn-info m-2" user-id="'+user.id+'"><i class="fas fa-edit"></i> Manage</button>' +
-						'		<button class="reset-user-pass-btn btn btn-sm btn-success m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-lock-open"></i>  Reset Password</button>'+
-						'		<button onclick="suspendUser()" class="suspend-user btn btn-sm btn-warning m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-user-slash"></i> Suspend</button>'+
-						'	</td>' +
-						'</tr>'
-				);
-			});
-
-			// $('#usersTable').DataTable({
-			// 	"paging": true,
-			// 	"lengthChange": true,
-			// 	"searching": true,
-			// 	"ordering": true,
-			// 	"info": true,
-			// 	"autoWidth": true,
-			// 	"responsive": false,
-			// 	"order": [[ 0, "desc" ]],
-			// 	"destroy": true
-			// });
-
-			Swal.close();
-		});
-	}
+	//function listUsers()
+	//{
+	//	Swal.fire({
+	//		title: 'Please Wait',
+	//		text: 'Loading users data...',
+	//		imageUrl: '<?//=ycl_root?>///cms_uploads/projects/<?//=$this->project->id?>///theme_assets/loading.gif',
+	//		imageUrlOnError: '<?//=ycl_root?>///ycl_assets/ycl_anime_500kb.gif',
+	//		imageAlt: 'Loading...',
+	//		showCancelButton: false,
+	//		showConfirmButton: false,
+	//		allowOutsideClick: false
+	//	});
+	//
+	//	$.get(project_admin_url+"/users/getAllJson", function (users) {
+	//		users = JSON.parse(users);
+	//		$('#usersTableBody').html('');
+	//		if ($.fn.DataTable.isDataTable('#usersTable'))
+	//		{
+	//			$('#usersTable').dataTable().fnClearTable();
+	//			$('#usersTable').dataTable().fnDestroy();
+	//		}
+	//
+	//		$.each(users, function(key, user)
+	//		{
+	//			let accessList = '';
+	//			$.each(user.accesses, function(key, access)
+	//			{
+	//				let color_code = access_color_codes[access.level];
+	//				let icon = access_icons[access.level];
+	//				access.level = access.level[0].toUpperCase()+access.level.substring(1);
+	//				accessList += '<small class="badge badge-primary mr-1" style="background-color:'+color_code+';"><i class="'+icon+'"></i> '+access.level+'</small>';
+	//			});
+	//
+	//			$('#usersTableBody').append(
+	//					'<tr>' +
+	//					'	<td>' +
+	//					'		'+user.id+
+	//					'	</td>' +
+	//					// '	<td>' +
+	//					// '		'+user.project_id+
+	//					// '	</td>' +
+	//					// '	<td>' +
+	//					// '		'+user.project_name+
+	//					// '	</td>' +
+	//					'	<td>' +
+	//					'		'+user.name+
+	//					'	</td>' +
+	//					'	<td>' +
+	//					'		'+user.surname+
+	//					'	</td>' +
+	//					'	<td>' +
+	//					'		'+user.email+
+	//					'	</td>' +
+	//					'	<td>' +
+	//					'		'+user.membership_type+
+	//					'	</td>' +
+	//					'	<td>' +
+	//					'		'+user.membership_sub_type+
+	//					'	</td>' +
+	//					'	<td>' +
+	//					'		'+accessList+
+	//					'	</td>' +
+	//					'	<td>' +
+	//					'		<button class="manage-user btn btn-sm btn-info m-2" user-id="'+user.id+'"><i class="fas fa-edit"></i> Manage</button>' +
+	//					'		<button class="reset-user-pass-btn btn btn-sm btn-success m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-lock-open"></i>  Reset Password</button>'+
+	//					'		<button onclick="suspendUser()" class="suspend-user btn btn-sm btn-warning m-2 text-white" user-id="'+user.id+'" user-name="'+user.name+'"><i class="fas fa-user-slash"></i> Suspend</button>'+
+	//					'	</td>' +
+	//					'</tr>'
+	//			);
+	//		});
+	//
+	//		// $('#usersTable').DataTable({
+	//		// 	"paging": true,
+	//		// 	"lengthChange": true,
+	//		// 	"searching": true,
+	//		// 	"ordering": true,
+	//		// 	"info": true,
+	//		// 	"autoWidth": true,
+	//		// 	"responsive": false,
+	//		// 	"order": [[ 0, "desc" ]],
+	//		// 	"destroy": true
+	//		// });
+	//
+	//		Swal.close();
+	//	});
+	//}
 
 	function resetUserPassword(userId, userName)
 	{
