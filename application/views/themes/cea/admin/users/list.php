@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	.swal2-html-container{
 		color: #fdfdfd;
 	}
+
 </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -96,8 +97,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 	$(function ()
 	{
-		
-		listUsers();
+
+		listUsersServerSide();
 
 		$('.add-user-btn').on('click', function () {
 
@@ -241,6 +242,68 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	});
 
+	function listUsersServerSide(){
+		$('#usersTable').DataTable({
+			'dom': '<"dt-buttons"Bfr>t<lip>',
+			'buttons': [
+				'copy', 'excel', 'csv', 'pdf', 'print'
+			],
+			"pagingType": "full_numbers",
+			"processing": true,
+			"serverSide": true,
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": false,
+			"ajax": {
+				"url": project_admin_url + "/users/drawUsers",
+				"type": "POST"
+			},
+			"columns": [
+				{ "data": "id","orderable": true },
+				{ "data": "name", "orderable": true },
+				{ "data": "surname","orderable": true },
+				{ "data": "email","orderable": true },
+				{ "data": "membership_type","orderable": true },
+				{ "data": "membership_sub_type","orderable": true },
+				{
+					"data": null,
+					"orderable": false,
+					"render": function (data, type, row) {
+						// console.log(row)
+						if(row.accesses) {
+							let accessList = '';
+							$.each(row.accesses, function (key, access) {
+								let color_code = access_color_codes[access.level];
+								let icon = access_icons[access.level];
+								access.level = access.level[0].toUpperCase()+access.level.substring(1);
+								accessList += '<small class="badge badge-primary mr-1" style="background-color:'+color_code+';"><i class="'+icon+'"></i> '+access.level+'</small>';
+							});
+							return accessList;
+						}
+					}
+
+				},
+				{
+					"data": null,
+					"orderable": false,
+					"render": function(data, type, user) {
+						let tableButtons = (
+							'<button class="manage-user btn btn-sm btn-info m-2" user-id="' + user.id + '"><i class="fas fa-edit"></i> Manage</button>' +
+							'<button class="reset-user-pass-btn btn btn-sm btn-success m-2 text-white" user-id="' + user.id + '" user-name="' + user.name + '"><i class="fas fa-lock-open"></i>  Reset Password</button>' +
+							'<button onclick="suspendUser()" class="suspend-user btn btn-sm btn-warning m-2 text-white" user-id="' + user.id + '" user-name="' + user.name + '"><i class="fas fa-user-slash"></i> Suspend</button>'
+						);
+						return tableButtons;
+					}
+				}
+			],
+			// Add other DataTable options as needed
+		});
+	}
+
 	function listUsers()
 	{
 		Swal.fire({
@@ -312,17 +375,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				);
 			});
 
-			$('#usersTable').DataTable({
-				"paging": true,
-				"lengthChange": true,
-				"searching": true,
-				"ordering": true,
-				"info": true,
-				"autoWidth": true,
-				"responsive": false,
-				"order": [[ 0, "desc" ]],
-				"destroy": true
-			});
+			// $('#usersTable').DataTable({
+			// 	"paging": true,
+			// 	"lengthChange": true,
+			// 	"searching": true,
+			// 	"ordering": true,
+			// 	"info": true,
+			// 	"autoWidth": true,
+			// 	"responsive": false,
+			// 	"order": [[ 0, "desc" ]],
+			// 	"destroy": true
+			// });
 
 			Swal.close();
 		});
