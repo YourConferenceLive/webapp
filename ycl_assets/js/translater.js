@@ -26,6 +26,7 @@ $(document).ready(async function() {
         });
 
         $('#languageSelect').on("change", function() {
+			document.cookie = 'language=' + $("#languageSelect").val() + '; expires=' + new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString() + '; path=/';
             initializeLanguageSettings(true, translatorArr);
         });
     } catch (error) {
@@ -34,7 +35,10 @@ $(document).ready(async function() {
 });
 
 async function initializeLanguageSettings (isChange = false,  translatorArr = []) {
-    
+	console.log(getCookie('language'))
+    if(((getCookie('language') == 'english' ) && translatorArr.lang == 'english') || getCookie('language') == null) {
+		return false
+	}
     try {
 
         disableUserInput();
@@ -460,12 +464,10 @@ function translateTable() {
 async function awaitPopupTranslator(translatorArr) {
     try {
         let translationData = await createLanguageTranslator(translatorArr);
-        
-        addEvents();
+
         await Promise.all([translateSwals(translationData), translateToast(translationData)]);
     
         $(document).on('click', async function() {
-            addEvents();
             await Promise.all([translateSwals(translationData), translateToast(translationData)]);
     
         });
@@ -475,11 +477,13 @@ async function awaitPopupTranslator(translatorArr) {
 }
 
 function addEvents() {
-    $('input[type="search"]').on('input', function() {
-        $('.dataTable').on('draw.dt', translateTable);
-    });
-    $('input[type="text"]').on('click', translateTable);
-    $('input[type="text"]').on('keyup', function(event) {
-        $('.dataTable').on('draw.dt', translateTable);
-    });
+	return true
+}
+
+function getCookie(name) {
+	const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+	if (match) {
+		return match[2];
+	}
+	return null;
 }
