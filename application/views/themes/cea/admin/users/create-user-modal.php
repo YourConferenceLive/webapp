@@ -279,7 +279,8 @@
 				console.log(data);
 				if (data.status == 'success')
 				{
-					listUsers();
+					// listUsers();
+					listUsersServerSide
 					toastr.success("User added");
 					$('#addUserModal').modal('hide');
 
@@ -334,7 +335,8 @@
 
 				if (data.status == 'success')
 				{
-					listUsers();
+					// listUsers();
+					listUsersServerSide
 					toastr.success('User updated');
 
 				}else if(data.status == 'duplicate'){
